@@ -119,7 +119,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | The cast: tiers, threads, pools, promotion, a director; first the chapter's places as pools of regulars and its minor powers' people | `bible/cast.md` | draft |
 | The rest of the technology the hand meets: the guns, torpedoes and point defence, sensors, armour, the shields (keep and explain, or retire), the fabricator, life support, each by grade | `bible/technology.md` | to write, after the drive |
 | Places: the kinds, the inner places each has and whose; chapter 1's places first (Ceres, Pallas and the Hollows, Eros, Luna, the ice rocks) | `bible/places.md` | draft |
-| Freight as the hand sees it: what the contracts and the ice runs carry, who ships it, what is legal where (the inspections) | a page on trade goods | to write: the hand does not trade, so chapter 1 needs only the goods' names, owners and legality |
+| Freight as the hand sees it: what the contracts and the ice runs carry, who ships it, what is legal where (the inspections) | `bible/trade-goods.md` (draft) | drafted: the hand does not trade, so chapter 1 needs only the goods' names, owners and legality |
 | Soak profiles: the bands each holds for | `tools/soak.js`, `tests/distribution/` | built (#1199) |
 
 **Chapter 1, setting up chapter 2.**
@@ -129,13 +129,13 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | The Ore Runner's drive and the refit she could have: the grade path from patched to licensed | `bible/technology.md`; `bible/ceres-coop.md` |
 | Parts and salvage by grade: what a wreck gives, what a printed part is rated for | `bible/technology.md`; spec `parts` |
 | The powers' faces the hand meets in chapter 1 (Kaur's buying office, the house that is Van Leeuwen, the Guild, the Hollows, the refinery), so chapter 2 knows them | `bible/cast.md`; `bible/owners.md` |
-| The goods the co-op will trade, seen first on the boards and in the ports' prices, and moved by the chapter's marks | the trade goods page |
+| The goods the co-op will trade, seen first on the boards and in the ports' prices, and moved by the chapter's marks | `bible/trade-goods.md` |
 
 **Chapter 2, its own.**
 
 | What | Where |
 |---|---|
-| Trade goods and markets in full: what is made where, what each bloc taxes or bans, what the war does to prices, what the co-op may trade (`role()`) | the trade goods page; `bible/economy.md`, `bible/trade-and-law.md` |
+| Trade goods and markets in full: what is made where, what each bloc taxes or bans, what the war does to prices, what the co-op may trade (`role()`) | `bible/trade-goods.md`; `bible/economy.md`, `bible/trade-and-law.md` |
 | Refits and upgrades by grade; burning harder as the captain's choice (#1195) | `bible/technology.md` |
 | The war's technology: Ballast's ships, the blockade, the patrols' grades | `bible/technology.md`; `bible/the-fuel-war.md` |
 | The co-op's members as a pool, and the vote (piece 3) | `bible/cast.md`; `bible/chapter-2.md` |

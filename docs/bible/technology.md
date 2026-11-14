@@ -14,7 +14,7 @@ Status of this section: draft for the owner's review, 2026-11-14. It gives the d
 
 **What burns.** A torch is a fusion reactor that heats reaction mass and throws it out of the bell. Two things are spent, and they are bought differently:
 
-- **Fuel:** deuterium, for the reactor. A load lasts months. It is bought at a refit or with a charter, and is the owner's cost, not the crew's; the game does not count it trip by trip.
+- **Fuel:** deuterium, for the reactor. Enriched from ice at the depot owners' plants, it is the largest cost of running a ship (`economy.md`, Fuel). A load lasts months. It is bought at a refit or with a charter, and is the owner's cost, not the crew's; the game does not count it trip by trip.
 - **Reaction mass:** water, heated to plasma and thrown away. A burn spends it, every port sells it, and its price is the price of ice. This is the ship's tank in the game (`fuel` on the hull, 450 on Hester's Ice Hauler; a burn spends 30 plus 60 times the square root of the distance in AU, `burnFuel`, `js/orbits.js`). It is why ice is worth hauling, and why a water shortage at Ceres reaches every ship's costs.
 
 **How a burn flies.** Five parts (`burn.md`): a hard burn on the couches at the drive's hard rating until the ship reaches her set cruise speed, an easy cruise at about a quarter of a g, the flip, the easy brake, and the hard brake onto the port. The couches are for the hard burn: more than a g for hours is too much to work or to climb a tower's ladder under, so everyone lies down for it. Docking and departure are done at very low thrust, strapped in. The navigation software holds the course; the pilot flies the flip, docking, departure and anything unexpected.
