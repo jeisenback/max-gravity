@@ -117,7 +117,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | The burn: offers on the ship, urgent events, Run ahead, the free camera, the burn's shape | `bible/burn.md` | approved; built in part (#1182, #1183, #1184 stage 1, #1186); #1184 stage 2 (#1198), #1185, #1195 and #1187 to come |
 | The drive: what burns (deuterium and water), the hard rating, the grades, chapter 1's one patched drive | `bible/technology.md`, The drive | draft |
 | The cast: tiers, threads, pools, promotion, a director; first the chapter's places as pools of regulars and its minor powers' people | `bible/cast.md` | draft |
-| The rest of the technology the hand meets: the guns, torpedoes and point defence, sensors, armour, the shields (keep and explain, or retire), the fabricator, life support, each by grade | `bible/technology.md` | to write, after the drive |
+| The rest of the technology the hand meets: the guns, torpedoes and point defence, sensors, armour, the fabricator, life support, each by grade; no shields (retired by the owner, 2026-11-14; the code is #1208) | `bible/technology.md` | to write (#1209) |
 | Places: the kinds, the inner places each has and whose; chapter 1's places first (Ceres, Pallas and the Hollows, Eros, Luna, the ice rocks) | `bible/places.md` | draft |
 | Freight as the hand sees it: what the contracts and the ice runs carry, who ships it, what is legal where (the inspections) | `bible/trade-goods.md` (draft) | drafted: the hand does not trade, so chapter 1 needs only the goods' names, owners and legality |
 | Soak profiles: the bands each holds for | `tools/soak.js`, `tests/distribution/` | built (#1199) |
