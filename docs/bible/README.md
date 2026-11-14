@@ -56,6 +56,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 29. `places.md`: every kind of place across the system (an arcology's ring, yards, dome towns, company works, guild and co-op stations, havens, rafts, homeships, sites, and the rest), the inner places each can have and whose they are, how they meet the port view and the cast's pools, and which chapter needs which (draft, 2026-11-14).
 30. `trade-goods.md`: the seven goods as built, who makes and owns each, the licences as built against the port law as written, fuel and reaction mass, how prices move, and what each chapter needs (draft, 2026-11-14).
 31. `chapter-3.md`: the war, in three outlines, one for each way chapter 2's last vote goes: the organiser's, the master's and outside; what each opens with, its long middle, and the decision that opens chapter 4 (outline, 2026-11-14).
+32. `regulars.md`: the pool rule for a place's regulars and the dock official, and the pools of chapter 1's ports: Ceres and the Warren, Pallas Refinery, the Hollows, Eros Old Town, Luna and Mars (draft, 2026-11-14).
 
 ## Where the game must change to fit
 

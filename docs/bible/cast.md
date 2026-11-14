@@ -92,7 +92,7 @@ The pools are weighted by place, culture and allegiance, so each needs writing t
 
 A proposal, each step useful on its own:
 
-1. **Chapter 1's places as pools of regulars**, for the ports the hand reaches most (Ceres first), and the pool rule put on the regulars and the dock official that exist.
+1. **Chapter 1's places as pools of regulars**, for the ports the hand reaches most (Ceres first), and the pool rule put on the regulars and the dock official that exist. Drafted in `regulars.md` (#1212).
 2. **Recurring pools for chapter 1's minor powers**: the Guild, the Hollows, the refinery, the town trust, Kaur's buying office, the hiring hall.
 3. **Culture templates** for the regions in play, beyond Earth and Ceres.
 4. **Thread templates**, and promotion.
