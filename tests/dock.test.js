@@ -65,7 +65,7 @@ test('the opening page: (a) the two come up the gangway and through the lock, th
   assert.ok(!hold.lock.lit && hold.swing === 0 && !hold.sealed, 'the lamp out once they have gone through, the clamps on, the hold not sealed yet');
 });
 
-test('the result page: (c) from the comms post the hand brings the papers along the bridge; from another post the hand climbs to it to speak up', () => {
+test('the result page: (c) from the comms post the hand brings the papers along the bridge; from another post the hand goes to the ladder and is up on the bridge, the climb a cut (#1150), to speak up', () => {
   const comms = plan('move', 'comms'), seat0 = api.dockPostSpot('slicer');
   assert.deepEqual([seat0.room, seat0.dk, near(seat0.x, W * api.roomAt('bridge').x0 + W * api.roomAt('bridge').w * api.SEATS.bridge[0])], ['bridge', 0, true], 'the comms post is the bridge\'s first seat');
   const c0 = beat('result', 0, 'move', 'comms');
@@ -77,10 +77,12 @@ test('the result page: (c) from the comms post the hand brings the papers along 
   assert.equal(cEnd.insp.pose.face, -1, 'the inspector turned to the hand');
   for (const post of ['gunner', 'engineer']) {
     const p = plan('move', post), from = api.dockPostSpot(POSTS[post].role), poses = new Set();
-    for (let t = 0; t < p.cEnd; t += 0.2) { const b = beat('result', t, 'move', post); assert.equal(b.beat, 'c'); poses.add(b.hand.pose.name); }
+    const decks = new Set();
+    for (let t = 0; t < p.cEnd; t += 0.05) { const b = beat('result', t, 'move', post); assert.equal(b.beat, 'c'); poses.add(b.hand.pose.name); decks.add(b.hand.dk); }
     const b0 = beat('result', 0, 'move', post), b1 = beat('result', p.cEnd - 0.1, 'move', post);
     assert.ok(from.dk > 0 && b0.hand.dk === from.dk && near(b0.hand.x, from.x, 2), `${post}: from their post on deck ${from.dk}`);
-    assert.ok(poses.has('climb') && poses.has('walk'), `${post}: walks to the ladder and climbs (${[...poses]})`);
+    assert.ok(poses.has('walk') && !poses.has('climb'), `${post}: walks to the ladder, and is not seen climbing (${[...poses]})`);
+    assert.deepEqual([...decks].sort(), [0, from.dk], `${post}: on their deck, then on the bridge, with no deck between`);
     assert.deepEqual([b1.hand.dk, b1.hand.x, b1.hand.pose.face, b1.hand.carry], [0, api.DOCK_AT.bridge.ladder, -1, null], `${post}: up on the bridge to speak up from the ladder's side, nothing in hand`);
     assert.equal(b1.insp.pose.face, 1, `${post}: the inspector turned to them`);
   }
@@ -95,21 +97,22 @@ test('no (c) for keeping out of it, the nod or the owner\'s payment: the result 
   }
 });
 
-test('each page\'s beats run about 15 s in all at the crew\'s pace, longer for a hand who climbs from a lower post, in their order: (a) then (b); (c) when the hand moves, (d), then (e)', () => {
+test('each page\'s beats run about 15 s in all at the crew\'s pace, and none past about 20 s (#1150), in their order: (a) then (b); (c) when the hand moves, with (d) inside it, then (e)', () => {
   const ends = [];
   for (const [choice, post] of [[null, 'comms'], ['move', 'comms'], ['move', 'gunner'], ['move', 'engineer'], ['move', 'pilot'], ['keep', 'gunner'], ['nod', 'engineer'], ['pay', null]]) {
     const p = plan(choice, post);
     assert.ok(p.aEnd > 0 && p.aEnd < p.bBridge && p.bBridge <= p.bEnd, `${choice} ${post}: (a) then (b)`);
     assert.ok(p.bEnd >= 15 && p.bEnd <= 17, `${choice} ${post}: the opening page's beats in ${p.bEnd.toFixed(2)} s`);
-    assert.ok(p.cEnd < p.dEnd && p.dEnd < p.down && p.down < p.eEnd, `${choice} ${post}: (c), (d), then (e)`);
-    assert.ok(p.eEnd >= 16 && p.eEnd <= 26, `${choice} ${post}: the result page's beats in ${p.eEnd.toFixed(2)} s`);
+    assert.ok(Math.max(p.cEnd, p.dEnd) < p.down && p.down < p.eEnd, `${choice} ${post}: (c) and (d), then (e)`);
+    if (choice === 'move') assert.ok(p.dEnd <= p.cEnd, `${choice} ${post}: the seal on while the hand makes the move`);
+    assert.ok(p.eEnd >= 16 && p.eEnd <= 20, `${choice} ${post}: the result page's beats in ${p.eEnd.toFixed(2)} s`);
     if (choice !== 'move') assert.ok(p.eEnd <= 17.5, `${choice} ${post}: no move, the result page's beats in ${p.eEnd.toFixed(2)} s`);
     ends.push(p.eEnd);
   }
   const order = beats => beats.filter((b, i) => b !== beats[i - 1]);
   const seen = (page, choice, post, end) => order(Array.from({ length: Math.ceil((end + 1) / 0.05) }, (_, i) => beat(page, i * 0.05, choice, post).beat));
   assert.deepEqual(seen('open', null, 'gunner', plan(null, 'gunner').bEnd), ['a', 'b']);
-  assert.deepEqual(seen('result', 'move', 'gunner', plan('move', 'gunner').eEnd), ['c', 'd', 'e', 'done']);
+  assert.deepEqual(seen('result', 'move', 'gunner', plan('move', 'gunner').eEnd), ['c', 'e', 'done'], 'the seal inside the move');
   assert.deepEqual(seen('result', 'keep', 'gunner', plan('keep', 'gunner').eEnd), ['d', 'e', 'done']);
 });
 
@@ -129,15 +132,16 @@ test('a choice on the opening page, however early, starts the result page from w
   }
 });
 
-test('(d) the junior seals the hold with the seal gun; (e) the two go back down the gangway and the clamps swing off, their lamps red', () => {
+test('(d) the junior seals the hold with the seal gun as the result page opens, during the hand\'s move if there is one (#1150); (e) the two go back down the gangway and the clamps swing off, their lamps red', () => {
   for (const choice of ['move', 'keep']) {
     const p = plan(choice, 'gunner'), at = t => beat('result', t, choice, 'gunner');
-    const d0 = at(p.cEnd + 0.1), d1 = at(p.cEnd + api.DOCK_HOLD.sealAt + 0.1);
-    assert.deepEqual([d0.beat, d0.junior.dk, d0.junior.pose.name, d0.junior.carry, d0.sealed], ['d', HOLD, 'work', 'seal', false], `${choice}: the junior at the crates with the seal gun`);
-    assert.ok(d1.sealed && d1.beat === 'd', `${choice}: then the hold sealed`);
-    assert.deepEqual([d0.focus.dk, d0.focus.x], [HOLD, api.DOCK_AT.hold.junior], `${choice}: the camera in the hold`);
+    const d0 = at(0.1), d1 = at(api.DOCK_HOLD.sealAt + 0.1), mid = at(p.dEnd + 0.5);
+    assert.deepEqual([d0.beat, d0.junior.dk, d0.junior.pose.name, d0.junior.carry, d0.sealed], [choice === 'move' ? 'c' : 'd', HOLD, 'work', 'seal', false], `${choice}: the junior at the crates with the seal gun`);
+    assert.ok(d1.sealed, `${choice}: then the hold sealed`);
+    if (choice === 'move') assert.ok(mid.beat === 'c' && mid.junior.moving && mid.insp.pose.name === 'stand', 'the junior on the way down while the inspector hears the hand');
+    else assert.deepEqual([d0.focus.dk, d0.focus.x], [HOLD, api.DOCK_AT.hold.junior], `${choice}: the camera in the hold`);
     const seen = { lit: false, outside: 0 };
-    for (let t = p.dEnd; t < p.down; t += 0.2) {
+    for (let t = Math.max(p.cEnd, p.dEnd); t < p.down; t += 0.2) {
       const b = at(t); assert.equal(b.beat, 'e'); assert.equal(b.swing, 0, `${t}: the clamps on while they are aboard`); assert.ok(b.sealed);
       if (b.lock.lit) seen.lit = true; if (b.insp && b.insp.outside) seen.outside++;
     }
@@ -201,7 +205,7 @@ test('the dock\'s state: opened on the first page, stepped on by the frame with 
   assert.deepEqual([d.t, d.clock, d.beat], [20, 20, 'b']);
   d = api.dockChose(d, 'move');
   assert.deepEqual([d.page, d.t, d.clock, d.choice], ['result', 0, 20, 'move'], 'the page and its clock start again; the camera\'s clock runs on');
-  d = api.dockStep(d, p.cEnd + api.DOCK_HOLD.sealAt + 0.1, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['d', true, true]);
+  d = api.dockStep(d, api.DOCK_HOLD.sealAt + 0.1, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['c', true, true], 'sealed while the hand brings the papers');
   d = api.dockStep(d, p.eEnd, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['done', true, false]);
   assert.equal(api.dockChose(api.dockOpened(), undefined).choice, null, 'a choice with no tag plays no move');
 });

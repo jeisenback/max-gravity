@@ -7,7 +7,9 @@
 //   the opening page: (a) the two come up the gangway and through the lock; (b) the inspector to the bridge with the papers, the junior to the
 //   hold, counting crates against a slate;
 //   the result page: (c) the hand's move, if it was one: from the comms post the hand brings the papers to the inspector, from any other post
-//   climbs to the bridge to speak up; (d) the junior seals the hold; (e) the two go back down the gangway and the clamps come off.
+//   goes to the ladder and is up on the bridge to speak up (the climb a cut, #1150); (d) the junior seals the hold; (e) the two go back down the
+//   gangway and the clamps come off. The junior seals as the page opens and starts down then, while the hand makes the move, so (d) is inside
+//   (c) when there is a move; the inspector goes when the hand has spoken (#1150, the owner: no beat much past 20 s).
 // The crew keep their posts, the captain on the bridge. The dock's state is G.dock (game.js), set as the scene opens and cleared as it closes.
 // dockBeats is a pure function of the page, the time on it, the choice and the hand's post; the drawing reads it. Under reduced motion each beat
 // jumps to where it ends, with no walking.
@@ -34,17 +36,17 @@ const dockDeckOf = id => LAYOUTS.freighter.decks.findIndex(d => d.rooms.some(r =
 const dockWell = () => LAYOUTS.freighter.well.x * LAYOUTS.freighter.width;
 
 // A path's legs from its stops [{ x, dk }] (world x; between two stops on different decks a climb on the ladder, which the stops put the
-// person at), each with its length and its start and end in seconds.
-function dockLegs(stops) {
+// person at), each with its length and its start and end in seconds. `cut`: the climbs take no time, the person up or down the ladder at once.
+function dockLegs(stops, cut = false) {
   const lay = LAYOUTS.freighter, out = [];
   let t = 0;
   for (let i = 1; i < stops.length; i++) {
     const a = stops[i - 1], b = stops[i], climb = a.dk !== b.dk, len = climb ? Math.abs(towerDeckY(lay, b.dk) - towerDeckY(lay, a.dk)) : Math.abs(b.x - a.x);
-    out.push({ a, b, climb, len, t0: t, t1: (t += len / (climb ? DOCK_PACE.climb : DOCK_PACE.walk)) });
+    out.push({ a, b, climb, len, t0: t, t1: (t += climb && cut ? 0 : len / (climb ? DOCK_PACE.climb : DOCK_PACE.walk)) });
   }
   return out;
 }
-const dockTime = stops => { const l = dockLegs(stops); return l.length ? l[l.length - 1].t1 : 0; };
+const dockTime = (stops, cut) => { const l = dockLegs(stops, cut); return l.length ? l[l.length - 1].t1 : 0; };
 // The fractional deck at world y down the tower (towerDeckY's inverse).
 function dockDeckAt(lay, y) {
   for (let k = 0; k < lay.decks.length - 1; k++) { const a = deckFloor(lay, k), b = deckFloor(lay, k + 1); if (y <= b) return k + Math.max(0, (y - a) / (b - a)); }
@@ -52,9 +54,9 @@ function dockDeckAt(lay, y) {
 }
 // Where someone is `t` seconds along `stops`: { x, dk, pose, moving }, walking side-on the way they go (the stride by the ground covered, as
 // shiplife.js posture's), climbing at the ladder, or at the end in `rest`; before the start at the first stop in `from`. Reduced motion (still):
-// at the end at once. A path with no rest is gone at its end: null.
-function dockAlong(stops, t, rest, still, from = rest) {
-  const legs = dockLegs(stops), end = stops[stops.length - 1], first = stops[0];
+// at the end at once. A path with no rest is gone at its end: null. `cut`: its climbs are cuts (dockLegs).
+function dockAlong(stops, t, rest, still, from = rest, cut = false) {
+  const legs = dockLegs(stops, cut), end = stops[stops.length - 1], first = stops[0];
   if (still || t >= (legs.length ? legs[legs.length - 1].t1 : 0)) return rest ? { x: end.x, dk: end.dk, pose: rest, moving: false } : null;
   if (t < 0) return from ? { x: first.x, dk: first.dk, pose: from, moving: false } : null;
   let walked = 0;
@@ -102,10 +104,12 @@ function dockPlan(choice, handRole) {
   const aEnd = Math.max(dockTime(aI), H.lag + dockTime(aJ)) + H.a;
   const bI = [P(A.lock.insp, L), P(well, L), P(well, 0), P(A.bridge.insp, 0)], bJ = [P(A.lock.junior, L), P(well, L), P(well, HD), P(A.hold.junior, HD)];
   const bBridge = aEnd + dockTime(bI) + H.bridge, bEnd = Math.max(bBridge, aEnd + dockTime(bJ)) + H.hold;
-  const hand = choice === 'move' ? dockHandPath(handRole) : null, cEnd = hand ? dockTime(hand) + H.c : 0, dEnd = cEnd + H.seal;
+  // the result page: the hand's move, its climb a cut; the seal from the page's start; the junior off once it is on, the inspector once the hand
+  // has spoken (with no move, both once the seal is on, as before)
+  const hand = choice === 'move' ? dockHandPath(handRole) : null, cEnd = hand ? dockTime(hand, true) + H.c : 0, dEnd = H.seal, iOff = Math.max(cEnd, dEnd);
   const eI = [P(A.bridge.insp, 0), P(well, 0), P(well, L), P(A.off, L)], eJ = [P(A.hold.junior, HD), P(well, HD), P(well, L), P(A.off, L)];
-  const down = dEnd + Math.max(dockTime(eI), dockTime(eJ)), eEnd = down + H.clamps + H.swing;
-  return { L, HD, aI, aJ, aEnd, bI, bJ, bBridge, bEnd, hand, cEnd, dEnd, eI, eJ, down, eEnd };
+  const down = Math.max(iOff + dockTime(eI), dEnd + dockTime(eJ)), eEnd = down + H.clamps + H.swing;
+  return { L, HD, aI, aJ, aEnd, bI, bJ, bBridge, bEnd, hand, cEnd, dEnd, iOff, eI, eJ, down, eEnd };
 }
 
 // What the dock shows on `page` ('open' or 'result') `t` seconds in, for the choice (`move`, `keep`, `nod`, `pay` or null) and the hand's post
@@ -127,13 +131,14 @@ function dockBeats(page, t, choice, post, still) {
     }
   } else {
     const side = moved ? Math.sign(p.hand[p.hand.length - 1].x - A.bridge.insp) : 0;  // which side of the inspector the hand comes to
-    const hand = moved ? along(p.hand, 0, { ...R.hand, face: -side }) : null, inspAt = atRest(A.bridge.insp, 0, moved ? { ...R.turned, face: side } : R.front);
-    out.hand = hand; out.sealed = t >= p.cEnd + H.sealAt;
-    // (c): the camera between the hand and the inspector while both are on the bridge, so both stay clear of the page; on the ladder, with the hand
-    if (moved && t < p.cEnd) Object.assign(out, { beat: 'c', insp: inspAt, junior: atRest(A.hold.junior, p.HD, R.count), focus: hand.dk === 0 ? { x: (hand.x + A.bridge.insp) / 2, dk: 0 } : { x: hand.x, dk: hand.dk } });
-    else if (t < p.dEnd) Object.assign(out, { beat: 'd', insp: inspAt, junior: atRest(A.hold.junior, p.HD, R.count), focus: hold });
+    const hand = moved ? dockAlong(p.hand, t, { ...R.hand, face: -side }, still, undefined, true) : null, inspAt = atRest(A.bridge.insp, 0, moved ? { ...R.turned, face: side } : R.front);
+    const junior = t < p.dEnd ? atRest(A.hold.junior, p.HD, R.count) : along(p.eJ, p.dEnd, null);  // sealing, then on the way down
+    out.hand = hand; out.sealed = t >= H.sealAt;
+    // (c): the camera between the hand and the inspector while both are on the bridge, so both stay clear of the page; below, with the hand
+    if (moved && t < p.cEnd) Object.assign(out, { beat: 'c', insp: inspAt, junior, focus: hand.dk === 0 ? { x: (hand.x + A.bridge.insp) / 2, dk: 0 } : { x: hand.x, dk: hand.dk } });
+    else if (t < p.dEnd) Object.assign(out, { beat: 'd', insp: inspAt, junior, focus: hold });
     else {
-      out.insp = along(p.eI, p.dEnd, null); out.junior = along(p.eJ, p.dEnd, null);
+      out.insp = t < p.iOff ? inspAt : along(p.eI, p.iOff, null); out.junior = junior;
       out.beat = out.insp || out.junior ? 'e' : 'done';
       const onLock = [out.insp, out.junior].filter(q => q && Math.abs(q.dk - p.L) < 0.01), mid = onLock.reduce((a, q) => a + q.x, 0) / (onLock.length || 1);
       out.focus = onLock.length ? { x: mid, dk: p.L } : out.insp ? follow(out.insp, lock) : lock;  // after them down to the lock deck, along it and out
@@ -142,7 +147,7 @@ function dockBeats(page, t, choice, post, still) {
   }
   const carry = (q, thing) => (q ? { ...q, carry: thing, outside: Math.abs(q.dk - p.L) < 0.01 && q.x < 0 } : null);
   out.insp = carry(out.insp, 'slate');
-  out.junior = out.junior && carry(out.junior, out.junior.pose === R.count && (out.beat === 'b' || out.beat === 'c') ? 'slate' : 'seal');  // the slate to count by; the seal gun to seal with and between
+  out.junior = out.junior && carry(out.junior, out.junior.pose === R.count && out.beat === 'b' ? 'slate' : 'seal');  // the slate to count by; the seal gun to seal with and between
   if (out.hand) out.hand.carry = post === 'comms' ? 'papers' : null;
   for (const q of [out.insp, out.junior, out.hand]) if (q && !q.moving) { const f = POSTURES[q.pose.name]; q.pose = { ...q.pose, frame: still ? 0 : Math.floor(t * f.fps) % f.frames }; }  // at rest: the posture's own frames by the page's clock
   out.lock.lit = [out.insp, out.junior].some(q => q && Math.abs(q.dk - p.L) < 0.01 && q.x > -24 && q.x < 100);  // the cycle lamp lit while they pass the chamber
