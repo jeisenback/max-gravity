@@ -1,6 +1,6 @@
 # The burn
 
-Status: draft for the owner's review, 2026-11-14. The owner chose the direction (offers on the ship, a free camera, urgent events stop the burn, no cost for an offer let go); the rest is proposed. It changes how the burn plays, not how it looks (`look.md`).
+Status: approved by the owner on 2026-11-14. It changes how the burn plays, not how it looks (`look.md`). The work is #1182 to #1187.
 
 ## What it is for
 
@@ -62,12 +62,12 @@ None of the later part is built with this; it is the reason offers are kept as d
 
 In order, each its own piece of work:
 
-1. **The camera.** Free at the start of a burn; drag, wheel and arrows to pan; a click to follow a person, the hand or H to follow the hand; a scene takes the camera and gives it back. `js/shiplife.js` (`camTarget`, `camStep`), `js/burnpanel.js`.
-2. **Offers.** An offer queue on the burn (who, where, the scene, when it lapses), tags drawn from it (`drawDowntimeTags` grown to draw any offer), a click on a tag opening its scene, markers for offers off screen, and the cap of four.
-3. **The burn's scenes split.** Each kind of scene in the burn's draw (`BURN_WEIGHTS`, `HIRED_GROUPS`, `js/happenings.js`) marked urgent or offer, as above; offers go to the queue, urgent ones open as now.
-4. **Downtime as offers.** The downtime scene replaced by each of its activities as an offer, the slot spent by the one taken.
-5. **Run ahead.** The fourth speed, to the next urgent event or arrival.
-6. **The soak.** The chapter's length, pay and experience held to their bands when offers lapse (`npm run soak`): a player at speed takes fewer scenes, and the soak's player takes offers as a player at 1x would.
+1. **The camera** (#1182). Free at the start of a burn; drag, wheel and arrows to pan; a click to follow a person, the hand or H to follow the hand; a scene takes the camera and gives it back. `js/shiplife.js` (`camTarget`, `camStep`), `js/burnpanel.js`.
+2. **Offers** (#1183). An offer queue on the burn (who, where, the scene, when it lapses), tags drawn from it (`drawDowntimeTags` grown to draw any offer), a click on a tag opening its scene, markers for offers off screen, and the cap of four.
+3. **The burn's scenes split** (#1184). Each kind of scene in the burn's draw (`BURN_WEIGHTS`, `HIRED_GROUPS`, `js/happenings.js`) marked urgent or offer, as above; offers go to the queue, urgent ones open as now.
+4. **Downtime as offers** (#1185). The downtime scene replaced by each of its activities as an offer, the slot spent by the one taken.
+5. **Run ahead** (#1186). The fourth speed, to the next urgent event or arrival.
+6. **The soak** (#1187). The chapter's length, pay and experience held to their bands when offers lapse (`npm run soak`): a player at speed takes fewer scenes, and the soak's player takes offers as a player at 1x would.
 
 ## Assumptions to confirm
 
