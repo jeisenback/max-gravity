@@ -35,11 +35,15 @@ A higher grade buys a shorter trip (the hard burn reaches a higher cruise speed 
 
 **In play.**
 
-- *Chapter 1.* One drive, Hester's: patched. The hand sees the grades from below: a patrol's cutter overtaking them, a Tycho tanker passing at a speed the Ice Hauler cannot make, a pirate's drive worse than theirs. The engineer's work (the drive's condition, `js/wear.js`; the reactor's heat and the power split between drive, guns and shields, `js/engineering.js`) is the patched grade's daily cost.
+- *Chapter 1.* One drive, Hester's: patched. The hand sees the grades from below: a patrol's cutter overtaking them, a Tycho tanker passing at a speed the Ice Hauler cannot make, a pirate's drive worse than theirs. The engineer's work (the drive's condition, `js/wear.js`; the reactor's heat and the power split between drive and guns, `js/engineering.js`, its shields share retired with #1208) is the patched grade's daily cost.
 - *Chapter 2.* The Ore Runner is the player's to refit: keep her patched drive, or pay for a licensed one and its licence. Burning harder (a longer hard burn to a higher cruise speed, for a shorter trip, more reaction mass, more wear and more strain on the crew) becomes the captain's choice (#1195).
 - *Later.* A fleet's hulls of different grades; yard and military drives met as the war's ships; the restricted grade, if the owner wants it.
 
 **What the game changes, when the work comes.** The trip's days and its reaction mass come from the drive's grade and hard rating, not one curve for every hull (`baseDays`, `burnFuel`, `js/orbits.js`). With one drive in chapter 1 the numbers stay what they are now. Each hull's `accel` and `maxSpeed` (`js/data.js`) are left from the owner game and are not read on a burn; they give way to the hull's grade.
+
+## No shields
+
+There is no deflector field (the owner, 2026-11-14). A ship is kept whole by her armour, her point defence and not being where the shot is. The game's shields are retired (#1208): until that lands, read a ship's shields in the code as the outer layer of her armour.
 
 ## The fleet is old
 
@@ -65,6 +69,7 @@ Long spells in low gravity cost bone and muscle, and radiation adds up. Both are
 
 ## Assumptions to confirm
 
+- There are no shields; armour and point defence protect a ship (the owner, 2026-11-14).
 - There is no artificial gravity; ships get weight from thrust, stations from spin.
 - Fuel is deuterium for the reactor, bought with a refit and not counted trip by trip; reaction mass is water, spent each burn and bought at every port.
 - Drives come in five grades (patched, licensed, yard, military, restricted); the major powers are a grade or two ahead; chapter 1 has one drive, Hester's, patched.
