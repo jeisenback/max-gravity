@@ -40,7 +40,7 @@ An **offer** is something the hand could do or join: a shipmate who wants a word
 - **How many.** At most four offers at once, so the ship does not fill with tags. A new one waits for a place.
 - **Only where it is true.** An offer about someone shows only while they are where its words put them (`downtimeThere`, #1175), and over them, so it moves with them.
 - **The downtime slot stays.** A burn still has two to five slots (`lifeSlotCount`). Each slot's activities are offers; taking one spends the slot, and the rest of that slot's activities lapse. The downtime scene, the list of the five, goes: each of the five is its own tag.
-- **What counts as an offer.** The people and the life of the ship: the main characters' scenes (their introductions, middles and lates, not their fate scenes), the captain's own scenes, the crew's events, the money events, the passengers, the ship's traditions and colour, the quiet scenes, and downtime. The comms page's news stays where it is.
+- **What counts as an offer.** The people and the life of the ship: the main characters' later scenes (their middles and lates; their introductions and fate scenes open at once, so every player meets them, the owner, 2026-11-14), the captain's own scenes, the crew's events, the money events, the passengers, the ship's traditions and colour, the quiet scenes, and downtime. The comms page's news stays where it is.
 
 ## What stops the burn
 
