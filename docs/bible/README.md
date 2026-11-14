@@ -53,6 +53,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 26. `ports.md`: what the port view is (a cutaway of the part of a port a crew uses, its people on the place's hours), and Earth's port first: Lagos Ring, where torch ships berth at the hub and the hand signs on (approved 2026-11-12, #1099); and drafts of the screen in port and how a port runs (its clock, its people, its scenes).
 27. `burn.md`: how a burn plays: what is going on aboard shows on the ship as offers the hand can take or let go, only urgent events stop the burn, a speed to run ahead, and a camera the player moves (approved 2026-11-14).
 28. `cast.md`: the people of the game as one thing: tiers by depth (main, recurring, regular, passing), a thread for each that comes in and out, pools drawn per run weighted by the run's facts, promotion, a director that keeps a few threads live, and the writing the pools need from the world (draft, 2026-11-14).
+29. `places.md`: every kind of place across the system (an arcology's ring, yards, dome towns, company works, guild and co-op stations, havens, rafts, homeships, sites, and the rest), the inner places each can have and whose they are, how they meet the port view and the cast's pools, and which chapter needs which (draft, 2026-11-14).
 
 ## Where the game must change to fit
 
