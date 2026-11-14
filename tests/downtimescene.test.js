@@ -201,6 +201,23 @@ test('on a whole burn at 1x each downtime scene opens with the people it tags al
   assert.ok(r.at[0].elapsed > r.couches + 2, `the first waits past the moment the crew are up: ${JSON.stringify(r)}`);
 });
 
+test('while the downtime scene is open nobody is gathered: those it names keep to where they are (#1169)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true };
+    for (let k = 0; k < 100; k++) { t.elapsed += 0.1; lifeTick(0.1); }  // the crew about their routine
+    const e = downtimeScene(true), ids = e.tags.filter(g => g.id).map(g => g.id);
+    openEvent(e);
+    for (let k = 0; k < 100; k++) lifeTick(0.1);  // the burn waits while it is open; the people go on
+    const people = shipPeople();
+    return { tagged: ids.length, staged: people.filter(p => p.staged).map(p => p.id), span: t.stageSpan || null };
+  });
+  await done();
+  assert.ok(r.tagged >= 1, 'it names someone');
+  assert.deepEqual(r.staged, [], 'nobody is staged'); assert.equal(r.span, null, 'and no room is kept clear for it');
+});
+
 test('choosing an activity runs it, spends the slot, logs it and sends the hand there; Pass spends nothing and it does not come back', async () => {
   const { ev, done } = await open();
   await ev(burnHelpers); await ev(runHelpers);
