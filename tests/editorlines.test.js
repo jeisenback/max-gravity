@@ -188,7 +188,7 @@ test('the errand ashore is a port scene, and the preview plays the errand being 
 test('the jobs on the station and further away are rows (the job, then each stage) with the words in the form, and each stage plays in the preview (#457)', async () => {
   await reload(); await select('job:lock:0');
   const r = await page.evaluate(() => ({ ids: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).map(x => x.id), shape: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).every(x => x.kind === 'data' && x.table && x.where === 'port') }));
-  assert.equal(r.ids.length, 19, 'eight jobs, and their stages');
+  assert.equal(r.ids.length, 23, 'ten jobs, and their stages: with the two below Lagos (#1162)');
   assert.ok(r.shape, 'each is a table scene, at a port');
   assert.ok(['job:lock', 'job:lock:1', 'job:ration:0', 'away:package', 'away:package:1', 'away:witness:0'].every(id => r.ids.includes(id)), r.ids.join());
   const lock = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));

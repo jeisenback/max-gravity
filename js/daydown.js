@@ -14,11 +14,14 @@ function downOffer(st, h, planet) {
   if (!h || !planet || planet.name !== DOWN_PORT || atSite(st) || !stayOf(h)) return null;
   return { why: h.downDay === st.day ? lagosSay('shut') : st.credits < DOWN_FARE ? needCr(DOWN_FARE)[1]() : '' };
 }
+// Work below (part 3): the day's one of the jobs kept for Lagos (jobs.js, `down`), in turn by the day; it takes the day down, and the pay is the hand's.
+const downJob = day => { const list = JOBS.filter(j => j.down); return list[day % list.length]; };
 function dayDownEvent() {
   const st = G.state;
   return {
     title: lagosSay('title'), text: lagosSay('text'), personal: true, place: 'well',  // it starts at the spoke lift, on the Ring's view
-    choices: DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run: () => lagosSay(`${k}.${st.day % 3}`) })),
+    choices: [...DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run: () => lagosSay(`${k}.${st.day % 3}`) })),
+      { label: lagosSay('work.label'), run() { G.nextEvent = jobStage(downJob(st.day), 0); return null; } }],  // the day's job below, played as a station job is (jobs.js)
   };
 }
 // Tomas's parcel (#1162, part 2; docs/bible/people/tomas.md): when Tomas is aboard and trusts the hand as a visit home asks (OPINION.TRUSTED,

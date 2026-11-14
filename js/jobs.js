@@ -91,6 +91,39 @@ const JOBS = [
           { label: 'Get the warden and let her handle it', win: { text: 'You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size.', pay: 400 } },
         ] },
     ] },
+  // Work in Lagos, below the Ring (#1162, part 3; docs/bible/ports.md, lagos.md): `down` keeps them off the station's board; a day down offers the day's one (daydown.js).
+  { id: 'lagos-sled', down: true, title: 'A Sled Stuck on the Platform', blurb: 'The platform\'s lift crew is a hand short, and a load sled has stopped on the rail before a launch.',
+    stages: [
+      { text: 'The sled runs on a rail from the warehouse to the spaceplane\'s hold, and it has stopped halfway with a load of pump parts on it and the clamp locked. The crew chief has the loading schedule on her wrist. The next plane goes in fifty minutes, and the platform charges the shipper for every minute it waits. "Day rate," she says, "if you can do anything with that clamp."',
+        choices: [
+          { label: 'Take the clamp\'s housing off and release it by hand', check: { post: 'engineer' },
+            win: { text: 'The release is behind a cover held on with six bolts, two of them rounded. You get it off with a borrowed extractor and push the pawl back with a screwdriver. The sled moves. The crew chief writes your name on her wrist under the schedule.', pay: 1800, xp: 'engineer' },
+            lose: { text: 'The pawl lets go all at once and the load shifts on the sled. Nobody is under it, but the crew chief sends you to the medical room to have your hand looked at, and logs the delay against the clamp.', hurt: true, pay: 400 } },
+          { label: 'Walk the sled in on the manual controls', check: { post: 'pilot' },
+            win: { text: 'The manual controls are a lever and a dead-man switch in a box at the end of the rail. You walk the sled the last forty metres at a pace a person can follow, and the load goes into the hold on the fork. The plane goes on time.', pay: 1500, xp: 'pilot' },
+            lose: { text: 'You overrun the stop by half a metre and the sled noses the ramp. Nothing breaks. The crew chief pays you for the morning and takes the controls back.', pay: 500 } },
+          { label: 'Unload it by hand with the crew', check: { post: 'gunner' },
+            win: { text: 'It takes four of you and most of the fifty minutes. The pump parts are packed in foam, in crates of twenty kilos. Your shoulders know about it by the evening flight.', pay: 1200, xp: 'gunner' },
+            lose: { text: 'A crate slips off the stack on the turn and you get a hand under it. The crate is fine. The crew chief has someone look at your wrist.', hurt: true, pay: 400 } },
+          { label: 'Hold the tag line and keep out of the way', win: { text: 'You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up.', pay: 500 } },
+        ] },
+    ] },
+  { id: 'lagos-generator', down: true, title: 'The Generator on the Roof', blurb: 'A generator man in Yaba has three blocks on one machine, and the machine has stopped.',
+    stages: [
+      { text: 'The generator is on the roof of a block of flats in Yaba, under a sheet of tin, and it serves three blocks by the hour. It stopped at six. The generator man, Femi, has the cover off and a phone in his other hand, and the tenants in the stairwell want to know when. "I pay by the job," he says. "If it starts, you get paid."',
+        choices: [
+          { label: 'Find the fault', check: { post: 'engineer' },
+            win: { text: 'It\'s the fuel filter, packed with water and grit. You drain the bowl into a can, rinse the element in diesel and put it back, and on the fourth pull it catches. Femi tells the stairwell before he tells you.', pay: 1600, xp: 'engineer' },
+            lose: { text: 'You find the filter and clean it, and it still won\'t run. Femi finds the second fault an hour later, in the wiring, and pays you for the first.', pay: 600 } },
+          { label: 'Call round the parts dealers for a filter', check: { post: 'comms' },
+            win: { text: 'The third dealer has one, and will send it over on a motorbike for the price of the ride. You get the price down by mentioning the second dealer. Femi pays you the difference and a day.', pay: 1300, xp: 'comms' },
+            lose: { text: 'Nobody has the filter. One dealer can get one by Thursday. Femi pays you for the calls.', pay: 300 } },
+          { label: 'Carry the spare up from the store', check: { post: 'gunner' },
+            win: { text: 'The spare is a smaller machine in a storeroom on the ground floor, and it weighs as much as you do. You and Femi get it up six flights with a rope and a sack truck, and it runs two of the three blocks until the big one is fixed.', pay: 1400, xp: 'gunner' },
+            lose: { text: 'On the fifth flight it gets away from you on the turn. It doesn\'t go far. Your knee goes a little further.', hurt: true, pay: 500 } },
+          { label: 'Hold the torch', win: { text: 'You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter.', pay: 400 } },
+        ] },
+    ] },
 ];
 
 // ---------- the board ----------
@@ -101,7 +134,7 @@ const JOB_FRESH_DAYS = 20;
 const jobBoard = () => {
   const h = hired(), st = G.state, key = `${st.planet}@${st.day}`;
   if (!h.board || h.board.key !== key) {
-    const list = JOBS.filter(j => !j.where || j.where(currentPlanet())), seen = h.jobsSeen = h.jobsSeen || {}, n = Math.min(JOB_BOARD, list.length);
+    const list = JOBS.filter(j => !j.down && (!j.where || j.where(currentPlanet()))), seen = h.jobsSeen = h.jobsSeen || {}, n = Math.min(JOB_BOARD, list.length);
     const fresh = list.filter(j => seen[j.id] === undefined || st.day - seen[j.id] >= JOB_FRESH_DAYS), pool = fresh.length >= n ? fresh : list, start = Math.abs(hash(key)) % pool.length;
     h.board = { key, ids: Array.from({ length: n }, (_, i) => pool[(start + i) % pool.length].id), done: false };
     for (const id of h.board.ids) seen[id] = st.day;

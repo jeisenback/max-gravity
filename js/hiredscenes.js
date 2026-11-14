@@ -639,6 +639,7 @@ const SCENE_LINES = {
     'market.0': 'The water taxi across the lagoon takes trade notes as well as scrip. Surulere\'s market runs down both sides of a street, under awnings and a tangle of cable from the generator on a roof. A woman selling phone parts asks if you\'re off the Ring. You say yes. She asks if they\'re hiring.',
     'market.1': 'Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday.',
     'market.2': 'You walk down a street of flats with the washing out over it. A boy of about sixteen asks if you\'re from an agency. When you say no, he asks which agency you went up through, and writes the name on his hand.',
+    'work.label': 'Look for work',
     'hall.label': 'Wait it out in the departure hall',
     'hall.0': 'The departure hall on the platform has a screen with the flights on it and four hundred seats bolted to the floor. You sit by the window and watch the lift loads go up on the sled, one every twenty minutes. The evening flight is on time.',
     'hall.1': 'A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it\'s valid, and goes back to waiting.',

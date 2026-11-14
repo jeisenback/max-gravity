@@ -23235,7 +23235,8 @@
   "labels": [
    "Walk the arcology's tiers",
    "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall"
+   "Wait it out in the departure hall",
+   "Look for work"
   ]
  },
  {
@@ -23265,7 +23266,8 @@
   "labels": [
    "Walk the arcology's tiers",
    "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall"
+   "Wait it out in the departure hall",
+   "Look for work"
   ]
  },
  {
@@ -23295,7 +23297,8 @@
   "labels": [
    "Walk the arcology's tiers",
    "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall"
+   "Wait it out in the departure hall",
+   "Look for work"
   ]
  },
  {
@@ -23349,7 +23352,8 @@
      "labels": [
       "Walk the arcology's tiers",
       "Cross the lagoon to the mainland market",
-      "Wait it out in the departure hall"
+      "Wait it out in the departure hall",
+      "Look for work"
      ]
     },
     "nextPlays": [
@@ -23367,6 +23371,11 @@
       "j": 2,
       "roll": 0.5,
       "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "null"
      }
     ]
    }
@@ -31526,6 +31535,100 @@
   "text": "YQ-807 turns slowly under the ship, grey and pitted, about the size of a small town. Ines has the scopes on it and the client's list of what to look for: the spin, the density, where the metal is and where the ice is, if there is any.",
   "labels": [
    "Run the survey"
+  ]
+ },
+ {
+  "id": "scene:day-down:work:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": {
+     "title": "A Sled Stuck on the Platform",
+     "text": "The sled runs on a rail from the warehouse to the spaceplane's hold, and it has stopped halfway with a load of pump parts on it and the clamp locked. The crew chief has the loading schedule on her wrist. The next plane goes in fifty minutes, and the platform charges the shipper for every minute it waits. \"Day rate,\" she says, \"if you can do anything with that clamp.\"",
+     "labels": [
+      "Take the clamp's housing off and release it by hand [Engineer, 45%; if it fails: you may be hurt]",
+      "Walk the sled in on the manual controls [Pilot, 45%]",
+      "Unload it by hand with the crew [Gunner, 50%; if it fails: you may be hurt]",
+      "Hold the tag line and keep out of the way"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "The pawl lets go all at once and the load shifts on the sled. Nobody is under it, but the crew chief sends you to the medical room to have your hand looked at, and logs the delay against the clamp. (+400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you."
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "You overrun the stop by half a metre and the sled noses the ramp. Nothing breaks. The crew chief pays you for the morning and takes the controls back. (+500 cr)"
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "A crate slips off the stack on the turn and you get a hand under it. The crate is fine. The crew chief has someone look at your wrist. (+400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up. (+500 cr)"
+     }
+    ]
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Look for work"
+  ]
+ },
+ {
+  "id": "scene:day-down:work:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": {
+     "title": "The Generator on the Roof",
+     "text": "The generator is on the roof of a block of flats in Yaba, under a sheet of tin, and it serves three blocks by the hour. It stopped at six. The generator man, Femi, has the cover off and a phone in his other hand, and the tenants in the stairwell want to know when. \"I pay by the job,\" he says. \"If it starts, you get paid.\"",
+     "labels": [
+      "Find the fault [Engineer, 45%]",
+      "Call round the parts dealers for a filter [Comms, 50%]",
+      "Carry the spare up from the store [Gunner, 50%; if it fails: you may be hurt]",
+      "Hold the torch"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "You find the filter and clean it, and it still won't run. Femi finds the second fault an hour later, in the wiring, and pays you for the first. (+600 cr)"
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Nobody has the filter. One dealer can get one by Thursday. Femi pays you for the calls. (+300 cr)"
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "On the fifth flight it gets away from you on the turn. It doesn't go far. Your knee goes a little further. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter. (+400 cr)"
+     }
+    ]
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Look for work"
   ]
  }
 ]
