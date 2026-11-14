@@ -1241,7 +1241,7 @@ const ACTIVITIES = {
     },
   },
   visit: {
-    get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0, on: () => lifeSay('visit.on'), where: () => (paxAboard().find(m => m.pid) || {}).pid,
+    get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0, on: () => lifeSay('visit.on'), where: () => (paxAboard().find(m => m.pid) || {}).pid, at: 'berths',
     run() {
       toActivity(shipPeople()[0], 'berths');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, lifeSay('visit.memory'));
@@ -1287,6 +1287,14 @@ function downtimeLeft(t, drive = 1) {
   return Math.max(0, lit - (t.elapsed || 0));
 }
 const downtimeSettled = (tags, people) => (tags || []).filter(g => g.id).every(g => { const p = people.find(q => q.id === g.id); return !p || (p.tx === null && p.dk === p.tdk); });
+// Whether a choice's line matches the cutaway: an activity with `at` (the room its line puts the one it names in: a room id, or a function giving one)
+// is offered only when that person is there. `people` are the cutaway's (a person's `room` is where they are, or where they are going). With no `at`,
+// no person, or one not drawn, it is offered.
+function downtimeThere(a, people) {
+  if (!a.at || typeof a.where !== 'function') return true;
+  const id = a.where(people), p = id && people.find(q => q.id === id);
+  return !p || p.room === (typeof a.at === 'function' ? a.at() : a.at);
+}
 // Who Sit with someone names: of the candidates ([{ id, low, hurt }], in the picker's order) one having a hard time or hurt first, else by the day.
 const sitPerson = (cands, day) => cands.find(c => c.low || c.hurt) || cands[day % cands.length] || null;
 // Where each of the scene's choices is tagged: an activity's `where` is a room id (a tag on the room) or a function of the people aboard
@@ -1340,10 +1348,11 @@ function downtimeScene(all) {
   const every = [...baseActivities(), ...handDowntime(), ...onNow()], drawn = all ? every : downtimeFive();
   const due = drawn.find(a => a === ACTIVITIES.teach && a.can());  // a move the crew would show you keeps its place (#850): its teacher is named first
   if (due) once(due);
-  const five = drawn.filter(a => a === due || (a.can && !a.can()) || once(a));
-  for (let left = drawn.length - five.length, i = 0; !all && left > 0 && i < every.length; i++) {  // each repeat left out: the next that names nobody twice
+  const here = a => all || downtimeThere(a, people);  // a line about someone somewhere else is not offered (all: every option, for the tests and the editor)
+  const five = drawn.filter(a => a === due || (a.can && !a.can()) || (here(a) && once(a)));
+  for (let left = drawn.length - five.length, i = 0; !all && left > 0 && i < every.length; i++) {  // each one left out: the next that is where its line says and names nobody twice
     const a = every[i];
-    if (!drawn.includes(a) && (!a.can || a.can()) && once(a)) { five.push(a); left--; }
+    if (!drawn.includes(a) && (!a.can || a.can()) && here(a) && once(a)) { five.push(a); left--; }
   }
   const able = five.filter(a => !a.can || a.can()), tags = onDeck(able, people);
   const placeOf = label => { const g = tags.find(x => x.label === label); return g && (g.room || (people.find(p => p.id === g.id) || {}).room); };

@@ -573,13 +573,20 @@ const homeMate = () => slotPick(mates(), [...castIds(), ...fixedIds()], 2);
 const lashingsHand = () => roleHand('quartermaster') || roleHand('xo'), galleyHand = () => roleHand('cook') || slotPick(mates(), [...castIds(), ...fixedIds()], 4);
 // The reply to a message home, at the first dawn of a later burn (shiplife.js lifeTick): a line by the hand's start, turned by the day.
 const homeReply = st => downSay(`reply.${['earth', 'mars', 'belt'].includes(st.background) ? st.background : 'earth'}.${st.day % 3}`);
+// Where a line puts the one it names: the room their `on` line says they are in, or a function of the people for the post a shipmate is going up
+// to. The downtime scene offers such a choice only when that person is there (shiplife.js downtimeThere). A line that names no place (the captain's few
+// minutes, a mate asking about your post, tonight's watch, Ruben's intercepts) has none, and is offered wherever they are.
+const DOWNTIME_AT = {
+  shadow: () => postOf(shadowMate().role), bench: 'workshop', medic: 'medbay', home: 'bridge', firstaid: 'medbay', lashings: 'hold', suits: 'airlock', cook: 'galley',
+  ines: 'bridge', tomas: 'engine', yelena: 'gunnery', bexa: 'hold', pax: 'gunnery',
+};
 const castDowntime = (key, post) => ({
-  cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
+  at: DOWNTIME_AT[key], cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
   on: () => downSay(`${key}.on`), where: () => castPerson(key).id,
   run() { castLike(key, 1, downSay('cast.memory')); return downSay(tellingOn(`${key}.result`, G.state.day)) + learnAt(post, 3); },
 });
 // Each with what's on (its `on` line, given `vars()`) and where: a room, or a function returning a person's id (downtime scene, shiplife.js).
-const downtime = (key, can, run, where, vars = () => ({})) => ({ get label() { return downSay(`${key}.label`); }, can, run, where, on: () => downSay(`${key}.on`, vars()) });
+const downtime = (key, can, run, where, vars = () => ({})) => ({ at: DOWNTIME_AT[key], get label() { return downSay(`${key}.label`); }, can, run, where, on: () => downSay(`${key}.on`, vars()) });
 
 const HAND_DOWNTIME = [
   downtime('advice', () => !!hired(),
