@@ -277,6 +277,12 @@ test('the airlock\'s open door and lit lamp and the hold\'s seals keep inside th
   const RS = o => ({ w: { burn: 0, cruise: 1, flip: 0 }, time: 3, zoom: 1.17, spin: 0, still: false, berths: 10, asleep: 0, cargo: 0.6, fuel: 0.5, burning: false, night: 0, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, patient: false, headIn: false, damage: { marks: new Set(), severe: false, patches: new Set() }, ...o });
   const drawn = (id, s) => { const c = fakeCtx(); api.drawRoom(c, id, api.layoutBox(lay, id), s); return c; };
   for (const trim of ['#ff8a4a', '#5fa8ff', '#e8d17a']) assert.ok(inLimits(api.dockSealTone(trim)), `the seal ${api.dockSealTone(trim)} for ${trim} a step below the people`);
+  const lum = col => { const [r, g, b] = rgbOf(col); return 0.299 * r + 0.587 * g + 0.114 * b; };  // no lighter than the crates' labels' paint (holdSerial), and still the owner's hue (#1149)
+  for (const trim of ['#ff8a4a', '#5fa8ff', '#e8d17a']) {
+    const col = api.dockSealTone(trim), [r, g, b] = rgbOf(col), [tr, tg, tb] = rgbOf(trim), top = Math.max(tr, tg, tb);
+    assert.ok(lum(col) <= lum('#7a6c50') + 0.5, `the seal ${col} for ${trim} no lighter than the labels`);
+    assert.equal([r, g, b].indexOf(Math.max(r, g, b)), [tr, tg, tb].indexOf(top), `the seal ${col} for ${trim} keeps the owner's colour`);
+  }
   for (const [id, extra] of [['airlock', { lock: { open: true, lit: true } }], ['airlock', { lock: { open: true, lit: false } }], ['hold', { seal: api.dockSealTone('#ff8a4a') }]]) {
     const plainRoom = drawn(id, RS({})), c = drawn(id, RS(extra)), at = `${id} ${JSON.stringify(extra)}`;
     assert.equal(c.depth, 0, `${at}: every save restored`);

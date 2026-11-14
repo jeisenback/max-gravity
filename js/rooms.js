@@ -1568,7 +1568,7 @@ function roomHoldStraps(ctx, x, y, F) {
   roomFlat(ctx, x + HOLD_W - 3, F - 18, 4.5, 5, '#6a7480'); roomFlat(ctx, x + HOLD_W - 2.5, F - 17, 3.5, 1, '#3a4a5a');  // its ratchet
 }
 // The port's seal on a stack's right strap at x, the stack's top at y (#940, dock.js): crimped on the strap above its ratchet, and on its wire a
-// plate in the port owner's colour toned a step below the people (col, dockSealTone), big enough to read at 1280 (HOLD_SEAL: its width and height,
+// plate in the port owner's colour toned to the crates' labels (col, dockSealTone; flat, not lit, #1149), big enough to read at 1280 (HOLD_SEAL: its width and height,
 // and how far over the deck its top hangs, between the second crate's label and the ratchet; lower on a stack of one): cut at its top corners
 // like a tag, outlined, with a dark eyelet, the port's stamp (a ring round a dot) and a bar under it.
 const HOLD_SEAL = { w: 12, h: 15, at: 34 };
@@ -1576,7 +1576,7 @@ function roomHoldSeal(ctx, x, y, F, col) {
   const n = v => Math.round(v * 100) / 100, S = HOLD_SEAL, y0 = Math.max(F - S.at, y + 6), y1 = y0 + S.h, a = n(x - S.w / 2), b = n(x + S.w / 2), cut = 3;
   roomPart(ctx, roomRound(x - 2.25, y0 - 5.5, 4.5, 3, 0.6), '#5a5e62', { top: 0.6 });  // the crimp on the strap
   ctx.strokeStyle = '#6a6458'; ctx.lineWidth = 0.6; roomSeg(ctx, [[x, y0 - 2.5], [x, y0 + 2]]);
-  roomPart(ctx, `M ${a} ${n(y0 + cut)} L ${n(a + cut)} ${n(y0)} L ${n(b - cut)} ${n(y0)} L ${b} ${n(y0 + cut)} L ${b} ${n(y1)} L ${a} ${n(y1)} Z`, col, { top: 1, side: 1.2, under: 1 });
+  roomPart(ctx, `M ${a} ${n(y0 + cut)} L ${n(a + cut)} ${n(y0)} L ${n(b - cut)} ${n(y0)} L ${b} ${n(y0 + cut)} L ${b} ${n(y1)} L ${a} ${n(y1)} Z`, col, { top: 0, side: 0, under: 1 });
   roomDot(ctx, x, y0 + 2.2, 1, '#2a2218');  // the eyelet
   ctx.strokeStyle = '#2a2218'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y0 + 8, 3, 0, Math.PI * 2); ctx.stroke();  // the stamp
   roomDot(ctx, x, y0 + 8, 1, '#2a2218');
