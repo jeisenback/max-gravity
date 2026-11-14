@@ -813,6 +813,8 @@ function lifeTick(dt) {
   const free = !isDark() && ph === 'move' && !t.event && !G.dialog && G.speed !== RUN_AHEAD;  // an offer is let go while running ahead (burnspeed.js, #1186)
   if (prev !== undefined && !t.lifeWait && downtimeDue(t, now, prev, ph, prevPh) && free) t.lifeWait = { slot: lifeSlotOf(t) };  // a burn just loaded (no block seen yet) waits for a real change
   if (t.lifeWait && (t.lifeWait.slot !== lifeSlotOf(t) || !lifeFree(t))) t.lifeWait = null;  // its slot is gone, or spent another way
+  { const now = { burn: t.elapsed || 0, real: G.time }, last = t.offerClock || now; t.offerClock = now;  // the offers on the ship age while shown (#1183)
+    if (t.offers && t.offers.length) t.offers = offersTick(t.offers, people, Math.max(0, now.burn - last.burn), G.dialog ? 0 : Math.max(0, now.real - last.real)); }
   if (t.lifeWait && free) {  // due: it opens once those it tags are where they are going (#1168)
     const e = downtimeScene();
     if (!e.able) t.lifeWait = null;
@@ -1001,6 +1003,69 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // The downtime scene's tags (docs/superpowers/specs/2026-11-12-downtime-scene-design.md), in screen space: a place's on its room, in the top right
 // corner opposite the room's name; a person's over their head, when they are drawn in view (`hits`). Returns the boxes drawn, with what each tags.
 const TAG_COLOR = '#e8b84a';
+
+// ---------- offers on the ship (#1183, docs/bible/burn.md, Offers on the ship) ----------
+// An offer is something the hand could do or join, shown on the ship as a tag where it is happening and taken with a click; let go, it lapses
+// and costs nothing. { key, label, who (the id of the one it is about) or room, at (where its words put them: a room id, or a function giving
+// one), make (the scene it opens) }. The burn keeps them in order (t.offers); a burn is never saved (game.js save), so `make` is kept as it is.
+const OFFER_LIFE = SHIP_DAY, OFFER_REAL = 20, OFFERS_SHOWN = 4;  // a ship's day of the burn and 20 real seconds, both; at most four at once
+function offerOnShip(t, o) {
+  if (!t) return null;
+  t.offers = t.offers || [];
+  if (o.key && t.offers.some(x => x.key === o.key)) return null;  // one of each at a time
+  const e = { ...o, life: 0, real: 0, shown: false };
+  t.offers.push(e);
+  return e;
+}
+// Whether an offer can show: one about someone only while they are in the cutaway, and where its words put them if they say (as downtimeThere).
+const offerThere = (o, people) => { if (!o.who) return true; const p = people.find(q => q.id === o.who); return !!p && (!o.at || p.room === (typeof o.at === 'function' ? o.at() : o.at)); };
+// A step of the offers, dBurn burn seconds and dReal real seconds on: at most OFFERS_SHOWN are shown, in the order made, each only where it can
+// show; one waiting for a place, or for its person, does not age. A shown one lapses once it has had OFFER_LIFE of the burn and OFFER_REAL real
+// seconds both. Returns those left. Pure but for the offers' own fields.
+function offersTick(offers, people, dBurn, dReal) {
+  let n = 0;
+  return (offers || []).filter(o => {
+    o.shown = n < OFFERS_SHOWN && offerThere(o, people);
+    if (!o.shown) return true;
+    o.life += dBurn; o.real += dReal;
+    if (o.life >= OFFER_LIFE && o.real >= OFFER_REAL) return false;
+    n++;
+    return true;
+  });
+}
+// A click on an offer's tag takes it: it leaves the queue and its scene opens. A click on its marker at the cutaway's edge pans there: to follow
+// the one it is about, or to its room.
+function offerClick(box) {
+  const t = G.transit, o = box.offer;
+  if (!t || !o) return;
+  if (box.mark) { if (o.who) camFollow(o.who); else { G.camView.follow = null; G.camView.y = camTarget(LAYOUTS.freighter, roomAt(o.room).deck); } return; }
+  t.offers = (t.offers || []).filter(x => x !== o);
+  const ev = o.make && o.make();
+  if (ev) openEvent(ev);
+}
+// The markers for shown offers out of view (`out`: [{ offer, up }], up above the view), at the clear part's top or bottom edge: a small arrow and
+// the label. Along the top from its middle rightward (the speed buttons hold the top right); along the bottom from its right edge leftward (the
+// comms lines hold the bottom left). Returns their boxes.
+function drawOfferMarks(out, clear) {
+  const fs = 12, pad = 4, h = fs + pad * 2, boxes = [];
+  let top = clear.x + clear.w / 2, bottom = clear.x + clear.w - 4;
+  ctx.save(); ctx.font = `600 ${fs}px ${roomFont}`; ctx.textBaseline = 'middle';
+  for (const m of out) {
+    const w = ctx.measureText(m.offer.label).width + pad * 3 + 8, x = m.up ? Math.min(top, clear.x + clear.w - w - 4) : bottom - w, y = m.up ? clear.y + 4 : clear.y + clear.h - h - 4;
+    if (x < clear.x + 4) continue;
+    if (m.up) top = x + w + 4; else bottom = x - 4;
+    ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = TAG_COLOR; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    ctx.fillStyle = TAG_COLOR; ctx.beginPath();  // the arrow, up or down
+    const ax = x + pad + 4, ay = y + h / 2;
+    if (m.up) { ctx.moveTo(ax - 4, ay + 2); ctx.lineTo(ax + 4, ay + 2); ctx.lineTo(ax, ay - 3); } else { ctx.moveTo(ax - 4, ay - 2); ctx.lineTo(ax + 4, ay - 2); ctx.lineTo(ax, ay + 3); }
+    ctx.fill();
+    ctx.fillText(m.offer.label, x + pad * 2 + 8, ay);
+    boxes.push({ offer: m.offer, mark: true, x, y, w, h });
+  }
+  ctx.restore();
+  return boxes;
+}
 function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the ship box a scene's dialog leaves clear, which a person's tag keeps inside
   const out = [], fs = 12, pad = 4, h = fs + pad * 2, step = h + 3;
   const meets = (x, y, w) => out.some(o => x < o.x + o.w && o.x < x + w && y < o.y + o.h && o.y < y + h);  // one drawn already: the next steps past it
@@ -1224,6 +1289,12 @@ function drawCutaway(box, clear = box, dock = null) {
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
   const ev = G.dialog && G.dialog.event, tagged = ev && ev.downtime && !ev.chosen ? drawDowntimeTags(ev.tags || [], G.cutRooms, G.cutHits, { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 }) : [];  // the downtime scene's places (2026-11-12)
+  // The offers on the ship, with no scene open (#1183): a tag where each is, or a marker at the edge for one out of view.
+  const shown = !dock && !G.dialog && t.offers ? t.offers.filter(o => o.shown) : [], clearPart = { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 };
+  const tags = shown.length ? drawDowntimeTags(shown.map(o => (o.who ? { label: o.label, id: o.who, offer: o } : { label: o.label, room: o.room, offer: o })), G.cutRooms, G.cutHits, clearPart) : [];
+  const worldY = o => { const p = o.who && people.find(q => q.id === o.who), q = !o.who && layoutBox(lay, o.room); return p ? towerDeckY(lay, (p.lapse || p).dk) - HULL.deck / 2 : q ? (q.top + q.floor) / 2 : null; };
+  const away = shown.filter(o => !tags.some(g => g.offer === o)).map(o => ({ offer: o, sy: worldY(o) === null ? null : toScreen(0, worldY(o)).y })).filter(m => m.sy !== null && (m.sy < cy0 || m.sy > cy1)).map(m => ({ offer: m.offer, up: m.sy < cy0 }));
+  G.cutOffers = [...tags.map(g => ({ offer: g.offer, x: g.x, y: g.y, w: g.w, h: g.h })), ...(away.length ? drawOfferMarks(away, clearPart) : [])];
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers

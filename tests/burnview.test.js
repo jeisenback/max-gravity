@@ -1997,3 +1997,46 @@ test('a scene that opens ends a run ahead, at the speed it was run from (#1186)'
   assert.equal(r.running, 256); assert.equal(r.after, 2, 'back at 2x');
   assert.deepEqual([r.paused, r.resume], [0, 2], 'paused while running ahead: still paused, and it resumes at 2x');
 });
+
+// ---------- #1183: offers on the ship (docs/bible/burn.md, Offers on the ship) ----------
+
+test('an offer shows as a tag over the one it is about; a click on it takes it and opens its scene (#1183)', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers); await ev(stageHelpers);
+  const at = await ev(() => {
+    stageBurn(0.3); G.camView = { follow: null, y: null, before: undefined }; G.cam = null; tickFor(1);
+    const t = G.transit; t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true };
+    drawTransit(innerWidth, innerHeight); const p = G.cutHits.find((x, i) => i > 0 && x.id !== 'cat'), who = person(p.id);
+    offerOnShip(t, { key: 'test', label: `Talk to ${who.first}`, who: p.id, make: () => ({ title: 'Offered', text: `${who.first} has a minute.`, choices: [{ label: 'Go on', run: () => 'Done.' }] }) });
+    lifeTick(0.1); drawTransit(innerWidth, innerHeight);
+    const b = G.cutOffers.find(x => x.offer.key === 'test');
+    return b && { x: b.x + b.w / 2, y: b.y + b.h / 2, mark: !!b.mark };
+  });
+  assert.ok(at && !at.mark, 'a tag drawn in view');
+  await page.mouse.click(at.x, at.y);
+  const r = await ev(() => ({ title: G.dialog && G.dialog.event.title, left: (G.transit.offers || []).length }));
+  await done();
+  assert.deepEqual(r, { title: 'Offered', left: 0 }, 'its scene opens, and it leaves the queue');
+});
+
+test('an offer out of view shows a marker at the edge; a click on it pans there, and none show under a scene (#1183)', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(0.3); const t = G.transit, lay = LAYOUTS.freighter; t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true };
+    G.camView = { follow: null, y: 0, before: undefined }; G.cam = null; drawTransit(innerWidth, innerHeight);  // the camera at the top of the tower
+    offerOnShip(t, { key: 'hold', label: 'Walk the cargo', room: 'hold', make: () => ({ title: 'The Hold', text: 'x', choices: [{ label: 'Go on', run: () => 'Done.' }] }) });
+    lifeTick(0.1); drawTransit(innerWidth, innerHeight);
+    const b = G.cutOffers.find(x => x.offer.key === 'hold'), out = { mark: b && b.mark, box: b && { x: b.x + b.w / 2, y: b.y + b.h / 2 }, bottom: b && b.y > innerHeight / 2 };
+    openEvent({ title: 'A scene', text: 'x', choices: [{ label: 'Go on', run: () => 'Done.' }] }); drawTransit(innerWidth, innerHeight);
+    out.underScene = G.cutOffers.length; G.dialog = null; t.event = null; drawTransit(innerWidth, innerHeight);
+    out.hold = camTarget(lay, roomAt('hold').deck);
+    return out;
+  });
+  assert.ok(r.mark && r.bottom, 'a marker at the bottom edge for the hold below the view');
+  assert.equal(r.underScene, 0, 'no offers drawn under a scene');
+  await page.mouse.click(r.box.x, r.box.y);
+  const v = await ev(() => G.camView.y);
+  await done();
+  assert.equal(v, r.hold, 'the click pans to the hold');
+});
