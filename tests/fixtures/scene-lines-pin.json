@@ -23306,6 +23306,114 @@
   "labels": []
  },
  {
+  "id": "scene:day-down:parcel",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": {
+     "title": "Emeka and Chioma",
+     "text": "The flat is two rooms off a corridor three other flats share, and the generator on the roof is running. Chioma takes the bag before you're through the door and puts the envelope in a drawer without opening it. Emeka tries the brace on at the table with his trouser leg rolled up. \"He could have sent a message,\" Chioma says, and puts a plate in front of you. \"Tell us how he is.\"",
+     "labels": [
+      "Tell them he's well and the work is good",
+      "Tell them he misses the ring and doesn't say so"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "Chioma nods as if she expected that. Emeka asks about the engine, and you tell him what you know, which isn't much. When you leave she gives you a container of stew for him, wrapped in two bags.",
+      "mem": [
+       "9 Jul 2214: You took his parcel to his parents in Surulere."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Emeka laughs. \"He was like that at ten,\" he says. \"Wouldn't tell you he was hungry.\" Chioma asks when the ship goes out again, and for how long, and writes the dates on the back of the rent envelope. At the door she gives you a container of stew for him, in two bags.",
+      "mem": [
+       "9 Jul 2214: You told his parents he misses the ring."
+      ]
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": null,
+    "next": {
+     "title": "A Day Down",
+     "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+     "labels": [
+      "Walk the arcology's tiers",
+      "Cross the lagoon to the mainland market",
+      "Wait it out in the departure hall"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "You ride a glass lift up the outside of a tower because it's there, and a security contractor rides down with you to make sure that's all it is. From the top tier you can see the wall, the lagoon and the mainland behind it, and the platform out at sea where you came in."
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting."
+     }
+    ]
+   }
+  ],
+  "title": "Tomas's Parcel",
+  "text": "Tomas finds you at the lift with a bag in his hand. \"You're going down.\" He holds it out. \"There's a knee brace in there for my father, from the clinic. The good kind. And an envelope for the rent. They're in Surulere, off the market. My mother will feed you. Don't argue with her about it.\"",
+  "labels": [
+   "Take it down for him",
+   "Not this time"
+  ]
+ },
+ {
+  "id": "scene:day-down:parents",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Chioma nods as if she expected that. Emeka asks about the engine, and you tell him what you know, which isn't much. When you leave she gives you a container of stew for him, wrapped in two bags.",
+    "mem": [
+     "9 Jul 2214: You took his parcel to his parents in Surulere."
+    ],
+    "fx": {
+     "c:tomas": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Emeka laughs. \"He was like that at ten,\" he says. \"Wouldn't tell you he was hungry.\" Chioma asks when the ship goes out again, and for how long, and writes the dates on the back of the rent envelope. At the door she gives you a container of stew for him, in two bags.",
+    "mem": [
+     "9 Jul 2214: You told his parents he misses the ring."
+    ],
+    "fx": {
+     "c:tomas": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "Emeka and Chioma",
+  "text": "The flat is two rooms off a corridor three other flats share, and the generator on the roof is running. Chioma takes the bag before you're through the door and puts the envelope in a drawer without opening it. Emeka tries the brace on at the table with his trouser leg rolled up. \"He could have sent a message,\" Chioma says, and puts a plate in front of you. \"Tell us how he is.\"",
+  "labels": [
+   "Tell them he's well and the work is good",
+   "Tell them he misses the ring and doesn't say so"
+  ]
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {

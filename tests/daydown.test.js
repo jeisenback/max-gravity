@@ -38,3 +38,33 @@ test('a day down: offered at the Ring in a captain\'s wait only, the fare from t
   assert.equal(r.mars, null, 'Lagos is under the Ring, not under Mars');
   assert.deepEqual(errors, []);
 });
+
+test('Tomas\'s parcel: when he trusts the hand, going down starts with him at the lift; taken, the day is at his parents\' table and what you tell them is his regard and a memory, and not again for a while; not taken, the day down goes on and he asks next time (#1162)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), t = tomasAboard(), go = () => { delete h.downDay; st.credits = 5000; Mods.act('goDown'); return G.dialog && G.dialog.event.title; };
+    delete h.stay; beginStay(h, 9, 'market');
+    const out = { tomas: !!t };
+    t.opinion = OPINION.TRUSTED - 1; out.cold = go(); finishEvent();
+    t.opinion = OPINION.TRUSTED; out.ask = go();
+    UI.act('choose', 1); out.declined = G.dialog.event.title; finishEvent();
+    out.again = go();
+    UI.act('choose', 0); out.table = G.dialog.event.title;
+    const before = t.opinion, mems = t.memories.length;
+    UI.act('choose', 1); out.result = document.getElementById('event-result').textContent; finishEvent();
+    out.liked = t.opinion > before; out.memory = t.memories.slice(mems).join(' | ');
+    st.day += 1; out.soon = go(); finishEvent();
+    st.day += VISIT_GAP; out.later = go();
+    return out;
+  });
+  await done();
+  assert.equal(r.tomas, true, 'Tomas is aboard in the Earth start');
+  assert.equal(r.cold, 'A Day Down', 'not trusted yet: the day down');
+  assert.equal(r.ask, 'Tomas\'s Parcel');
+  assert.equal(r.declined, 'A Day Down', 'not this time: the day down goes on'); assert.equal(r.again, 'Tomas\'s Parcel', 'and he asks again next time');
+  assert.equal(r.table, 'Emeka and Chioma');
+  assert.match(r.result, /He was like that at ten/); assert.equal(r.liked, true); assert.match(r.memory, /You told his parents he misses the ring/);
+  assert.equal(r.soon, 'A Day Down', 'not again so soon'); assert.equal(r.later, 'Tomas\'s Parcel', 'and again after a while');
+  assert.deepEqual(errors, []);
+});

@@ -21,6 +21,22 @@ function dayDownEvent() {
     choices: DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run: () => lagosSay(`${k}.${st.day % 3}`) })),
   };
 }
+// Tomas's parcel (#1162, part 2; docs/bible/people/tomas.md): when Tomas is aboard and trusts the hand as a visit home asks (OPINION.TRUSTED,
+// family.js), going down starts with him at the lift with a bag for his parents, Emeka and Chioma, in Surulere. Taken, the day is at their table, and
+// what the hand tells them is worth his regard and a memory; not taken, the day down goes on as it would. Not again inside VISIT_GAP days of the last.
+const parcelDue = (st, t) => !!t && t.opinion >= OPINION.TRUSTED && st.day - (t.parentsAt === undefined ? -VISIT_GAP : t.parentsAt) >= VISIT_GAP;
+function tomasParcelEvent(t) {
+  const st = G.state;
+  return { title: lagosSay('parcel.title'), text: lagosSay('parcel.text'), personal: true, people: [t.id], place: 'well', choices: [
+    { label: lagosSay('parcel.take'), run() { t.parentsAt = st.day; G.nextEvent = tomasParentsEvent(t); return null; } },
+    { label: lagosSay('parcel.not'), run() { G.nextEvent = dayDownEvent(); return null; } },  // the day down as it would have been
+  ] };
+}
+function tomasParentsEvent(t) {
+  const told = (key, by) => ({ label: lagosSay(`parents.${key}.label`), run() { like(t, by, lagosSay(`parents.${key}.memory`)); return lagosSay(`parents.${key}.result`); } });
+  return { title: lagosSay('parents.title'), text: lagosSay('parents.text'), personal: true, choices: [told('kind', 1), told('true', 2)] };
+}
+
 // The Port page's button, under the day ashore's: at the Ring in a stay only.
 function dayDownHtml() {
   const o = G.mode === 'landed' && downOffer(G.state, hired(), currentPlanet());
@@ -35,7 +51,8 @@ Mods.register({
       const st = G.state, h = hired(), o = !G.dialog && G.mode === 'landed' && downOffer(st, h, currentPlanet());
       if (!o || o.why) return;
       st.credits -= DOWN_FARE; h.downDay = st.day;
-      openEvent(dayDownEvent());
+      const t = tomasAboard();
+      openEvent(parcelDue(st, t) ? tomasParcelEvent(t) : dayDownEvent());  // Tomas at the lift first, when he has something for his parents
     });
   },
 });
