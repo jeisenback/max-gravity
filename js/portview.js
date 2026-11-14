@@ -23,16 +23,18 @@ const PORT_LAYOUTS = {
     rooms: [
       // `page`: the page a click on the room opens (#1132); `stage`: where a scene that happens there gathers, by Ngozi's bay, at the hiring boards, in front of the counter (#1103)
       { id: 'well', label: 'Lift', level: 0, to: 2, x0: 0, x1: 120, kind: 'well', stage: 60 },
-      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port', stage: 270, bays: ['ngozi', 'repairer'] },  // `bays`: whose shutters it draws, down outside their hours
+      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port', stage: 270, bays: ['ngozi', 'seller', 'repairer'] },  // `bays`: whose shutters it draws, down outside their hours
       { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar', page: 'bar', stage: 700 },
       { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard', page: 'missions', stage: 230 },
       { id: 'clinic', label: 'Clinic', level: 1, x0: 470, x1: 860, kind: 'clinic', stage: 600 },
       { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 120, x1: 860, kind: 'bunks', stage: 470 },
     ],
     // The port's own people (ports.md, Who is there): where each works and the hours they keep (an hour past 24 is after midnight). Ngozi is Tomas's
-    // sister (lagos.md), with her food bay; the rest are made from the port's culture the first time, the same face on every visit.
+    // sister (lagos.md), with her food bay; the rest are made the first time and named from Lagos (LAGOS_NAMES, #1154), the same face on every visit.
     folk: [
       { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21], offer: 'plate' },  // `offer`: what they sell the hand (PORT_OFFERS)
+      // The woman from Surulere's market (daydown.js, #1164): the bay between tenants is hers SELLER_DAYS after the hand mentions her to the yard clerk.
+      { key: 'seller', names: 'women', job: 'phone-repair bay', room: 'market', x: 408, name: 'work', view: 'back', hours: [9, 19], due: st => st.sellerAt !== undefined && st.day - st.sellerAt >= SELLER_DAYS },  // `due`: whether they are on the Ring yet
       { key: 'repairer', job: 'repair bay', room: 'market', x: 490, name: 'work', view: 'back', hours: [8, 18] },
       { key: 'keeper', job: 'keeper of the Gravity Well', room: 'bar', x: 700, name: 'stand', view: 'front', hours: [11, 26] },
       { key: 'clerk', job: 'yard clerk', room: 'yard', x: 420, name: 'work-sit', view: 'side', face: -1, hours: [7, 19], offer: 'work' },
@@ -162,6 +164,11 @@ const PORT_WORDS = {
     '"Shift\'s off at two and they all come in at once," {first} says, filling a jug. "Have a stool now, or stand later."',
     'The ring channel is on over the bar, with the Orbitals two down at half time. "Every week," {first} says. "Scrip or trade notes?"',
   ],
+  seller: [
+    '"Nobody up here fixes their own phone," {first} says, working a pick in under a battery. "On the mainland everybody does. Then they bring it to me."',
+    'A yard worker waits at the counter while {first} tests a charging port. "The dust up here is different," {first} says. "Fine, like flour. It gets in everywhere. Down there it\'s sand, you can blow it out."',
+    '"My sister thinks I\'m mad," {first} says. "She says, who goes up to fix phones? I tell her, who pays the rent on the market street? The rent\'s more up here. But they pay."',
+  ],
   clerk: [
     '{first} looks up from a contract. "If you\'re after work, the boards are behind you. Welding\'s a three-week wait. Rigging\'s four, unless you\'ve got your own harness."',
     '"Tycho took another refit off us," {first} says. "That\'s a shift\'s worth of berths free from Thursday, if you know anyone who wants to come up."',
@@ -217,27 +224,54 @@ function portWordEvent(f, p, st) {
   } });
   const board = RAIL.find(e => e.tab === 'missions');  // the clerk's word on work: the Missions page, when its entry on the rail is open here
   if (f.offer === 'work' && board.ready(currentPlanet()) === true) choices.push({ label: portOfferSay('work', 'label', p, day), keep: true, run() { UI.tab = 'missions'; UI.pageOpen = true; return null; } });  // the scene closes onto it
+  if (f.offer === 'work' && st.metSeller && st.sellerAt === undefined) choices.push({ label: lagosSay('seller.mention'), run() { st.sellerAt = day; return lagosSay('seller.clerk', { first: p.first }); } });  // the woman from Surulere (daydown.js, #1164), once
   choices.push({ label: 'Leave them to it', keep: true, run: () => null });
-  const given = f.key === 'ngozi' && st.forNgozi;  // the crayfish brought up from Surulere (daydown.js, #1164): her word is for it, once, and she has it whatever you do next
-  const taken = c => ({ ...c, run() { delete st.forNgozi; like(p, 1, lagosSay('ngozi.memory')); return c.run(); } });
-  return { title: `${p.first} ${p.last}`, text: given ? lagosSay('ngozi.given') : words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: given ? choices.map(taken) : choices };
+  // A word that is for something the day down led to (daydown.js, #1164), once, which they have whatever you do next: the crayfish brought up from
+  // Surulere for Ngozi, and Funmilayo's first word in her bay. Otherwise the day's word.
+  const once = f.key === 'ngozi' && st.forNgozi ? ['ngozi', () => delete st.forNgozi] : f.key === 'seller' && !st.sellerMet ? ['seller', () => { st.sellerMet = true; }] : null;
+  const taken = c => ({ ...c, run() { once[1](); like(p, 1, lagosSay(`${once[0]}.memory`)); return c.run(); } });
+  return { title: `${p.first} ${p.last}`, text: once ? lagosSay(`${once[0]}.given`, { first: p.first }) : words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: once ? choices.map(taken) : choices };
 }
 
+// The Ring's people are named from Lagos (lagos.md: Yoruba, Igbo and Hausa, and English for work; #1154), by the port's dice: a first name from `first`,
+// or from `women` for one whose lines say she (a folk entry's `names`), and a surname. Not Achebe, which is Ngozi's family's.
+const LAGOS_NAMES = {
+  first: ['Adebayo', 'Tunde', 'Femi', 'Kemi', 'Bisi', 'Segun', 'Chidi', 'Emeka', 'Obinna', 'Uche', 'Nkechi', 'Ifeoma', 'Musa', 'Aminu', 'Hauwa', 'Zainab', 'Grace', 'Daniel', 'Joy', 'Samuel'],
+  women: ['Funmilayo', 'Yetunde', 'Folake', 'Adaeze', 'Chiamaka', 'Halima', 'Aisha', 'Blessing'],
+  last: ['Adeyemi', 'Okonkwo', 'Balogun', 'Okafor', 'Bello', 'Eze', 'Adebayo', 'Nwosu', 'Ibrahim', 'Oyelaran', 'Danjuma', 'Okoro', 'Afolabi', 'Uzor', 'Abubakar'],
+};
+// No two on the Ring share a first name or a surname: each takes the next not yet taken by those before it in the layout.
+function lagosName(planet, f) {
+  const roll = seededRandom(Math.abs(hash(`${planet.name} names`))), used = { first: [], last: [] };
+  const from = (key, list) => { let x; do x = list[Math.floor(roll() * list.length)]; while (used[key].includes(x)); used[key].push(x); return x; };
+  for (const g of PORT_LAYOUTS[planet.name].folk) {
+    const n = g.first ? { first: g.first, last: g.last } : { first: from('first', LAGOS_NAMES[g.names || 'first']), last: from('last', LAGOS_NAMES.last) };
+    if (g.first) { used.first.push(g.first); used.last.push(g.last); }
+    if (g.key === f.key) return n;
+  }
+  return null;
+}
 // The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by
-// port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js).
+// port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js). Named
+// from Lagos (`lagosNamed`); one a save made before that was is renamed the next time they are seen, and keeps the rest of their record (#1154).
 function portFolkPerson(planet, f) {
   const st = G.state, ids = (st.portFolk = st.portFolk || {})[planet.name] = (st.portFolk[planet.name] || {});
   let p = ids[f.key] && st.people[ids[f.key]];
-  if (p) return p;
+  const named = () => (f.first ? { first: f.first, last: f.last } : { ...lagosName(planet, f), lagosNamed: true });
+  if (p) { if (!f.first && !p.lagosNamed) Object.assign(p, named()); return p; }
   const real = Math.random;
   Math.random = seededRandom(Math.abs(hash(`${planet.name} ${f.key}`)));
   try { p = makePerson(cultureOf(st.systemId)); } finally { Math.random = real; }
-  Object.assign(p, { job: f.job, location: planet.name, portFolk: planet.name }, f.first ? { first: f.first, last: f.last } : {});
+  Object.assign(p, { job: f.job, location: planet.name, portFolk: planet.name }, named());
   registerPerson(p);
   ids[f.key] = p.id;
   return p;
 }
-const portLayout = planet => (planet && PORT_LAYOUTS[planet.name]) || null;
+// A port's layout, and, given the save, with only the folk who are on the Ring by now (`due`).
+const portLayout = (planet, st) => {
+  const l = (planet && PORT_LAYOUTS[planet.name]) || null;
+  return !l || !st || l.folk.every(f => !f.due || f.due(st)) ? l : { ...l, folk: l.folk.filter(f => !f.due || f.due(st)) };
+};
 
 // ---------- the parts the rooms are made of ----------
 const portPlate = (ctx, x, y, w, col = '#7a8a96') => { roomPart(ctx, roomRound(x, y, w, 5, 0.6), col, { top: 0.5 }); roomFlat(ctx, x + 1.5, y + 2, w - 3, 0.7, '#3a4650'); };  // a lease or name plate
@@ -308,7 +342,7 @@ const PORT_ROOMS = {
     portPlate(ctx, c - 24, F - 98, 48, '#8a7a5a');
     portScuff(ctx, c + 10, F, 30);
   },
-  market(ctx, r, F, time, open = {}) {  // bays rented in the wall: Ngozi's food bay, a bay between tenants, a repair bay; the port in the floor. A bay is shut outside its keeper's hours
+  market(ctx, r, F, time, open = {}) {  // bays rented in the wall: Ngozi's food bay, the bay between tenants that becomes Funmilayo's, a repair bay; the port in the floor. A bay is shut outside its keeper's hours
     portLamp(ctx, 200, F - 98, 70); portLamp(ctx, 330, F - 98, 60, 0.3); portLamp(ctx, 450, F - 98, 70);
     portScuff(ctx, 200, F, 50); portScuff(ctx, 330, F, 40); portScuff(ctx, 430, F, 30); portStain(ctx, 150, F - 84, 40, 30);
     portBay(ctx, 140, 110, open.ngozi === false);
@@ -318,7 +352,8 @@ const PORT_ROOMS = {
       portLamp(ctx, 195, F - 84, 40, 0.3);
     }
     for (const sx of [160, 240]) roomStool(ctx, sx, F, 0);
-    portBay(ctx, 380, 56, true);
+    portBay(ctx, 380, 56, open.seller !== true);  // between tenants until Funmilayo has it: a tray of screens by size, and a lamp on an arm
+    if (open.seller === true) { roomPart(ctx, roomRound(386, F - 54, 40, 4, 1), '#4a4e52', { top: 0.8 }); for (let k = 0; k < 4; k++) roomPart(ctx, roomRound(388 + k * 9, F - 63 + k, 7, 9 - k, 1), '#1a2a36', { top: 0.4 }); portLamp(ctx, 420, F - 42, 22, 0.35); }
     portBay(ctx, 450, 60, open.repairer === false);
     if (open.repairer !== false) for (let k = 0; k < 8; k++) roomPart(ctx, roomRound(454 + (k % 4) * 13, F - 80 + Math.floor(k / 4) * 12, 11, 9, 0.5), ['#3a5a6a', '#5a4a3a'][k % 2], { top: 0.5 });
     if (open.repairer !== false) { roomFlat(ctx, 470, F - 54, 1.5, 16, '#6a747c'); roomPart(ctx, roomRound(466, F - 40, 10, 5, 1), '#c8b070', { top: 0.6 }); portLamp(ctx, 471, F - 42, 22, 0.35); }
@@ -513,12 +548,12 @@ Mods.register({
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
     const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
-    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // nothing hit, nothing read (the title screen has no game)
+    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // nothing hit, nothing read (the title screen has no game)
     document.addEventListener('click', e => { const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
     document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
       if (G.mode !== 'landed' || G.portHour === null) return;
-      const st = G.state, planet = currentPlanet(), layout = portLayout(planet), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
+      const st = G.state, planet = currentPlanet(), layout = portLayout(planet, st), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
       if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY);
       if (!layout) return;
       const cast = portCast(layout, G.portHour, patrons, crew, st.day);

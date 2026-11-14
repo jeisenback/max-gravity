@@ -23512,6 +23512,58 @@
   ]
  },
  {
+  "id": "scene:day-down:seller-clerk",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Phone parts,\" Samuel says, and writes it on the pad. \"We've had nobody for phones since the last one went down. The bay between Ngozi's and the repair bay has been empty since March.\" Samuel looks up. \"You didn't get her name.\" You didn't. \"There's an agency on that street. I'll put a notice in their window. If she asked you, she'll see it.\"",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": null,
+    "next": null
+   }
+  ],
+  "title": "Samuel Adeyemi",
+  "text": "\"Tycho took another refit off us,\" Samuel says. \"That's a shift's worth of berths free from Thursday, if you know anyone who wants to come up.\"",
+  "labels": [
+   "Ask about work",
+   "Mention the woman from Surulere",
+   "Leave them to it"
+  ]
+ },
+ {
+  "id": "scene:day-down:seller-given",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "mem": [
+     "9 Jul 2214: Told the yard clerk about her, and she got the empty bay in the market."
+    ],
+    "fx": {
+     "p6": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Aisha Adebayo",
+  "text": "Aisha has the shutter up and a lamp on an arm over the counter, and a tray of screens sorted by size. \"You're the one from the market,\" she says. \"The clerk said. I came up on the Thursday plane with two bags and my permit in my shoe.\" She holds a phone up to the lamp. \"Three cracked screens this morning already. It's the yard gloves.\"",
+  "labels": [
+   "Leave them to it"
+  ]
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {
