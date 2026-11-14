@@ -2,7 +2,7 @@
 
 // Distribution check: the danger and the scene mix of the hired chapter (npm run soak). Not part of `npm test`: it depends on a spread over many
 // random games, and it moves whenever a new random draw shifts the stream. It guards the numbers that were measured and tuned by hand: how often
-// the hand is hurt and dies (js/boarders.js, the first-hurt roll), how many scenes a landing opens (#635), and that the ship's night comes into
+// the hand is hurt and dies (js/boarders.js, the second-hurt roll: a first hurt never kills, #1157), how many scenes a landing opens (#635), and that the ship's night comes into
 // the sample so the night scenes can play (tools/soak.js draws each event at its second of the burn). The exact rolls are pinned in tests/boarders.test.js.
 //
 // Sample:    the narrow build's captain with a gunner, seeds 1 to 120, up to 40 runs each, four at a time, the two main characters drawn from the pool
@@ -11,7 +11,9 @@
 //            deck fight's DECK.SUIT 0.2; 0.10, 3 of 30, on seeds 11 to 40 before it; 0.40 earlier, and 0.27 after the turn-based fights made a hurt rarer, #786);
 //            at most a fifth of the chapters end in the hand's death, 24 of 120 (measured 0; about 1 in 30 is the aim; a floor would fail one run in three at that rate, so there is none);
 //            of the landings, 70 to 95 percent open at least one scene (75 before the bible's smaller crew, #879: measured 74 and 8 over 120 chapters, the owner, 2026-11-01) and 5 to 20 percent open two or more (measured 86 and 12 over 120 chapters; 87 and 15 over 30,
-//            64 with none, 342 with one, 72 with two or more of 478; it was 56 before the crew's errands ashore, #678, fill the quiet stops, #788);
+//            64 with none, 342 with one, 72 with two or more of 478; it was 56 before the crew's errands ashore, #678, fill the quiet stops, #788;
+//            78 and 17 over 120 chapters on 2026-11-14, 372 with none, 1,057 with one, 285 with two or more of 1,714, once tools/soak.js counted the whole landing: since #1096
+//            a landing's scenes open after the 'landed' emit, and the soak had counted only the emit, which read 7 and 0, #1160);
 //            and the three scenes of the ship's night play at least once between them (measured 63 plays; before the soak stamped each draw with its second of the burn, none).
 // The ship fights' share of the danger, with each burn's seconds and its contact played, is in tests/distribution/stakes-fights.test.js, on a runner of its own (.github/workflows/soak.yml).
 

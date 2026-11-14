@@ -62,7 +62,10 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const hand = { hurt: 0, again: 0 }, landed = { on: false, opened: 0, mix: {} };  // the hand's hurts, and how many scenes each landing opened or queued
     { const rh = window.hurtHand; window.hurtHand = function (s) { hand.hurt++; if ((s && s.youHurt) || handHurt()) hand.again++; return rh.apply(this, arguments); };
       const oe = window.openEvent; window.openEvent = function (e) { if (landed.on) landed.opened++; return oe.apply(this, arguments); };
-      const em = Mods.emit; Mods.emit = function (name) { if (name !== 'landed') return em.apply(this, arguments); const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return em.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
+      // a scene queued behind an open one (transit.js queueScene) is counted when it is queued; one with nothing open is counted by openEvent
+      const qs = window.queueScene; window.queueScene = function (e) { if (landed.on && e && G.dialog) landed.opened++; return qs.apply(this, arguments); };
+      // the whole of landAt, not only the 'landed' emit: its handlers offer their scenes, which open after the emit, in rank order (landingScenesPlay, #1096, #1160)
+      const la = window.landAt; window.landAt = function () { const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return la.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
     // The jobs (--jobs): how many were worked at the station and played at the far end of a job elsewhere, what each kind paid the hand (applyJob moves the credits, and a
     // hurt's clinic bill comes out inside it), the hurts, and the jobs elsewhere offered, put to the captain and agreed to.
     const work = { station: 0, away: 0, pay: { station: 0, away: 0 }, hurt: 0, offered: 0, pitched: 0, booked: 0, current: 'station' };
