@@ -57,7 +57,8 @@ const G = {
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
   cutRack: null,     // the comms rack's screen box where the burn view drew it whole, or null; a tap on it opens Comms (#919, shiplife.js)
-  cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
+  camView: { follow: null, y: null, before: undefined },  // the burn camera's aim (shiplife.js camAim, #1182): `follow` the id of the one it follows (null: free), `y` where the player left it down the tower's run, `before` that aim kept while a scene has the camera
+  cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; with aim, zoom and span, what it aims at down the run, its scale and the view's height in world units, #1182; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
   burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, tutorial, comms lines, a downtime scene's tags, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
   dock: null,         // the port inspection played out in the cutaway at the dock while its scene is open ({ page: 'open' | 'result', t: seconds on the page, clock: seconds since it opened, choice, beat, clamps, sealed }), null otherwise, see dock.js
@@ -1299,6 +1300,7 @@ window.addEventListener('keydown', e => {
     if (e.code === 'KeyM' && !G.transit.event) openMap();
     else if (e.code === 'Space' && !G.dialog) { e.preventDefault(); toggleBurnPause(); }  // the burn's speed (burnspeed.js, #992); under a scene Space presses its choice
     else if (BURN_KEYS[e.code] !== undefined && !G.dialog) setBurnSpeed(BURN_KEYS[e.code]);
+    else if (e.code === 'KeyH') camFollow(shipPeople()[0].id);  // the camera back on the hand, following them (shiplife.js, #1182)
   } else if (G.mode === 'hail') {
     if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {
@@ -1313,10 +1315,21 @@ window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code
 window.addEventListener('blur', () => { G.keys = {}; });
 
 canvas.addEventListener('wheel', e => {
+  if (G.mode === 'transit' && G.cam && !G.dialog) { e.preventDefault(); camPan(e.deltaY / (G.cam.zoom || 1), G.cam.aim); return; }  // the burn camera pans down the tower (shiplife.js, #1182)
   if (G.mode !== 'map') return;
   e.preventDefault();
   zoomMap(e.deltaY > 0 ? 1 : -1);
 }, { passive: false });
+
+// A drag on the burn view pans its camera (shiplife.js camPan, #1182); one that moved more than a few pixels is a drag, not a click.
+let camDrag = null;
+canvas.addEventListener('pointerdown', e => { camDrag = G.mode === 'transit' && G.cam && !G.dialog && e.button === 0 ? { y: e.clientY, aim: G.cam.aim, moved: false } : null; });  // every press starts afresh, so a drag that ended off the canvas swallows no later click
+canvas.addEventListener('pointermove', e => {
+  if (!camDrag || !(e.buttons & 1) || !G.cam) return;
+  if (Math.abs(e.clientY - camDrag.y) > 4) camDrag.moved = true;
+  if (camDrag.moved) { G.camView.y = null; G.camView.follow = null; camPan((camDrag.y - e.clientY) / (G.cam.zoom || 1), camDrag.aim); }
+});
+window.addEventListener('pointerup', () => { if (camDrag && !camDrag.moved) camDrag = null; });
 
 // How far a tap is from a person in the cutaway: from the line head to torso to foot (shiplife.js records them), or the torso alone.
 function tapToBody(px, py, h) {
@@ -1334,12 +1347,13 @@ canvas.addEventListener('click', e => {
     if (i >= 0) { G.navPlanet = i; msg(flySay('nav', { planet: system().planets[i].name })); }
     return;
   }
-  // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
+  // On a burn, tap or click someone in the cutaway to open their page and follow them, or a room (in view or in the outline) to open its console.
+  if (camDrag) { const dragged = camDrag.moved; camDrag = null; if (dragged) return; }  // the end of a drag is not a click
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
     const reach = 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
-    if (near) Mods.act('person', near.h.id);
+    if (near) { camFollow(near.h.id); Mods.act('person', near.h.id); }
     else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack opens Comms, as its key does
     else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
       const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);

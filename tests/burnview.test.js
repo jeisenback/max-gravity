@@ -677,12 +677,12 @@ test('a tap on a person\'s head opens the person', async () => {
   await done();
 });
 
-test('the camera goes with the hand to an activity\'s room', async () => {
+test('a camera following the hand goes with them to an activity\'s room (#1182: it follows the hand after a click on them, or H)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     burn(); const t = G.transit, W = innerWidth, H = innerHeight, lay = LAYOUTS.freighter, gal = roomAt('galley'), eng = roomAt('engine'), you = shipPeople()[0];
-    t.left = t.total * 0.3; Object.assign(you, { room: 'engine', x: eng.mid, dk: eng.deck, tdk: eng.deck, tx: null, wait: 999 }); G.cam = null; drawTransit(W, H);  // the hand at the drive, six decks down
+    t.left = t.total * 0.3; Object.assign(you, { room: 'engine', x: eng.mid, dk: eng.deck, tdk: eng.deck, tx: null, wait: 999 }); camFollow(you.id); G.cam = null; drawTransit(W, H);  // the hand at the drive, six decks down
     const from = G.cam.y, span = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span, floor = deckFloor(lay, gal.deck);
     ACTIVITIES.meal.run();
     let steps = 0;
@@ -1882,4 +1882,87 @@ test('a scene that sets its room is acted out there, through the builders that o
   });
   await done();
   for (const x of r) assert.equal(x.got, x.want, x.id);
+});
+
+// ---------- #1182: a camera the player moves (docs/bible/burn.md, The camera) ----------
+
+test('the burn camera starts free: on the hand at a first look, and it does not follow them after (#1182)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.camView = { follow: null, y: null, before: undefined }; const lay = LAYOUTS.freighter, you = shipPeople()[0], eng = roomAt('engine'), gal = roomAt('galley');
+    Object.assign(you, { room: 'engine', x: eng.mid, dk: eng.deck, tdk: eng.deck, tx: null, wait: 999 }); G.cam = null; drawTransit(innerWidth, innerHeight);
+    const first = G.cam.aim, span = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span, onHand = Math.abs(first - camTarget(lay, eng.deck)) <= span / 2;  // held inside the run, with the hand's deck in view
+    Object.assign(you, { room: 'galley', x: gal.mid, dk: gal.deck, tdk: gal.deck }); for (let i = 0; i < 60; i++) { G.time += 0.1; drawTransit(innerWidth, innerHeight); }
+    return { onHand, follow: G.camView.follow, stayed: Math.abs(G.cam.aim - first) < 1 };
+  });
+  await done();
+  assert.ok(r.onHand, 'a first look is on the hand'); assert.equal(r.follow, null, 'following nobody');
+  assert.ok(r.stayed, 'the hand went up to the galley and the camera stayed');
+});
+
+test('the wheel, a drag and the arrows pan the camera down the tower; a drag is not a click (#1182)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.camView = { follow: 'you', y: null, before: undefined }; G.cam = null; drawTransit(innerWidth, innerHeight);
+    const step = () => { G.time += 0.1; drawTransit(innerWidth, innerHeight); }, len = camRun(LAYOUTS.freighter).len, out = { a: G.cam.aim };
+    canvas.dispatchEvent(new WheelEvent('wheel', { deltaY: 400, bubbles: true, cancelable: true })); for (let i = 0; i < 40; i++) step();
+    out.wheel = G.cam.aim; out.freed = G.camView.follow;
+    const y = innerHeight / 2, x = innerWidth / 2, pe = (type, cy, buttons) => canvas.dispatchEvent(new PointerEvent(type, { clientX: x, clientY: cy, button: 0, buttons, bubbles: true }));
+    let opened = 0; const real = Mods.act; Mods.act = (...a) => { if (a[0] === 'person') opened++; return real(...a); };
+    pe('pointerdown', y, 1); pe('pointermove', y - 200, 1); window.dispatchEvent(new PointerEvent('pointerup', {})); canvas.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y - 200, bubbles: true }));
+    Mods.act = real; for (let i = 0; i < 40; i++) step(); out.drag = G.cam.aim; out.opened = opened;
+    G.keys.thrust = true; for (let i = 0; i < 20; i++) step(); G.keys.thrust = false; out.arrow = G.cam.aim;
+    for (let i = 0; i < 30; i++) canvas.dispatchEvent(new WheelEvent('wheel', { deltaY: -4000, bubbles: true, cancelable: true })); for (let i = 0; i < 60; i++) step();
+    out.top = G.cam.aim; out.min = Math.min(...[0, len]); out.span = viewOf(G.burnBoxes.ship, LAYOUTS.freighter, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span;
+    return out;
+  });
+  await done();
+  assert.ok(r.wheel > r.a + 1, `the wheel pans down (${Math.round(r.a)} to ${Math.round(r.wheel)})`); assert.equal(r.freed, null, 'and follows nobody');
+  assert.ok(r.drag > r.wheel + 1, `dragging up pans down (${Math.round(r.wheel)} to ${Math.round(r.drag)})`); assert.equal(r.opened, 0, 'the drag opened nobody');
+  assert.ok(r.arrow < r.drag - 1, `the up arrow pans up (${Math.round(r.drag)} to ${Math.round(r.arrow)})`);
+  assert.ok(r.top <= r.span / 2 + 1, `held inside the run at the top (${Math.round(r.top)})`);
+});
+
+test('a click on someone follows them and opens their page; H follows the hand (#1182)', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers); await ev(stageHelpers);
+  const at = await ev(() => { stageBurn(0.3); G.camView = { follow: null, y: null, before: undefined }; G.cam = null; tickFor(1); drawTransit(innerWidth, innerHeight); const h = G.cutHits.find((x, i) => i > 0 && x.id !== 'cat'); return h && { x: h.x, y: h.y, id: h.id }; });
+  assert.ok(at, 'someone in view');
+  await page.mouse.click(at.x, at.y - 10);
+  const clicked = await ev(() => ({ follow: G.camView.follow, page: !!document.querySelector('#panel') }));
+  await page.keyboard.press('KeyH');
+  const h = await ev(() => G.camView.follow);
+  await done();
+  assert.equal(clicked.follow, at.id, 'following the one clicked'); assert.equal(h, 'you', 'H: the hand');
+});
+
+test('a scene takes the camera to its room and gives it back where it was (#1182)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(), lay = LAYOUTS.freighter, mate = person(G.state.crew[0]), step = () => { G.time += 0.1; drawTransit(innerWidth, innerHeight); };
+    G.camView = { follow: null, y: camRun(lay).len, before: undefined }; G.cam = null; step();  // left at the foot of the tower
+    const left = G.cam.aim;
+    sayScene(`With ${mate.first}`, `${mate.first} is in the galley with a cup going cold.`); for (let i = 0; i < 80; i++) { lifeTick(0.1); step(); }
+    const during = G.cam.aim, gal = camTarget(lay, roomAt('galley').deck);
+    G.dialog = null; t.event = null; for (let i = 0; i < 300; i++) { lifeTick(0.1); step(); }  // it eases back
+    return { left, during, gal, after: G.cam.aim, back: Math.min(G.camView.y, camRun(lay).len - G.cam.span / 2) };  // where it was, held inside the run for the view as it is now
+  });
+  await done();
+  assert.ok(Math.abs(r.during - r.gal) < Math.abs(r.left - r.gal) / 4, `at the galley while it is open (${Math.round(r.during)}, the galley ${Math.round(r.gal)})`);
+  assert.ok(Math.abs(r.after - r.back) < 2, `back where it was after (${Math.round(r.after)} against ${Math.round(r.back)})`);
+});
+
+test('a new burn starts the camera where the player left it (#1182)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.cam = null; drawTransit(innerWidth, innerHeight); camPan(250, G.cam.aim); const left = G.camView.y;
+    burn(); drawTransit(innerWidth, innerHeight);
+    return { left, aim: G.cam.aim };
+  });
+  await done();
+  assert.ok(Math.abs(r.aim - r.left) < 1, `the next burn opens where it was left (${Math.round(r.aim)} against ${Math.round(r.left)})`);
 });

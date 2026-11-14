@@ -320,7 +320,7 @@ function enterTransit() {
     chatter: rand(5, 10), chattered: 0,
   };
   G.mode = 'transit'; G.speed = G.speedBefore = 1;  // each burn starts at normal speed, and a pause on it resumes there (#992)
-  G.cam = null;  // each burn starts with the camera snapped to the hand
+  G.cam = null;  // each burn starts with the camera snapped to where the player left it, or the hand's deck on a first look (camAim, #1182)
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   const run = hired() && hired().run;  // an ice run's first leg says what the run is, once, at the start (icerun.js, #948)
