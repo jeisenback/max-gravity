@@ -51,11 +51,35 @@ The independent ports and the Rook do not inspect.
 - **The Arcology licenses medicine** because unregistered drugs are its ban: registered stock lands under licence, anything else is the same crates without the paper.
 - **The Dome Pact licenses water** because water kits undercut the air bill: the domes sell their own water, and outside water lands only on a dome's contract (the ice run's premium, `ICE_PREMIUM`).
 - **The Guild licenses machine parts at its yards only** (the owner, 2026-11-14): Ceres Station and Titan, which have yards, protect the yards' parts; the other Guild stations tax berth and handling, not goods, as `trade-and-law.md` says. The code licenses parts at every Guild port today, and changes to fit.
-- **The bans** (weapons, prints, unregistered drugs, a rival's fuel) are not goods in the game. Proposed: they stay out of chapter 1, and come in with chapter 2's smuggling as variants of a good (a print of a part, unregistered medicine), not new goods.
+- **The bans are new goods** (the owner, 2026-11-14), not variants of the seven: see Chapter 2's goods, below. They stay out of chapter 1.
+
+## Chapter 2's goods
+
+Seven goods are enough for chapter 1, where the hand only carries freight. For the co-op's trade the owner has added six (2026-11-14), for thirteen. They come with chapter 2, and the narrow build keeps the seven.
+
+**Two lawful goods the world already runs on:**
+
+| Good | What it is | Made at | Wanted at |
+|---|---|---|---|
+| **Air** | oxygen and the kits that make it; what a station's air bill pays for | the depots and the outer moons' ice works, from ice | every small rock and freehold; any station whose air plant has failed |
+| **Ore** | unrefined rock from the Belt's mines | the mines and claims of the Belt | the refineries (Pallas, Ceres, Ironheart), which own the step between the miner and the market |
+
+The Mars domes ban unmetered air kits, which undercut the air bill (`trade-and-law.md`), so air lands there only on a dome's contract, as outside water does. Ore is priced low wherever it is dug, since the refineries set what they pay.
+
+**Four banned goods, one for each ban `trade-and-law.md` names:**
+
+| Good | What it is | Banned at | Sold openly at |
+|---|---|---|---|
+| **Arms** | sidearms, ammunition, a gun mount's parts | the arcology docks; the co-ops' and guild stations' bars | the havens |
+| **Prints** | parts printed without the maker's licence; cheap, and they undercut the yards | the corporate ports and the yards | the havens, the freeholds |
+| **Grey medicine** | drugs without Earth's registry | the Arcology | the havens; the freeholds, which cannot pay for registered stock |
+| **Depot fuel** | deuterium from a rival's depot, in canisters | Kaur's depot towns (Tycho's fuel); Tycho's depots (Kaur's) | the havens; any ship short of a load in the war |
+
+A banned good is worth most just where it is banned (`trade-and-law.md`). Inspections find it (`js/inspection.js`), and a find costs more than a duty: the cargo, a fine, and a mark on the record.
 
 ## Fuel and reaction mass
 
-Neither is a good in the market. Reaction mass is water, bought at every port's refuelling and spent each burn (the game's `fuel`); fuel is deuterium, enriched from ice at the depot owners' plants, and the largest cost of running a ship (`economy.md`, Fuel), carried by the owner and not counted trip by trip (`technology.md`, The drive). So ice feeds both, and the depots are the chokepoint the fuel war is about (`the-fuel-war.md`). Proposed: neither becomes a traded good; the war moves their prices at the pump, and moves water's price in the markets.
+Neither is a good in the market. Reaction mass is water, bought at every port's refuelling and spent each burn (the game's `fuel`); fuel is deuterium, enriched from ice at the depot owners' plants, and the largest cost of running a ship (`economy.md`, Fuel), carried by the owner and not counted trip by trip (`technology.md`, The drive). So ice feeds both, and the depots are the chokepoint the fuel war is about (`the-fuel-war.md`). Proposed: neither is a market good; the war moves their prices at the pump, and moves water's price in the markets. The one exception is depot fuel, a rival's deuterium carried as contraband (Chapter 2's goods).
 
 ## How prices move
 
@@ -80,7 +104,7 @@ What chapter 1 needs from this page: each good's name, what it is, who ships it 
 - buying and selling at the markets, with what the co-op knows of the prices (last seen, heard);
 - what the co-op may trade, decide and pay for, put to `role()` (`js/role.js`), not a fork on `hired()`;
 - the licences, as papers a co-op can buy (`progression.md`, layers 5 and 6);
-- the bans, and smuggling, as variants of the goods;
+- the six new goods: air and ore, and the four banned goods, with smuggling;
 - aid to the freeholds, paid in ice and barter (`places.md`);
 - shortages and gluts as events, and the war's effect on water, parts and fuel.
 
@@ -88,16 +112,15 @@ What chapter 1 needs from this page: each good's name, what it is, who ships it 
 
 ## What the game changes to fit
 
-Chapter 1: words, and two fixes. Where a scene names a good, a shipper or a licence, it uses this page; the Guild's licence moves to its yards (`LICENSED`, `js/inspection.js`, #1205), and Earth no longer prices metal high (`js/data.js`, #1206). Chapter 2, in order, after the owner's review: licences as papers; shortages and gluts as events; variants of goods for the bans; the co-op's trade through `role()`.
+Chapter 1: words, and two fixes. Where a scene names a good, a shipper or a licence, it uses this page; the Guild's licence moves to its yards (`LICENSED`, `js/inspection.js`, #1205), and Earth no longer prices metal high (`js/data.js`, #1206). Chapter 2, in order, after the owner's review: licences as papers; shortages and gluts as events; the six new goods, and finds of a banned good at inspection; the co-op's trade through `role()`.
 
 ## Open questions for the owner
 
-- Do the bans become variants of the seven goods, or new goods?
-- Are seven goods enough for chapter 2, or does the co-op need more (ice as its own good, air, arms)?
+- Does a co-op need papers or contacts to buy a banned good, or can it buy one at any haven?
 
 ## Assumptions to confirm
 
-- The seven goods and their prices stay as built; this page gives them makers, owners and words.
+- The seven goods and their prices stay as built for chapter 1; this page gives them makers, owners and words.
 - Fuel and reaction mass are not traded goods; the war moves them at the pump.
 - Chapter 1 needs words only; trade mechanics wait for chapter 2.
-- The bans come in with chapter 2's smuggling.
+- Chapter 2 adds six goods (air, ore, arms, prints, grey medicine, depot fuel), for thirteen; ice stays water, and luxury goods stay one good.
