@@ -8593,7 +8593,7 @@
  {
   "key": "job:lock:0:0:0.999",
   "v": {
-   "text": "The pin is harder than it looked. You're still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The pin is harder than it looked. You're still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 500,
    "rep": {},
    "xp": false,
@@ -8645,7 +8645,7 @@
  {
   "key": "job:lock:0:2:0.999",
   "v": {
-   "text": "The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8843,7 +8843,7 @@
  {
   "key": "job:escort:0:0:0.999",
   "v": {
-   "text": "They're three, not two, and the third has a length of pipe. It's short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+1,400 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're three, not two, and the third has a length of pipe. It's short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+1,400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 1400,
    "rep": {},
    "xp": false,
@@ -8983,7 +8983,7 @@
  {
   "key": "job:ration:0:0:0.999",
   "v": {
-   "text": "You make it worse. Somebody says you're taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You make it worse. Somebody says you're taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9007,7 +9007,7 @@
  {
   "key": "job:ration:0:1:0.999",
   "v": {
-   "text": "Somebody doesn't step back. It's a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "Somebody doesn't step back. It's a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9094,7 +9094,7 @@
  {
   "key": "awayjob:package:0:1:0.999",
   "v": {
-   "text": "The market square isn't as crowded as you thought. He steps close and the case leaves your hands in a movement you don't quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The market square isn't as crowded as you thought. He steps close and the case leaves your hands in a movement you don't quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 2300,
    "rep": {},
    "xp": false,
@@ -9213,7 +9213,7 @@
  {
   "key": "awayjob:stranded:0:0:0.999",
   "v": {
-   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you're in worse shape than it is. He gives you what he can for the effort. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you're in worse shape than it is. He gives you what he can for the effort. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 2300,
    "rep": {},
    "xp": false,
@@ -9357,7 +9357,7 @@
  {
   "key": "awayjob:witness:0:0:0.999",
   "v": {
-   "text": "They're waiting at the third corner, two of them, and it's short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+3,400 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're waiting at the third corner, two of them, and it's short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+3,400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 3400,
    "rep": {},
    "xp": false,

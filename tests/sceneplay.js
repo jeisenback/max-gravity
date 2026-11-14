@@ -63,11 +63,10 @@ const playScenes = () => {
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });
-  run('scene:hand-death:first', {}, () => handDeathScene('first'), { skip: [0] });
   run('scene:hand-death:bridge', {}, () => handDeathScene('bridge'), { skip: [0] });
   // the same on the hand's own bridge (#1045): no captain to say it
   const ownBridge = () => { const h = hired(); Object.assign(h, { chapter: 2, bridge: true }); delete h.captain; delete h.captainKey; };
-  for (const how of ['hurt', 'first', 'bridge']) run(`scene:hand-death:${how}:own`, {}, () => { ownBridge(); return handDeathScene(how); }, { skip: [0] });
+  for (const how of ['hurt', 'bridge']) run(`scene:hand-death:${how}:own`, {}, () => { ownBridge(); return handDeathScene(how); }, { skip: [0] });
   run('scene:captain-lost', {}, () => captainLostScene(), { skip: [0] });
   run('scene:split', {}, () => {
     const st = G.state, crew = folk().filter(f => f.crew && !f.p.cast), [a, b] = crew;

@@ -145,7 +145,7 @@ test('the co-op\'s shipyard refuels, repairs and fits out, sells no ship, and th
 test('a fight that ends the hand\'s life in chapter two ends the run as in chapter one, with no captain to say it', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(started);
-  const r = await ev(() => { coopAt(); handDies({}, 'first'); const e = G.nextEvent; return { canDie: role().canDie, title: e && e.title, text: e && e.text, choices: e && e.choices.map(c => c.label) }; });
+  const r = await ev(() => { coopAt(); handDies({}, 'hurt'); const e = G.nextEvent; return { canDie: role().canDie, title: e && e.title, text: e && e.text, choices: e && e.choices.map(c => c.label) }; });
   await done();
   assert.equal(r.canDie, true); assert.equal(r.title, 'The Last Run'); assert.deepEqual(r.choices, ['Begin again']);
   assert.doesNotMatch(r.text, /undefined|NaN|Hester|Captain/);

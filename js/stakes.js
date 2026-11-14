@@ -2,7 +2,8 @@
 
 // What a hired hand can lose. Two things, both scenes at a port (happenings.js), for a hired hand only:
 // - The captain's patience. A captain whose opinion of you falls to -2 says so once. If it has not recovered and falls to -3 at a later port,
-//   you are put ashore: the chapter starts again with another captain, and you keep your savings and what you learned.
+//   you are put ashore: the chapter starts again with another captain, and you keep your savings and what you learned. In the narrow build there is
+//   no other captain (ashoreEnds, below), so being put ashore ends the run as a death does.
 // - A feud that is not mended. Two of the crew who have had a feud scene (social.js) and have not made it up split the
 //   ship: one of them gets off at the next port, and someone from the dock takes the berth. Loaded after captains.js.
 
@@ -24,12 +25,18 @@ function warningScene() {
   };
 }
 
+// The narrow build has one captain until it is tuned (`captains` in SCOPE_OFF, build.js), so a hand put ashore or left without a captain has no other ship
+// to go on to: the run ends as a death does, with the look back, and a fresh hand signs on to Hester's ship with only a line on the dock. The full build
+// carries the hand's savings and skill to another captain's ship (putAshore).
+const ashoreEnds = () => scopeOff('captains');
+const lookBack = () => (ashoreEnds() ? `</p><p>${chapterRecap().text}` : '');
+
 function putAshoreScene() {
   const cap = person(hired().captain), facts = goodbyeFacts(hired().flags || {}).slice(0, 2).map(f => f.line).join(' '), say = key => sceneSay('scene:put-ashore', key, { last: cap.last });
   return {
     title: say('title'), personal: true,
-    text: `${say('text')}${facts ? `</p><p>${facts}` : ''}`,  // what the hand lived through is read from the record
-    choices: [{ label: say('c0.label'), run: putAshore }],
+    text: `${say('text')}${facts ? `</p><p>${facts}` : ''}${lookBack()}`,  // what the hand lived through is read from the record
+    choices: [{ label: say('c0.label'), run: ashoreEnds() ? () => startOver(`On the dock they say Captain ${cap.last} put the last hand ashore.`) : putAshore }],
   };
 }
 
@@ -55,17 +62,22 @@ function handDeathScene(how) {
     choices: [{ label: say('c0.label'), run: beginAgain }],
   };
 }
-// A new hand, in the same slot and under the same name, with another captain if there is one and nothing carried but a line on the dock.
 function beginAgain() {
-  const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey), lost = cap ? `the hand on Captain ${cap.last}'s ship` : `the captain of the ${home().name}`;
+  const cap = person(hired().captain), lost = cap ? `the hand on Captain ${cap.last}'s ship` : `the captain of the ${home().name}`;
+  return startOver(`On the dock they say ${lost} didn't come back.`);
+}
+// A new hand, in the same slot and under the same name, with another captain if there is one (Hester in the narrow build) and nothing carried but a line on the dock.
+function startOver(carried) {
+  const st = G.state, h = hired(), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
+  const drawn = others.length ? pick(others) : undefined;  // still drawn in the narrow build, so the random stream is the same in both (captains.js pickCaptainKey)
   startGame({
     slot: Saves.current,
     background: st.background,
     captain: captain().name,
     mode: 'hired',
     post: h.post,
-    captainKey: others.length ? pick(others) : undefined,
-    carried: `On the dock they say ${lost} didn't come back.`,
+    captainKey: scopeOff('captains') ? 'hester' : drawn,
+    carried,
   });
   return null;
 }
@@ -75,8 +87,8 @@ function captainLostScene() {
   const say = key => sceneSay('scene:captain-lost', key, { last: person(hired().captain).last });
   return {
     title: say('title'), personal: true,
-    text: say('text'),
-    choices: [{ label: say('c0.label'), run: () => putAshore(true) }],
+    text: `${say('text')}${lookBack()}`,
+    choices: [{ label: say('c0.label'), run: ashoreEnds() ? () => startOver('On the dock they talk about a ship that came in without her captain.') : () => putAshore(true) }],
   };
 }
 

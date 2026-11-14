@@ -387,15 +387,6 @@
   ]
  },
  {
-  "id": "scene:hand-death:first",
-  "plays": [],
-  "title": "The Last Run",
-  "text": "You don't see what hits you. It comes from the side, and then you're sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain Vance is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you're dead before the lights are done.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
-  "labels": [
-   "Begin again"
-  ]
- },
- {
   "id": "scene:hand-death:bridge",
   "plays": [],
   "title": "The Last Run",
@@ -409,15 +400,6 @@
   "plays": [],
   "title": "The Last Run",
   "text": "The first hurt isn't mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name, and somebody takes the med kit off its rack with both hands, and you're dead before the latches are undone.</p><p>The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.</p><p>30 days aboard the Iron Anvil. 0 runs, the last of them in command, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
-  "labels": [
-   "Begin again"
-  ]
- },
- {
-  "id": "scene:hand-death:first:own",
-  "plays": [],
-  "title": "The Last Run",
-  "text": "You don't see what hits you. It comes from the side, and then you're sitting against the closer with one hand pressed to your ribs and the hand coming away wet. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. Somebody takes your other hand off the deck and holds it, and you're dead before the lights are done.</p><p>The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.</p><p>30 days aboard the Iron Anvil. 0 runs, the last of them in command, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -27971,13 +27953,16 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You're hit.",
+    "text": "You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you. The clinic is 1,500 cr of your own, with no medic aboard.",
+    "fx": {
+     "credits": -1500
+    },
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "You are hurt. Your work counts a level lower until the clinic clears you. The clinic is 1,500 cr of your own, with no medic aboard.",
+    "text": "You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you. The clinic is 1,500 cr of your own, with no medic aboard.",
     "fx": {
      "credits": -1500
     },

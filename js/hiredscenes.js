@@ -750,7 +750,7 @@ const SCENE_LINES = {
     'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t stand in the same section as {other}.',
     // the hurt and the fallen, in any fight (boarders.js hurtHand and repelCasualty; a job ashore hurts the hand with the same lines): the hand's (killed, or killed hurt again; hurt, or hurt again; the clinic it pays, {cr}),
     // a friend who takes it for the hand ({first}; the one who owed you says so), and a crewmate's ({first}) hit again (dead, or alive and unfit where a floor holds), hit hard (dead, or carried below), or hurt
-    'hurt.you.down': 'You\'re hurt again, and you stay down.', 'hurt.you.hit': 'You\'re hit.', 'hurt.you': 'You are hurt. Your work counts a level lower until the clinic clears you.', 'hurt.you.again': 'You are hurt again, and you stay down.',
+    'hurt.you.down': 'You\'re hurt again, and you stay down.', 'hurt.you': 'You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.', 'hurt.you.again': 'You are hurt again, and you stay down.',
     'hurt.clinic': 'The clinic is {cr} cr of your own, with no medic aboard.',
     cover: '{first} pulls you down behind the closer and takes it.', 'cover.even': '{first} pulls you down behind the closer and takes it ("We are even," {first} says later).',
     'hit.again.dead': '{first} is hit again and doesn\'t get up.', 'hit.again.marked': '{first} is hit again and doesn\'t get up. {first} is alive, and {first} isn\'t fit to work.',
@@ -1042,12 +1042,10 @@ const SCENE_LINES = {
   'scene:hand-death': {
     title: 'The Last Run',
     'text.hurt': 'The first hurt isn\'t mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name. Captain {last} says it from the hatch, takes the med kit off its rack with both hands, and you\'re dead before the latches are undone.',
-    'text.first': 'You don\'t see what hits you. It comes from the side, and then you\'re sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain {last} is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you\'re dead before the lights are done.',
     'text.bridge': 'You\'re laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you\'re dead before the lock cycles. Captain {last} gives them the code to the strongbox, and the crew carry you below.',
     log: 'Captain {last} writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.',
     // the same, when the hand held the bridge (#1045): nobody above them to say it
     'text.hurt.own': 'The first hurt isn\'t mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name, and somebody takes the med kit off its rack with both hands, and you\'re dead before the latches are undone.',
-    'text.first.own': 'You don\'t see what hits you. It comes from the side, and then you\'re sitting against the closer with one hand pressed to your ribs and the hand coming away wet. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. Somebody takes your other hand off the deck and holds it, and you\'re dead before the lights are done.',
     'text.bridge.own': 'You\'re laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you\'re dead before the lock cycles. Somebody gives them the code to the strongbox, and the crew carry you below.',
     'log.own': 'The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.',
     'c0.label': 'Begin again',
