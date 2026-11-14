@@ -23,7 +23,7 @@ const PORT_LAYOUTS = {
     rooms: [
       // `page`: the page a click on the room opens (#1132); `stage`: where a scene that happens there gathers, by Ngozi's bay, at the hiring boards, in front of the counter (#1103)
       { id: 'well', label: 'Lift', level: 0, to: 2, x0: 0, x1: 120, kind: 'well', stage: 60 },
-      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port', stage: 270 },
+      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port', stage: 270, bays: ['ngozi', 'repairer'] },  // `bays`: whose shutters it draws, down outside their hours
       { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar', page: 'bar', stage: 700 },
       { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard', page: 'missions', stage: 230 },
       { id: 'clinic', label: 'Clinic', level: 1, x0: 470, x1: 860, kind: 'clinic', stage: 600 },
@@ -310,21 +310,12 @@ const PORT_ROOMS = {
     portLamp(ctx, 200, F - 98, 70); portLamp(ctx, 330, F - 98, 60, 0.3); portLamp(ctx, 450, F - 98, 70);
     portScuff(ctx, 200, F, 50); portScuff(ctx, 330, F, 40); portScuff(ctx, 430, F, 30); portStain(ctx, 150, F - 84, 40, 30);
     portBay(ctx, 140, 110, open.ngozi === false);
-    if (open.ngozi !== false) roomScreen(ctx, 150, F - 76, 34, 18, 'nav', time);
     if (open.ngozi !== false) {
       roomPart(ctx, roomRound(196, F - 54, 40, 4, 1), '#4a4e52', { top: 0.8 });
       roomPart(ctx, roomRound(200, F - 62, 16, 8, 2), '#5a5a5e', { top: 1 }); roomPart(ctx, roomRound(220, F - 63, 14, 9, 2), '#6a5040', { top: 1 });
       portLamp(ctx, 195, F - 84, 40, 0.3);
     }
     for (const sx of [160, 240]) roomStool(ctx, sx, F, 0);
-    // the port in the floor, with the stars and Earth going by
-    ctx.save(); ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.clip();
-    ctx.fillStyle = '#02040a'; ctx.fillRect(280, F - 10, 80, 12);
-    const turn = Settings.reduceMotion ? 0.5 : (time / 40) % 1, ex = 290 + turn * 80;
-    const g = ctx.createRadialGradient(ex, F + 30, 6, ex, F + 30, 36); g.addColorStop(0.7, '#3a7bd5'); g.addColorStop(0.95, '#9fd0ff'); g.addColorStop(1, 'rgba(159,208,255,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(ex, F + 30, 36, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-    ctx.strokeStyle = '#5a6a7a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.stroke();
     portBay(ctx, 380, 56, true);
     portBay(ctx, 450, 60, open.repairer === false);
     if (open.repairer !== false) for (let k = 0; k < 8; k++) roomPart(ctx, roomRound(454 + (k % 4) * 13, F - 80 + Math.floor(k / 4) * 12, 11, 9, 0.5), ['#3a5a6a', '#5a4a3a'][k % 2], { top: 0.5 });
@@ -349,7 +340,6 @@ const PORT_ROOMS = {
     portPlate(ctx, 170, F - 92, 70, '#8a7a5a'); portPlate(ctx, 290, F - 92, 60, '#7a8a5a');
     portScuff(ctx, 210, F, 50); portScuff(ctx, 330, F, 40); portPatch(ctx, 136, F - 90, 12, 16);
     roomPart(ctx, roomRound(378, F - 30, 82, 30, 1), '#2e3e50', { top: 1, solid: 0.4 });
-    roomScreen(ctx, 404, F - 58, 30, 22, 'nav', time);
     for (const [px, py, a] of [[384, F - 31, 0.1], [390, F - 32, -0.08]]) { ctx.save(); ctx.translate(px, py); ctx.rotate(a); roomFlat(ctx, 0, 0, 14, 1.4, '#d8d0c0'); ctx.restore(); }
     portMug(ctx, 446, F - 30);
   },
@@ -369,6 +359,40 @@ const PORT_ROOMS = {
     roomPart(ctx, roomRound(470, F - 14, 22, 14, 3), '#4a5a3a', { top: 1 }); portScuff(ctx, 430, F, 60);
   },
 };
+
+// What moves in a room, drawn over its still picture each frame (portRoomImage): the market's menu screen and the port in its floor with Earth going
+// by, and the yard clerk's screen. `time` is in seconds.
+const PORT_LIVE = {
+  market(ctx, r, F, time, open = {}) {
+    if (open.ngozi !== false) roomScreen(ctx, 150, F - 76, 34, 18, 'nav', time);
+    ctx.save(); ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.clip();  // the port in the floor, with the stars and Earth going by
+    ctx.fillStyle = '#02040a'; ctx.fillRect(280, F - 10, 80, 12);
+    const turn = Settings.reduceMotion ? 0.5 : (time / 40) % 1, ex = 290 + turn * 80;
+    const g = ctx.createRadialGradient(ex, F + 30, 6, ex, F + 30, 36); g.addColorStop(0.7, '#3a7bd5'); g.addColorStop(0.95, '#9fd0ff'); g.addColorStop(1, 'rgba(159,208,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(ex, F + 30, 36, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = '#5a6a7a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.stroke();
+  },
+  yard(ctx, r, F, time) { roomScreen(ctx, 404, F - 58, 30, 22, 'nav', time); },
+};
+// A room's still picture, as the burn view keeps its rooms (shiplife.js cachedShell, rooms.js worldSprite): its shell and what is in it, drawn
+// once at the screen's scale `sc` into an image and copied in each frame after, under the room's turn on the curve. Made again when the scale
+// changes or a bay in it opens or shuts (`shut`: whether each of the room's `bays` is open). Null where there is no canvas to
+// draw into (the Node tests), where the room is drawn as it is.
+const PORT_ROOM_IMAGES = new Map();
+function portRoomImage(rm, r, F, open, sc, shut) {
+  if (typeof document === 'undefined') return null;
+  const key = `${rm.id}|${sc.toFixed(3)}|${shut}`;
+  let c = PORT_ROOM_IMAGES.get(key);
+  if (!c) {
+    if (PORT_ROOM_IMAGES.size > 48) PORT_ROOM_IMAGES.clear();
+    c = document.createElement('canvas'); c.width = Math.ceil((r.x1 - r.x0) * sc); c.height = Math.ceil((F - r.top + HULL.plate) * sc);
+    const g = c.getContext('2d'); g.setTransform(sc, 0, 0, sc, -r.x0 * sc, -r.top * sc);
+    roomIn([r], () => { roomShell(g, r); PORT_ROOMS[rm.kind](g, r, F, 0, open); });
+    PORT_ROOM_IMAGES.set(key, c);
+  }
+  return c;
+}
 
 // The view at `planet` into a canvas context g of w by h px: the frame's bar along the top (the section, the berth), the spoke rising to the hub, the
 // rooms on the rim's curve, its outer hull, and Earth going by under it. `time` is ms (performance.now). Text is 12 px or more (#265). Returns where each
@@ -403,13 +427,22 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
     g.save(); g.translate(mid, F - lift); g.rotate(-a); g.translate(-mid, -F);
     g.beginPath(); g.rect(r.x0, r.top, r.x1 - r.x0, F - r.top + HULL.plate); g.clip();  // a room's things stay in its box
     const open = Object.fromEntries(layout.folk.map(f => [f.key, portOpen(f.hours, hour)]));
+    const m = g.getTransform ? g.getTransform() : null, sc = m ? Math.hypot(m.a, m.b) : 0, still = m && portRoomImage(rm, r, F, open, sc, (rm.bays || []).map(k => (open[k] ? 1 : 0)).join(''));
     roomIn([r], () => {
-      roomShell(g, r); PORT_ROOMS[rm.kind](g, r, F, time / 1000, open);  // the rooms' own clock is seconds, as the burn view's
+      if (still) g.drawImage(still, r.x0, r.top, r.x1 - r.x0, F - r.top + HULL.plate);  // its still picture (portRoomImage), under its turn
+      else { roomShell(g, r); PORT_ROOMS[rm.kind](g, r, F, time / 1000, open); }
+      if (PORT_LIVE[rm.kind]) PORT_LIVE[rm.kind](g, r, F, time / 1000, open);  // and what moves in it; the rooms' own clock is seconds, as the burn view's
       const here = cast.filter(c => portRoomAt(layout, c) === rm.id);
       for (const y of new Set(here.filter(c => c.via === 'car').map(c => portFloor(layout, c.lv)))) portCar(g, layout.well.car, y);  // the car, where it is in the well
       for (const c of here) {  // the people in this room, in their postures (figures.js), each as look gives them; a walk's stride by the ground covered
         const frames = POSTURES[c.name].frames, fps = POSTURES[c.name].fps, frame = c.name === 'walk' ? Math.floor((c.walked || 0) / 10) % frames : fps ? Math.floor(time / 1000 * fps + c.x) % frames : 0;
-        drawPerson(g, { name: c.name, view: c.view, face: c.face, frame }, c.x, portFloor(layout, c.lv) - (c.name === 'work' || c.name === 'work-sit' ? 2 : 0), look(c));
+        const pose = { name: c.name, view: c.view, face: c.face, frame }, y = portFloor(layout, c.lv) - (c.name === 'work' || c.name === 'work-sit' ? 2 : 0);
+        if (!m) { drawPerson(g, pose, c.x, y, look(c)); continue; }
+        // upright where they stand, so the burn view's figure images serve (figures.js figKept, which takes no turn): the room's turn is a degree or two
+        const at = g.getTransform().transformPoint(new DOMPoint(c.x, y));
+        g.save(); g.setTransform(sc, 0, 0, sc, at.x, at.y);
+        figSprites = FIG_SPRITE_CACHE;
+        try { drawPerson(g, pose, 0, 0, look(c)); } finally { figSprites = null; g.restore(); }
       }
       if (portDark(hour) && rm.id !== 'bar') { g.fillStyle = 'rgba(2,5,10,0.5)'; g.fillRect(r.x0, r.top, r.x1 - r.x0, F - r.top); }  // the rim's lights down; the bar's stay up
     });
