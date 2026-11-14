@@ -212,7 +212,9 @@ Mods.register({
       if (!name) return list;
       const h = hired(), missed = h.beatWait || 0;
       h.beatWait = missed + 1;  // a miss unless make() runs and clears it
-      return list.concat([{ tier: beatTier(G.state), weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); } }]);
+      const cap = hiredCaptain();
+      return list.concat([{ tier: beatTier(G.state), weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); },
+        ...(cap ? { offer: { kind: 'captain', key: 'captain', who: cap.id, vars: { last: cap.last } } } : {}) }]);  // an offer on the ship (#1184)
     });
   },
 });

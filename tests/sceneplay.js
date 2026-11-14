@@ -191,6 +191,8 @@ const playScenes = () => {
       prep() { uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.elapsed = 0; let d = 0; while (shipDay(t.elapsed).block !== block && d++ < 400) t.elapsed += 0.5; } });
   }
   run('downtime:on', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => [...older().map(d => d.on()), ACTIVITIES.teach.on()].join(' | ') }] }), { prep() { G.state.crew = []; crewOf(4); uatBurn('Ceres Station', 'pallas'); } });
+  // an offer's tag on the ship (#1184): a main character, the captain and a passenger, before the scene is made
+  run('offers:labels', {}, () => ({ title: 'Offers', text: [lifeSay('offer.cast', { first: 'Ines' }), lifeSay('offer.captain', { last: 'Vance' }), lifeSay('offer.passenger', { first: 'Ade' })].join(' | '), choices: [] }));
   // the four of #1073, #1075, #1076 and #1081, set up so each can run: a burn, someone else's bridge night, the drive worn, the hand hurt and a medic aboard; each telling by the day
   for (const shift of [0, 1, 2]) {
     run(`downtime:four:${shift}`, {}, () => { const four = HAND_DOWNTIME.filter(d => NEW4.includes(d.label)); return { title: 'Downtime', text: four.map(d => d.on()).join(' | '), choices: four.map(d => ({ label: d.label, run: d.run })) }; }, {

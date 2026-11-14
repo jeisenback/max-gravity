@@ -2040,3 +2040,34 @@ test('an offer out of view shows a marker at the edge; a click on it pans there,
   await done();
   assert.equal(v, r.hold, 'the click pans to the hold');
 });
+
+// ---------- #1184: the people's scenes as offers (stage 1: the main characters' beats, the captain's scenes, passengers) ----------
+
+test('a main character\'s beat drawn on a burn is an offer: taken, it plays; let lapse, it has not, and comes round again; a fate scene opens at once (#1184)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, st = G.state; st.day += 120; t.offers = [];
+    const key = castAboard()[0].cast, rec = castRec(key), real = Mods.filter, call = (...a) => real.apply(Mods, a), out = {};
+    Mods.filter = (n, v, ...a) => (n === 'happenings' ? call(n, v, ...a).filter(c => c.offer && c.offer.kind === 'cast' && c.offer.key === `cast:${key}`) : call(n, v, ...a));
+    try {
+      rec.arc = 1; const arc0 = rec.arc;
+      const got = pickHappening('transit'); out.opened = !!got || !!G.dialog; out.queued = (t.offers || []).map(o => ({ who: o.who, label: o.label }));
+      out.unplayed = rec.arc === arc0;
+      t.offers = offersTick(t.offers, shipPeople(), OFFER_LIFE, OFFER_REAL);  // let it lapse
+      out.lapsed = t.offers.length === 0 && rec.arc === arc0 && (rec.wait || 0) >= 1;
+      pickHappening('transit'); const o = t.offers[0]; offerClick({ offer: o });
+      out.taken = { title: G.dialog && G.dialog.event.title, played: rec.arc === arc0 + 1 };
+      G.dialog = null; t.event = null; t.offers = [];
+      rec.arc = 4;  // the pivot next: a fate scene
+      out.fateOffer = !!(call('happenings', [], 'transit').find(c => c.offer && c.offer.key === `cast:${key}`));
+    } finally { Mods.filter = real; }
+    out.id = castPerson(key).id; out.first = castPerson(key).first;
+    return out;
+  });
+  await done();
+  assert.equal(r.opened, false, 'no scene opens'); assert.deepEqual(r.queued, [{ who: r.id, label: `${r.first} has a minute` }]);
+  assert.ok(r.unplayed, 'queued, the beat has not played'); assert.ok(r.lapsed, 'let lapse: gone, still unplayed, and waiting counted');
+  assert.ok(r.taken.title && r.taken.played, `taken: ${JSON.stringify(r.taken)}`);
+  assert.equal(r.fateOffer, false, 'a fate scene is no offer');
+});
