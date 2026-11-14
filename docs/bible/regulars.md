@@ -46,22 +46,22 @@ The Guild Federation's station and the Belt's busiest port: the co-op's home (`c
 
 ## Pallas Refinery
 
-A company works: the refining company's own port, where everything from the berth to the bar is the company's (`pallas-refinery.md`). Live places: the company bar's two stools, and the company store's counter. Pool of six.
+A company works: the refining company's own port, where everything from the berth to the bar is the company's (`pallas-refinery.md`). Live places: the Slag Heap's two stools, and the company store's counter. Pool of six.
 
 | Who | Where | Wants | Arc |
 |---|---|---|---|
-| **Teodor Wills**, 40s, shift supervisor | the company bar | his quota met without losing anyone on his line | a quota raised; a man burned; the quota met, and he puts in for a transfer (gone) |
-| **Amara Quist**, 20s, assayer | the company bar | out of the company's contract before it renews | saving the break fee; the fee raised; signed again, for five years, and she does not talk about it (stays) |
+| **Teodor Wills**, 40s, shift supervisor | the Slag Heap | his quota met without losing anyone on his line | a quota raised; a man burned; the quota met, and he puts in for a transfer (gone) |
+| **Amara Quist**, 20s, assayer | the Slag Heap | out of the company's contract before it renews | saving the break fee; the fee raised; signed again, for five years, and she does not talk about it (stays) |
 | **Rho Delacroix**, 50s, store clerk | the company store's counter | her son's company scholarship | the son failing a test; a retest bought with her savings; the son on the scholarship, and she has nothing left and is proud of it (stays) |
-| **Jem Hallgren**, 30s, crane driver | the company bar | to marry a woman in the Hollows, which the company does not house | asking for a married berth; refused; gone to the Hollows, and the company docks his pay for the berth he left (gone) |
-| **Sister Vey**, 60s, keeps the works' shrine | the company bar, a corner table | the names of the line's dead read out at the shift change | refused by the company; reading them in the bar instead; the company allows a minute at shift change, and she reads faster (stays) |
-| **Cass Oduya**, 30s, union organiser, quietly | the company bar | the Guild at Pallas | asking questions; watched by company security; gone on a hauler, and someone else starts asking the same questions (gone) |
+| **Jem Hallgren**, 30s, crane driver | the Slag Heap | to marry a woman in the Hollows, which the company does not house | asking for a married berth; refused; gone to the Hollows, and the company docks his pay for the berth he left (gone) |
+| **Sister Vey**, 60s, keeps the works' shrine | the Slag Heap, a corner table | the names of the line's dead read out at the shift change | refused by the company; reading them in the bar instead; the company allows a minute at shift change, and she reads faster (stays) |
+| **Cass Oduya**, 30s, union organiser, quietly | the Slag Heap | the Guild at Pallas | asking questions; watched by company security; gone on a hauler, and someone else starts asking the same questions (gone) |
 
 **The dockmaster** (the company's): correct to the letter of the company's rules, and reads every manifest twice.
 
 ## The Hollows
 
-A hollowed rock beside the refinery, where the smelter families live outside the company's walls (`the-hollows.md`). Live places: the bar's two stools, and the shrine. Pool of six.
+A hollowed rock beside the refinery, where the smelter families live outside the company's walls (`the-hollows.md`). Live places: the Chute's two stools, and the shrine. Pool of six.
 
 | Who | Where | Wants | Arc |
 |---|---|---|---|
@@ -78,7 +78,7 @@ Wen Haraldsen, the arc's contact here (the water at Pallas), is recurring, not a
 
 ## Eros Old Town
 
-An old town: the oldest settlement in the inner Belt, run down, independent, everyone with a deal (`eros-old-town.md`). Live places: the bar's two stools, and the trader's stall at the lock. Pool of six.
+An old town: the oldest settlement in the inner Belt, run down, independent, everyone with a deal (`eros-old-town.md`). Live places: the Last Strike's two stools, and the trader's stall at the lock. Pool of six.
 
 | Who | Where | Wants | Arc |
 |---|---|---|---|
@@ -95,7 +95,7 @@ Odile Marchetti and Hob Strand, the arc's contacts here (the air at Eros), are r
 
 ## Luna
 
-Earth's shipyard: licensed drydocks in rows, and the dust towns that supply day labour (`luna.md`). Live places: the dust-town bar's two stools, and the hiring board. Pool of six.
+Earth's shipyard: licensed drydocks in rows, and the dust towns that supply day labour (`luna.md`). Live places: the two back tables of Copernicus Lounge, where the dust towns drink, and the hiring board. Pool of six.
 
 | Who | Where | Wants | Arc |
 |---|---|---|---|
@@ -110,16 +110,16 @@ Earth's shipyard: licensed drydocks in rows, and the dust towns that supply day 
 
 ## Mars
 
-A dome town: the hub domes' markets and council halls, and the outer domes' farms (`mars.md`). Live places: the hub bar's two stools, and the market's water stall. Pool of six.
+A dome town: the hub domes' markets and council halls, and the outer domes' farms (`mars.md`). Live places: the Red Line's two stools, and the market's water stall. Pool of six.
 
 | Who | Where | Wants | Arc |
 |---|---|---|---|
 | **Joaquin Ribeiro**, 50s, water broker | the market's water stall | the council's water quota raised | lobbying; the quota cut; the quota held, and he takes the credit (stays) |
-| **Anika Veld**, 20s, dome engineer | the hub bar | the old lake pumps restored | a survey; the council's no; the pumps running, one of them, on a weekend shift she does not get paid for (stays) |
-| **Grigor Mattei**, 60s, farmer from the outer domes | the hub bar, in town for the council | his dome's share of the water | a hearing; the share cut; gone home to the outer domes, angry, and the share is the news a month later (gone) |
-| **Lena Ostrowski**, 40s, air-bill clerk | the hub bar | to stop sending the bills | sending them; a family that cannot pay; gone, to a job in the outer domes, at less (gone) |
-| **Teo Quint**, 25, council clerk | the hub bar | his sister off Ballast's books (`people/yelena.md`) | writing to her; no answer; an answer, short (stays) |
-| **Halima Rao**, 30s, mural painter | the hub bar | the lake murals repainted before the council sells the wall | a commission refused; painting at night; the mural finished, and the council fines her and keeps it (stays) |
+| **Anika Veld**, 20s, dome engineer | the Red Line | the old lake pumps restored | a survey; the council's no; the pumps running, one of them, on a weekend shift she does not get paid for (stays) |
+| **Grigor Mattei**, 60s, farmer from the outer domes | the Red Line, in town for the council | his dome's share of the water | a hearing; the share cut; gone home to the outer domes, angry, and the share is the news a month later (gone) |
+| **Lena Ostrowski**, 40s, air-bill clerk | the Red Line | to stop sending the bills | sending them; a family that cannot pay; gone, to a job in the outer domes, at less (gone) |
+| **Teo Quint**, 25, council clerk | the Red Line | his sister off Ballast's books (`people/yelena.md`) | writing to her; no answer; an answer, short (stays) |
+| **Halima Rao**, 30s, mural painter | the Red Line | the lake murals repainted before the council sells the wall | a commission refused; painting at night; the mural finished, and the council fines her and keeps it (stays) |
 
 **The customs officer** (Dome Pact): counts the water first, and the rest after.
 
