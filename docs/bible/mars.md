@@ -18,6 +18,34 @@ Every household has an air account: a share of the dome's air, billed monthly, a
 
 The hub domes are cities: towers, markets, the council halls, and the lake murals. The outer domes are farms and the people who work them, under lower roofs, with grow-lights through the night and the share board in the square. People in the hub call the outer domes "the edge". People at the edge call the hub "the bill".
 
+## Its places
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1246), bringing the place in line with `places.md`, `regulars.md`, `powers-people.md`, `trade-goods.md` and the code (`js/data.js`, `js/bar.js`).
+
+**Who owns it.** Each dome's company (above); Mars is a dome town (`places.md`), under the Dome Pact's patrol (`js/data.js`). The port is in a hub dome.
+
+| Inner place | At the port | Whose | Where |
+|---|---|---|---|
+| **Berth** | the hub dome's pads, under the dome company's port authority | the dome company's | the hub |
+| **Customs** | the Dome Pact's office, which counts the water first | the bloc's | the pads |
+| **Market** | the hub market, with the water stall | the dome company's floor; private stalls | the hub |
+| **Bar** | the Red Line, a basalt slab of a bar top and a chalked countdown to the first rain (`js/bar.js`) | private | the hub |
+| **Clinic** | the dome's clinic, on the air account | the dome company's | the hub |
+| **Lodging** | a crews' hostel, the air billed by the night | the dome company's | the hub |
+| **Hiring** | the agencies' desks | the agencies' | the hub |
+| **Shipper's office** | the Dome Pact Freight Office (`js/contracts.js`) | the bloc's | the hub |
+| **Assembly** | the council hall, where the budget meetings are shouted out | the dome's council | the hub |
+| **Homes** | air accounts stencilled by every door | the dome company's, billed | the hub; the edge |
+| **The way down** | the rail to the outer domes, the edge | the dome companies' | the hub |
+
+**Its people's places.** The Red Line's stools and the market's water stall (`regulars.md`, Mars); Yelena's family, if a run meets them (`people/yelena.md`).
+
+**Its law.** The Dome Pact inspects. It licenses water for import, so outside water lands only on a dome's contract (the ice run's premium), and it bans unmetered air and water kits, which undercut the air bill (`trade-and-law.md`, `js/inspection.js`).
+
+**Its trade.** Mars makes refined metals, priced low, and wants electronics, food and water, priced high (`js/data.js`).
+
+**In the story.** Mars is where the domes' contracts for the ice run's water are paid (`js/icerun.js`), and the Dome Pact's home; its auditor works at Eros.
+
 ## Growing up here
 
 **In a hub dome, on the full bill.** A household in a hub dome near the valley's centre, on the full air bill, with the share number stencilled beside the door. The family's arguments are the council's: the budget meetings in the square, the shouting, the vote on next year's air rate. Children go to the budget meetings from small. Who is missed: a parent who speaks at the council, or a grandfather who saw the first lake fill. Why they leave: the bill, which rises every year, and the meetings, which never end. What they hope for: the family's account paid ahead, or a seat on the council.

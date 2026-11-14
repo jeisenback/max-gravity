@@ -34,7 +34,7 @@ Ceres is a guild station (`places.md`), so most of what is in it is the members'
 | **Customs** | the council's lock office; the Guild Federation inspects (`js/inspection.js`) | the council's | the surface lock |
 | **Yard** | the apron and the cradles; refits, repairs, the outfitter | the council's, rented by the job | the surface |
 | **Market** | the trade floor and the stalls round it | the council's floor, rented stalls | the upper rings |
-| **Bar** | the Warren's bar, three deep at shift change; Kettle's first bar, quieter, older | private | the lower rings |
+| **Bar** | the Warren, the bar the lower rings are named for, three deep at shift change, the water ration posted over the taps, the floor tilting with the ring's curve (`js/bar.js`); Kettle's first bar, quieter, older | private | the lower rings |
 | **Clinic** | the station's clinic, on the guilds' cover for members and for cash for renters | the council's | the upper rings |
 | **Lodging** | crews' bunkrooms by the docks; the co-ops' rented rooms near the yard | the council's, rented | the upper rings |
 | **Hiring** | the guilds' boards and the agencies' desks | the guilds' and the agencies' | the upper rings |
