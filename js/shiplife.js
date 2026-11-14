@@ -24,14 +24,15 @@ const roomAt = id => ROOMS.find(r => r.id === id);
 // ---------- scenes staged ----------
 // Where a scene open in a burn is acted out, and who goes there (docs/superpowers/specs/2026-11-05-scenes-staged-design.md): the room the scene
 // sets, else the first room its words name, else the bridge for the captain, the berths for a passenger, the galley otherwise. `aboard` is the
-// cutaway's people ({ id, role }), `staged` the ids the scene names (scenePeople, character.js). null when nobody it names is aboard, or for a fight.
+// cutaway's people ({ id, role }), `staged` the ids the scene names (scenePeople, character.js). null when nobody it names is aboard, for a fight, or
+// for the downtime scene: it lists what is going on around the ship, tagged where each is, so those it names carry on where they are (#1169).
 const SCENE_ROOM_WORDS = {
   galley: /\b(galley|the mess|the table)\b/i, bridge: /\b(bridge|cockpit)\b/i, engine: /\b(engine room|the drive)\b/i, hold: /\b(the hold|cargo bay)\b/i,
   medbay: /\b(medbay|clinic bunk)\b/i, berths: /\b(berths?|bunks?)\b/i, gunnery: /\b(gunnery|the guns)\b/i,
   head: /\bthe head\b(?! of\b)/i, workshop: /\bworkshop\b/i, airlock: /\b(airlock|the lock)\b/i, lifesupport: /\b(life support|air recycler|the scrubbers)\b/i,  // the tower's rooms (#973): the head of something is not the head, and the galley's water recycler is not life support
 };
 function sceneStage(ev, aboard, staged) {
-  if (!ev || ev.board) return null;
+  if (!ev || ev.board || ev.downtime) return null;
   const by = new Map(aboard.map(p => [p.id, p])), named = staged.filter(id => id !== 'you' && by.has(id));
   if (!named.length) return null;
   const words = `${ev.title || ''} ${ev.text || ''}`, said = Object.entries(SCENE_ROOM_WORDS).map(([room, re]) => [room, words.search(re)]).filter(([, at]) => at >= 0).sort((a, b) => a[1] - b[1]);
