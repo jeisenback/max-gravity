@@ -50,7 +50,7 @@ The independent ports and the Rook do not inspect.
 
 - **The Arcology licenses medicine** because unregistered drugs are its ban: registered stock lands under licence, anything else is the same crates without the paper.
 - **The Dome Pact licenses water** because water kits undercut the air bill: the domes sell their own water, and outside water lands only on a dome's contract (the ice run's premium, `ICE_PREMIUM`).
-- **The Guild licenses machine parts at its yards only** (the owner, 2026-11-14): Ceres Station and Titan, which have yards, protect the yards' parts; the other Guild stations tax berth and handling, not goods, as `trade-and-law.md` says. The code licenses parts at every Guild port today, and changes to fit.
+- **The Guild licenses machine parts at its yards only** (the owner, 2026-11-14): Ceres Station and Titan, which have yards, protect the yards' parts; the other Guild stations tax berth and handling, not goods, as `trade-and-law.md` says. The code licenses parts at the Guild's ports with a shipyard (`LICENSED_AT_YARDS`, `js/inspection.js`, #1205); its other ports still inspect for bad standing, which is left open.
 - **The bans are new goods** (the owner, 2026-11-14), not variants of the seven: see Chapter 2's goods, below. They stay out of chapter 1.
 
 ## Chapter 2's goods
@@ -112,7 +112,7 @@ What chapter 1 needs from this page: each good's name, what it is, who ships it 
 
 ## What the game changes to fit
 
-Chapter 1: words, and two fixes. Where a scene names a good, a shipper or a licence, it uses this page; the Guild's licence moves to its yards (`LICENSED`, `js/inspection.js`, #1205), and Earth no longer prices metal high (`js/data.js`, #1206). Chapter 2, in order, after the owner's review: licences as papers; shortages and gluts as events; the six new goods, and finds of a banned good at inspection; the co-op's trade through `role()`.
+Chapter 1: words, and two fixes. Where a scene names a good, a shipper or a licence, it uses this page; the Guild's licence is at its yards (`LICENSED_AT_YARDS`, `js/inspection.js`, #1205, done), and Earth no longer prices metal high (`js/data.js`, #1206). Chapter 2, in order, after the owner's review: licences as papers; shortages and gluts as events; the six new goods, and finds of a banned good at inspection; the co-op's trade through `role()`.
 
 ## Open questions for the owner
 
