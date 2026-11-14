@@ -10,8 +10,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { downtimeDue, downtimeSettled, downtimeLeft, downtimeThere, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeSettled', 'downtimeLeft', 'downtimeThere', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
+const { downtimeDue, downtimeSettled, downtimeLeft, downtimeThere, offersTick, offerOnShip, OFFER_LIFE, OFFER_REAL, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeSettled', 'downtimeLeft', 'downtimeThere', 'offersTick', 'offerOnShip', 'OFFER_LIFE', 'OFFER_REAL', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
 const plain = x => JSON.parse(JSON.stringify(x));
 
 // ---------- the pure rules (task 1) ----------
@@ -72,6 +72,29 @@ test('a line that puts someone in a place is offered only when they are there; o
   assert.equal(downtimeThere({ where: () => 'c:tomas' }, people), true, 'a line with no place');
   assert.equal(downtimeThere({ at: 'galley', where: 'galley' }, people), true, 'a place activity');
   assert.equal(downtimeThere({ at: 'engine', where: () => 'gone' }, people), true, 'someone not drawn');
+});
+
+test('offers on the ship: four shown at once in order, the rest waiting unaged; one lapses after a ship day and twenty real seconds both (#1183)', () => {
+  const t = {}, people = [{ id: 'a', room: 'galley' }, { id: 'b', room: 'engine' }];
+  for (let i = 0; i < 5; i++) offerOnShip(t, { key: `k${i}`, label: `L${i}`, room: 'galley' });
+  assert.equal(offerOnShip(t, { key: 'k0', label: 'again', room: 'galley' }), null, 'one of each at a time');
+  let o = offersTick(t.offers, people, 10, 5);
+  assert.deepEqual(plain(o.map(x => x.shown)), [true, true, true, true, false], 'four shown');
+  assert.equal(o[4].life, 0, 'the fifth waits and does not age');
+  o = offersTick(o, people, OFFER_LIFE, 1);
+  assert.equal(o.length, 5, 'a ship day of the burn but not twenty real seconds: still up');
+  o = offersTick(o, people, 0, OFFER_REAL);
+  assert.deepEqual(plain(o.map(x => x.key)), ['k4'], 'both: the four lapse, and the fifth shows');
+  assert.equal(o[0].shown, true);
+});
+
+test('an offer about someone shows only while they are drawn and where its words put them, and does not age till then (#1183)', () => {
+  const people = [{ id: 'c:tomas', room: 'galley' }];
+  let o = offersTick([{ key: 'x', label: 'Learn the loop', who: 'c:tomas', at: 'engine', life: 0, real: 0 }], people, 30, 30);
+  assert.deepEqual(plain([o[0].shown, o[0].life]), [false, 0], 'at the meal, not the coolant loop');
+  o = offersTick(o, [{ id: 'c:tomas', room: 'engine' }], 30, 30);
+  assert.deepEqual(plain([o[0].shown, o[0].life]), [true, 30], 'in the engine room: shown, and ageing');
+  assert.equal(offersTick([{ key: 'y', label: 'Gone', who: 'nobody', life: 0, real: 0 }], people, 1, 1)[0].shown, false, 'someone not drawn: not shown');
 });
 
 test('sit with someone: one having a hard time or hurt first, else by the day', () => {

@@ -55,7 +55,7 @@ const G = {
   barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
-  cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
+  cutHits: [], cutRooms: [], cutOffers: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js; cutOffers: the offers' tags and edge markers, each { offer, x, y, w, h, mark? } (#1183)
   cutRack: null,     // the comms rack's screen box where the burn view drew it whole, or null; a tap on it opens Comms (#919, shiplife.js)
   camView: { follow: null, y: null, before: undefined },  // the burn camera's aim (shiplife.js camAim, #1182): `follow` the id of the one it follows (null: free), `y` where the player left it down the tower's run, `before` that aim kept while a scene has the camera
   cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; with aim, zoom and span, what it aims at down the run, its scale and the view's height in world units, #1182; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
@@ -1350,6 +1350,8 @@ canvas.addEventListener('click', e => {
   // On a burn, tap or click someone in the cutaway to open their page and follow them, or a room (in view or in the outline) to open its console.
   if (camDrag) { const dragged = camDrag.moved; camDrag = null; if (dragged) return; }  // the end of a drag is not a click
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
+    const offer = !G.dialog && (G.cutOffers || []).find(b => e.clientX >= b.x && e.clientX <= b.x + b.w && e.clientY >= b.y && e.clientY <= b.y + b.h);
+    if (offer) { Sfx.click(); offerClick(offer); return; }  // an offer's tag takes it; its marker pans to it (shiplife.js, #1183)
     const reach = 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
