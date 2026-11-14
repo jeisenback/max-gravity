@@ -17,7 +17,13 @@ Each follows the funnel of `shape.md`: a short written opening that says where t
 
 ## The organiser's (Hold)
 
-**Where the player stands.** The co-op kept the Ore Runner and its independence, at a price: the lender's terms are the hardest they have been, a member sold their share to pay for the vote, or the co-op took a debt from someone other than the house. The hand is still her captain and one of the members, and now the one the other crews come to.
+**Where the player stands.** The co-op kept the Ore Runner and its independence, at a price that comes from what the hand built in chapter 2 (the owner, 2026-11-14):
+
+- **By default, the house's harder terms:** more say over cargo and lanes, payments called early.
+- **A refinance, if the hand earned the standing:** a freehold's or Kaur's people take over the debt. The co-op is free of the house and owes someone in the war, which leans it toward a side without a charter.
+- **A member's share sold** to pay for the hold, which costs a person and a vote.
+
+The hand is still her captain and one of the members, and now the one the other crews come to.
 
 **Who is with them.** The members who stayed; Ines, a member or on her licence (`chapter-2.md`, the mid-chapter vote); new members recruited in the chapter, Yelena or Ruben among the candidates.
 
@@ -45,7 +51,7 @@ Each follows the funnel of `shape.md`: a short written opening that says where t
 **The long middle.**
 
 - Convoys under Ballast escort carrying Tycho's fuel from the inner depots, past the Belt's anger.
-- Orders that cross a line: stop a freehold's hauler, seize a rock's ice, fire on a ship running fuel to the starving rocks. The hand can carry them out, slow them, or refuse, and the licence takes the mark (Noor Belanger's story is that mark).
+- Orders that cross a line: stop a freehold's hauler, seize a rock's ice, fire on a ship running fuel to the starving rocks. The hand can carry them out, slow them, or refuse (the owner, 2026-11-14). Each refusal costs more: the first a mark on the licence and a fine for the ship; the second Kessler's report to the house, and the next convoy goes without the hand; the third ends the charter, and the hand is put ashore onto the outside path partway through the chapter. Noor Belanger's story is that mark.
 - Tavi Mensah, Kaur's old master, offers a way across: Kaur would take a master and a hull that changed sides, and pay for it.
 
 **How it ends.** A convoy command is offered (`later-chapters.md`, Chapter 4, the master's): the hand's own hull and two or three under orders. The decision is whose convoy: Tycho's, which the licence was earned for, or Kaur's, which it would be risked for.
@@ -58,7 +64,7 @@ Each follows the funnel of `shape.md`: a short written opening that says where t
 
 **Who is with them.** Those who followed, often one or two; Yelena, if she left Ballast, and Ruben, if the networks burned him; the havens' own people.
 
-**What is theirs.** A share in a haven's hull, or a berth on one; the money from the share, until it is spent; no paper anyone respects.
+**What is theirs.** A share in a haven family's hull, or a berth on one, never a hull of their own: only owners own (`shape.md`; the owner, 2026-11-14), so the havens' families are the power the hand deals with. The money from the share, until it is spent; no paper anyone respects. A hull owned outright stays a rare goal ending, far later.
 
 **The long middle.**
 
@@ -84,15 +90,12 @@ Each outcome of chapter 2's last vote (`chapter-2.md`, The meeting and the vote)
 
 Nothing until chapter 2 is built. Then, in order: the war's events as world state (`the-fuel-war.md`), read by every path; each path's opening and its long middle; the end decision and what it hands chapter 4.
 
-## Open questions for the owner
-
-- On the organiser's path, what price does the hold cost: harder terms, a member's share sold, or a debt to someone else (a league, a freehold, Kaur)?
-- On the master's path, can the hand refuse the charter's orders and keep the bridge, or does a refusal end the charter?
-- On the outside path, can the hand buy a hull of their own in the havens, given that only owners own (`shape.md`)?
-
 ## Assumptions to confirm
 
 - Chapter 3 is the war: the blockade, then the first open fighting; it goes on into chapter 4.
 - The three paths share the war, the world and the record, and differ in where the player stands.
 - A member who voted against the outcome and thinks poorly of the hand leaves; one who thinks well of them stays.
 - Each path ends in the decision that opens its chapter 4 (`later-chapters.md`).
+- The hold's price comes from chapter 2: the house's harder terms by default, a refinance through a freehold or Kaur if earned, or a member's share sold.
+- The master may refuse orders; the third refusal ends the charter and puts the hand on the outside path.
+- Outside, the hand holds a share of a haven family's hull, not a hull of their own.
