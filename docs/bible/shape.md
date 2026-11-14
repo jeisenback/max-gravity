@@ -33,6 +33,39 @@ Chapter 2's last vote (`chapter-2.md`; the co-op itself is `ceres-coop.md`) poin
 
 An owner of one's own hull is not the default rung. Only owners own (`README.md`, the owner's decisions), and a rating who becomes one is the rarest story in this world. It may come later, as a goal some runs reach, not as where the game leads.
 
+## How a chapter opens and closes
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1231). Chapter 1's close and chapter 2's start are built (`js/hired.js`); this sets the pattern they follow, so the later turns are written to it.
+
+Every turn between chapters has the same five parts, in order.
+
+**1. The decision, seen coming.** The chapter's last choice is in view from its middle, and the player knows what each answer sets. Some are the player's to time (chapter 1: sign for the share when the savings are there); some the world times (chapter 2: the lender's offer, at the height of the squeeze). Either way it is one scene, and it is not sprung.
+
+**2. The close.** One scene, in a place, that says where the hand now stands and who is with them: chapter 1's is at the foot of the new ship's ramp (A Member's Share, `chapterEnd`). It names who came, who did not, who died (the memorial) and what is owed. It closes the chapter, not the game.
+
+**3. The look back.** The chapter in the ledger (Looking Back, `chapterRecap`): the days and the work, who the hand got close to and what they were told, the marks left, the promises kept and broken. A line appears only if there is something to say. Each chapter's look back adds what that chapter kept: chapter 2's, the votes and who carried them.
+
+**4. What carries, and what is shown of it.** Everything the record keeps carries as it stands, and nothing resets (`chapter-2.md`, What carries over):
+
+- the people, with their opinion, their threads and their state (aboard, away, dead);
+- money: savings, a share, what is owed;
+- standing, kept by the name of whoever holds it;
+- the record and the memorial;
+- the hand's family and home;
+- the places, their regulars and the dock officials, as they were.
+
+What changes is the view: whose ship, what the player decides, what is theirs (The chapters widen, above). The close or the opening shows the player what they carry in a few lines: who is with them, what is owed, what the record says of them. Not a screen of numbers.
+
+**5. The opening.** One written scene, short, that says where the player now stands, who is with them, what is theirs, what is owed, and the first thing to do (chapter 2's: The Bridge, `chapterTwoStartScene`: the ramp at Ceres, the lender's letter, the vote that puts the hand on the bridge). Then the chapter's new system is taught on something small before it decides anything large: the meeting's first vote is on a run, not on the co-op's future. The opening is over by the first port; the teaching by the second or third run.
+
+**Saved at the turn.** The new chapter's start is saved, so a reload reopens in the new chapter, and the old chapter's end can be read again in the look back.
+
+**A run can end at a close.** A close is also a place the run can end: the hand dies, is ruined or walks away (Endings, below), and the endings read the record as it stands.
+
+**Chapter 1 to 2, against the pattern.** The decision is the share, timed by the player once the savings are there (`chapter-1.md`, the spine); the close is A Member's Share at the Ore Runner's ramp; the look back is Looking Back; the carry is as listed; the opening is The Bridge. Two gaps: the opening names the usual narrow run's new members, not the run's draw (#1240), and chapter 2's first, small vote is not built (the meeting, `chapter-2.md`, #1216).
+
+**Chapter 3's three openings** follow the same pattern (`chapter-3.md`): the organiser's opens at the meeting after the vote, with the price of the hold read out; the master's in the house's office, with the charter and the licence signed; outside on the yard's apron, with the hull sold and whoever walks away with the hand.
+
 ## Freedom
 
 As the world opens, the player can take part in its big events, steer between them, or go their own way:
@@ -70,6 +103,7 @@ Every run is seeded fresh, so the game's randomness is the player's. The tests h
 
 ## Assumptions to confirm
 
+- A turn between chapters has five parts: the decision seen coming, the close, the look back, what carries (everything, as it stands), and a short opening that teaches the new system on something small.
 - A run is one life, from signing on to an ending, and from chapter 4 the line after it; runs are long, and replayed now and then.
 - The legacy carried between runs is small and earned, and never makes winning easier.
 - Each chapter widens the player's freedom; the spine thins and the world takes over.
