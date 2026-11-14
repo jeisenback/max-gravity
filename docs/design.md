@@ -142,7 +142,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | Vesta and Kaur's depot towns on the map; the havens and the yards as places; the first generated Belt settlements | `bible/places.md`; `bible/the-belt.md` |
 | The major powers' people (Tycho, Kaur, Van Leeuwen, Ballast) | `bible/cast.md` |
 
-**Later chapters.** Yard and military technology within reach, a fleet's hulls of different grades, an outpost's technology, the restricted grade, and whether anything lies beyond it (the chapter 7 threat, the owner's to choose).
+**Later chapters.** Yard and military technology within reach, a fleet's hulls of different grades, an outpost's technology, the restricted grade, and whether anything lies beyond it (left out unless the owner bends the rule); the chapter 7 threat as a pool drawn by the record (`bible/later-chapters.md`).
 
 ### Needed before chapter two goes on
 
