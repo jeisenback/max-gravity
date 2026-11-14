@@ -102,8 +102,35 @@ Each is its own piece of work, once the owner has corrected this page:
 
 ## Later
 
-- **Going down to the planet** (the owner, 2026-11-12): from the Ring, a spaceplane to the Lagos platform and into the arcology below, and so to the other Earth cities in this bible (Lisbon, Rotterdam, Chittagong). Not in the first port view.
+- **Going down to the other Earth cities** (Lisbon, Rotterdam, Chittagong), after Lagos (below).
 - **The information a port carries** (prices, the boards, the missions, standing) stays on the pages for now. The view comes first; what the pages become follows from it.
+
+## Going down to Lagos
+
+Approved by the owner, 2026-11-14. The owner chose, on 2026-11-14:
+- **What it is for:** all three: family where they live, a day down, and work down there.
+- **Where:** Lagos only in the first pass.
+- **How it looks:** scenes first, as the day ashore is now. A drawn street or concourse comes later.
+
+### The trip
+
+The ship never lands: a torch ship stops at the Ring. The hand goes down alone, on the spaceplane from the hub to the Lagos platform, and comes back up on the evening flight.
+
+- **When:** only while the captain is waiting at the Ring for a shipper (`stay.js`), when the dock's main button is "Pass the night". A trip down uses a day of the stay: the hand goes down in the morning and is back for the night, and the night passes as it does now.
+- **The fare:** a seat down and back, from the hand's own savings: 900 cr. Lift off Earth is what the Lagos holding company sells (`owners.md`, `economy.md`), and Lagos's is the cheapest. A drink at the Gravity Well is 200 cr and a day's wage is 500.
+- **Where it lands:** the platform, offshore. A ferry takes passengers in through the sea wall to the arcology. The mainland (Surulere, Yaba) is across the lagoon, outside the wall and outside the arcology (`lagos.md`).
+
+### What a day down is
+
+1. **A day down.** It works like the day ashore: a short menu, taken in turn by the day. It offers the arcology's tiers behind the wall, the mainland market, the generator man and the shared corridor, and the platform's departure hall. Lines are in the voice, from `lagos.md`.
+2. **Family, where they live.** Tomas's parents, Emeka and Chioma, rent the flat in Surulere he grew up in (`people/tomas.md`). When Tomas trusts the hand, as a visit home asks, he asks the hand to take them something. The visit is at their table, as `visitHome` is, with the same choice of what to tell them. The hand's own family waits until their city is decided (below).
+3. **Work down there.** Jobs on the platform and in the arcology, through the station's job system (`jobs.js`, a job's `where`), listed with the station's when the hand goes down.
+
+### Settled with the owner (2026-11-14)
+
+1. **The fare** is 900 cr.
+2. **The hand's own home** is left open. The first pass visits Tomas's parents only, and the hand's own family waits until their city is decided.
+3. **The hand goes down alone.** Tomas sends something to his parents with them.
 
 ## Settled with the owner
 

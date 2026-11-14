@@ -23209,6 +23209,103 @@
   ]
  },
  {
+  "id": "scene:day-down:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The lower tiers are by the wall, and the lifts there take a long time. A notice in the lobby says the service charge goes up in March. Two floors up a man is mending a fan in a shop doorway, with the parts laid out on a towel, and he tells you the rent on the shop before you've asked.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "The water taxi across the lagoon takes trade notes as well as scrip. Surulere's market runs down both sides of a street, under awnings and a tangle of cable from the generator on a roof. A woman selling phone parts asks if you're off the Ring. You say yes. She asks if they're hiring.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The departure hall on the platform has a screen with the flights on it and four hundred seats bolted to the floor. You sit by the window and watch the lift loads go up on the sled, one every twenty minutes. The evening flight is on time.",
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Walk the arcology's tiers",
+   "Cross the lagoon to the mainland market",
+   "Wait it out in the departure hall"
+  ]
+ },
+ {
+  "id": "scene:day-down:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You ride a glass lift up the outside of a tower because it's there, and a security contractor rides down with you to make sure that's all it is. From the top tier you can see the wall, the lagoon and the mainland behind it, and the platform out at sea where you came in.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting.",
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Walk the arcology's tiers",
+   "Cross the lagoon to the mainland market",
+   "Wait it out in the departure hall"
+  ]
+ },
+ {
+  "id": "scene:day-down:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "A school is letting out on a middle tier, the children in two colours of uniform by the tier they live on. You buy water from a machine that wants arcology scrip, and it won't take your card the first two times.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk down a street of flats with the washing out over it. A boy of about sixteen asks if you're from an agency. When you say no, he asks which agency you went up through, and writes the name on his hand.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You eat at the counter in the departure hall. The menu is in scrip with the trade-note price under it, a third higher. You watch the sea for most of the afternoon.",
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Walk the arcology's tiers",
+   "Cross the lagoon to the mainland market",
+   "Wait it out in the departure hall"
+  ]
+ },
+ {
+  "id": "scene:day-down:button",
+  "plays": [],
+  "title": "Go down to Lagos (900 cr)",
+  "text": "You've been down today.",
+  "labels": []
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {
