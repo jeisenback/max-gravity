@@ -1,6 +1,6 @@
 # Regulars
 
-Status: draft for the owner's review, 2026-11-14 (#1212). Step 1 of the writing order in `cast.md`: the ports the hand reaches in chapter 1, each with a pool of regulars, and the pool rule put on the regulars and the dock official that exist. Lagos Ring's people are in `ports.md`; the kinds of place and their inner places are in `places.md`.
+Status: draft for the owner's review, 2026-11-14 (#1212). Step 1 of the writing order in `cast.md`: the ports the hand reaches in chapter 1, each with a pool of regulars, and the pool rule put on the regulars and the dock official that exist. Lagos Ring's fixed people are in `ports.md`, and its regulars below; the kinds of place and their inner places are in `places.md`.
 
 ## The rule
 
@@ -13,6 +13,19 @@ A regular is a place's person: always at their place, known by the second visit,
 - **The dock official** stays one per port and is the same face every landing (`js/official.js`); their name is still generated, and the port's page gives their manner.
 
 Each entry below is: who, where they are, what they want, and their arc in three beats.
+
+## Lagos Ring
+
+Earth's port (`lagos.md`, `ports.md`). Its leaseholders and staff are fixed people, the same every run (`ports.md`); its regulars are the Gravity Well's two stools. Pool of four.
+
+| Who | Where | Wants | Arc |
+|---|---|---|---|
+| **Biodun Okafor-Lane**, 50s, rigger between contracts | the Gravity Well | one more contract before the insurer calls him too old | the board empty; a contract on a Luna-bound refit; gone up the well to Luna (gone) |
+| **Chidinma Eze-Walters**, 30s, tug pilot | the Gravity Well, after a shift | her own tug, on a lease from the holding company | the deposit saved; the lease's terms changed; the tug, an old one, with her name on the hatch (stays) |
+| **Segun Adeyinka**, 20s, welder up from Surulere on his first contract | the Gravity Well | not to go down on the next spaceplane | the contract ending; a week on the board; another contract, and he buys Ngozi's whole pot for the shift (stays) |
+| **Grace Obi-Hartmann**, 60s, retired clinic nurse | the Gravity Well, the end stool | the clinic's contract kept with the firm she trained | the tender; the contract to a mainland firm; she teaches the new nurses for nothing, at the bar (stays) |
+
+**The customs officer** (Arcology Pact): as at Luna, polite, slow, and certain that something on the ship is not declared.
 
 ## Ceres Station and the Warren
 
