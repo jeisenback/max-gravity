@@ -5,9 +5,9 @@
 // than once. It guards against a captain who pays far more or less than the rest, or a chapter that does not reach its target.
 //
 // Profiles:  attentive and hurried (tools/soak.js SOAK_PROFILES, #1199): the bands below hold for a player who takes every offer and one who takes none.
-//            Measured on Hester, seeds 1 to 5, 2026-11-14: attentive a median of 13 runs and day 112, 4,537 cr a run; hurried 11 runs and day 102,
-//            5,456 cr a run (no downtime and no offers, so a little sooner); between 15 runs and day 122, 3,941 cr a run. The spread across captains is
-//            checked for the attentive player.
+//            Measured over the four captains, seeds 1 to 5, 2026-11-14: attentive a median of 11 to 18 runs and day 101 to 167; hurried 9 to 14 runs
+//            and day 94 to 121, a little sooner with no downtime and no offers, so the hurried player's floor is 8 runs, not 10 (the owner, 2026-11-14).
+//            The spread across captains is checked for the attentive player.
 // Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time, for each profile.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
 //            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 200 (raised from 190 by the owner, 2026-11-07: Zoya sat on 190 and the guns on her hull put one seed a day over), and the mean pay
@@ -38,8 +38,8 @@ for (const profile of ['attentive', 'hurried']) test(`about twenty runs reach th
     assert.ok(rs.length >= 3, `${captainKey}: ${rs.length} of 5 seeds reached the target (${all.map(r => r.ending ? 'ended' : r.reached ? 'ok' : `no, ${r.runs} runs`).join(', ')})`);
     for (const r of rs) assert.ok(r.reached.runs >= 6 && r.reached.runs <= 40 && r.reached.day >= 30 && r.reached.day <= 260, `${captainKey} seed ${r.seed}: ${r.reached.runs} runs, day ${r.reached.day}`);  // no single seed is far out: the tight band is on the median, below
     const med = a => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)], mr = med(rs.map(r => r.reached.runs)), md = med(rs.map(r => r.reached.day));
-    band(`${captainKey}: median runs`, mr, [10, 30], { sample, measured: 'Hester 13 attentive, 11 hurried (2026-11-14)' });  // about twenty runs, with a little room: any one seed moves when the random numbers shift
-    band(`${captainKey}: median day`, md, [60, 200], { sample, measured: 'Hester 112 attentive, 102 hurried (2026-11-14)' });
+    band(`${captainKey}: median runs`, mr, [profile === 'hurried' ? 8 : 10, 30], { sample, measured: 'attentive 11 to 18, hurried 9 to 14 over the four captains (2026-11-14)' });  // a hurried player reaches the share sooner: its floor is 8 (the owner, 2026-11-14)  // about twenty runs, with a little room: any one seed moves when the random numbers shift
+    band(`${captainKey}: median day`, md, [60, 200], { sample, measured: 'attentive 101 to 167, hurried 94 to 121 over the four captains (2026-11-14)' });
     const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
     // (an ice run, js/icerun.js, is long and pays about 28,000, so the mean a run is up; what the economy keeps is the pay a day)
     band(`${captainKey}: mean pay per run`, Math.round(pay), [2500, 8000], { sample, measured: '3,166 to 5,408 over the four captains (attentive); Hester 5,456 hurried (2026-11-14)' });  // a rating's day rate less the kit, and no share (#879); 8,000 to 20,000 with the share
