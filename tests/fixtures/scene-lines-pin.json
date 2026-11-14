@@ -23400,7 +23400,23 @@
     "fx": {
      "c:tomas": 1
     },
-    "next": null
+    "next": {
+     "title": "His Mother's Stew",
+     "text": "Tomas comes down to the lift for the bags. He opens the top one, looks at it, and closes it again. \"She always double-bags it,\" he says. \"As if it's going to Mars.\" He takes them to the galley.",
+     "labels": [
+      "Leave him to it"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null",
+      "mem": [
+       "9 Jul 2214: You brought up his mother's stew from Surulere."
+      ]
+     }
+    ]
    },
    {
     "i": 1,
@@ -23412,7 +23428,23 @@
     "fx": {
      "c:tomas": 2
     },
-    "next": null
+    "next": {
+     "title": "His Mother's Stew",
+     "text": "Tomas comes down to the lift for the bags. He opens the top one, looks at it, and closes it again. \"She always double-bags it,\" he says. \"As if it's going to Mars.\" He takes them to the galley.",
+     "labels": [
+      "Leave him to it"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null",
+      "mem": [
+       "9 Jul 2214: You brought up his mother's stew from Surulere."
+      ]
+     }
+    ]
    }
   ],
   "title": "Emeka and Chioma",
@@ -23420,6 +23452,63 @@
   "labels": [
    "Tell them he's well and the work is good",
    "Tell them he misses the ring and doesn't say so"
+  ]
+ },
+ {
+  "id": "scene:day-down:crayfish",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The crayfish sellers are at the far end of the market, under a tarpaulin. The woman weighing it out asks who it's for, and when you say a stall on the Ring she adds a handful and charges for it.",
+    "fx": {
+     "credits": -60
+    },
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Buy dried crayfish for Ngozi in Surulere (60 cr)"
+  ]
+ },
+ {
+  "id": "scene:day-down:ngozi-given",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Ngozi spoons stew over the rice and puts two puff-puff on the side of the plate. \"Those are from this morning,\" she says. \"Don't tell anyone they were free.\"",
+    "mem": [
+     "9 Jul 2214: You ate at Ngozi's stall on the ring.",
+     "9 Jul 2214: You brought up crayfish from Surulere."
+    ],
+    "fx": {
+     "credits": -120,
+     "c:tomas": 1,
+     "p6": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": null,
+    "mem": [
+     "9 Jul 2214: You brought up crayfish from Surulere."
+    ],
+    "fx": {
+     "p6": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Ngozi Achebe",
+  "text": "Ngozi opens the bag and smells it before she says anything. \"Surulere,\" she says. \"Not the platform.\" She puts it on the shelf behind the hob.",
+  "labels": [
+   "Buy a plate (120 cr)",
+   "Leave them to it"
   ]
  },
  {
