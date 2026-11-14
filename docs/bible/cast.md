@@ -55,7 +55,11 @@ A passing person the hand engages with can rise: an offer taken, a side taken wi
 
 ## The director
 
-Breadth is only readable if it is limited. A director keeps a few threads live at once (with the main characters beside them), prefers threads with stakes now, lets others rest as away, and brings back a returning one when its condition holds. It feeds the one offer queue (`burn.md`) on the ship, and the port's scenes (`ports.md`) ashore.
+Breadth is only readable if it is limited. A director keeps **three threads live at once** besides the main characters (the owner, 2026-11-14): the ship's offers hold four (`burn.md`), and the main characters often have one or two of them; a burn has two to five downtime slots; and a crew of seven is not many. It prefers threads with stakes now, lets others rest as away, and brings back a returning one when its condition holds. It feeds the one offer queue (`burn.md`) on the ship, and the port's scenes (`ports.md`) ashore.
+
+## Death
+
+**Anyone can die** (the owner, 2026-11-14): a main character, a shipmate, a regular, a passer-by. A death closes the thread and frees its place among the live ones. A death comes from stakes the player could see coming (a fight, a breakdown, a choice, a fate scene), never by chance off screen, so a run leaves a few graves and none that read as the dice. The memorial and the record keep them.
 
 ## Memory and the record
 
@@ -101,10 +105,8 @@ After the owner's review, in order: a person's tier and thread on their record; 
 
 ## Open questions for the owner
 
-- How many threads may be live at once, besides the main characters?
 - Can anyone be promoted, or only people met through certain sources?
 - Are threads built from templates acceptable, or must every arc be written?
-- Which tiers can die or leave for good, as the main characters can now?
 
 ## Assumptions to confirm
 
@@ -112,5 +114,6 @@ After the owner's review, in order: a person's tier and thread on their record; 
 - Every person has a thread: live, away, returning or closed.
 - Each tier draws from a pool, weighted by the run's facts, with half again as many written as a run draws.
 - Promotion gives a passing person a thread from a pool of templates matched to their sheet.
-- A director keeps a few threads live and feeds the one offer queue.
+- A director keeps three threads live besides the main characters, and feeds the one offer queue.
+- Anyone can die, from stakes the player could see coming.
 - The writing the pools need, and its order, as listed above.
