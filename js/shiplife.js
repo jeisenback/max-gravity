@@ -796,9 +796,13 @@ function lifeTick(dt) {
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock, prevPh = t.lifePh;  // the downtime scene, once a slot at a change of the ship's day
   t.lifeBlock = now; t.lifePh = ph;
-  if (prev !== undefined && downtimeDue(t, now, prev, ph, prevPh) && !isDark() && ph === 'move' && !t.event && !G.dialog) {  // a burn just loaded (no block seen yet) waits for a real change
+  const free = !isDark() && ph === 'move' && !t.event && !G.dialog;
+  if (prev !== undefined && !t.lifeWait && downtimeDue(t, now, prev, ph, prevPh) && free) t.lifeWait = { slot: lifeSlotOf(t) };  // a burn just loaded (no block seen yet) waits for a real change
+  if (t.lifeWait && (t.lifeWait.slot !== lifeSlotOf(t) || !lifeFree(t))) t.lifeWait = null;  // its slot is gone, or spent another way
+  if (t.lifeWait && free) {  // due: it opens once those it tags are where they are going (#1168)
     const e = downtimeScene();
-    if (e.able) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; openEvent(e); }
+    if (!e.able) t.lifeWait = null;
+    else if ((t.lifeWait.calm = downtimeSettled(e.tags, people) ? (t.lifeWait.calm || 0) + dt : 0) >= DOWNTIME_CALM || downtimeLeft(t, burnSpeed()) <= DOWNTIME_LAST) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; t.lifeWait = null; openEvent(e); }
   }
   const was = [...(G.transit.marks || [])], block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
   mendHull(G.state, was, state.marks);  // a mark the armor came back over leaves its patch (#935)
@@ -1265,6 +1269,23 @@ const spendLife = (t, key = lifeSlotOf(t)) => { (t.lifeUsed = t.lifeUsed || {})[
 const DOWNTIME_BLOCKS = ['breakfast', 'shift', 'meal', 'supper'];
 const downtimeDue = (t, block, prevBlock, ph, prevPh) => ((block !== prevBlock && DOWNTIME_BLOCKS.includes(block)) || (ph === 'move' && prevPh !== undefined && prevPh !== 'move'))
   && lifeFree(t) && !(t.lifeOffered || {})[lifeSlotOf(t)];
+// The scene waits, once due, until everyone it tags is where they are going: arrived, and not on the ladder (#1168), so what it says someone is doing
+// is what the cutaway shows. `tags` are the scene's (onDeck), `people` the cutaway's. A tag on a room, or on someone not drawn, does not wait. They
+// must stay settled for DOWNTIME_CALM burn seconds: on the frame the crew come off the couches nobody has been sent anywhere yet. It opens anyway,
+// settled or not, when no more than DOWNTIME_LAST burn seconds are left in which it could open (downtimeLeft), so no slot loses its scene: a one-day
+// burn's second slot on a tuned drive has only the moment the crew come off the couches after the flip before the lights go down.
+const DOWNTIME_CALM = 2, DOWNTIME_LAST = 3;
+// The burn seconds left in which the downtime scene could still open: up to the last moment with the lights up (nightLevel under 0.3: not from 0.58
+// to 0.97 of the ship's day) before the slot the burn is in ends (lifeSlotOf) or the crew strap in for the flip or the end of the burn (stageAt). A
+// night inside the slot is waited out: the lights come back in it. Takes the transit and the drive's pace, so it runs in plain Node.
+function downtimeLeft(t, drive = 1) {
+  const n = t.slots || 2, p = t.total ? 1 - t.left / t.total : 0, k = Math.min(n - 1, Math.floor(Math.max(p, t.flipped ? 0.5 : 0) * n));
+  const s = burnStages(t.days || t.total / SHIP_DAY), stop = Math.min(k === n - 1 ? 1 : (k + 1) / n, p < 0.5 ? 0.5 - s.secure : 1 - s.couch);
+  const end = (t.elapsed || 0) + Math.max(0, stop - p) * t.total / drive, f = ((end + 6) / SHIP_DAY) % 1;
+  const lit = f >= 0.58 && f < 0.97 ? end - (f - 0.58) * SHIP_DAY : end;  // the slot ends in the dark: its last light is when they went down
+  return Math.max(0, lit - (t.elapsed || 0));
+}
+const downtimeSettled = (tags, people) => (tags || []).filter(g => g.id).every(g => { const p = people.find(q => q.id === g.id); return !p || (p.tx === null && p.dk === p.tdk); });
 // Who Sit with someone names: of the candidates ([{ id, low, hurt }], in the picker's order) one having a hard time or hurt first, else by the day.
 const sitPerson = (cands, day) => cands.find(c => c.low || c.hurt) || cands[day % cands.length] || null;
 // Where each of the scene's choices is tagged: an activity's `where` is a room id (a tag on the room) or a function of the people aboard
