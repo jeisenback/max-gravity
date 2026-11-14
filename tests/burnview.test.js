@@ -1618,12 +1618,12 @@ test('in a burn Space pauses and resumes, and 1, 2 and 3 pick the speed; the but
   await ev(helpers);
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; });
   const speed = () => ev(() => G.speed), seen = [];
-  for (const k of ['Space', 'Space', 'Digit2', 'Digit3', 'Digit1']) { await page.keyboard.press(k); seen.push(await speed()); }
-  assert.deepEqual(seen, [0, 1, 2, 16, 1]);
+  for (const k of ['Space', 'Space', 'Digit2', 'Digit3', 'Digit1', 'Digit4', 'Digit1']) { await page.keyboard.press(k); seen.push(await speed()); }
+  assert.deepEqual(seen, [0, 1, 2, 16, 1, 256, 1]);
   await page.waitForSelector('#bspeed:not([hidden])');
   await page.click('#bspeed [data-speed="16"]');
   const r = await ev(() => ({ speed: G.speed, lit: [...document.querySelectorAll('#bspeed button.active')].map(b => b.dataset.speed), labels: [...document.querySelectorAll('#bspeed button')].map(b => b.textContent) }));
-  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x'] });
+  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x', 'Run ahead'] });
   await page.click('#bspeed [data-speed="0"]');
   assert.equal(await speed(), 0);
   await ev(() => { G.speed = 2; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
@@ -1651,7 +1651,7 @@ test('paused, a screen opens and works, and nothing in it runs on; landed, the k
 test('the controls page lists the burn\'s keys (#992)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const text = await ev(() => { Menu.view = 'controls'; Menu.render(); return document.getElementById('panel').textContent; });
-  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 2x, 16x/);
+  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 2x, 16x/); assert.match(text, /4: run ahead to the next scene or arrival/);
   await done();
 });
 
@@ -1965,4 +1965,35 @@ test('a new burn starts the camera where the player left it (#1182)', async () =
   });
   await done();
   assert.ok(Math.abs(r.aim - r.left) < 1, `the next burn opens where it was left (${Math.round(r.aim)} against ${Math.round(r.left)})`);
+});
+
+// ---------- #1186: run ahead (docs/bible/burn.md, Running ahead) ----------
+
+test('run ahead takes a burn to arrival in the flip\'s slow motion and a few seconds more, with no downtime scene on the way (#1186)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, days = t.days; t.times = []; t.chatter = 1e9; t.lifeOffered = {}; setBurnSpeed(RUN_AHEAD);
+    let real = 0, downtime = false; const dt = 1 / 30;
+    for (let i = 0; i < 30 * 120 && G.mode === 'transit'; i++) { update(dt); Mods.emit('frame', dt); real += dt; if (G.dialog && G.dialog.event && G.dialog.event.downtime) downtime = true; while (G.dialog && G.mode === 'transit') finishEvent(); }
+    return { arrived: G.mode !== 'transit', real, days, downtime };
+  });
+  await done();
+  assert.ok(r.arrived, 'arrived'); assert.equal(r.downtime, false, 'no downtime scene while running ahead');
+  assert.ok(r.real < 25 + 15, `${r.days} days in ${r.real.toFixed(1)} real seconds, the flip's 25 among them`);
+});
+
+test('a scene that opens ends a run ahead, at the speed it was run from (#1186)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.7; setBurnSpeed(2); setBurnSpeed(RUN_AHEAD); const running = G.speed;
+    openEvent({ title: 'Pirates Matching Course', text: 'x', choices: [{ label: 'A', run: () => 'Done.' }] });
+    const after = G.speed; G.dialog = null; G.transit.event = null;
+    setBurnSpeed(RUN_AHEAD); setBurnSpeed(0); openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'Done.' }] });
+    return { running, after, paused: G.speed, resume: G.speedBefore };
+  });
+  await done();
+  assert.equal(r.running, 256); assert.equal(r.after, 2, 'back at 2x');
+  assert.deepEqual([r.paused, r.resume], [0, 2], 'paused while running ahead: still paused, and it resumes at 2x');
 });

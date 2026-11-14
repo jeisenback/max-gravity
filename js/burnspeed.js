@@ -5,7 +5,10 @@
 // in, weightless while she turns, strapping out) round the midpoint, played slowed so it lasts FLIP_REAL real seconds at any speed. The player
 // pauses or runs the burn at 2x or 16x (#1083: 2x, at which the crew can still be watched walking, in place of 4x). These take the burn and the speed and return a value; transit.js and shiplife.js read G.
 
-const BURN_SPEEDS = [0, 1, 2, 16];  // paused, normal, and the two fast-forwards
+// Run ahead (#1186, docs/bible/burn.md): the burn as fast as it goes to the next scene or arrival, the flip still in its slow motion; an 8-day
+// burn's cruise is over in about two and a half seconds. A scene that opens ends it, back at the speed it was run from (aheadFrom).
+const RUN_AHEAD = 256;
+const BURN_SPEEDS = [0, 1, 2, 16, RUN_AHEAD];  // paused, normal, the two fast-forwards, and run ahead
 const COUCH_HOURS = 6, STRAP_MIN = 20, FLOAT_MIN = 6;  // ship time on the couches at each end; strapped in either side of the float; weightless
 const FLIP_REAL = 25;  // real seconds for the whole flip, strap to strap, at any speed
 
@@ -67,12 +70,17 @@ const paceDt = dt => (G.transit ? burnDt(dt) * G.transit.pace : 0);
 const lifeDt = dt => { const t = G.transit; return !t ? dt : t.event || G.dialog ? dt : dt * burnRate(t, G.speed, burnSpeed()); };
 
 // ---------- the controls: Space, 1, 2 and 3 in a burn (game.js), and a button for each speed under the burn bar ----------
-const BURN_KEYS = { Digit1: 1, Digit2: 2, Digit3: 16 };
-const BURN_LABELS = { 0: 'Pause', 1: '1x', 2: '2x', 16: '16x' };
+const BURN_KEYS = { Digit1: 1, Digit2: 2, Digit3: 16, Digit4: RUN_AHEAD };
+const BURN_LABELS = { 0: 'Pause', 1: '1x', 2: '2x', 16: '16x', [RUN_AHEAD]: 'Run ahead' };
 function setBurnSpeed(s) {
   if (!BURN_SPEEDS.includes(s)) return;
+  if (s === RUN_AHEAD && G.speed !== RUN_AHEAD && G.transit) G.transit.aheadFrom = G.speed && G.speed !== RUN_AHEAD ? G.speed : G.speedBefore !== RUN_AHEAD && G.speedBefore ? G.speedBefore : 1;  // the speed it goes back to
   if (s) G.speedBefore = s;
   G.speed = s;
+}
+// A scene that opens on a burn ends a run ahead, at the speed it was run from.
+function endRunAhead() {
+  if (G.mode === 'transit' && G.transit && (G.speed === RUN_AHEAD || G.speedBefore === RUN_AHEAD)) { const back = G.transit.aheadFrom || 1; G.speedBefore = back; if (G.speed) G.speed = back; }
 }
 const toggleBurnPause = () => setBurnSpeed(G.speed ? 0 : G.speedBefore || 1);
 // Shown when the burn's station keys are (bridge.js syncBridge), at the right end of the burn bar and under it; the chosen speed lit.
@@ -94,5 +102,6 @@ Mods.register({
     el.addEventListener('click', e => { const b = e.target.closest('[data-speed]'); if (b) { Sfx.click(); setBurnSpeed(Number(b.dataset.speed)); b.blur(); } });  // blurred, so Space toggles the pause and does not press it again
     document.body.appendChild(el);
     M.on('frame', syncBurnSpeed);
+    M.on('eventOpened', endRunAhead);
   },
 });
