@@ -53,6 +53,7 @@ test('Tomas\'s parcel: when he trusts the hand, going down starts with him at th
     UI.act('choose', 0); out.table = G.dialog.event.title;
     const before = t.opinion, mems = t.memories.length;
     UI.act('choose', 1); out.result = document.getElementById('event-result').textContent; finishEvent();
+    while (G.dialog) finishEvent();
     out.liked = t.opinion > before; out.memory = t.memories.slice(mems).join(' | ');
     st.day += 1; out.soon = go(); finishEvent();
     st.day += VISIT_GAP; out.later = go();
@@ -90,5 +91,40 @@ test('work below: a day down offers the day\'s Lagos job, played as a station jo
   assert.ok(r[0].labels.length === 4 && r[1].labels.length === 4, 'each with its four ways at it');
   assert.ok(r[0].paid > 0 && r[1].paid > 0, `the plain way pays the hand: ${r[0].paid}, ${r[1].paid}`);
   assert.deepEqual(r.board.filter(id => id.startsWith('lagos-')), [], 'never on the station\'s board');
+  assert.deepEqual(errors, []);
+});
+
+test('something brought up: crayfish for Ngozi from Surulere once you have eaten at her bay, which her next word takes; and Chioma\'s stew for Tomas, back up from his parents\' table (#1164)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), t = tomasAboard(), planet = currentPlanet(), f = portLayout(planet).folk[0], ngozi = portFolkPerson(planet, f);
+    const labels = () => G.dialog.choices.map(c => c.label), go = () => { delete h.downDay; Mods.act('goDown'); };
+    delete h.stay; beginStay(h, 9, 'market'); st.credits = 5000; t.opinion = 0;
+    const out = {};
+    go(); out.before = labels().some(l => /crayfish/.test(l)); finishEvent();
+    st.portAte = st.day; go(); const i = labels().findIndex(l => /crayfish/.test(l)); out.label = labels()[i];
+    UI.act('choose', i); out.bought = { credits: st.credits, carried: st.forNgozi, text: document.getElementById('event-result').textContent }; finishEvent();
+    go(); out.again = labels().some(l => /crayfish/.test(l)); finishEvent();
+    const mems = ngozi.memories.length, op = ngozi.opinion;
+    openEvent(portWordEvent(f, ngozi, st)); out.given = G.dialog.event.text;
+    UI.act('choose', G.dialog.choices.findIndex(c => c.label === 'Leave them to it'));
+    out.taken = { carried: !!st.forNgozi, memory: ngozi.memories.slice(mems).join('|'), liked: ngozi.opinion > op };
+    out.after = portWordEvent(f, ngozi, st).text === PORT_WORDS.ngozi[st.day % 3];
+    t.opinion = OPINION.TRUSTED; delete t.parentsAt; go(); UI.act('choose', 0); UI.act('choose', 0); finishEvent();
+    out.stew = G.dialog && G.dialog.event.title; const tm = t.memories.length;
+    UI.act('choose', 0); out.stewed = { open: !!G.dialog, memory: t.memories.slice(tm).join('|') };
+    return out;
+  });
+  await done();
+  assert.equal(r.before, false, 'not before you have eaten at her bay');
+  assert.equal(r.label, 'Buy dried crayfish for Ngozi in Surulere (60 cr)');
+  assert.deepEqual([r.bought.credits, r.bought.carried], [3140, true]); assert.match(r.bought.text, /tarpaulin/);
+  assert.equal(r.again, false, 'one bag at a time');
+  assert.match(r.given, /Not the platform/);
+  assert.deepEqual(r.taken, { carried: false, memory: r.taken.memory, liked: true }); assert.match(r.taken.memory, /crayfish from Surulere/);
+  assert.equal(r.after, true, 'and her word is her own again');
+  assert.equal(r.stew, 'His Mother\'s Stew');
+  assert.equal(r.stewed.open, false); assert.match(r.stewed.memory, /his mother's stew/);
   assert.deepEqual(errors, []);
 });

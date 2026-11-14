@@ -218,7 +218,9 @@ function portWordEvent(f, p, st) {
   const board = RAIL.find(e => e.tab === 'missions');  // the clerk's word on work: the Missions page, when its entry on the rail is open here
   if (f.offer === 'work' && board.ready(currentPlanet()) === true) choices.push({ label: portOfferSay('work', 'label', p, day), keep: true, run() { UI.tab = 'missions'; UI.pageOpen = true; return null; } });  // the scene closes onto it
   choices.push({ label: 'Leave them to it', keep: true, run: () => null });
-  return { title: `${p.first} ${p.last}`, text: words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices };
+  const given = f.key === 'ngozi' && st.forNgozi;  // the crayfish brought up from Surulere (daydown.js, #1164): her word is for it, once, and she has it whatever you do next
+  const taken = c => ({ ...c, run() { delete st.forNgozi; like(p, 1, lagosSay('ngozi.memory')); return c.run(); } });
+  return { title: `${p.first} ${p.last}`, text: given ? lagosSay('ngozi.given') : words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: given ? choices.map(taken) : choices };
 }
 
 // The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by

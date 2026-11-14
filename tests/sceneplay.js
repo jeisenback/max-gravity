@@ -436,6 +436,9 @@ const playScenes = () => {
   run('scene:day-down:button', {}, () => ({ title: lagosSay('button', { fare: fmt(DOWN_FARE) }), text: lagosSay('shut'), choices: [] }));
   run('scene:day-down:parcel', {}, () => tomasParcelEvent(tomasAboard()));  // Tomas's parcel, and the day at his parents' table (part 2)
   run('scene:day-down:parents', {}, () => tomasParentsEvent(tomasAboard()));
+  // something brought up (#1164, part 1): the crayfish for Ngozi, a day down after eating at her bay, and her next word with it
+  run('scene:day-down:crayfish', {}, () => { const st = G.state; st.portAte = st.day - 1; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[4]] }; });
+  run('scene:day-down:ngozi-given', {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk[0]; st.forNgozi = true; return portWordEvent(f, portFolkPerson(planet, f), st); });
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };

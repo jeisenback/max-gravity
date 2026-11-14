@@ -656,6 +656,14 @@ const SCENE_LINES = {
     'parents.true.label': 'Tell them he misses the ring and doesn\'t say so',
     'parents.true.result': 'Emeka laughs. "He was like that at ten," he says. "Wouldn\'t tell you he was hungry." Chioma asks when the ship goes out again, and for how long, and writes the dates on the back of the rent envelope. At the door she gives you a container of stew for him, in two bags.',
     'parents.true.memory': 'You told his parents he misses the ring.',
+    // something brought up from a day down (#1164, part 1): crayfish for Ngozi from Surulere's market, and Chioma's stew for Tomas
+    'crayfish.label': 'Buy dried crayfish for Ngozi in Surulere ({cost} cr)',
+    'crayfish.result': 'The crayfish sellers are at the far end of the market, under a tarpaulin. The woman weighing it out asks who it\'s for, and when you say a stall on the Ring she adds a handful and charges for it.',
+    'ngozi.given': 'Ngozi opens the bag and smells it before she says anything. "Surulere," she says. "Not the platform." She puts it on the shelf behind the hob.',
+    'ngozi.memory': 'You brought up crayfish from Surulere.',
+    'stew.title': 'His Mother\'s Stew',
+    'stew.text': 'Tomas comes down to the lift for the bags. He opens the top one, looks at it, and closes it again. "She always double-bags it," he says. "As if it\'s going to Mars." He takes them to the galley.',
+    'stew.leave': 'Leave him to it', 'stew.memory': 'You brought up his mother\'s stew from Surulere.',
   },
   'scene:day-ashore': {  // the hand's hour at a port (dayashore.js): the menu and what each of its own entries comes to; the regulars' scene, the errand and the room's return are theirs
     title: 'A Day Ashore',
