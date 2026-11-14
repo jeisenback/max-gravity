@@ -23564,6 +23564,29 @@
   ]
  },
  {
+  "id": "scene:day-down:boy",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"The bunk's half the size of my room at home, and at home I share it with two brothers.\" He laughs. \"The food's good. There's a woman in the market who cooks like my aunt.\" He looks back at the boards. \"If I do the three months, they give me my harness ticket. Then it's rigging proper.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"I don't need luck,\" Daniel says. \"I need a harness. Two hundred credits, and they take it out of the first month.\" He goes back to the contracts.",
+    "next": null
+   }
+  ],
+  "title": "The Boy from Yaba",
+  "text": "At the hiring boards there's a boy in a new yard jacket, the fold lines still in it, reading the contracts one at a time with his finger. It takes you a moment. He's the one from the street in Yaba, who wrote the agency's name on his hand. He sees you and grins, and holds up the hand. \"It worked,\" he says. \"Three months' rigging, on probation. I came up on Tuesday. I'm Daniel. You didn't ask last time.\"",
+  "labels": [
+   "Ask how he's finding it",
+   "Wish him luck"
+  ]
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {

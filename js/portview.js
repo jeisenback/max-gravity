@@ -237,6 +237,7 @@ function portWordEvent(f, p, st) {
 // or from `women` for one whose lines say she (a folk entry's `names`), and a surname. Not Achebe, which is Ngozi's family's.
 const LAGOS_NAMES = {
   first: ['Adebayo', 'Tunde', 'Femi', 'Kemi', 'Bisi', 'Segun', 'Chidi', 'Emeka', 'Obinna', 'Uche', 'Nkechi', 'Ifeoma', 'Musa', 'Aminu', 'Hauwa', 'Zainab', 'Grace', 'Daniel', 'Joy', 'Samuel'],
+  men: ['Tunde', 'Femi', 'Segun', 'Chidi', 'Obinna', 'Uche', 'Musa', 'Aminu', 'Daniel', 'Samuel', 'Adebayo'],  // the boy from Yaba (daydown.js, #1164); not Emeka, Tomas's father
   women: ['Funmilayo', 'Yetunde', 'Folake', 'Adaeze', 'Chiamaka', 'Halima', 'Aisha', 'Blessing'],
   last: ['Adeyemi', 'Okonkwo', 'Balogun', 'Okafor', 'Bello', 'Eze', 'Adebayo', 'Nwosu', 'Ibrahim', 'Oyelaran', 'Danjuma', 'Okoro', 'Afolabi', 'Uzor', 'Abubakar'],
 };

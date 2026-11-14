@@ -164,3 +164,27 @@ test('the woman gets placed: met in Surulere\'s market, mentioned to the yard cl
   assert.equal(r.after, true, 'and then her own words');
   assert.deepEqual(errors, []);
 });
+
+test('the boy comes up: met in Yaba on a day down, a landing at the Ring BOY_DAYS later finds him at the hiring boards, named from Lagos and none of the Ring\'s own; once (#1164)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), planet = currentPlanet(), t = tomasAboard(), go = () => { delete h.downDay; st.credits = 5000; Mods.act('goDown'); };
+    const land = () => { while (G.dialog) finishEvent(); Mods.emit('landed', planet); const titles = []; while (G.dialog) { titles.push(G.dialog.event.title); finishEvent(); } return titles.includes('The Boy from Yaba'); };
+    delete h.stay; beginStay(h, 30, 'market'); if (t) t.opinion = 0;
+    const out = { before: land() };
+    st.day += (2 - st.day % 3 + 3) % 3; go(); UI.act('choose', 1); out.market = document.getElementById('event-result').textContent; finishEvent(); out.met = st.metBoy === st.day;
+    st.day += BOY_DAYS - 1; out.early = land();
+    st.day += 1; out.up = land(); out.again = land();
+    const ring = PORT_LAYOUTS[planet.name].folk.map(f => portFolkPerson(planet, f).first), boy = boyName(planet);
+    out.name = { boy, men: LAGOS_NAMES.men.includes(boy), notRing: !ring.includes(boy) };
+    return out;
+  });
+  await done();
+  assert.equal(r.before, false, 'not before he has been met');
+  assert.match(r.market, /writes the name on his hand/); assert.equal(r.met, true);
+  assert.equal(r.early, false, 'not before BOY_DAYS');
+  assert.equal(r.up, true, 'then at a landing at the Ring'); assert.equal(r.again, false, 'once');
+  assert.deepEqual(r.name, { boy: r.name.boy, men: true, notRing: true });
+  assert.deepEqual(errors, []);
+});

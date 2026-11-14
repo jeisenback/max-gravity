@@ -443,6 +443,7 @@ const playScenes = () => {
   { const folk = (st, key) => { const planet = currentPlanet(), f = portLayout(planet, st).folk.find(x => x.key === key); return portWordEvent(f, portFolkPerson(planet, f), st); };
     run('scene:day-down:seller-clerk', {}, () => { const st = G.state; G.mode = 'landed'; st.metSeller = true; delete st.sellerAt; return folk(st, 'clerk'); });
     run('scene:day-down:seller-given', {}, () => { const st = G.state; st.sellerAt = st.day - SELLER_DAYS; delete st.sellerMet; return folk(st, 'seller'); }); }
+  run('scene:day-down:boy', {}, () => boyEvent(currentPlanet()));  // the boy comes up (part 3)
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };

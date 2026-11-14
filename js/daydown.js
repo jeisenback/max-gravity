@@ -7,8 +7,9 @@
 // Loaded after dayashore.js; calls into stay.js only at runtime.
 
 // The seat down and back (the owner, 2026-11-14); the port the spaceplane goes down from; dried crayfish for Ngozi from Surulere's market (#1164); and the
-// days from the hand's word to the yard clerk until the woman from that market has the empty bay on the Ring (#1164, portview.js).
-const DOWN_FARE = 900, DOWN_PORT = 'Earth', CRAYFISH = 60, SELLER_DAYS = 5;
+// days from the hand's word to the yard clerk until the woman from that market has the empty bay on the Ring (#1164, portview.js); and the days from
+// meeting the boy in Yaba until a landing at the Ring can find him at the hiring boards (#1164).
+const DOWN_FARE = 900, DOWN_PORT = 'Earth', CRAYFISH = 60, SELLER_DAYS = 5, BOY_DAYS = 10;
 const DOWN_LANES = ['tiers', 'market', 'hall'];
 const lagosSay = (key, vars) => sceneSay('scene:day-down', key, vars);
 // Whether a day down is on offer here now, and if it is, why it is shut (or '' when it is open). `st` the save, `h` the hand, `planet` the port.
@@ -28,6 +29,20 @@ function tomasStewEvent(t) {
     { label: lagosSay('stew.leave'), keep: true, run() { like(t, 0, lagosSay('stew.memory')); return null; } },
   ] };
 }
+// The boy comes up (#1164, part 3): a landing at the Ring BOY_DAYS after meeting him in Yaba finds him at the hiring boards, up on a contract. Once.
+// His name is from Lagos (LAGOS_NAMES.men, portview.js), by the port's dice, and none of the Ring's own people's.
+const boyDue = (st, planet) => planet.name === DOWN_PORT && st.metBoy !== undefined && !st.boyUp && st.day - st.metBoy >= BOY_DAYS;
+function boyName(planet) {
+  const taken = PORT_LAYOUTS[planet.name].folk.map(f => lagosName(planet, f).first), list = LAGOS_NAMES.men.filter(n => !taken.includes(n));
+  return list[Math.abs(hash(`${planet.name} boy`)) % list.length];
+}
+function boyEvent(planet) {
+  const first = boyName(planet), say = key => lagosSay(key, { first });
+  return { title: say('boy.title'), text: say('boy.text'), personal: true, place: 'yard', choices: [
+    { label: say('boy.how.label'), run: () => say('boy.how.result') },
+    { label: say('boy.luck.label'), run: () => say('boy.luck.result') },
+  ] };
+}
 // Work below (part 3): the day's one of the jobs kept for Lagos (jobs.js, `down`), in turn by the day; it takes the day down, and the pay is the hand's.
 const downJob = day => { const list = JOBS.filter(j => j.down); return list[day % list.length]; };
 function dayDownEvent() {
@@ -36,6 +51,7 @@ function dayDownEvent() {
     title: lagosSay('title'), text: lagosSay('text'), personal: true, place: 'well',  // it starts at the spoke lift, on the Ring's view
     choices: [...DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run() {
       if (k === 'market' && st.day % 3 === 0) st.metSeller = true;  // the woman selling phone parts, who asks if the Ring is hiring (portview.js, the clerk)
+      if (k === 'market' && st.day % 3 === 2 && st.metBoy === undefined) st.metBoy = st.day;  // the boy who writes the agency's name on his hand
       return lagosSay(`${k}.${st.day % 3}`);
     } })),
       { label: lagosSay('work.label'), run() { G.nextEvent = jobStage(downJob(st.day), 0); return null; } },  // the day's job below, played as a station job is (jobs.js)
@@ -68,6 +84,7 @@ function dayDownHtml() {
 Mods.register({
   id: 'daydown', name: 'Going down to Lagos', builtin: true,
   init(M) {
+    M.on('landed', planet => { const st = G.state; if (hired() && boyDue(st, planet)) { st.boyUp = true; offerScene('people', boyEvent(planet)); } });  // among the landing's people
     M.action('goDown', () => {
       const st = G.state, h = hired(), o = !G.dialog && G.mode === 'landed' && downOffer(st, h, currentPlanet());
       if (!o || o.why) return;
