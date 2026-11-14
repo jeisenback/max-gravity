@@ -85,9 +85,24 @@ Each fixed person has a routine by the port's hours, as the crew have the ship's
 
 When the hour moves someone, they walk there, at the crew's pace aboard: along a level, and up or down the well, one storey by the stair and more by the car (#1124). Someone the hour brings comes down the spoke in the car; someone it takes goes up it. Reduced motion puts everyone in their place.
 
+### A landing's scenes at a port with a view
+
+The owner, 2026-11-14. At a port with a view, a landing's scenes are offers on the view, as the burn's are offers on the ship (`burn.md`). The player opens them when they choose, by a click, in place of a run of dialogs before they have looked around.
+
+- **What opens at once.** The customs check, first, as now (the lock's business). Then the settling up: the first officer's arrival, and chapter two's end. Then the mourning of a crewmate lost on the run. These open in that order as soon as the ship is in, docked, with their people walked to them, and a landing's two-scene cap (#1096) still holds for them. They are the port's urgent events, as contacts and fate scenes are the burn's.
+- **What waits as an offer.** Everything else:
+  - the run's business at the yard office: the freight agent, a repair or parts, an away job;
+  - people: a family visit, a crewmate back from their room, someone from a day down;
+  - what the port brings: its happenings.
+- **Where an offer is.** Each is a tag on the view, over the person it is about where they are, or on the room it belongs to (the yard office for business, the bar for the bar's). It is the burn's tag (#1183), drawn on the Ring. At most four show at once; another waits for a place.
+- **Only where it is true.** An offer about someone shows only while they are on the view, in their hours, and over them, so it moves with them. While they are off it waits, and its time runs on.
+- **When it goes.** An offer lasts until the port's day turns at a night in port, or until the ship sails, whichever is first: the port's day, as the burn's offer lasts a ship's day. Letting it lapse costs nothing. A people scene that lapses comes round again at a later landing, as a missed draw does on a burn; business and happenings do not.
+- **A click on a tag** opens its scene in the dock, its people walked to it, and the clock holds while it is open, as now (#1103).
+- **A port with no view,** and a site, keep the landing as it is: the scenes open in turn, ranked as #1096 sets out.
+- **The day ashore and the day down** stay buttons on the Port page for now. Their entries becoming offers on the view, as downtime's do on the burn (#1185), is its own piece of work, after this.
+
 ### Scenes from people
 
-- A landing's scenes are queued and ranked as #1096 sets out; the port view does not change which play.
 - A scene names its people (the event's `people`). Those who are on the view walk to where it happens, as a burn scene stages the crew (`stageScene`), and it opens docked when they are there. Someone in the scene who is not at this port (a contact by message, a captain at another berth) is not drawn; the scene opens as it does now.
 - A scene that belongs to a place (the bar's talk, a job at the yard office, the day ashore's entries) starts there: the hand walks to it first.
 - A click on a fixed person outside a scene opens their word for the day: a line, or what they offer (a meal at Ngozi's, a contract at the clerk's desk).
