@@ -118,6 +118,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | The drive: what burns (deuterium and water), the hard rating, the grades, chapter 1's one patched drive | `bible/technology.md`, The drive | draft |
 | The cast: tiers, threads, pools, promotion, a director; first the chapter's places as pools of regulars and its minor powers' people | `bible/cast.md` | draft |
 | The rest of the technology the hand meets: the guns, torpedoes and point defence, sensors, armour, the shields (keep and explain, or retire), the fabricator, life support, each by grade | `bible/technology.md` | to write, after the drive |
+| Places: the kinds, the inner places each has and whose; chapter 1's places first (Ceres, Pallas and the Hollows, Eros, Luna, the ice rocks) | `bible/places.md` | draft |
 | Freight as the hand sees it: what the contracts and the ice runs carry, who ships it, what is legal where (the inspections) | a page on trade goods | to write: the hand does not trade, so chapter 1 needs only the goods' names, owners and legality |
 | Soak profiles: the bands each holds for | `tools/soak.js`, `tests/distribution/` | built (#1199) |
 
@@ -138,6 +139,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | Refits and upgrades by grade; burning harder as the captain's choice (#1195) | `bible/technology.md` |
 | The war's technology: Ballast's ships, the blockade, the patrols' grades | `bible/technology.md`; `bible/the-fuel-war.md` |
 | The co-op's members as a pool, and the vote (piece 3) | `bible/cast.md`; `bible/chapter-2.md` |
+| Vesta and Kaur's depot towns on the map; the havens and the yards as places; the first generated Belt settlements | `bible/places.md`; `bible/the-belt.md` |
 | The major powers' people (Tycho, Kaur, Van Leeuwen, Ballast) | `bible/cast.md` |
 
 **Later chapters.** Yard and military technology within reach, a fleet's hulls of different grades, an outpost's technology, the restricted grade, and whether anything lies beyond it (the chapter 7 threat, the owner's to choose).
