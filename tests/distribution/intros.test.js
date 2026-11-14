@@ -4,6 +4,7 @@
 // many random games. Their introductions are tier 1 candidates in the burn's draw (js/cast.js) and gain weight for each draw they
 // miss (the rule from #256), so one plays in the first run or two; this guards that it stays so, whatever is added to the draw.
 //
+// Profiles:  attentive only: a main character is introduced by their beat, an offer on the ship since #1184, which a hurried player lets go (#1199).
 // Sample:    60 seeded games (seeds 1 to 60) of three runs each, four at a time, with the two main characters drawn from the pool as in the game
 //            (tools/soak.js --real-draw). Measured over 100 seeds with the ramp: the first main character in run 1 in 91 games and
 //            in run 2 in 9; the second in run 1 in 21, run 2 in 75 and run 3 in 4 (without the ramp: 86 and 14; 20, 57 and 23).

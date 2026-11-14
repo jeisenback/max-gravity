@@ -6,6 +6,7 @@
 // It guards how often the hand is hurt (FIGHT.HAND_HURT, DECK.SUIT, js/boarders.js REPEL_HURT), hurt again, and how often a chapter ends early (the first-hurt
 // roll and CAPTAIN_LOST, js/boarders.js). The scene mix and the hand's death without the fights are in tests/distribution/stakes.test.js.
 //
+// Profiles:  attentive (tools/soak.js SOAK_PROFILES, #1199): the fights come on the burn whatever is taken, so the one player serves.
 // Sample:    the narrow build's captain with a gunner, seeds 1 to 120, up to 40 runs each, four at a time, the pair the tests start from (120 chapters since the
 //            deck fight rework: on 40, an early ending more or less was the whole margin).
 // Tolerance: the hand is hurt between 0.1 and 0.7 times a chapter (measured 0.55, 66 of 120, with the deck fight's DECK.SUIT 0.2; on seeds 1 to 40: 0.60, 24 of 40,
