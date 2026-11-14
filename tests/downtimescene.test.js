@@ -10,8 +10,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { downtimeDue, downtimeSettled, downtimeLeft, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeSettled', 'downtimeLeft', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
+const { downtimeDue, downtimeSettled, downtimeLeft, downtimeThere, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeSettled', 'downtimeLeft', 'downtimeThere', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
 const plain = x => JSON.parse(JSON.stringify(x));
 
 // ---------- the pure rules (task 1) ----------
@@ -61,6 +61,17 @@ test('the time left to open it runs to the last light before the slot ends or th
   const left = downtimeLeft({ days: 1, total: 80, left: 38, elapsed: 39, slots: 2, flipped: true }, 1.1);  // f is 45/80, the lights go at 0.58
   assert.ok(downtimeLeft({ days: 1, total: 80, left: 38, elapsed: 39, slots: 2, flipped: true }, 1) > 20, 'on a plain drive the lights are up again before the couches');
   assert.ok(left > 0 && left < 3, `${left}`);
+});
+
+test('a line that puts someone in a place is offered only when they are there; one with no place, or someone not drawn, always is', () => {
+  const people = [{ id: 'c:tomas', room: 'galley' }, { id: 'c:ines', room: 'bridge' }];
+  const tomas = { at: 'engine', where: () => 'c:tomas' };
+  assert.equal(downtimeThere(tomas, people), false, 'at the meal, not at the coolant loop');
+  assert.equal(downtimeThere(tomas, [{ id: 'c:tomas', room: 'engine' }]), true, 'in the engine room');
+  assert.equal(downtimeThere({ at: () => 'bridge', where: () => 'c:ines' }, people), true, 'a place worked out from the person');
+  assert.equal(downtimeThere({ where: () => 'c:tomas' }, people), true, 'a line with no place');
+  assert.equal(downtimeThere({ at: 'galley', where: 'galley' }, people), true, 'a place activity');
+  assert.equal(downtimeThere({ at: 'engine', where: () => 'gone' }, people), true, 'someone not drawn');
 });
 
 test('sit with someone: one having a hard time or hurt first, else by the day', () => {
@@ -216,6 +227,25 @@ test('while the downtime scene is open nobody is gathered: those it names keep t
   await done();
   assert.ok(r.tagged >= 1, 'it names someone');
   assert.deepEqual(r.staged, [], 'nobody is staged'); assert.equal(r.span, null, 'and no room is kept clear for it');
+});
+
+test('the scene offers Tomas\'s coolant loop only while Tomas is in the engine room, and fills the gap from the rest', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    onBurn(); const t = G.transit, tomas = HAND_DOWNTIME.find(d => d.cast && d.on() === downSay('tomas.on'));
+    if (!tomas || !tomas.can()) return { skip: true };
+    const real = window.downtimeFive, fig = shipPeople().find(p => p.id === castPerson('tomas').id), out = {};
+    window.downtimeFive = () => [tomas, ...baseActivities().filter(a => !a.can || a.can()).slice(0, 4)];
+    try {
+      for (const room of ['galley', 'engine']) { fig.room = room; t.lifeShown = {}; const e = downtimeScene(); out[room] = { offered: e.choices.some(c => c.label === tomas.label), n: e.choices.length }; }
+    } finally { window.downtimeFive = real; }
+    return out;
+  });
+  await done();
+  assert.ok(!r.skip, 'Tomas is aboard with his choice');
+  assert.equal(r.galley.offered, false, 'at the meal: not offered'); assert.equal(r.engine.offered, true, 'in the engine room: offered');
+  assert.equal(r.galley.n, r.engine.n, 'the gap is filled');
 });
 
 test('choosing an activity runs it, spends the slot, logs it and sends the hand there; Pass spends nothing and it does not come back', async () => {

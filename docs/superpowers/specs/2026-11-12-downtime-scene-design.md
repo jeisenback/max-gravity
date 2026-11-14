@@ -94,6 +94,8 @@ While the scene is open, each choice's place is tagged in the cutaway, in a stan
 - **The tag** goes on that person.
 - `sitPicker` stays only if something else still opens it.
 
+**A line that puts someone in a place** (the owner, 2026-11-14): "Tomas is going down the coolant loop again" puts Tomas in the engine room. Each such activity names that room (`at`: `DOWNTIME_AT` in `js/hiredevents.js`, and the passengers' visit in `js/shiplife.js`), and the scene offers it only while that person is there in the cutaway (`downtimeThere`). A choice left out this way is filled from the rest, as a repeat is. A line that names no place (the captain's few minutes, a mate asking about your post, tonight's watch, Ruben's intercepts) is offered wherever they are.
+
 `onDeck(five, people)` is a pure function in `js/shiplife.js`. It returns `[{ label, room }]` or `[{ label, id }]` from each activity's `where` (a room id, or a function of the people aboard returning a person's id). An activity with no `where` gets no tag. The cutaway draws the tags while the downtime scene is the open event, and only then.
 
 ## 3. The burn view's layout
