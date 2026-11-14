@@ -17,18 +17,18 @@ The game opens on a form: a name, four posts, Start. A run follows one hand (`do
 For a hired hand (the shipped build's one mode), in this order, on the one page the form is now:
 
 1. **The name on your papers**: the text field as now.
-2. **Where you are from**: three choices, Earth's arcologies, Mars's domes, the Ceres Warren (`BACKGROUNDS`), each with a sentence for a hand in the voice of `docs/bible/voice.md`, replacing the owner's credits-and-a-ship sentences. The shipped build shows the three (the `starts` scope no longer hides them for a hand); the ship still starts at Earth with the captain whatever the home: you came to Earth to sign on. A hand's start at Mars or Ceres is #1252.
+2. **Where you are from**: three choices, Earth's arcologies, Mars's domes, the Ceres Warren, each with a sentence for a hand in the voice of `docs/bible/voice.md` (`BACKGROUNDS[*].hand`, beside the owner's `text`, which stays for the parked owner game). The home is a field on the papers (`st.hired.papers.home`), not `st.background`: the game still starts at Earth with `st.background` `earth`, the sign-on's Earth opening, the cast pair and the `starts` scope's forcing as they are, so the shipped build's one start and its scope tests stand. The home gives its stat point (`newSheet` takes the home), its sentence, and the hand's **affiliation**: `youTies()` reads the papers' home, so a hand from Mars carries Dome Concord papers, which the sign-on's papers line and the patrol officers already read. A hand's start at Mars or Ceres is #1252.
 3. **Rated**: the four posts as now.
 4. **The sheet**, read-only, as four words with the points marked: `Hands 3  Eye 4  Nerve 3  Wit 4`, computed by `newSheet(background, post)` plus the trade below, and redrawn as the choices change.
 5. **What you were before the ship**: four choices, one of them "Nothing worth a line". Each of the other three trades a point on the sheet, a point up and a point down:
    - Dock labour: hands up, wit down.
    - A clerk at a shipper's office: wit up, nerve down.
    - A rating on a short-haul ferry: nerve up, hands down.
-   No stat goes below 2 or above 5 (`STAT_MAX`): a trade that would is applied as far as the floor and the cap allow, and the sheet line shows the result.
+   The trade is all or nothing: when the point up would pass 5 (`STAT_MAX`) the answer changes nothing, and the form says so beside it ("no change on your sheet"), so no home and post pair has an answer that is a pure loss. The floor of 2 cannot bind, since the base is 3 and a home or post only adds; it is kept in `papersSheet` as the rule.
 6. **Who knows your name**: four choices, one of them "Nobody worth a line":
-   - A shipper at your home port: the home government's freight office (`SHIPPERS.gov[CULTURE_FACTION[background]]`) starts at standing 1 (`h.standing[shipper] = 1`), so its board draws as for a shipper that knows the ship.
+   - A shipper at your home port: the home government's freight office (`SHIPPERS.gov[CULTURE_FACTION[home]]`) starts at standing 2 (`STANDING_GOOD`, `h.standing[shipper] = 2`), so its board draws as for a shipper that trusts the ship and pays a tenth better from the first delivery. Standing 1 would be words only: the board reads `trusted` from 2, and an office never skims.
    - A patrol: one fine already on the record (`h.record.fines = 1`, halfway to Marked), and the first heave-to says so (one line, below).
-   - A shipmate: one of the crew aboard at the sign-on, drawn from the generated crew (never the cast), starts at opinion 1 with a memory of the earlier ship.
+   - A shipmate: one of the generated crew aboard at the sign-on (never the cast), any post, drawn by the game's own random as the crew are (`pick`), starts at opinion 1 with a memory of the earlier ship.
 7. **Save slot** and **Start** as now.
 
 The form keeps `before` and `known` beside `background` and `post`; `startGame` passes them on to the sign-on (`st.hired.papers = { before, known }`). The owner's form is unchanged except that it no longer shows the hand's two questions.
@@ -36,9 +36,9 @@ The form keeps `before` and `known` beside `background` and `post`; `startGame` 
 ## What the answers do (`js/hired.js`, the sign-on)
 
 - The sheet: `newSheet(background, post)` as now, then the trade of `before` applied with the floor and the cap, in a pure `papersSheet(sheet, before)` in `js/sheet.js` so the form and the game compute the same sheet.
-- `known`: applied once where the hand is made (`js/hired.js:137`): the standing, the record's fine (through `recordAdd`, so a later `recordHand('fines')` reads one already there), or the shipmate's opinion and memory (`like(c, 1, memory)` on a generated crew member, chosen by the seeded draw).
+- `known`: applied once where the hand is made (`js/hired.js:137`): the standing, the record's fine (through `recordAdd`, so a later `recordHand('fines')` reads one already there: the second fine of the run makes the hand Marked, as it would for anyone with one on the record), or the shipmate's opinion and memory (`like(c, 1, memory)` on a generated crew member).
 - The sign-on scene gains a paragraph that reads the two answers back, one line each (`before.<id>` and `known.<id>` lines in `scene:sign-on`), between the post's paragraph and the week's.
-- The first heave-to (`js/engage.js`, the heave-to choice's result) adds one line when `h.papers.known === 'patrol'` and no fine has been paid since the sign-on (`h.record.fines === 1`): the officer has the name from before.
+- The first heave-to (`js/engage.js`, the heave-to choice's result) adds one line when `h.papers.known === 'patrol'` and this is the run's first fine (read before `recordHand('fines')` counts it): the officer has the name from before. That stop also makes the hand Marked, and Marked's moment plays with it.
 
 ## The Record card (`js/character.js`)
 
@@ -65,5 +65,6 @@ All new lines are first drafts in the voice of `docs/bible/voice.md`, in the tex
 ## Assumptions to confirm
 
 - The screen stays one page: the papers and the two questions together, not a wizard.
-- The three home choices show in the shipped build, with the ship starting at Earth whatever the home.
+- The three home choices show in the shipped build, with the ship starting at Earth whatever the home; the home moves the sheet, the words and the hand's affiliation, and nothing else of the start.
+- A hand who answers that a patrol knows their name is one fine from Marked, and the first heave-to makes them Marked for the run.
 - Each question's answers are permanent; the sheet trade is a shape, not a purchase; the floor is 2.
