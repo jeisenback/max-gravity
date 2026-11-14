@@ -58,6 +58,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 31. `chapter-3.md`: the war, in three outlines, one for each way chapter 2's last vote goes: the organiser's, the master's and outside; what each opens with, its long middle, and the decision that opens chapter 4 (outline, 2026-11-14).
 32. `regulars.md`: the pool rule for a place's regulars and the dock official, and the pools of chapter 1's ports: Ceres and the Warren, Pallas Refinery, the Hollows, Eros Old Town, Luna and Mars (draft, 2026-11-14).
 33. `powers-people.md`: the faces of the minor powers the hand meets in chapter 1 (the Ice Haulers' Guild, the Hollows, Pallas Smelting, the Eros Town Trust, Kaur's buying office, Gulf Atlantic Manning, the house), recurring and tagged to their power, so chapter 2 knows them (draft, 2026-11-14).
+34. `ceres.md`: Ceres Station, where chapter 1 ends and chapter 2 is based: the Ceres Guild Council that owns it, the yard and docks on a crater floor and the town in turning rings dug into its wall, its inner places and whose they are, the co-op's office, the hours and the people (draft, 2026-11-14).
 
 ## Where the game must change to fit
 
