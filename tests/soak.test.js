@@ -53,13 +53,19 @@ test('with --frames every deck fight is played to its close, and a fight\'s pane
 test('a card duel played over its exchanges and a boarding after it is one fight, not scenes against the step cap (the Ice Hauler\'s fitting makes the duel longer)', async () => {
   // A hunter's card duel runs up to DUEL_ROUNDS exchanges (before any boarding), then the lock and the corridor; a duel cut off at the step cap would be a bad run
   // ('fight left open'). A duel is rare in a chapter (a hunter after the hand: one of seeds 1 to 40 plays one), so here every contact is a hunter's (G.revenge).
-  const { ev, ctx } = await open({ scope: 'earth-hired', seed: 1, debt: true, stall: 0 });
-  await ev(() => { Object.defineProperty(G, 'revenge', { configurable: true, get: () => ({ first: 'Ada', last: 'Krell' }), set() {} }); });
-  const r = await ev(chapter, [20, null, false, 'gunner', true, null, false]);
-  await ctx.close();
-  assert.deepEqual(r.bad, []);
-  assert.ok(Object.keys(r.scenes).some(t => /^Contact: exchange \d/.test(t)), `a card duel was played: ${Object.keys(r.scenes).filter(t => /Contact|Lock|Corridor/.test(t)).join(', ')}`);
-  assert.ok(r.scenes['The Corridor'] > 0 || r.scenes['The Lock'] > 0, 'and a boarding fight after one');
+  // Not every duel ends in a boarding, so the first of seeds 1 to 10 whose chapter has one (a seed picked by hand moves with the dice, as firstSeed's; seed 1
+  // lost its boarding when Earth's metal price fell, #1206). Every chapter tried must be clean.
+  let r = null, seed = 0;
+  const duel = x => Object.keys(x.scenes).some(t => /^Contact: exchange \d/.test(t)), boarded = x => x.scenes['The Corridor'] > 0 || x.scenes['The Lock'] > 0;
+  while (seed < 10 && !(r && duel(r) && boarded(r))) {
+    const { ev, ctx } = await open({ scope: 'earth-hired', seed: ++seed, debt: true, stall: 0 });
+    await ev(() => { Object.defineProperty(G, 'revenge', { configurable: true, get: () => ({ first: 'Ada', last: 'Krell' }), set() {} }); });
+    r = await ev(chapter, [20, null, false, 'gunner', true, null, false]);
+    await ctx.close();
+    assert.deepEqual(r.bad, [], `seed ${seed}`);
+  }
+  assert.ok(duel(r), `a card duel was played: ${Object.keys(r.scenes).filter(t => /Contact|Lock|Corridor/.test(t)).join(', ')}`);
+  assert.ok(boarded(r), `and a boarding fight after one, in one of seeds 1 to ${seed}`);
 });
 
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {
@@ -87,10 +93,10 @@ test('the soak reports who was lost or left, when and why, and the totals', asyn
 
 test('with --frames the soak plays the burn, and an order for the drive costs reaction mass and shortens it (#292)', async () => {
   let base, fast;
-  for (const seed of [1, 2, 3, 4]) {  // a seed whose hand dies ends the chapter early (js/boarders.js), so the first seed where neither does
+  for (const seed of [1, 2, 3, 4]) {  // a seed whose hand dies ends the chapter early (js/boarders.js), and an ice run's two legs count as one run (#948), so the first seed where neither does
     base = await soak({ seed, legs: 6, post: 'engineer', frames: true });
     fast = await soak({ seed, legs: 6, post: 'engineer', frames: true, engineer: 'favor-drive' });
-    if (!base.ending && !fast.ending) break;
+    if (!base.ending && !fast.ending && base.runs === 6 && fast.runs === 6) break;
   }
   for (const r of [base, fast]) { assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); assert.equal(r.runs, 6); for (const k of ['raids', 'scrams', 'hull', 'fuel', 'planned', 'seen']) assert.ok(Number.isFinite(r.frames[k]), k); }
   assert.ok(fast.frames.fuel > base.frames.fuel, 'a hotter drive burns more reaction mass');
