@@ -154,7 +154,7 @@ const CAST = {
         ],
       },
       pivot: {
-        days: 60, title: 'Cold Thrusters',
+        days: 60, title: 'Cold Thrusters', room: 'bridge',  // she flies it in; "the drive" put it in the engine room (#1170)
         get text() {
           return 'The drive trips on final approach and won\'t relight, with the dock a few kilometres off and closing. There\'s nothing to slow the ship but the thrusters. Ines has both hands on the controls and the docking software off. "I can bring her in on these," she says. "Same as the practice, with less room. Somebody on the abort."'
             + castRiskLines();
@@ -228,7 +228,7 @@ const CAST = {
         ],
       },
       intro: {
-        title: 'The Service',
+        title: 'The Service', room: 'engine',  // the coolant pump: no room word, so it fell back to the galley or the night's watch post (#1170)
         text: ('Tomas has the covers off the coolant pump, with the parts laid out on a rag in the order they came off. "The last engineer skipped it," he ' +
             'says. "The schedule says every two thousand hours. The software doesn\'t give anyone the hours to do it, so it doesn\'t get done." He holds up ' +
             'a seal, cracked through. "That\'s what not getting done looks like."'),
@@ -1207,7 +1207,7 @@ const castSceneId = (key, sc, shown) => { const e = Object.entries({ ...CAST[key
 const castScene = (key, sc) => {
   const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc;
   if (s.flag) captainFlag(s.flag);  // a fact the open reading tells (the captain's secret, #283): the goodbye reads it, as it does when the captain tells it
-  const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices });  // the editor's words, if any (storylets.js)
+  const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices, ...(s.room ? { room: s.room } : {}) });  // the editor's words, if any (storylets.js); `room`: where it is acted out on a burn, when its words would mislead (shiplife.js sceneStage)
   return { ...scene, choices: scene.choices.map(c => dataChoice(c)) };
 };
 

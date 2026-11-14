@@ -45,7 +45,7 @@ const capLike = (c, n, memory) => like(c.cap, n, memory);
 const learnNote = n => ` (+${n} experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`;
 const learn = n => { gainSkill(hired().post, n); return learnNote(n); };
 const castKeys = () => castAboard().map(m => m.cast);
-const handEvent = (title, text, choices) => ({ title, text, choices, via: 'crew', personal: true });
+const handEvent = (title, text, choices, room) => ({ title, text, choices, via: 'crew', personal: true, ...(room ? { room } : {}) });  // room: where it is acted out on a burn (shiplife.js sceneStage)
 // The words of an event written in code (#463): the editor's line, else a captain's own wording of the part (captains/*.js, `events`), else the shipped line (SCENE_LINES,
 // hiredscenes.js), with its {words} filled from `vars`.
 function eventSay(id, key, vars = {}) {
@@ -58,7 +58,7 @@ function eventSay(id, key, vars = {}) {
 function dataHandEvent(d, c) {
   const mate = t => (typeof t === 'string' && c.mate ? t.replace(/\{mate\}/g, c.mate.first) : t);
   const scene = sceneWords(`hired:${d.id}`, d.data);
-  return handEvent(mate(scene.title), mate(scene.text), scene.choices.map(ch => dataChoice({ ...ch, label: mate(ch.label), result: mate(ch.result) }, c)));
+  return handEvent(mate(scene.title), mate(scene.text), scene.choices.map(ch => dataChoice({ ...ch, label: mate(ch.label), result: mate(ch.result) }, c)), scene.room);
 }
 const dataEvent = def => { const d = { ...def }; d.make = c => dataHandEvent(d, c); return d; };
 // A choice sets a follow-up going (stories/hired-aftermath.js) and the Journal keeps the thread.
@@ -172,7 +172,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'),
     data: {
-      title: 'Ines Calls the Numbers',
+      title: 'Ines Calls the Numbers', room: 'bridge',  // a hard approach by hand: its words name no room (#1170)
       text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you\'d read her the numbers. "Slowly," she says. "And don\'t be clever."',
       choices: [
         {
@@ -246,7 +246,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'),
     data: {
-      title: 'Yelena Wants a Sparring Partner',
+      title: 'Yelena Wants a Sparring Partner', room: 'gunnery',  // the range sim: its words name no room (#1170)
       text: 'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."',
       choices: [
         {
@@ -284,7 +284,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'),
     data: {
-      title: 'Ruben and the Thermos',
+      title: 'Ruben and the Thermos', room: 'bridge',  // the intercepts, at the comms post: its words name no room (#1170)
       text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he doesn\'t. "Help me sort," he says. "Slowly. I\'ll tell you what\'s true and what\'s only lovely."',
       choices: [
         {
@@ -322,7 +322,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'),
     data: {
-      title: 'Bexa\'s List',
+      title: 'Bexa\'s List', room: 'bridge',  // a tag above the helm: its words name no room (#1170)
       text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and doesn\'t like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It\'s a list," she says. "Ask me properly."',
       choices: [
         {
@@ -343,7 +343,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'),
     data: {
-      title: 'Pax Checks the Coupling',
+      title: 'Pax Checks the Coupling', room: 'gunnery',  // the gun mount: its words name no room (#1170)
       text: 'Pax is checking the coupling on the gun mount for the fifth time this watch. It\'s perfect. Pax knows it\'s perfect, and checks it anyway, jaw tight, and glances at you when the check is done.',
       choices: [
         {

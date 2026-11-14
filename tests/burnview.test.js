@@ -1865,3 +1865,21 @@ test('your tab on the middle watch: after you asked Cato, by the words the scene
   assert.ok(r.asked && r.bill, 'asked under the override: your tab on the middle watch');
   assert.equal(r.gone, false, 'Cato gone from the crew: no tab');
 });
+
+// #1170: a scene whose words would put it in the wrong room sets its own, and the builders (castScene, dataHandEvent) carry it to sceneStage.
+test('a scene that sets its room is acted out there, through the builders that open it (#1170)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn();
+    const cast = [['tomas', 'intro', 'engine'], ['ines', 'pivot', 'bridge'], ['cato', 'mid1', 'hold']];
+    const hand = [['crew-ines', 'bridge'], ['crew-yelena', 'gunnery'], ['crew-ruben', 'bridge'], ['crew-bexa', 'bridge'], ['crew-pax', 'gunnery']];
+    const staged = e => { const s = sceneStage(e, [{ id: 'm', role: 'engineer' }], ['m']); return s && s.room; };
+    return [
+      ...cast.map(([key, name, want]) => ({ id: `${key}:${name}`, want, got: staged(castScene(key, CAST[key].scenes[name])) })),
+      ...hand.map(([id, want]) => ({ id, want, got: staged(HAND_EVENTS.find(d => d.id === id).make({})) })),
+    ];
+  });
+  await done();
+  for (const x of r) assert.equal(x.got, x.want, x.id);
+});
