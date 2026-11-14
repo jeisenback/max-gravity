@@ -32,6 +32,8 @@ Out of scope:
 
 Those changes come every 10 to 20 burn seconds, so the shortest slot still gets its scene. The burn pauses while the scene is up, as for any scene, so it plays the same at every speed.
 
+**Once the crew are settled** (the owner, 2026-11-14, #1168). At a moment above the scene does not open at once: it waits until everyone it tags is where they are going (arrived and off the ladder) for 2 burn seconds (`downtimeSettled`, `DOWNTIME_CALM`), so what it says someone is doing is what the cutaway shows. It opens anyway, settled or not, when 3 burn seconds or less are left in which it could open: the last light before the slot ends or the crew strap in, a night inside the slot waited out (`downtimeLeft`, `DOWNTIME_LAST`). The wait is kept on the burn (`t.lifeWait`). On an 8-day burn at 1x the first scene comes about 93 burn seconds in, at the second day's shift, where it came at 20 as the crew left the couches.
+
 **The rule.** `downtimeDue(t, block, prevBlock)` is a pure function in `js/shiplife.js`. It is true when:
 - `block` differs from `prevBlock`;
 - `block` is one of `breakfast`, `shift`, `meal` or `supper`;
