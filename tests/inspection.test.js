@@ -34,6 +34,13 @@ test('what the inspector finds: nothing at a port that does not inspect, nothing
   assert.equal(I.inspectionCause({ industrial: 20 }, 'Guild Federation', -15, true).sum, 14400, 'Marked: a fifth more');
 });
 
+test('the Guild licenses machine parts at its yards only: duty at a Guild port with a shipyard, none at one without, which still inspects for standing (#1205)', () => {
+  assert.equal(I.inspectionCause({ industrial: 20 }, 'Guild Federation', 0, false, true).duty, 6000, 'Ceres Station, Titan: a yard');
+  assert.equal(I.inspectionCause({ industrial: 20 }, 'Guild Federation', 0, false, false), null, 'Ring Nine, Pallas and the rest: no yard, no duty');
+  assert.deepEqual(plain(I.inspectionCause({ industrial: 20 }, 'Guild Federation', -22, false, false)), { gov: 'Guild Federation', standing: -22, good: null, tons: 0, duty: 0, fine: 8000, sum: 8000 }, 'the standing fine still');
+  assert.equal(I.inspectionCause({ water: 50 }, 'Dome Pact', 0, false, false).duty, 6000, 'the Dome Pact licenses water everywhere');
+});
+
 // ---------- the scene on arrival (js/inspection.js inspectionScene, inspectAtLanding) ----------
 
 const { open, closeBrowser } = require('./helpers');
@@ -113,6 +120,20 @@ test('a clean ship at an inspecting port gets one note and no scene; an independ
   await done();
   assert.equal(r.league.dialog, false); assert.ok(r.league.notes.includes('Customs logs the ship through.'), r.league.notes.join(' | '));
   assert.equal(r.indie.dialog, false); assert.ok(!r.indie.notes.includes('Customs logs the ship through.'));
+});
+
+test('landing with machine parts: the inspector at Ceres Station, a Guild yard; customs logs the ship through at Ring Nine, a Guild port without one (#1205)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    handAt('comms', 'Ceres Station', { cargo: { industrial: 20 }, rep: 0 }); inspectAtLanding(currentPlanet());
+    const yard = { gov: system().gov, title: G.dialog && G.dialog.event.title };
+    handAt('comms', 'Ring Nine', { cargo: { industrial: 20 }, rep: 0 }); inspectAtLanding(currentPlanet());
+    return { yard, ring: { gov: system().gov, dialog: !!G.dialog, notes: [...UI.notes] } };
+  });
+  await done();
+  assert.equal(r.yard.gov, 'Guild Federation'); assert.ok(r.yard.title, 'the inspector at the yard');
+  assert.equal(r.ring.gov, 'Guild Federation'); assert.equal(r.ring.dialog, false); assert.ok(r.ring.notes.includes('Customs logs the ship through.'), r.ring.notes.join(' | '));
 });
 
 test('at a landing the inspection comes first, whatever was offered before it, and the rest follow in their ranks, none dropped (#1015, #1096)', async () => {

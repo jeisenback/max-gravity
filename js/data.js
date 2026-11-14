@@ -72,7 +72,7 @@ const SYSTEMS = {
     name: 'Earth', au: 1.0, angle: 100, gov: 'Arcology Pact', pirates: 0,
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
-        prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
+        prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'M', equipment: 'L' },
         // Earth's port is Lagos Ring, where a torch ship berths (docs/bible/ports.md, #1100)
         desc: ('A torch ship at Earth docks at Lagos Ring: a wheel four hundred metres across in low orbit, owned by Lagos ' +
             'Arcology. A tug brings the ship in to the hub and takes her out again, and the spaceplanes from the Lagos platform come and go at the far end of ' +

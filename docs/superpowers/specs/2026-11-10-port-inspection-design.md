@@ -30,7 +30,7 @@ One good for each owner, kept as data in `js/inspection.js` (`LICENSED`):
 |---|---|---|
 | Arcology Compact (Earth) | Medical Supplies (`medical`) | licensed pharmaceuticals |
 | Dome Concord (Mars) | Water (`water`) | the dome companies sell the domes' water |
-| Charter League (the Belt) | Machine Parts (`industrial`) | guild-made, and guild-protected |
+| Charter League (the Belt) | Machine Parts (`industrial`) | guild-made, and guild-protected: at its yards only, Ceres Station and Titan (`LICENSED_AT_YARDS`, the owner, 2026-11-14, #1205); its other stations inspect for standing alone |
 
 ## What it costs
 

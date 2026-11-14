@@ -11270,20 +11270,20 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You carry plate and hold the light, and the work goes faster for it. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 7,859 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 500 cr standby.",
+    "text": "You carry plate and hold the light, and the work goes faster for it. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 6,736 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 500 cr standby.",
     "mem": [
      "9 Jul 2214: You pitched in on the hull."
     ],
     "fx": {
      "credits": 500,
-     "fund": -7859,
+     "fund": -6736,
      "p1": 1
     },
     "next": null
    }
   ],
   "title": "Hull Damage",
-  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 4,859 cr. Labor is 3,000 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 3,736 cr. Labor is 3,000 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
   "labels": [
    "Help with the repair"
   ]
@@ -11294,16 +11294,16 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 7,859 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 500 cr standby.",
+    "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 6,736 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 500 cr standby.",
     "fx": {
      "credits": 500,
-     "fund": -7859
+     "fund": -6736
     },
     "next": null
    }
   ],
   "title": "Hull Damage",
-  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 4,859 cr. Labor is 3,000 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 3,736 cr. Labor is 3,000 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
   "labels": [
    "Help with the repair"
   ]

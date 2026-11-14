@@ -7,8 +7,10 @@
 // Customs at the lock is this and the crewmate an owner wants (ties.js customsScene), one stop a landing, decided in inspectAtLanding (#1097); the
 // inspector is the port's official (official.js).
 
-// The good each inspecting owner licenses for import.
+// The good each inspecting owner licenses for import; and the owners who license it at their yards only (a port with a shipyard): the Guild
+// protects its yards' parts at Ceres Station and Titan, and its other stations tax berth and handling, not goods (docs/bible/trade-goods.md, #1205).
 const LICENSED = { 'Arcology Pact': 'medical', 'Dome Pact': 'water', 'Guild Federation': 'industrial' };
+const LICENSED_AT_YARDS = ['Guild Federation'];
 const INSPECTING = Object.keys(LICENSED);
 const to100 = n => Math.round(n / 100) * 100;
 
@@ -18,10 +20,11 @@ const standingFine = rep => (rep > -15 ? 0 : Math.min(14000, 6000 + 2000 * Math.
 const licenceDuty = (good, tons) => to100(0.15 * tons * COMMODITIES.find(c => c.id === good).base);
 
 // What the inspector at a port of `gov` finds on a ship with `cargo` ({ good: tons }) and `rep` standing there: null at a port that does not inspect,
-// or on a clean ship; else the causes and one sum, a fifth more when the hand is Marked (traits.js).
-function inspectionCause(cargo, gov, rep, marked) {
+// or on a clean ship; else the causes and one sum, a fifth more when the hand is Marked (traits.js). `yard`: whether the port has a shipyard, for the
+// owners who license their good there only (LICENSED_AT_YARDS); elsewhere they inspect for standing alone.
+function inspectionCause(cargo, gov, rep, marked, yard = true) {
   if (!INSPECTING.includes(gov)) return null;
-  const good = LICENSED[gov], tons = (cargo && cargo[good]) || 0, duty = tons > 0 ? licenceDuty(good, tons) : 0, fine = standingFine(rep);
+  const good = !yard && LICENSED_AT_YARDS.includes(gov) ? null : LICENSED[gov], tons = (cargo && cargo[good]) || 0, duty = tons > 0 ? licenceDuty(good, tons) : 0, fine = standingFine(rep);
   if (!duty && !fine) return null;
   const sum = marked ? to100((duty + fine) * 1.2) : duty + fine;
   return { gov, standing: fine ? rep : null, good: duty ? good : null, tons: duty ? tons : 0, duty, fine, sum };
@@ -63,7 +66,7 @@ function inspectAtLanding(planet, note = text => UI.notes.push(text), cargo = G.
   if (atSite(st) || !INSPECTING.includes(gov)) return;
   const h = hired(), crew = h && st.day - h.since >= 3 && customsDue() && wantedAboard(gov) ? customsScene(gov, planet) : null;
   if (crew) { offerScene('customs', crew); return; }  // a crewmate this owner wants is the lock's business first, and the only stop this landing (ties.js, #1097)
-  const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
+  const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'), planet.services.includes('shipyard'));
   if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
   const scene = inspectionScene(cause, planet);
   offerScene('customs', scene);  // the landing's first scene (#1096)
