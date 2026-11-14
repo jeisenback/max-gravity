@@ -24,6 +24,7 @@ test('a scene is staged where it says, by its words, or by who is in it', () => 
   assert.deepEqual(st({ text: 'In the galley.' }, ['c:tomas', 'bar:stranger']).ids, ['you', 'c:tomas'], 'only those aboard');
   assert.equal(st({ text: 'In the galley.' }, ['bar:stranger']), null, 'nobody aboard: no stage');
   assert.equal(st({ text: 'In the galley.', board: '<svg/>' }, ['c:tomas']), null, 'a fight: no stage');
+  assert.equal(st({ text: 'Tomas has the cards out on the galley table.', downtime: true }, ['c:tomas']), null, 'the downtime scene: no stage (#1169)');
   assert.equal(st({ text: 'The holdout says no.' }, ['c:tomas']).room, 'galley', 'whole words only');
 });
 test('every posture draws, faced either way, and gives a point to tap; the head is drawn, never a picture', () => {
