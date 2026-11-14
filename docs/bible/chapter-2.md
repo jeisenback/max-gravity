@@ -97,9 +97,59 @@ The chapter can also end the run early, as any chapter can: the hand dies, or is
 
 Hester's ship goes on without the hand, and is not part of this chapter.
 
-## The people
+## The cast
 
-The sheets are in `people/`: the four masters, met in the war (`saran.md`, `kessler.md`, `mensah.md`, `belanger.md`), `bexa.md`, `pax.md`, `yelena.md` and `ruben.md`.
+Status of this section: draft for the owner's review, 2026-11-14 (#1230). The tiers, threads and pools are `cast.md`'s. The sheets are in `people/`.
+
+### Main: the people aboard
+
+Everyone aboard has an arc: an introduction and a fate that always open, and middles and a late beat that come as offers (`cast.md`). Bexa and Pax are new, with full arcs; Tomas, Cato and Ines carry on from chapter 1 with shorter ones, two or three beats on what chapter 2 does to their wants.
+
+| Who | Their want (`people/`) | Arc, in outline |
+|---|---|---|
+| **Bexa** | the ship everybody gave up on, kept flying | *Introduction:* the day she says a found crew's names aloud, and the hand is there. *Middles:* a lead on the wreck she has always wanted (the second hull of chapter 4, the organiser's); the lender's man noticing she is the easiest vote. *Late:* the charter would keep her flying, and she knows what it would cost the others. *Fate:* a tow that goes wrong, as her father's did. |
+| **Pax** | nobody hurt on their watch; to stop flinching | *Introduction:* the range scores, and the flinch nobody else sees. *Middles:* Femi, their brother, wanting a berth on a co-op hull; the clinic bill they took on that was not theirs. *Late:* the war asks them to fight for someone else, and they will not. *Fate:* a fight where someone is hurt on their watch, or is not. |
+| **Tomas** | Ngozi's arrears cleared, then a lease of his own on the ring | *Middles:* the share's payments against the money home; a ring lease coming free. *Late:* whichever outcome of the last vote pays Ngozi. |
+| **Cato** | the co-op kept whole, the people he brought kept together | *Middles:* a member wavering, and Cato asking the hand to help keep them. *Late:* the last vote as the thing he built being decided. |
+| **Ines** | her licence back, and the lawsuit dropped | *Middles:* the mid-chapter vote, member or licence; Kessler's offer of a real licence through the house. *Late:* the charter as the road to her licence, and what it asks of the others. |
+
+The hand's own arc is the hand's: the share, the bridge, the record.
+
+### How each tends to vote
+
+The meeting's rule is above (The meeting and the vote): a member weighs their want first, then the hand, their bonds and their nature. On the last vote that leaves the chapter balanced, with two to win:
+
+| Member | Leans to | Against | What can turn them |
+|---|---|---|---|
+| Bexa | Charter: it keeps her flying | Sell | a hold that still keeps her flying: a refinance, a fair-terms promise (`chapter-3.md`, the hold's price) |
+| Pax | Hold, or Sell if the war has hurt someone | Charter: fighting for someone else | a hold that keeps the co-op out of the fighting |
+| Cato | Hold | Sell | very little; a co-op that cannot hold may be better sold than chartered, to him |
+| Tomas | whichever pays home: Charter's wage, or Sell's share money for the lease | the one that leaves Ngozi short | the hand putting the money home first: a promise, a loan, a run |
+| Ines (if a member) | Charter, if it brings her licence; Hold if she has it already | Sell | her licence won some other way |
+
+So Cato is the hand's surest ally for a hold, Bexa and Ines the lender's, and Tomas and Pax the swing.
+
+### Recurring: met in the war
+
+The four masters of the lender's pool, each pulling toward a side: Aron Saran (Tycho), Ama Kessler (the house), Tavi Mensah (Kaur and the rocks), Noor Belanger (Ballast). And two who can be recruited, each a member the meeting could vote in: Yelena (with Ballast, turnable if she sees Ballast bench a crew) and Ruben (on the open band, Kaur's useful man and Ballast's target). Their threads run into chapter 3 on every path (`chapter-3.md`).
+
+### Regulars and passing
+
+- **The co-op's people at Ceres:** Kettle, its founder; the members of its other four hulls; its office, where the share was signed. A pool of regulars by `cast.md`'s rule, written with Ceres's regulars (#1212).
+- **The rocks and freeholds** the co-op supplies: their people as regulars by place, met again on every run there.
+- **Passing:** the dock crews, the rocks' people, the war's crews; any of them promotable.
+
+### What carries over from chapter 1, by person
+
+| From chapter 1 | In chapter 2 |
+|---|---|
+| Tomas, Cato, Ines | aboard, if they came with the hand at Ceres (`chapter-1.md`, the signing) and are alive; opinion as it stands (above) |
+| A main character who died | on the memorial; their seat open, and a recruit voted in to fill it |
+| One who stayed with Hester | away: heard of, met in port, possibly returning |
+| Hester | away: her ship goes on without the hand, and she can be heard of or met |
+| The arcs' contacts (Wen Haraldsen, Odile Marchetti, Hob Strand, Mirela Sandoval) | recurring, tagged to their power, shaped by the chapter 1 marks |
+| Port regulars and the dock officials | regulars by place, as they were |
+| The family | the hand's own thread, as it was |
 
 ## Assumptions to confirm
 
@@ -114,4 +164,5 @@ The sheets are in `people/`: the four masters, met in the war (`saran.md`, `kess
 - The meeting: one member one vote, more than half carries, a tie fails; a member weighs their want first, then the hand, their bonds and their nature; three losses on their want and a member leaves.
 - Hester's ship is not part of the chapter.
 - Opinion carries over as it stands: goodwill fades to friend without upkeep, grudges stay until mended.
+- Everyone aboard has an arc; Bexa and Pax full ones, Tomas, Cato and Ines shorter ones on their wants. On the last vote Cato leans hold, Bexa and Ines charter, Tomas and Pax swing.
 - Bexa's and Pax's Ceres homes (the station, the Warren) stand; Yelena's home is a hub dome and Ruben's an outer dome at the edge (`mars.md` names no domes; their sheets say so).
