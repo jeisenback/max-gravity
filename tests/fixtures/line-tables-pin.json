@@ -4104,6 +4104,106 @@
   "text": "{n} sent a message home from {port} and waited an hour by the booth for the answer. | {n} bought bread at {port} that is almost the bread from home, and said so, twice."
  },
  {
+  "key": "port-folk:ngozi.0",
+  "text": "\"You're off Tomas's ship.\" Ngozi puts a plate of rice and stew on the counter before you've asked for one. \"He sends money and he doesn't send messages. Tell him Chidi made the football team at school. He'll pretend he isn't pleased.\""
+ },
+ {
+  "key": "port-folk:ngozi.1",
+  "text": "Ngozi is frying puff-puff for the two o'clock shift, a tray at a time. \"There used to be three trays by now,\" she says. \"Sit down. You can have the ones that came out flat.\""
+ },
+ {
+  "key": "port-folk:ngozi.2",
+  "text": "\"Is he eating, on that ship?\" Ngozi wipes the counter. \"He says the food is fine. Tomas always says the food is fine.\""
+ },
+ {
+  "key": "port-folk:repairer.0",
+  "text": "Sam has a suit glove open under the lamp and is fitting new seals to the fingers. \"The agencies issue these for the contract and don't take them back,\" Sam says. \"People sell them to me when they go down, and I sell them to the next lot coming up.\""
+ },
+ {
+  "key": "port-folk:repairer.1",
+  "text": "Sam is soldering something small under a magnifier. \"The Orbitals lost again,\" Sam says, without looking up. \"Three nil. To a Luna side.\""
+ },
+ {
+  "key": "port-folk:repairer.2",
+  "text": "Sam counts a handful of seals into a bag. \"The permit's up in March, and they want it in scrip this year, not trade notes.\" Sam ties the bag. \"Thirty for the lot.\""
+ },
+ {
+  "key": "port-folk:keeper.0",
+  "text": "Sam puts a glass in front of you. \"Scrip or trade notes? Scrip's cheaper this week.\" Sam wipes the copper where the glass was."
+ },
+ {
+  "key": "port-folk:keeper.1",
+  "text": "\"Shift's off at two and they all come in at once,\" Sam says, filling a jug. \"Have a stool now, or stand later.\""
+ },
+ {
+  "key": "port-folk:keeper.2",
+  "text": "The ring channel is on over the bar, with the Orbitals two down at half time. \"Every week,\" Sam says. \"Scrip or trade notes?\""
+ },
+ {
+  "key": "port-folk:clerk.0",
+  "text": "Sam looks up from a contract. \"If you're after work, the boards are behind you. Welding's a three-week wait. Rigging's four, unless you've got your own harness.\""
+ },
+ {
+  "key": "port-folk:clerk.1",
+  "text": "\"Tycho took another refit off us,\" Sam says. \"That's a shift's worth of berths free from Thursday, if you know anyone who wants to come up.\""
+ },
+ {
+  "key": "port-folk:clerk.2",
+  "text": "Sam is on a call to an agency, reading a roster out a name at a time. \"No, Okafor's gone down. No, him too.\" Sam puts a hand over the mic. \"Sorry. With you in a minute.\""
+ },
+ {
+  "key": "port-folk:nurse.0",
+  "text": "\"Cuts, burns and eyes,\" Sam says. \"Mostly eyes this week. Somebody's not wearing the visor. Sit if you're waiting, the bench is free.\""
+ },
+ {
+  "key": "port-folk:nurse.1",
+  "text": "Sam is counting dressing packs into a drawer. \"We've got the clinic contract till the end of the year,\" Sam says. \"After that it goes out to tender again. Last time it went to a firm on the mainland, and nobody came up for a month.\""
+ },
+ {
+  "key": "port-folk:nurse.2",
+  "text": "\"Ear infections this week, mostly from the top bunkrooms,\" Sam says. \"It's the filters up there. Maintenance has the ticket.\" Sam goes back to the screen."
+ },
+ {
+  "key": "port-offers:plate.label",
+  "text": "Buy a plate (120 cr)"
+ },
+ {
+  "key": "port-offers:plate.eaten",
+  "text": "You've eaten here today."
+ },
+ {
+  "key": "port-offers:plate.memory",
+  "text": "You ate at Ngozi's stall on the ring."
+ },
+ {
+  "key": "port-offers:plate.result.0",
+  "text": "Ngozi gives you more rice than the last person got, and takes your money without counting it. \"Eat it here,\" she says. \"The plates don't come back otherwise.\""
+ },
+ {
+  "key": "port-offers:plate.result.1",
+  "text": "Ngozi spoons stew over the rice and puts two puff-puff on the side of the plate. \"Those are from this morning,\" she says. \"Don't tell anyone they were free.\""
+ },
+ {
+  "key": "port-offers:plate.result.2",
+  "text": "Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in."
+ },
+ {
+  "key": "port-offers:care.label",
+  "text": "Have it seen to (800 cr)"
+ },
+ {
+  "key": "port-offers:care.result.0",
+  "text": "Sam takes off the dressing from the ship, cleans the wound and puts a better one on. \"Keep it dry. Come back if it goes hot.\""
+ },
+ {
+  "key": "port-offers:care.result.1",
+  "text": "Sam looks at it under the lamp for a while. \"It's healing. Slowly.\" Sam glues the worst of it and writes something down. \"Leave it alone and it'll be quicker than it was going to be.\""
+ },
+ {
+  "key": "port-offers:care.result.2",
+  "text": "Sam gives you a strip of tablets and a printed sheet that says what the label says. \"One with food. You'll have been told that before.\""
+ },
+ {
   "key": "regular-arc:berth",
   "text": "is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool. | has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it, and buys the round. \"Tuesday,\" they say. \"Ask anyone.\""
  },
