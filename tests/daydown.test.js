@@ -148,7 +148,7 @@ test('the woman gets placed: met in Surulere\'s market, mentioned to the yard cl
     openEvent(word('seller')); out.title = G.dialog.event.title; out.first = G.dialog.event.text;
     UI.act('choose', G.dialog.choices.findIndex(c => c.label === 'Leave them to it'));
     out.taken = { liked: p.opinion > op, memory: p.memories.slice(mems).join('|') };
-    out.after = word('seller').text === PORT_WORDS.seller[st.day % 3].replace(/\{first\}/g, 'Funmilayo');
+    out.name = `${p.first} ${p.last}`; out.after = word('seller').text === PORT_WORDS.seller[st.day % 3].replace(/\{first\}/g, p.first);
     return out;
   });
   await done();
@@ -159,7 +159,7 @@ test('the woman gets placed: met in Surulere\'s market, mentioned to the yard cl
   assert.equal(r.again, -1, 'once');
   assert.deepEqual(r.early, { here: false, cast: false }, 'not before SELLER_DAYS');
   assert.equal(r.cast, true, 'then in her bay by day');
-  assert.equal(r.title, 'Funmilayo Adeyemi'); assert.match(r.first, /permit in my shoe/);
+  assert.equal(r.title, r.name); assert.match(r.first, /permit in my shoe/);
   assert.equal(r.taken.liked, true); assert.match(r.taken.memory, /empty bay in the market/);
   assert.equal(r.after, true, 'and then her own words');
   assert.deepEqual(errors, []);

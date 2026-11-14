@@ -23523,7 +23523,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "\"Phone parts,\" Chen says, and writes it on the pad. \"We've had nobody for phones since the last one went down. The bay between Ngozi's and the repair bay has been empty since March.\" Chen looks up. \"You didn't get her name.\" You didn't. \"There's an agency on that street. I'll put a notice in their window. If she asked you, she'll see it.\"",
+    "text": "\"Phone parts,\" Samuel says, and writes it on the pad. \"We've had nobody for phones since the last one went down. The bay between Ngozi's and the repair bay has been empty since March.\" Samuel looks up. \"You didn't get her name.\" You didn't. \"There's an agency on that street. I'll put a notice in their window. If she asked you, she'll see it.\"",
     "next": null
    },
    {
@@ -23533,8 +23533,8 @@
     "next": null
    }
   ],
-  "title": "Chen Brennan",
-  "text": "\"Tycho took another refit off us,\" Chen says. \"That's a shift's worth of berths free from Thursday, if you know anyone who wants to come up.\"",
+  "title": "Samuel Adeyemi",
+  "text": "\"Tycho took another refit off us,\" Samuel says. \"That's a shift's worth of berths free from Thursday, if you know anyone who wants to come up.\"",
   "labels": [
    "Ask about work",
    "Mention the woman from Surulere",
@@ -23557,8 +23557,8 @@
     "next": null
    }
   ],
-  "title": "Funmilayo Adeyemi",
-  "text": "Funmilayo has the shutter up and a lamp on an arm over the counter, and a tray of screens sorted by size. \"You're the one from the market,\" she says. \"The clerk said. I came up on the Thursday plane with two bags and my permit in my shoe.\" She holds a phone up to the lamp. \"Three cracked screens this morning already. It's the yard gloves.\"",
+  "title": "Aisha Adebayo",
+  "text": "Aisha has the shutter up and a lamp on an arm over the counter, and a tray of screens sorted by size. \"You're the one from the market,\" she says. \"The clerk said. I came up on the Thursday plane with two bags and my permit in my shoe.\" She holds a phone up to the lamp. \"Three cracked screens this morning already. It's the yard gloves.\"",
   "labels": [
    "Leave them to it"
   ]

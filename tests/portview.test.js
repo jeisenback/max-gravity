@@ -353,3 +353,28 @@ test('the Ring keeps each room\'s still picture as an image, as the burn view do
   assert.equal(r.after, r.n + 1, 'the market, its bays shut, is a new image; the rest are the same');
   assert.deepEqual(errors, []);
 });
+
+test('the Ring\'s own people are named from Lagos, no two alike, Ngozi keeping hers; one a save made before that was is renamed the next time they are seen, and keeps the rest (#1154)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, planet = currentPlanet(), folk = PORT_LAYOUTS[planet.name].folk, people = folk.map(f => portFolkPerson(planet, f));
+    const out = { names: people.map(p => [p.first, p.last]) };
+    const clerk = people[folk.findIndex(f => f.key === 'clerk')];
+    Object.assign(clerk, { first: 'Chen', last: 'Brennan', opinion: 3 }); delete clerk.lagosNamed;  // as a save from before had them
+    const again = portFolkPerson(planet, folk.find(f => f.key === 'clerk'));
+    out.renamed = { same: again.id === clerk.id, name: [again.first, again.last], opinion: again.opinion };
+    out.lists = { first: LAGOS_NAMES.first, women: LAGOS_NAMES.women, last: LAGOS_NAMES.last };
+    return out;
+  });
+  await done();
+  const [ngozi, ...rest] = r.names, keys = ['seller', 'repairer', 'keeper', 'clerk', 'nurse'];
+  assert.deepEqual(ngozi, ['Ngozi', 'Achebe']);
+  rest.forEach(([first, last], i) => {
+    assert.ok((keys[i] === 'seller' ? r.lists.women : r.lists.first).includes(first), `${keys[i]}: ${first}`);
+    assert.ok(r.lists.last.includes(last), `${keys[i]}: ${last}`);
+  });
+  assert.equal(new Set(r.names.map(n => n[0])).size, r.names.length); assert.equal(new Set(r.names.map(n => n[1])).size, r.names.length);
+  assert.deepEqual(r.renamed, { same: true, name: r.names[4], opinion: 3 });
+  assert.deepEqual(errors, []);
+});

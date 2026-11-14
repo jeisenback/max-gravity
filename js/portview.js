@@ -30,11 +30,11 @@ const PORT_LAYOUTS = {
       { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 120, x1: 860, kind: 'bunks', stage: 470 },
     ],
     // The port's own people (ports.md, Who is there): where each works and the hours they keep (an hour past 24 is after midnight). Ngozi is Tomas's
-    // sister (lagos.md), with her food bay; the rest are made from the port's culture the first time, the same face on every visit.
+    // sister (lagos.md), with her food bay; the rest are made the first time and named from Lagos (LAGOS_NAMES, #1154), the same face on every visit.
     folk: [
       { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21], offer: 'plate' },  // `offer`: what they sell the hand (PORT_OFFERS)
       // The woman from Surulere's market (daydown.js, #1164): the bay between tenants is hers SELLER_DAYS after the hand mentions her to the yard clerk.
-      { key: 'seller', first: 'Funmilayo', last: 'Adeyemi', job: 'phone-repair bay', room: 'market', x: 408, name: 'work', view: 'back', hours: [9, 19], due: st => st.sellerAt !== undefined && st.day - st.sellerAt >= SELLER_DAYS },  // `due`: whether they are on the Ring yet
+      { key: 'seller', names: 'women', job: 'phone-repair bay', room: 'market', x: 408, name: 'work', view: 'back', hours: [9, 19], due: st => st.sellerAt !== undefined && st.day - st.sellerAt >= SELLER_DAYS },  // `due`: whether they are on the Ring yet
       { key: 'repairer', job: 'repair bay', room: 'market', x: 490, name: 'work', view: 'back', hours: [8, 18] },
       { key: 'keeper', job: 'keeper of the Gravity Well', room: 'bar', x: 700, name: 'stand', view: 'front', hours: [11, 26] },
       { key: 'clerk', job: 'yard clerk', room: 'yard', x: 420, name: 'work-sit', view: 'side', face: -1, hours: [7, 19], offer: 'work' },
@@ -233,16 +233,36 @@ function portWordEvent(f, p, st) {
   return { title: `${p.first} ${p.last}`, text: once ? lagosSay(`${once[0]}.given`, { first: p.first }) : words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: once ? choices.map(taken) : choices };
 }
 
+// The Ring's people are named from Lagos (lagos.md: Yoruba, Igbo and Hausa, and English for work; #1154), by the port's dice: a first name from `first`,
+// or from `women` for one whose lines say she (a folk entry's `names`), and a surname. Not Achebe, which is Ngozi's family's.
+const LAGOS_NAMES = {
+  first: ['Adebayo', 'Tunde', 'Femi', 'Kemi', 'Bisi', 'Segun', 'Chidi', 'Emeka', 'Obinna', 'Uche', 'Nkechi', 'Ifeoma', 'Musa', 'Aminu', 'Hauwa', 'Zainab', 'Grace', 'Daniel', 'Joy', 'Samuel'],
+  women: ['Funmilayo', 'Yetunde', 'Folake', 'Adaeze', 'Chiamaka', 'Halima', 'Aisha', 'Blessing'],
+  last: ['Adeyemi', 'Okonkwo', 'Balogun', 'Okafor', 'Bello', 'Eze', 'Adebayo', 'Nwosu', 'Ibrahim', 'Oyelaran', 'Danjuma', 'Okoro', 'Afolabi', 'Uzor', 'Abubakar'],
+};
+// No two on the Ring share a first name or a surname: each takes the next not yet taken by those before it in the layout.
+function lagosName(planet, f) {
+  const roll = seededRandom(Math.abs(hash(`${planet.name} names`))), used = { first: [], last: [] };
+  const from = (key, list) => { let x; do x = list[Math.floor(roll() * list.length)]; while (used[key].includes(x)); used[key].push(x); return x; };
+  for (const g of PORT_LAYOUTS[planet.name].folk) {
+    const n = g.first ? { first: g.first, last: g.last } : { first: from('first', LAGOS_NAMES[g.names || 'first']), last: from('last', LAGOS_NAMES.last) };
+    if (g.first) { used.first.push(g.first); used.last.push(g.last); }
+    if (g.key === f.key) return n;
+  }
+  return null;
+}
 // The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by
-// port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js).
+// port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js). Named
+// from Lagos (`lagosNamed`); one a save made before that was is renamed the next time they are seen, and keeps the rest of their record (#1154).
 function portFolkPerson(planet, f) {
   const st = G.state, ids = (st.portFolk = st.portFolk || {})[planet.name] = (st.portFolk[planet.name] || {});
   let p = ids[f.key] && st.people[ids[f.key]];
-  if (p) return p;
+  const named = () => (f.first ? { first: f.first, last: f.last } : { ...lagosName(planet, f), lagosNamed: true });
+  if (p) { if (!f.first && !p.lagosNamed) Object.assign(p, named()); return p; }
   const real = Math.random;
   Math.random = seededRandom(Math.abs(hash(`${planet.name} ${f.key}`)));
   try { p = makePerson(cultureOf(st.systemId)); } finally { Math.random = real; }
-  Object.assign(p, { job: f.job, location: planet.name, portFolk: planet.name }, f.first ? { first: f.first, last: f.last } : {});
+  Object.assign(p, { job: f.job, location: planet.name, portFolk: planet.name }, named());
   registerPerson(p);
   ids[f.key] = p.id;
   return p;
