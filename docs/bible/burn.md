@@ -12,6 +12,24 @@ A burn is where the hand lives in chapter 1: days in a cramped ship with the sam
 
 After this change the burn is a place the player browses. What is going on aboard shows on the ship, the player takes what they want when they want it, and only what cannot wait stops the burn.
 
+## The burn's shape
+
+Status of this section: the owner's direction of 2026-11-14 (a fixed hard burn up to a set speed; harder burns later, with a cost); the figures are proposed.
+
+A torch ship short of money burns the way Hester's does: hard at each end, easy in the middle, so the reaction mass goes where it buys the most. A burn has five parts:
+
+1. **The hard burn out.** On the couches, at about a g, until the ship reaches her cruise speed. Nobody walks; there is nothing to do but lie there, so the burn's clock runs on through it at speed by itself, and no offer is made.
+2. **The easy cruise.** The drive throttled down to a fraction of a g (about a quarter, the reading the bridge shows now), enough to keep weight aboard. The speed still rises a little. This is the long part, where the crew are on their feet and the hand lives aboard: the offers, the sittings, the post.
+3. **The flip.** At the midpoint, as now: strapped in, weightless while she turns, strapped in again (#992), in its slow motion.
+4. **The easy brake.** The cruise again, braking at the same fraction of a g.
+5. **The hard brake in.** Back on the couches from the cruise speed down onto the port, the clock running on by itself as on the way out. It ends at the approach, where the arrival's business begins (the inspection, the dock).
+
+**The cruise speed is fixed.** Each hull has one set speed it burns hard to; Hester's Ice Hauler has hers. A trip's length in days is what it is now, so the hard burns are as long as reaching that speed takes, and the cruise is the rest. On a trip too short to reach it, the hard burn stops at the share of the trip it can have, and the cruise is short.
+
+**The instruments** follow the shape: the speed climbs steeply on the couches, rises slowly through the cruise to its peak at the flip, falls slowly, and drops steeply into the port. The g reading is high on the couches and low in the cruise (`gReading`, `js/burnpanel.js`, already reads three times the cruise on the couches).
+
+**Later, burning harder.** A captain may later choose to burn harder (a higher speed, or more g for longer) for a shorter trip, and it costs: reaction mass, the drive's wear, the crew's strain, and the house's opinion of an expense. That choice is not built now, and is designed when the captain's decisions come to the player (the co-op's, chapter 2).
+
 ## Offers on the ship
 
 An **offer** is something the hand could do or join: a shipmate who wants a word, a downtime activity, the captain with a few minutes, a chore, a card game. It is not opened as a dialog. It shows in the cutaway, where it is happening, as the downtime scene's tags do now (amber, a short label, on the room or over the person, `drawDowntimeTags`).
@@ -67,9 +85,12 @@ In order, each its own piece of work:
 3. **The burn's scenes split** (#1184). Each kind of scene in the burn's draw (`BURN_WEIGHTS`, `HIRED_GROUPS`, `js/happenings.js`) marked urgent or offer, as above; offers go to the queue, urgent ones open as now.
 4. **Downtime as offers** (#1185). The downtime scene replaced by each of its activities as an offer, the slot spent by the one taken.
 5. **Run ahead** (#1186). The fourth speed, to the next urgent event or arrival.
-6. **The soak** (#1187). The chapter's length, pay and experience held to their bands when offers lapse (`npm run soak`): a player at speed takes fewer scenes, and the soak's player takes offers as a player at 1x would.
+6. **The burn's shape** (#1195). The hard burn to the set cruise speed, the easy cruise, and the hard brake, with the couches and the clock running on by itself through the hard parts; the instruments and the stages (`burnStages`, `stageAt`, `js/burnspeed.js`; `burnState`, `js/burnpanel.js`) from the shape. The trip's days, pay and scenes unchanged.
+7. **The soak** (#1187). The chapter's length, pay and experience held to their bands when offers lapse (`npm run soak`): a player at speed takes fewer scenes, and the soak's player takes offers as a player at 1x would.
 
 ## Assumptions to confirm
+
+- The burn's shape: a hard burn at about a g on the couches to a set cruise speed fixed for each hull, an easy cruise at about a quarter of a g, the flip, the easy brake, and a hard brake onto the port; the clock runs on by itself through the hard parts, with no offers; a trip's days are unchanged. Burning harder is a later choice with a cost.
 
 - Urgent: contacts, damage and breakdowns, problems at the hand's post, fate scenes, the strike and the arcs' turns. Everything else is an offer.
 - An offer lasts a ship's day of burn time and at least 20 real seconds; at most four at once; letting one go costs nothing, and a shipmate's scene comes round again.
