@@ -4188,6 +4188,10 @@
   "text": "Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in."
  },
  {
+  "key": "port-offers:work.label",
+  "text": "Ask about work"
+ },
+ {
   "key": "port-offers:care.label",
   "text": "Have it seen to (800 cr)"
  },

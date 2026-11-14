@@ -316,3 +316,20 @@ test('the Ring\'s own people sell the hand what they sell: a plate at Ngozi\'s o
   assert.match(r.poor, /this costs 800 cr/);
   assert.deepEqual(errors, []);
 });
+
+test('the yard clerk\'s word on work opens the Missions page, with the station\'s jobs on it (#1103)', async () => {
+  const { ev, errors, done } = await open({ viewport: { width: 1440, height: 900 } });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    UI.act('closePage');
+    const planet = currentPlanet(), f = portLayout(planet).folk.find(x => x.key === 'clerk'), e = portWordEvent(f, portFolkPerson(planet, f), G.state);
+    openEvent(e);
+    const labels = G.dialog.choices.map(c => c.label);
+    UI.act('choose', 0);
+    return { labels, open: !!G.dialog, tab: UI.tab, page: UI.pageOpen, body: (document.querySelector('.page .body') || {}).getAttribute('aria-label') };
+  });
+  await done();
+  assert.deepEqual(r.labels, ['Ask about work', 'Leave them to it']);
+  assert.deepEqual([r.open, r.tab, r.page, r.body], [false, 'missions', true, 'Missions'], 'the scene closes onto the Missions page');
+  assert.deepEqual(errors, []);
+});
