@@ -43,6 +43,15 @@ function boyEvent(planet) {
     { label: say('boy.luck.label'), run: () => say('boy.luck.result') },
   ] };
 }
+// Lives below the Ring (#1164, part 4): one day down in BELOW_EVERY has a lane into the life below of one of the Ring's own people, the repairer and
+// the keeper in turn, each once: their next word at the Ring is about it (portview.js).
+const BELOW_EVERY = 4, BELOW = ['repairer', 'keeper'];
+function belowLane(st, planet) {
+  const key = BELOW[Math.floor(st.day / BELOW_EVERY) % BELOW.length], layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === key);
+  if (!f || st.day % BELOW_EVERY !== 1 || (st.belowSeen || []).includes(key)) return [];
+  const first = portFolkPerson(planet, f).first;
+  return [{ label: lagosSay(`below.${key}.label`, { first }), run() { (st.belowSeen = st.belowSeen || []).push(key); st.belowFor = key; return lagosSay(`below.${key}.day`, { first }); } }];
+}
 // Work below (part 3): the day's one of the jobs kept for Lagos (jobs.js, `down`), in turn by the day; it takes the day down, and the pay is the hand's.
 const downJob = day => { const list = JOBS.filter(j => j.down); return list[day % list.length]; };
 function dayDownEvent() {
@@ -55,7 +64,7 @@ function dayDownEvent() {
       return lagosSay(`${k}.${st.day % 3}`);
     } })),
       { label: lagosSay('work.label'), run() { G.nextEvent = jobStage(downJob(st.day), 0); return null; } },  // the day's job below, played as a station job is (jobs.js)
-      ...crayfishLane(st)],
+      ...crayfishLane(st), ...belowLane(st, currentPlanet())],
   };
 }
 // Tomas's parcel (#1162, part 2; docs/bible/people/tomas.md): when Tomas is aboard and trusts the hand as a visit home asks (OPINION.TRUSTED,

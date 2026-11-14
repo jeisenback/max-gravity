@@ -15,7 +15,7 @@ test('a day down: offered at the Ring in a captain\'s wait only, the fare from t
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state, h = hired(), row = () => { UI.tab = 'port'; UI.render(); const b = document.querySelector('button[data-action="goDown"]'); return b && { label: b.textContent, shut: b.disabled, hint: (b.parentElement.querySelector('.hint') || {}).textContent || '' }; };
     const out = { noStay: row() };
-    delete h.stay; beginStay(h, 3, 'market'); st.credits = 2000;
+    delete h.stay; beginStay(h, 3, 'market'); st.credits = 2000; st.belowSeen = BELOW.slice();  // the lanes into lives below are their own test
     out.open = row();
     Mods.act('goDown');
     out.scene = { title: G.dialog.event.title, labels: G.dialog.choices.map(c => c.label), credits: st.credits };
@@ -186,5 +186,42 @@ test('the boy comes up: met in Yaba on a day down, a landing at the Ring BOY_DAY
   assert.equal(r.early, false, 'not before BOY_DAYS');
   assert.equal(r.up, true, 'then at a landing at the Ring'); assert.equal(r.again, false, 'once');
   assert.deepEqual(r.name, { boy: r.name.boy, men: true, notRing: true });
+  assert.deepEqual(errors, []);
+});
+
+test('lives below the Ring: one day down in BELOW_EVERY has a lane into the repairer\'s or the keeper\'s life below, in turn, each once; their next word is about it, their regard and a memory, then their own words again (#1164)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), planet = currentPlanet(), t = tomasAboard(), folk = k => PORT_LAYOUTS[planet.name].folk.find(f => f.key === k);
+    const lane = () => { delete h.downDay; st.credits = 5000; Mods.act('goDown'); const c = G.dialog.choices, i = c.length - 1; return /Mushin|Ebute Metta/.test(c[i].label) ? i : -1; };
+    const turn = () => BELOW[Math.floor(st.day / BELOW_EVERY) % BELOW.length];
+    delete h.stay; beginStay(h, 60, 'market'); if (t) t.opinion = 0;
+    const out = { seen: [] };
+    st.day += ((2 - st.day) % BELOW_EVERY + BELOW_EVERY) % BELOW_EVERY; out.off = lane(); finishEvent();
+    st.day += BELOW_EVERY - 1;  // a day that is 1 mod BELOW_EVERY
+    for (let k = 0; k < 2; k++, st.day += BELOW_EVERY) {
+      const key = turn(), p = portFolkPerson(planet, folk(key)), i = lane();
+      const seen = { key, label: i >= 0 && G.dialog.choices[i].label, first: p.first };
+      UI.act('choose', i); seen.day = document.getElementById('event-result').textContent; finishEvent();
+      const op = p.opinion, mems = p.memories.length;
+      openEvent(portWordEvent(folk(key), p, st)); seen.given = G.dialog.event.text; UI.act('choose', G.dialog.choices.findIndex(c => c.label === 'Leave them to it'));
+      Object.assign(seen, { liked: p.opinion > op, memory: p.memories.slice(mems).join('|'), cleared: st.belowFor === undefined });
+      seen.after = portWordEvent(folk(key), p, st).text === PORT_WORDS[key][st.day % 3].replace(/\{first\}/g, p.first);
+      out.seen.push(seen);
+    }
+    st.day += BELOW_EVERY; out.again = [lane()]; finishEvent(); st.day += BELOW_EVERY; out.again.push(lane()); finishEvent();
+    return out;
+  });
+  await done();
+  assert.equal(r.off, -1, 'not on the other days');
+  assert.deepEqual(r.seen.map(x => x.key).sort(), ['keeper', 'repairer'], 'the two in turn');
+  const want = { repairer: ['Find {first}\'s seal supplier in Mushin', /under the flyover/, /By the kilo/, /seal supplier in Mushin/], keeper: ['Visit {first}\'s mother in Ebute Metta', /chest freezer/, /You saw my mother/, /mother in Ebute Metta/] };
+  for (const x of r.seen) {
+    const [label, day, given, memory] = want[x.key];
+    assert.equal(x.label, label.replace('{first}', x.first)); assert.match(x.day, day); assert.match(x.given, given); assert.match(x.memory, memory);
+    assert.deepEqual([x.liked, x.cleared, x.after], [true, true, true], `${x.key}: their regard, once, then their own words`);
+  }
+  assert.deepEqual(r.again, [-1, -1], 'each once');
   assert.deepEqual(errors, []);
 });
