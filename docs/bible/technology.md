@@ -47,6 +47,18 @@ Status of this section: draft for the owner's review, 2026-11-14 (#1209). It wri
 
 A grade means the same for every system as for the drive: **patched** is kept going by its crew with second-hand and printed parts; **licensed** is serviced by a yard and runs on software licensed by the year; **yard** is sealed and kept by its maker; **military** is a contractor's, for a fight; **restricted** is in nobody's hands outside the labs.
 
+**A grade is a trade, not a ladder** (the owner, 2026-11-14). Each grade buys something and gives something up, so choosing one is a choice about whom the ship depends on:
+
+| Grade | Buys | Gives up |
+|---|---|---|
+| Patched | the crew can mend it anywhere, from anything; nobody can switch it off | it wears, it trips, and it fails at the wrong time |
+| Licensed | it works, and a yard keeps it working | the licence can be switched off by whoever holds it (the lender, the owner, the maker), and its software records what the ship does and who can read it |
+| Yard | the best a civil ship can have, for years | it is sealed: only its maker's yards can open it, so a fault far from them is a ship laid up |
+| Military | it wins fights | it is noticed: inspected at every port that inspects, watched by the patrols, and banned outright at some ports |
+| Restricted | unknown | carrying it makes the ship a target for every power that knows |
+
+So a co-op's refit is not only a price: a licensed drive the lender can switch off, against a patched one the crew can keep running (#1210).
+
 ### Guns
 
 A gun is a mount that fires rounds: a slug driven by a coil or a charge, aimed by fire control (`fire` in the ship's wear). It heats as it fires and locks when it is too hot, until the heat bleeds off (`HEAT_CAP`, `js/fight.js`); overcharging hits harder and heats twice as fast. Range is the gunner's enemy: a shot at knife range lands harder than one at long range, and an aimed shot at the drive, the lock or the launcher only pays off up close. Rounds are counted by hand against the board's count (the magazine count scene).
@@ -87,7 +99,7 @@ Radar and lidar for range, the passive sky for heat. Everybody sees a torch's pl
 |---|---|
 | Patched | a set that ghosts and goes stale as it wears (`sensors` in the wear) |
 | Licensed | a set that sees clean, on software licensed by the year |
-| Yard and military | sets that see farther than they are seen, and a spoofer to show a false return (the pirates' outfit) |
+| Yard and military | sets that see farther than they are seen |
 
 ### Armour
 
@@ -117,6 +129,42 @@ Scrubbers for the air, a recycler, a water reclaimer, a little growing. It is on
 |---|---|
 | Patched | a plant that is mended more than replaced; the source of the burn's small troubles |
 | Licensed and yard | a plant on a service contract, rarely trouble |
+
+### Radiators and heat
+
+A torch ship's real limit is heat. The reactor, the guns and the crew all make it, and space takes it away only by radiating, so a ship carries radiators: long fins or panels along her flanks, the most fragile thing on her. The coolant loop carries heat to them. The game has the heat (the reactor's, `js/engineering.js`; the guns', `js/fight.js`), the coolant scenes and the radiator crews of Hermes Foundry, but no radiators as a part.
+
+| Grade | What it is |
+|---|---|
+| Patched | fins patched and re-welded, some dead; the ship runs warm and cannot fire and burn hard together for long |
+| Licensed and yard | full fins, a sealed loop |
+| Military | radiators that fold in for a fight, and heat sinks to run hot for a while without them |
+
+Proposed for chapter 2: a hit on the radiators is a hit on everything, since the reactor and the guns must then run cooler.
+
+### Running dark
+
+What a ship shows is her plume and her heat. A ship that throttles down, cools and keeps her transponder quiet is hard to see; one that burns hard shows across the Belt (`scanVisibility`, `js/engineering.js`). A transponder can be made to lie: a spoofer gives a false name (the pirates' outfit, `js/data.js`), and slicing a pirate's transponder is a choice at a contact. Running dark costs time (no hard burn) and heat (it builds when it is not radiated), and a ship found dark is taken for a smuggler.
+
+### The ice rig
+
+The Ice Hauler's work: cutters and a loader to take ice off a rock, worked in suits over three shifts (`ICE_SHIFTS`, `js/icerun.js`). A patched rig is the crew's own, mended between runs; a licensed one is a depot's, with a cut of the ice. A good haul and a bad one are the rig, the rock and the crew (`js/sites.js`).
+
+### Suits, the lock and sidearms
+
+Suits for work outside and for hot work inside (the engine room's hot-work suit is rated for so much and no more); the lock, which a boarder cuts or a crew holds; sidearms in a locker the bosun keeps (Cato's). A boarding is fought in the passages with what is in the locker (`js/boarders.js`, the deck fight). Patched suits are mended at the seams; military ones are armoured. Arms are a banned good at the arcology docks (`trade-goods.md`).
+
+### The medbay
+
+A bunk, a scanner and a cabinet of drugs: enough to set a bone, close a wound and keep someone alive to a port's clinic. The game keeps who is hurt (`st.injured`) and sends them to the clinic ashore (`js/ashore.js`); the medbay is where a wounded shipmate lies on the burn. Registered drugs cost what Earth charges, and grey medicine is what a poor ship stocks (`trade-goods.md`).
+
+### Drones and probes
+
+Small craft without crews: a target drone for the range, a probe for a rock's survey (the scan, `js/sites.js`), a camera on a stick for a hull inspection. Cheap and lost often.
+
+### The comms set
+
+The antenna and the slot: a poor ship buys a cheap relay slot and gets her messages in a batch (Light and messages, above); a rich one rents a continuous link. The comms post listens on the bands for what nobody sent to the ship (`js/comms.js`). The licensed set records the traffic for whoever holds the licence.
 
 ### What the hand meets, by grade
 
@@ -164,6 +212,8 @@ Long spells in low gravity cost bone and muscle, and radiation adds up. Both are
 
 - The ship's systems take the drive's grades; the grades are words for the numbers the game already has, and add none in chapter 1.
 - Guns fire rounds (no beams); torpedoes are small drives with warheads; nuclear warheads are restricted.
+- Each grade is a trade: patched is mended anywhere and fails, licensed can be switched off and records, yard is sealed, military is noticed.
+- Radiators carry the ship's heat away and are her weak point; running dark is throttling down, cooling and keeping the transponder quiet.
 - There are no shields; armour and point defence protect a ship (the owner, 2026-11-14).
 - There is no artificial gravity; ships get weight from thrust, stations from spin.
 - Fuel is deuterium for the reactor, bought with a refit and not counted trip by trip; reaction mass is water, spent each burn and bought at every port.
