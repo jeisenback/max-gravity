@@ -333,3 +333,23 @@ test('the yard clerk\'s word on work opens the Missions page, with the station\'
   assert.deepEqual([r.open, r.tab, r.page, r.body], [false, 'missions', true, 'Missions'], 'the scene closes onto the Missions page');
   assert.deepEqual(errors, []);
 });
+
+test('the Ring keeps each room\'s still picture as an image, as the burn view does, and makes it again only when a bay opens or shuts; its screens and the port in the market floor still move (#1103 performance)', async () => {
+  const { page, ev, errors, done } = await open({ viewport: { width: 1440, height: 900 } });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.portHour = 12; G.portWalkers = null; UI.act('closePage'); PORT_ROOM_IMAGES.clear(); });
+  await frames(page, 3);
+  const r = await ev(() => {
+    const first = new Map(PORT_ROOM_IMAGES), rooms = portLayout(currentPlanet()).rooms.length;
+    drawViewscreen(performance.now()); drawViewscreen(performance.now() + 5000);
+    const same = PORT_ROOM_IMAGES.size === first.size && [...first].every(([k, c]) => PORT_ROOM_IMAGES.get(k) === c);
+    const c = document.getElementById('vs'), g = c.getContext('2d'), px = () => [...g.getImageData(0, 0, c.width, c.height).data].reduce((a, v, i) => (i % 97 ? a : a + v), 0);
+    drawViewscreen(1000); const a = px(); drawViewscreen(21000); const b = px();  // twenty seconds on: Earth has moved in the floor port, and the screens
+    G.portHour = 22; G.portWalkers = null; drawViewscreen(performance.now());  // night: Ngozi's bay and the repairer's are shut
+    return { rooms, n: first.size, same, moved: a !== b, after: PORT_ROOM_IMAGES.size };
+  });
+  await done();
+  assert.equal(r.n, r.rooms, 'one image a room'); assert.equal(r.same, true, 'drawn again from the same images');
+  assert.equal(r.moved, true, 'what moves still moves');
+  assert.equal(r.after, r.n + 1, 'the market, its bays shut, is a new image; the rest are the same');
+  assert.deepEqual(errors, []);
+});
