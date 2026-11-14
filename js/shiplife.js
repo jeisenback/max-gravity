@@ -810,7 +810,7 @@ function lifeTick(dt) {
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock, prevPh = t.lifePh;  // the downtime scene, once a slot at a change of the ship's day
   t.lifeBlock = now; t.lifePh = ph;
-  const free = !isDark() && ph === 'move' && !t.event && !G.dialog;
+  const free = !isDark() && ph === 'move' && !t.event && !G.dialog && G.speed !== RUN_AHEAD;  // an offer is let go while running ahead (burnspeed.js, #1186)
   if (prev !== undefined && !t.lifeWait && downtimeDue(t, now, prev, ph, prevPh) && free) t.lifeWait = { slot: lifeSlotOf(t) };  // a burn just loaded (no block seen yet) waits for a real change
   if (t.lifeWait && (t.lifeWait.slot !== lifeSlotOf(t) || !lifeFree(t))) t.lifeWait = null;  // its slot is gone, or spent another way
   if (t.lifeWait && free) {  // due: it opens once those it tags are where they are going (#1168)
