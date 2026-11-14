@@ -439,6 +439,10 @@ const playScenes = () => {
   // something brought up (#1164, part 1): the crayfish for Ngozi, a day down after eating at her bay, and her next word with it
   run('scene:day-down:crayfish', {}, () => { const st = G.state; st.portAte = st.day - 1; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[4]] }; });
   run('scene:day-down:ngozi-given', {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk[0]; st.forNgozi = true; return portWordEvent(f, portFolkPerson(planet, f), st); });
+  // the woman gets placed (part 2): the clerk's word once she has been met, and her first word in her bay
+  { const folk = (st, key) => { const planet = currentPlanet(), f = portLayout(planet, st).folk.find(x => x.key === key); return portWordEvent(f, portFolkPerson(planet, f), st); };
+    run('scene:day-down:seller-clerk', {}, () => { const st = G.state; G.mode = 'landed'; st.metSeller = true; delete st.sellerAt; return folk(st, 'clerk'); });
+    run('scene:day-down:seller-given', {}, () => { const st = G.state; st.sellerAt = st.day - SELLER_DAYS; delete st.sellerMet; return folk(st, 'seller'); }); }
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };

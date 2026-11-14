@@ -128,3 +128,39 @@ test('something brought up: crayfish for Ngozi from Surulere once you have eaten
   assert.equal(r.stewed.open, false); assert.match(r.stewed.memory, /his mother's stew/);
   assert.deepEqual(errors, []);
 });
+
+test('the woman gets placed: met in Surulere\'s market, mentioned to the yard clerk once, and SELLER_DAYS later she has the empty bay, with a first word that is her regard and a memory, then her own words (#1164)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), planet = currentPlanet(), t = tomasAboard(), go = () => { delete h.downDay; st.credits = 5000; Mods.act('goDown'); };
+    const word = key => { const f = portLayout(planet, st).folk.find(x => x.key === key); return f && portWordEvent(f, portFolkPerson(planet, f), st); };
+    const mention = () => word('clerk').choices.findIndex(c => c.label === 'Mention the woman from Surulere');
+    delete h.stay; beginStay(h, 30, 'market'); if (t) t.opinion = 0;
+    const out = { before: mention() };
+    st.day += (4 - st.day % 3) % 3 + 1; go(); UI.act('choose', 1); finishEvent(); out.notHer = !!st.metSeller;  // a day the market is Yaba
+    st.day += 3 - st.day % 3; go(); UI.act('choose', 1); out.market = document.getElementById('event-result').textContent; finishEvent(); out.met = !!st.metSeller;
+    const i = mention(); out.offered = i >= 0; openEvent(word('clerk')); UI.act('choose', i); out.clerk = document.getElementById('event-result').textContent; finishEvent();
+    out.again = mention();
+    st.day += SELLER_DAYS - 1; out.early = { here: !!word('seller'), cast: portCast(portLayout(planet, st), 12, [], [], st.day).some(c => c.who === 'seller') };
+    st.day += 1; out.cast = portCast(portLayout(planet, st), 12, [], [], st.day).some(c => c.who === 'seller');
+    const f = portLayout(planet, st).folk.find(x => x.key === 'seller'), p = portFolkPerson(planet, f), op = p.opinion, mems = p.memories.length;
+    openEvent(word('seller')); out.title = G.dialog.event.title; out.first = G.dialog.event.text;
+    UI.act('choose', G.dialog.choices.findIndex(c => c.label === 'Leave them to it'));
+    out.taken = { liked: p.opinion > op, memory: p.memories.slice(mems).join('|') };
+    out.after = word('seller').text === PORT_WORDS.seller[st.day % 3].replace(/\{first\}/g, 'Funmilayo');
+    return out;
+  });
+  await done();
+  assert.equal(r.before, -1, 'not before she has been met');
+  assert.equal(r.notHer, false, 'not on a day the market lane is somewhere else');
+  assert.match(r.market, /phone parts/); assert.equal(r.met, true);
+  assert.equal(r.offered, true); assert.match(r.clerk, /agency on that street/);
+  assert.equal(r.again, -1, 'once');
+  assert.deepEqual(r.early, { here: false, cast: false }, 'not before SELLER_DAYS');
+  assert.equal(r.cast, true, 'then in her bay by day');
+  assert.equal(r.title, 'Funmilayo Adeyemi'); assert.match(r.first, /permit in my shoe/);
+  assert.equal(r.taken.liked, true); assert.match(r.taken.memory, /empty bay in the market/);
+  assert.equal(r.after, true, 'and then her own words');
+  assert.deepEqual(errors, []);
+});

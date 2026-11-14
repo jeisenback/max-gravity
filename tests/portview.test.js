@@ -81,7 +81,7 @@ test('at Earth the Ring is the stage on every page, with the notes in a ticker u
 });
 
 test('the Ring\'s people keep its hours: the port\'s own at work in their hours, the bar\'s patrons while it is open, workers at the boards by day and the lobby at a shift, the crew ashore (#1102)', () => {
-  const lay = PORT_LAYOUTS.Earth, plain = x => JSON.parse(JSON.stringify(x));
+  const lay = { ...PORT_LAYOUTS.Earth, folk: PORT_LAYOUTS.Earth.folk.filter(f => !f.due) }, plain = x => JSON.parse(JSON.stringify(x));  // before Funmilayo has her bay (#1164, `due`)
   const patrons = [1, 2, 3, 4, 5].map(i => ({ id: `patron:${i}` })), crew = [{ id: 'c1', role: 'engineer' }, { id: 'c2', role: 'pilot' }];
   const at = h => plain(portCast(lay, h, patrons, crew, 40)), folk = h => at(h).filter(c => c.kind === 'folk').map(c => c.who).sort();
   assert.deepEqual(folk(10), ['clerk', 'ngozi', 'nurse', 'repairer'], 'a morning: the keeper is not in yet');

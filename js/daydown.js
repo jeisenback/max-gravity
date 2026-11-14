@@ -6,7 +6,9 @@
 // taken in turn by the day. The words are the lines of scene:day-down (hiredscenes.js). Once a day; the night then passes as it does in a stay.
 // Loaded after dayashore.js; calls into stay.js only at runtime.
 
-const DOWN_FARE = 900, DOWN_PORT = 'Earth', CRAYFISH = 60;  // ...; dried crayfish for Ngozi from Surulere's market (#1164)  // the seat down and back (the owner, 2026-11-14); the port the spaceplane goes down from
+// The seat down and back (the owner, 2026-11-14); the port the spaceplane goes down from; dried crayfish for Ngozi from Surulere's market (#1164); and the
+// days from the hand's word to the yard clerk until the woman from that market has the empty bay on the Ring (#1164, portview.js).
+const DOWN_FARE = 900, DOWN_PORT = 'Earth', CRAYFISH = 60, SELLER_DAYS = 5;
 const DOWN_LANES = ['tiers', 'market', 'hall'];
 const lagosSay = (key, vars) => sceneSay('scene:day-down', key, vars);
 // Whether a day down is on offer here now, and if it is, why it is shut (or '' when it is open). `st` the save, `h` the hand, `planet` the port.
@@ -32,7 +34,10 @@ function dayDownEvent() {
   const st = G.state;
   return {
     title: lagosSay('title'), text: lagosSay('text'), personal: true, place: 'well',  // it starts at the spoke lift, on the Ring's view
-    choices: [...DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run: () => lagosSay(`${k}.${st.day % 3}`) })),
+    choices: [...DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run() {
+      if (k === 'market' && st.day % 3 === 0) st.metSeller = true;  // the woman selling phone parts, who asks if the Ring is hiring (portview.js, the clerk)
+      return lagosSay(`${k}.${st.day % 3}`);
+    } })),
       { label: lagosSay('work.label'), run() { G.nextEvent = jobStage(downJob(st.day), 0); return null; } },  // the day's job below, played as a station job is (jobs.js)
       ...crayfishLane(st)],
   };
