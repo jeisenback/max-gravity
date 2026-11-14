@@ -138,7 +138,7 @@ What needs design, in the order the chapters need it. Chapter 1 is built and pla
 | Trade goods and markets in full: what is made where, what each bloc taxes or bans, what the war does to prices, what the co-op may trade (`role()`) | `bible/trade-goods.md`; `bible/economy.md`, `bible/trade-and-law.md` |
 | Refits and upgrades by grade; burning harder as the captain's choice (#1195) | `bible/technology.md` |
 | The war's technology: Ballast's ships, the blockade, the patrols' grades | `bible/technology.md`; `bible/the-fuel-war.md` |
-| The co-op's members as a pool, and the vote (piece 3) | `bible/cast.md`; `bible/chapter-2.md` |
+| The co-op's members as a pool, and the vote (piece 3) | `bible/cast.md`; `bible/chapter-2.md`, The meeting and the vote (draft, #1216); chapter 3 outlined in `bible/chapter-3.md` (#1229) |
 | Vesta and Kaur's depot towns on the map; the havens and the yards as places; the first generated Belt settlements | `bible/places.md`; `bible/the-belt.md` |
 | The major powers' people (Tycho, Kaur, Van Leeuwen, Ballast) | `bible/cast.md` |
 

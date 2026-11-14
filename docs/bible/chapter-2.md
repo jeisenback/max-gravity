@@ -32,6 +32,33 @@ The Ore Runner's refit adds a bunk for the pilot to her five berths.
 
 What is not the co-op's: the terms in a bad year (the lender's). The lender's terms limit what the player may load and which lanes they may fly.
 
+## The meeting and the vote
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1216). It is the one new kind of system in chapter 2.
+
+**Who votes.** The members: five at the start (the hand, Tomas, Cato, Bexa and Pax), more if the meeting takes one in (Ines mid-chapter; a recruit). One member, one vote. A motion carries on more than half of the votes cast; a tie fails, and what was there before stands. A member away from the ship votes by message, a day late.
+
+**What the meeting decides, and what the bridge does.** The meeting decides what the co-op commits to: which run the hull takes, who joins, how to answer the lender, and the last vote. The bridge decides how: the course, the burn, the fight. These are questions put to `role()` (`js/role.js`): what the co-op may trade and pay for is the meeting's, and the hand holds the bridge on the members' vote. A captain who goes against a vote they lost can be voted off the bridge at the next meeting.
+
+**How a member votes.** Each member weighs a motion by:
+
+1. **Their want.** Bexa the hull kept flying, Pax nobody hurt, Cato the co-op kept whole, Tomas the money home (The second half, below). A motion that serves it pulls them; one that cuts across it pushes them away.
+2. **The hand.** Their opinion of the hand (`js/people.js`), when the hand argues for the motion: a friend leans the hand's way, a grudge leans against.
+3. **Each other.** Bonds (`st.bonds`, `js/social.js`): a member close to another leans their way, and rivals split (#142).
+4. **Their nature.** Traits (`TRAITS`, `js/people.js`): a brave member takes the risky run, a careful one does not.
+
+The want comes first and is strongest; the others tip a member who is close. So a member who loves the hand still votes against a run that cuts across their want, unless the hand has given them a reason.
+
+**What the hand can do.**
+
+- **Before the meeting:** talk to the members on the burn (their offers, `burn.md`), learn where each stands, and give a member a reason: a promise, a favour, a share of the risk taken on. A promise made is kept or broken on the record.
+- **At the meeting:** propose a motion, argue for it (the hand's own check, by their post's stat and the word), back another member's, or stay out of it and let the meeting choose.
+- **What the player sees:** each member's lean, as far as the hand knows it. A member the hand is close to says where they stand; for the others the hand has a guess, and it can be wrong.
+
+**When the meeting splits.** A vote that goes against the player stands, and the hull takes the run the members chose. A member who loses a vote on their want thinks less of whoever carried it. A member who loses on their want three times leaves at the next port, and sells their share back.
+
+**The last vote.** The lender's offer (The end, below) is put the same way, with the whole chapter behind it: every promise kept or broken, every opinion and bond as they stand. Its outcome sets chapter 3 (`chapter-3.md`).
+
 ## The first half: paying her off
 
 - The runs come from the boards at each port, and the meeting votes on which to take. The player proposes a run, argues for it, backs a member's, or lets the meeting choose, and the members remember.
@@ -53,7 +80,7 @@ What is not the co-op's: the terms in a bad year (the lender's). The lender's te
 
 ## The end: one vote
 
-At the height of the squeeze the lender puts an offer to the members. The meeting votes. The hand's vote counts, and so do the members the hand has won or lost over the chapter. There are three outcomes, and each sets where the hand stands in chapter three (`shape.md`):
+At the height of the squeeze the lender puts an offer to the members. The meeting votes. The hand's vote counts, and so do the members the hand has won or lost over the chapter. There are three outcomes, and each sets where the hand stands in chapter three (`shape.md`; outlined in `chapter-3.md`):
 
 - **Hold:** the co-op keeps the hull and its independence, at a price. Chapter three is the **organiser's**.
 - **Charter:** the Ore Runner is signed over to the lender's side before the war breaks. Chapter three is the **master's**.
@@ -84,6 +111,7 @@ The sheets are in `people/`: the four masters, met in the war (`saran.md`, `kess
 - The Ore Runner's refit adds a bunk for the pilot, so six are aboard.
 - Yelena and Ruben come in through the war, as people to meet and possibly recruit.
 - The chapter ends in one vote on the lender's offer, with three outcomes: hold, charter or sell.
+- The meeting: one member one vote, more than half carries, a tie fails; a member weighs their want first, then the hand, their bonds and their nature; three losses on their want and a member leaves.
 - Hester's ship is not part of the chapter.
 - Opinion carries over as it stands: goodwill fades to friend without upkeep, grudges stay until mended.
 - Bexa's and Pax's Ceres homes (the station, the Warren) stand; Yelena's home is a hub dome and Ruben's an outer dome at the edge (`mars.md` names no domes; their sheets say so).
