@@ -88,7 +88,7 @@ A place's own page can differ from its kind, and wins: a place is a kind with a 
 
 ## By chapter
 
-**Chapter 1 (now).** The places the hand reaches on Hester's ship: Earth's Lagos Ring (written, with its view), Ceres Station (where the share is signed: its inner places and regulars first), Pallas Refinery and The Hollows (the water arc), Eros Old Town (the air arc), Luna (the riggers), and the ice rocks (sites). Each needs its inner places written and a pool of regulars for its bar, berth and hall.
+**Chapter 1 (now).** The places the hand reaches on Hester's ship: Earth's Lagos Ring (written, with its view), Ceres Station (where the share is signed: its inner places and regulars first; `ceres.md`, `regulars.md`), Pallas Refinery and The Hollows (the water arc), Eros Old Town (the air arc), Luna (the riggers), and the ice rocks (sites). Each needs its inner places written and a pool of regulars for its bar, berth and hall.
 
 **Chapter 1, setting up chapter 2.** Ceres as the co-op's home: its guild hall, the co-op's office and the assembly where the members vote; the market where the co-op will trade. Ring Nine, the Rook and Boneyard, seen from the lanes before the co-op needs them as havens.
 
