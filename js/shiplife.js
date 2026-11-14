@@ -928,6 +928,27 @@ function cutBulkhead(ctx, x, top, F, hatch) {
   ctx.fillStyle = '#1a3048'; ctx.fillRect(x - 6, top, 12, F - top);
   if (hatch) { ctx.fillStyle = '#060d16'; ctx.fillRect(x - 4, F - 92, 8, 92); ctx.fillStyle = '#2a4664'; ctx.fillRect(x - 6, F - 96, 12, 4); ctx.fillStyle = '#c9a227'; ctx.fillRect(x - 4, F - 4, 4, 4); }
 }
+// ---------- the camera the player moves (#1182, docs/bible/burn.md, The camera) ----------
+// Where the burn camera aims down the tower's run (camRun's terms, as camTarget): a scene's room while one has it (stageDeck, its deck), else
+// the one it follows (view.follow, an id), else where the player left it (view.y), else where it is (held), and the hand's deck on a first look.
+// `still`: reduced motion holds on a deck. Pure: the view, the cutaway's people and the layout come in.
+function camAim(view, people, lay, stageDeck, held, still) {
+  const deck = p => { const q = p.lapse || p; return still ? Math.round(q.dk) : q.dk; };
+  if (stageDeck !== null && stageDeck !== undefined) return camTarget(lay, stageDeck);
+  const f = view.follow && people.find(p => p.id === view.follow);
+  if (f) return camTarget(lay, deck(f));
+  if (view.y !== null && view.y !== undefined) return view.y;
+  return held !== null && held !== undefined ? held : camTarget(lay, deck(people[0]));
+}
+const CAM_PAN = 2 * HULL.deck;  // world units a second the arrows pan
+// The player pans: by dy world units from `from` (where the camera aims now), held inside the run; it follows nobody after.
+function camPan(dy, from) {
+  const v = G.camView, len = camRun(LAYOUTS.freighter).len, base = v.y !== null && v.y !== undefined && !v.follow ? v.y : from;
+  v.follow = null; v.y = Math.max(0, Math.min(len, (base === null || base === undefined ? len / 2 : base) + dy));
+}
+// The camera follows someone (an id from the cutaway's people): a click on them, or H for the hand.
+function camFollow(id) { G.camView.follow = id; G.camView.y = null; }
+
 // The ladder well on a deck, x0 to x1 from top to the floor F (#1024): a shaft too narrow for a box, its back wall darker than a room's, a
 // bulkhead each side with a hatch at the floor, and the cut under it.
 function cutShaft(ctx, x0, x1, top, F) {
@@ -1026,12 +1047,21 @@ function drawCutaway(box, clear = box, dock = null) {
   // Reduced motion snaps, and holds on a deck: one cut as the hand reaches the next, still on the ladder between. In time-lapse it follows the hand as drawn.
   const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
   const held = G.cam && !still ? G.cam.y - offY - run.top : null, hand = people[0].lapse || people[0], dt = G.cam ? Math.max(0, now - G.cam.t) : 0;
-  const target = camTarget(lay, dock ? dock.focus.dk : still ? Math.round(hand.dk) : hand.dk);  // at the dock the beat's place (#940)
-  const camY = camStep(held, target, dt, clear.h / zoom, run.len) + run.top + offY;
-  const seenX = dock ? [dock.focus.x] : people.filter((p, i) => i === 0 || p.staged).map(p => (p.lapse || p).x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
+  const v = G.camView, stageDeck = !dock && G.dialog && t.stageSpan ? t.stageSpan.deck : null;
+  if (!dock) {  // a scene has the camera while it is open, and gives it back where it was (#1182)
+    if (stageDeck !== null && v.before === undefined) v.before = G.cam && G.cam.aim !== undefined ? G.cam.aim : held;  // the last frame's aim: `held` is already in the docked dialog's terms
+    else if (stageDeck === null && v.before !== undefined) { if (!v.follow && v.before !== null) v.y = v.before; v.before = undefined; }
+    const pan = (G.keys.reverse ? 1 : 0) - (G.keys.thrust ? 1 : 0);  // the arrows, held
+    if (pan && !G.dialog && G.cam) camPan(pan * CAM_PAN * dt, (G.cam.aim !== undefined ? G.cam.aim : held));
+  }
+  const target = dock ? camTarget(lay, dock.focus.dk) : camAim(v, people, lay, stageDeck, held, still);  // at the dock the beat's place (#940)
+  const free = !dock && stageDeck === null && !(v.follow && people.some(p => p.id === v.follow));  // a free camera goes where it is put, with no dead zone
+  const aim = camStep(held, target, dt, clear.h / zoom, run.len, free ? 0 : undefined), camY = aim + run.top + offY;
+  const followed = !dock && v.follow && people.find(p => p.id === v.follow);
+  const seenX = dock ? [dock.focus.x] : people.filter((p, i) => (followed ? p === followed : i === 0) || p.staged).map(p => (p.lapse || p).x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
   const xLo = dock ? -DOCK_OUT : -40;  // how far left of the tower the camera may pan: at the dock, over the gangway
   const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x - xLo : null, focusX - xLo, dt, (clear.x + clear.w - rx0) / zoom, W + 40 - xLo) + xLo, camX = partX + offX;
-  G.cam = { x: partX, y: camY, t: now };
+  G.cam = { x: partX, y: camY, t: now, aim, zoom, span: clear.h / zoom };  // aim: down the run, held inside it for a view `span` tall (camStep)
   const burning = !dock && !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const spin = t.angle + Math.PI / 2;  // the ship's turn, 0 to pi
   const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
