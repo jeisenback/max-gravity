@@ -57,6 +57,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 30. `trade-goods.md`: the seven goods as built, who makes and owns each, the licences as built against the port law as written, fuel and reaction mass, how prices move, and what each chapter needs (draft, 2026-11-14).
 31. `chapter-3.md`: the war, in three outlines, one for each way chapter 2's last vote goes: the organiser's, the master's and outside; what each opens with, its long middle, and the decision that opens chapter 4 (outline, 2026-11-14).
 32. `regulars.md`: the pool rule for a place's regulars and the dock official, and the pools of chapter 1's ports: Ceres and the Warren, Pallas Refinery, the Hollows, Eros Old Town, Luna and Mars (draft, 2026-11-14).
+33. `powers-people.md`: the faces of the minor powers the hand meets in chapter 1 (the Ice Haulers' Guild, the Hollows, Pallas Smelting, the Eros Town Trust, Kaur's buying office, Gulf Atlantic Manning, the house), recurring and tagged to their power, so chapter 2 knows them (draft, 2026-11-14).
 
 ## Where the game must change to fit
 
