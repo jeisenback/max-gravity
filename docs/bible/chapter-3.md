@@ -25,7 +25,7 @@ Each follows the funnel of `shape.md`: a short written opening that says where t
 
 The hand is still her captain and one of the members, and now the one the other crews come to.
 
-**Who is with them.** The members who stayed; Ines, a member or on her licence (`chapter-2.md`, the mid-chapter vote); new members recruited in the chapter, Yelena or Ruben among the candidates.
+**Who is with them.** The members who stayed; the hired pilot (Ines in the usual narrow run), a member or on her licence (`chapter-2.md`, the mid-chapter vote); new members recruited in the chapter, the war's recruits among the candidates (`chapter-2.md`, The cast).
 
 **What is theirs.** The Ore Runner, the co-op's books, and a voice among the Belt's other co-ops.
 
@@ -44,7 +44,7 @@ The hand is still her captain and one of the members, and now the one the other 
 
 **Where the player stands.** The Ore Runner is signed over to Tycho's side under charter, before the war breaks (`the-fuel-war.md`). The hand keeps the bridge, now on a real master's licence the lender approved (`progression.md`, layer 5), and answers to the charterer's orders. The members are crew on the charter's wage; the co-op holds the hull's paper and little else.
 
-**Who is with them.** The members who stayed aboard on wages; Ines, whose cheap endorsement the charter does not need (a licence of her own frees her); Ama Kessler as the house's eye on the fleet; Aron Saran on the next hull in the convoy.
+**Who is with them.** The members who stayed aboard on wages; the hired pilot, whose cheap endorsement the charter does not need (a licence of her own frees her); Ama Kessler as the house's eye on the fleet; Aron Saran on the next hull in the convoy.
 
 **What is theirs.** A bridge and a licence, on someone else's terms. The cargo, the lanes and the fights are the charterer's.
 
