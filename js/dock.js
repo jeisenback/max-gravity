@@ -201,10 +201,13 @@ function dockCast(company, handRole, v, official, trim, hurt = []) {  // hurt: t
   return out;
 }
 
-// The seal's colour on the crates: the port owner's, toned halfway to a grey, a step below the people (#959).
+// The seal's colour on the crates: the port owner's, a third of it to two of a grey, and no lighter than the paint of the crates' labels
+// (holdSerial, rooms.js), so it sits with the hold's props (#959, #1149).
+const DOCK_SEAL_GREY = 0x4a, DOCK_SEAL_LUM = 0x6c;  // the grey it is mixed with; the labels' paint's lightness (#7a6c50)
+const dockLum = ([r, g, b]) => 0.299 * r + 0.587 * g + 0.114 * b;
 function dockSealTone(trim) {
-  const n = parseInt(String(trim || '#8a8a8a').slice(1), 16), mix = (c, g) => Math.round((c + g) / 2);
-  return `#${[mix(n >> 16, 0x5a), mix((n >> 8) & 255, 0x5a), mix(n & 255, 0x5a)].map(v => v.toString(16).padStart(2, '0')).join('')}`;
+  const n = parseInt(String(trim || '#8a8a8a').slice(1), 16), mix = [n >> 16, (n >> 8) & 255, n & 255].map(c => (c + 2 * DOCK_SEAL_GREY) / 3), k = Math.min(1, DOCK_SEAL_LUM / dockLum(mix));
+  return `#${mix.map(v => Math.round(v * k).toString(16).padStart(2, '0')).join('')}`;
 }
 
 // The gangway's deck at world x, from the outer door's sill (y the lock deck's floor F) down to its far end.
