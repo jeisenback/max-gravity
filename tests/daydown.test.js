@@ -30,7 +30,7 @@ test('a day down: offered at the Ring in a captain\'s wait only, the fare from t
   await done();
   assert.equal(r.noStay, null, 'no wait, no trip: the ship sails when the captain says');
   assert.deepEqual(r.open, { label: 'Go down to Lagos (900 cr)', shut: false, hint: '' });
-  assert.deepEqual(r.scene, { title: 'A Day Down', labels: ['Walk the arcology\'s tiers', 'Cross the lagoon to the mainland market', 'Wait it out in the departure hall'], credits: 1100 });
+  assert.deepEqual(r.scene, { title: 'A Day Down', labels: ['Walk the arcology\'s tiers', 'Cross the lagoon to the mainland market', 'Wait it out in the departure hall', 'Look for work'], credits: 1100 });
   assert.equal(r.line, r.want, 'the lane\'s line of the day');
   assert.deepEqual([r.spent.shut, r.spent.hint, r.twice], [true, 'You\'ve been down today.', false], 'once a day');
   assert.deepEqual([r.morning.shut, r.morning.hint], [false, ''], 'the next day, again');
@@ -66,5 +66,29 @@ test('Tomas\'s parcel: when he trusts the hand, going down starts with him at th
   assert.equal(r.table, 'Emeka and Chioma');
   assert.match(r.result, /He was like that at ten/); assert.equal(r.liked, true); assert.match(r.memory, /You told his parents he misses the ring/);
   assert.equal(r.soon, 'A Day Down', 'not again so soon'); assert.equal(r.later, 'Tomas\'s Parcel', 'and again after a while');
+  assert.deepEqual(errors, []);
+});
+
+test('work below: a day down offers the day\'s Lagos job, played as a station job and paid to the hand; Lagos\'s jobs never reach the station\'s board (#1162)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), out = {};
+    delete h.stay; beginStay(h, 9, 'market');
+    for (const k of [0, 1]) {
+      st.day = Math.floor(st.day / 2) * 2 + k; delete h.downDay; st.credits = 5000; tomasAboard().opinion = 0;
+      Mods.act('goDown'); UI.act('choose', G.dialog.choices.findIndex(c => c.label === 'Look for work'));
+      const e = G.dialog.event; out[k] = { title: e.title, labels: G.dialog.choices.map(c => c.label) };
+      UI.act('choose', G.dialog.choices.length - 1); out[k].paid = st.credits - (5000 - DOWN_FARE); finishEvent();
+    }
+    out.board = [];
+    for (let d = 0; d < 40; d++) { st.day += 1; delete h.board; out.board.push(...jobBoard().ids); }
+    return out;
+  });
+  await done();
+  assert.deepEqual([r[0].title, r[1].title].sort(), ['A Sled Stuck on the Platform', 'The Generator on the Roof'], 'the two take turns by the day');
+  assert.ok(r[0].labels.length === 4 && r[1].labels.length === 4, 'each with its four ways at it');
+  assert.ok(r[0].paid > 0 && r[1].paid > 0, `the plain way pays the hand: ${r[0].paid}, ${r[1].paid}`);
+  assert.deepEqual(r.board.filter(id => id.startsWith('lagos-')), [], 'never on the station\'s board');
   assert.deepEqual(errors, []);
 });

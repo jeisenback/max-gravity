@@ -9038,6 +9038,208 @@
   }
  },
  {
+  "key": "job:lagos-sled:0",
+  "v": {
+   "title": "A Sled Stuck on the Platform",
+   "text": "The sled runs on a rail from the warehouse to the spaceplane's hold, and it has stopped halfway with a load of pump parts on it and the clamp locked. The crew chief has the loading schedule on her wrist. The next plane goes in fifty minutes, and the platform charges the shipper for every minute it waits. \"Day rate,\" she says, \"if you can do anything with that clamp.\"",
+   "labels": [
+    "Take the clamp's housing off and release it by hand [Engineer, 45%; if it fails: you may be hurt]",
+    "Walk the sled in on the manual controls [Pilot, 45%]",
+    "Unload it by hand with the crew [Gunner, 50%; if it fails: you may be hurt]",
+    "Hold the tag line and keep out of the way"
+   ]
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:0:0",
+  "v": {
+   "text": "The release is behind a cover held on with six bolts, two of them rounded. You get it off with a borrowed extractor and push the pawl back with a screwdriver. The sled moves. The crew chief writes your name on her wrist under the schedule. (+2,200 cr)",
+   "credits": 2200,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:0:0.999",
+  "v": {
+   "text": "The pawl lets go all at once and the load shifts on the sled. Nobody is under it, but the crew chief sends you to the medical room to have your hand looked at, and logs the delay against the clamp. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:1:0",
+  "v": {
+   "text": "The manual controls are a lever and a dead-man switch in a box at the end of the rail. You walk the sled the last forty metres at a pace a person can follow, and the load goes into the hold on the fork. The plane goes on time. (+1,800 cr)",
+   "credits": 1800,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:1:0.999",
+  "v": {
+   "text": "You overrun the stop by half a metre and the sled noses the ramp. Nothing breaks. The crew chief pays you for the morning and takes the controls back. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:2:0",
+  "v": {
+   "text": "It takes four of you and most of the fifty minutes. The pump parts are packed in foam, in crates of twenty kilos. Your shoulders know about it by the evening flight. (+1,400 cr)",
+   "credits": 1400,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:2:0.999",
+  "v": {
+   "text": "A crate slips off the stack on the turn and you get a hand under it. The crate is fine. The crew chief has someone look at your wrist. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:3:0",
+  "v": {
+   "text": "You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:3:0.999",
+  "v": {
+   "text": "You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0",
+  "v": {
+   "title": "The Generator on the Roof",
+   "text": "The generator is on the roof of a block of flats in Yaba, under a sheet of tin, and it serves three blocks by the hour. It stopped at six. The generator man, Femi, has the cover off and a phone in his other hand, and the tenants in the stairwell want to know when. \"I pay by the job,\" he says. \"If it starts, you get paid.\"",
+   "labels": [
+    "Find the fault [Engineer, 45%]",
+    "Call round the parts dealers for a filter [Comms, 50%]",
+    "Carry the spare up from the store [Gunner, 50%; if it fails: you may be hurt]",
+    "Hold the torch"
+   ]
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:0:0",
+  "v": {
+   "text": "It's the fuel filter, packed with water and grit. You drain the bowl into a can, rinse the element in diesel and put it back, and on the fourth pull it catches. Femi tells the stairwell before he tells you. (+1,900 cr)",
+   "credits": 1900,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:0:0.999",
+  "v": {
+   "text": "You find the filter and clean it, and it still won't run. Femi finds the second fault an hour later, in the wiring, and pays you for the first. (+700 cr)",
+   "credits": 700,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:1:0",
+  "v": {
+   "text": "The third dealer has one, and will send it over on a motorbike for the price of the ride. You get the price down by mentioning the second dealer. Femi pays you the difference and a day. (+1,600 cr)",
+   "credits": 1600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:1:0.999",
+  "v": {
+   "text": "Nobody has the filter. One dealer can get one by Thursday. Femi pays you for the calls. (+400 cr)",
+   "credits": 400,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:2:0",
+  "v": {
+   "text": "The spare is a smaller machine in a storeroom on the ground floor, and it weighs as much as you do. You and Femi get it up six flights with a rope and a sack truck, and it runs two of the three blocks until the big one is fixed. (+1,700 cr)",
+   "credits": 1700,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:2:0.999",
+  "v": {
+   "text": "On the fifth flight it gets away from you on the turn. It doesn't go far. Your knee goes a little further. (+600 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:3:0",
+  "v": {
+   "text": "You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter. (+500 cr)",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:3:0.999",
+  "v": {
+   "text": "You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter. (+500 cr)",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
   "key": "awayjob:package:0",
   "v": {
    "title": "A Package for Ironheart",

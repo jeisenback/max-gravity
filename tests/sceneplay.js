@@ -432,7 +432,7 @@ const playScenes = () => {
     window.tiesOf = realTies;
   }
   // ---------- a day down in Lagos (#1162): the menu on each of the three days its lines turn on, and the Port page's button and its shut line ----------
-  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); });
+  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); }, { skip: [3] });  // looking for work is played last (below)
   run('scene:day-down:button', {}, () => ({ title: lagosSay('button', { fare: fmt(DOWN_FARE) }), text: lagosSay('shut'), choices: [] }));
   run('scene:day-down:parcel', {}, () => tomasParcelEvent(tomasAboard()));  // Tomas's parcel, and the day at his parents' table (part 2)
   run('scene:day-down:parents', {}, () => tomasParentsEvent(tomasAboard()));
@@ -683,6 +683,8 @@ const playScenes = () => {
   // the survey (salvage.js): with no pilot aboard the check is on no skill (an even chance), so the rolls give a good, a fair and a poor report
   run('scene:survey', {}, () => { const st = G.state, site = sites(st)['site:rock-1']; st.crew = []; hired().job = { kind: 'survey', site: site.id, client: 'Brannock Minerals', got: false }; return surveyScene(st, site); }, { rolls: [0, 0.45, 0.99] });
   run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
+  // ---------- work below Lagos on a day down (#1162, part 3): each of the two jobs, last, since the skill a job gives the hand carries into the next game this file starts ----------
+  for (const d of [0, 1]) run(`scene:day-down:work:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 2) * 2 + d; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[3]] }; });
   return out;
 };
 
