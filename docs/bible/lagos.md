@@ -34,6 +34,34 @@ The ring channel carries the Lagos Orbitals, the ring's football side, and the y
 
 The yard's work comes and goes with the refit contracts, and the contracts come and go with the owners' rivalry: a fleet owner who falls out with the holding company takes its refits to Luna, and the yard lays people off.
 
+## Lagos Ring's places
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1246), bringing the Ring in line with `places.md`, `regulars.md`, `powers-people.md` and `trade-goods.md`. What the port view cuts through is in `ports.md` (Earth: Lagos Ring); this says whose each place is, and what the Ring's law and trade are.
+
+**Its inner places.** The Ring is an arcology's ring (`places.md`): nearly all of it is the holding company's, rented out.
+
+| Inner place | On the Ring | Whose | Where |
+|---|---|---|---|
+| **Berth** | the berths' collars at the hub, metered by the hour | the holding company's | the hub |
+| **Customs** | the arcology's office at the head of the berths | the arcology's | the hub |
+| **Market** | the bays in the rim's wall: Ngozi's food bay, the repairer's, the bay between tenants | the company's floor; the bays leased, each by its tenant | the rim, outermost level |
+| **Bar** | the Gravity Well | private, on the keeper's lease | the rim, off the market |
+| **Clinic** | the clinic, on a contract that goes out to tender | the company's, contracted | the rim, by the yard offices |
+| **Lodging** | the bunkrooms, three high, each held as long as its contract | the agencies' | the rim, top level |
+| **Hiring** | the agencies' boards for refit contracts; the hall of Gulf Atlantic Manning (`powers-people.md`), where the hand signs on | the agencies' | the yard offices |
+| **Yard** | the yard at the hub's heavy shops, and its office on the rim where a refit is signed | the holding company's | the hub; the rim |
+| **Shipper's office** | the Arcology Pact Freight Office's desk (`js/contracts.js`) | the bloc's | the yard offices |
+| **Security** | the arcology's police | the arcology's | throughout |
+| **The way down** | the spaceplanes to the Lagos platform | the holding company's | the hub |
+
+**Its people's places.** The fixed people (`ports.md`, The port's people) are the leaseholders and the staff: Ngozi at her food bay, the repairer, the Gravity Well's keeper, the yard clerk, the clinic's nurse (`js/portview.js`). The Gravity Well's two stools are the Ring's regulars (`regulars.md`, Lagos Ring).
+
+**Its law.** The arcology inspects at the head of the berths (`js/inspection.js`). It licenses medical supplies for import, so medicine landed without the licence pays a duty, and it bans weapons, unlicensed prints and unregistered drugs (`trade-and-law.md`; from chapter 2, the banned goods of `trade-goods.md`).
+
+**Its trade.** Earth's market makes machine parts, medical supplies and electronics, priced low, and wants luxury goods, priced high (`js/data.js`). It prices refined metals high, a slip to be put right (#1206).
+
+**Its yard** works at the licensed grade (`technology.md`, The ship's systems): a refit is serviced and signed at the yard office, and the parts are rated. The yard grade is at Luna, where the owners send the refits they fall out with the Ring over.
+
 ## Growing up here
 
 **On the mainland, by the month.** A family in a rented flat in Yaba or Surulere, two rooms and a corridor shared with three other flats, in a block the landlord doesn't repair. The rent is monthly, and late is a week's grace and then the door. One parent works in the arcology on a day pass or in the market; the other runs something from the flat: tailoring, phone repair, a cook-stall in the street. Power comes from the generator on the roof, by the hour, and everyone knows the generator man. Children who are good with their hands go to the yard agencies at sixteen, and the agencies recruit on the mainland because it's cheap. Who is missed: the mother who keeps the stall, or an uncle who got them their first contract. What they hope for: paying off the family's arrears, or a lease that doesn't run out.
@@ -59,3 +87,4 @@ His sister Ngozi followed him up. She holds a lease on the ring, in her own name
 - Tomas's family is Igbo, settled in Lagos two generations ago.
 - Mainland rent is monthly with a week's grace, and power is bought by the hour from a block generator.
 - A yard worker between contracts has a few days to find another before going down.
+- The Ring's inner places are the holding company's, rented, with the bar private, the bunkrooms and the hiring boards the agencies', and the customs the arcology's; its yard is of the licensed grade.

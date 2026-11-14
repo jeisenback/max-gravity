@@ -38,7 +38,7 @@ Ceres is a guild station (`places.md`), so most of what is in it is the members'
 | **Clinic** | the station's clinic, on the guilds' cover for members and for cash for renters | the council's | the upper rings |
 | **Lodging** | crews' bunkrooms by the docks; the co-ops' rented rooms near the yard | the council's, rented | the upper rings |
 | **Hiring** | the guilds' boards and the agencies' desks | the guilds' and the agencies' | the upper rings |
-| **Shipper's office** | the freight desks: the Federation Freight Hall, Kaur's buying office (`powers-people.md`) | the companies' | the upper rings |
+| **Shipper's office** | the freight desks: the Federation Freight Hall, Kaur's buying office (`powers-people.md`), and the house's Ceres desk, where the lender's officer reads the co-op's minutes | the companies' | the upper rings |
 | **Guild hall** | the guilds' halls: the Ice Haulers' Guild (`powers-people.md`), the riggers', the dock crews' | each guild's | the upper rings |
 | **Assembly** | the council's chamber; the co-ops' back rooms | the council's; each co-op's | the upper rings |
 | **Chapel** | a shrine in the Warren for the people the ice took | private | the lower rings |
@@ -46,11 +46,21 @@ Ceres is a guild station (`places.md`), so most of what is in it is the members'
 | **Security** | the council's wardens | the council's | throughout |
 | **Homes** | the co-ops' rented rooms; the Warren's rooms by the month | the council's, rented | the upper and lower rings |
 
+## Its law, its trade and its yard
+
+**Its law.** The Guild Federation inspects at the council's lock (`js/inspection.js`). Ceres has a yard, so it is one of the two Guild ports that license machine parts for import (the owner, 2026-11-14; #1205 puts the code right): parts landed without the licence pay a duty. Otherwise the council taxes berth and handling, not goods, and bans little but weapons in the bars (`trade-and-law.md`).
+
+**Its trade.** Ceres makes refined metals, priced low, and wants water, food and medical supplies, priced high; machine parts, electronics and luxury goods are middling (`js/data.js`). The Belt feeds and doctors itself through here, and pays for it.
+
+**Its yard** works at the licensed grade (`technology.md`, The ship's systems): serviced refits on rented cradles, rated parts from the outfitter, and the used parts that come off the Belt's hulls. It is where the Ore Runner is refitted (#1210), and where a co-op can keep a patched hull running for less.
+
 ## The co-op's office
 
 Two rooms up a stair from the yard floor (`ceres-coop.md`), rented from the council: a counter, a board with the hulls and where each is, and a back room where the members meet. The share is signed at the counter (`chapter-1.md`, the signing), and chapter 2's meetings are in the back room (`chapter-2.md`, The meeting and the vote). For the last vote, with the lender's officer in the room, the co-op rents the small chamber at the Ice Haulers' Guild's hall, because the back room will not hold everyone who comes to watch.
 
 Kettle, who started the co-op thirty years ago, still comes to the meetings, sits by the door and votes last.
+
+**Chapter 3's openings here** (`chapter-3.md`): the organiser's opens in the co-op's back room after the vote, with the hold's price read out; the master's in the house's Ceres desk, with the charter and the licence signed; outside on the yard's apron, with the hull sold and whoever walks away with the hand.
 
 ## The hours
 
@@ -77,3 +87,4 @@ Ceres is the Belt's own place: not the owners', and not fair either. Everyone he
 - About forty thousand people; the rings turn for about a third of a g.
 - Ceres's water is metered and dear: the ice is cut and sold on, and the sellers keep the price.
 - The co-op's last vote is held in the Ice Haulers' Guild's small chamber; Kettle still comes to the meetings.
+- Ceres licenses machine parts at its lock, as a Guild yard; its yard is of the licensed grade; the house keeps a desk here.
