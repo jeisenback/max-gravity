@@ -227,8 +227,9 @@ function portWordEvent(f, p, st) {
   if (f.offer === 'work' && st.metSeller && st.sellerAt === undefined) choices.push({ label: lagosSay('seller.mention'), run() { st.sellerAt = day; return lagosSay('seller.clerk', { first: p.first }); } });  // the woman from Surulere (daydown.js, #1164), once
   choices.push({ label: 'Leave them to it', keep: true, run: () => null });
   // A word that is for something the day down led to (daydown.js, #1164), once, which they have whatever you do next: the crayfish brought up from
-  // Surulere for Ngozi, and Funmilayo's first word in her bay. Otherwise the day's word.
-  const once = f.key === 'ngozi' && st.forNgozi ? ['ngozi', () => delete st.forNgozi] : f.key === 'seller' && !st.sellerMet ? ['seller', () => { st.sellerMet = true; }] : null;
+  // Surulere for Ngozi, the seller's first word in her bay, and what the hand saw of the repairer's or the keeper's life below. Otherwise the day's word.
+  const once = f.key === 'ngozi' && st.forNgozi ? ['ngozi', () => delete st.forNgozi] : f.key === 'seller' && !st.sellerMet ? ['seller', () => { st.sellerMet = true; }]
+    : st.belowFor === f.key ? [`below.${f.key}`, () => delete st.belowFor] : null;
   const taken = c => ({ ...c, run() { once[1](); like(p, 1, lagosSay(`${once[0]}.memory`)); return c.run(); } });
   return { title: `${p.first} ${p.last}`, text: once ? lagosSay(`${once[0]}.given`, { first: p.first }) : words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: once ? choices.map(taken) : choices };
 }
@@ -237,6 +238,7 @@ function portWordEvent(f, p, st) {
 // or from `women` for one whose lines say she (a folk entry's `names`), and a surname. Not Achebe, which is Ngozi's family's.
 const LAGOS_NAMES = {
   first: ['Adebayo', 'Tunde', 'Femi', 'Kemi', 'Bisi', 'Segun', 'Chidi', 'Emeka', 'Obinna', 'Uche', 'Nkechi', 'Ifeoma', 'Musa', 'Aminu', 'Hauwa', 'Zainab', 'Grace', 'Daniel', 'Joy', 'Samuel'],
+  men: ['Tunde', 'Femi', 'Segun', 'Chidi', 'Obinna', 'Uche', 'Musa', 'Aminu', 'Daniel', 'Samuel', 'Adebayo'],  // the boy from Yaba (daydown.js, #1164); not Emeka, Tomas's father
   women: ['Funmilayo', 'Yetunde', 'Folake', 'Adaeze', 'Chiamaka', 'Halima', 'Aisha', 'Blessing'],
   last: ['Adeyemi', 'Okonkwo', 'Balogun', 'Okafor', 'Bello', 'Eze', 'Adebayo', 'Nwosu', 'Ibrahim', 'Oyelaran', 'Danjuma', 'Okoro', 'Afolabi', 'Uzor', 'Abubakar'],
 };

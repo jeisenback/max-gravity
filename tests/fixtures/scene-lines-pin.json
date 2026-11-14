@@ -23564,6 +23564,105 @@
   ]
  },
  {
+  "id": "scene:day-down:below-repairer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Tunde's supplier is a lock-up under the flyover in Mushin, with seals hung on nails by size, hundreds of them, and a boy asleep on a crate by the door. The woman who runs it knows the name. \"Tunde, up on the Ring? Tell Tunde the price is going up. It's not me, it's the plane. They charge by the kilo now.\" She writes the new price on a scrap of card and gives it to you to take up.",
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Find Tunde's seal supplier in Mushin"
+  ]
+ },
+ {
+  "id": "scene:day-down:below-repairer-given",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "mem": [
+     "9 Jul 2214: Brought up the new price from the seal supplier in Mushin."
+    ],
+    "fx": {
+     "p6": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Tunde Okonkwo",
+  "text": "Tunde reads the card and puts it face down on the bench. \"By the kilo,\" Tunde says. \"Seals weigh nothing. It's the box they come in.\" Tunde picks the glove up again. \"Thank you for bringing it. She'd have sent it in a month.\"",
+  "labels": [
+   "Leave them to it"
+  ]
+ },
+ {
+  "id": "scene:day-down:below-keeper",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Obinna's mother has the ground floor of a block in Ebute Metta, with a chest freezer in the front room that she sells cold drinks from through the window. When you say where you've come from, she says \"From the Well?\" and sits you down. She gives you a malt from the freezer and won't take scrip for it. On the wall there's a photo of Obinna at about twelve, in an Orbitals shirt three sizes too big.",
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "labels": [
+   "Visit Obinna's mother in Ebute Metta"
+  ]
+ },
+ {
+  "id": "scene:day-down:below-keeper-given",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "mem": [
+     "9 Jul 2214: Visited their mother in Ebute Metta."
+    ],
+    "fx": {
+     "p6": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Obinna Balogun",
+  "text": "\"You saw my mother.\" Obinna puts a glass in front of you and doesn't charge for it. \"She sends me a message every Sunday to ask when I'm coming down. I'm coming down in June.\" Obinna wipes the copper. \"I've been coming down in June for three years.\"",
+  "labels": [
+   "Leave them to it"
+  ]
+ },
+ {
+  "id": "scene:day-down:boy",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"The bunk's half the size of my room at home, and at home I share it with two brothers.\" He laughs. \"The food's good. There's a woman in the market who cooks like my aunt.\" He looks back at the boards. \"If I do the three months, they give me my harness ticket. Then it's rigging proper.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"I don't need luck,\" Daniel says. \"I need a harness. Two hundred credits, and they take it out of the first month.\" He goes back to the contracts.",
+    "next": null
+   }
+  ],
+  "title": "The Boy from Yaba",
+  "text": "At the hiring boards there's a boy in a new yard jacket, the fold lines still in it, reading the contracts one at a time with his finger. It takes you a moment. He's the one from the street in Yaba, who wrote the agency's name on his hand. He sees you and grins, and holds up the hand. \"It worked,\" he says. \"Three months' rigging, on probation. I came up on Tuesday. I'm Daniel. You didn't ask last time.\"",
+  "labels": [
+   "Ask how he's finding it",
+   "Wish him luck"
+  ]
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {
