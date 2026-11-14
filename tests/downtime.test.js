@@ -45,6 +45,12 @@ test('everything comes round, and each five is a mix of the three kinds', async 
   const r = await ev(() => { setup(); const out = {}, label = a => (typeof a.label === 'function' ? a.label() : a.label);
     const all = downtimeScene(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).map(c => c.label), seen = new Set(), kinds = [];
     const lanes = [baseActivities().filter(a => !a.can || a.can()).map(label), handDowntime().filter(a => !a.can || a.can()).map(label), onNow().filter(a => !a.can || a.can()).map(label)];
+    // the rotation, not where people stand: each one a line puts in a place is there (a line about someone elsewhere is not offered, downtimeThere)
+    const people = shipPeople();
+    for (const a of [...baseActivities(), ...handDowntime(), ...onNow()]) {
+      if (!a.at || typeof a.where !== 'function' || (a.can && !a.can())) continue;
+      const p = people.find(q => q.id === a.where(people)); if (p) p.room = typeof a.at === 'function' ? a.at() : a.at;
+    }
     for (let i = 0; i < 14; i++) {
       G.transit.lifeShown = {};
       const five = downtimeScene().choices.map(c => c.label).slice(0, 5);
