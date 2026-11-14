@@ -18,7 +18,7 @@ Status of this section: the owner's direction of 2026-11-14 (a fixed hard burn u
 
 A torch ship short of money burns the way Hester's does: hard at each end, easy in the middle, so the reaction mass goes where it buys the most. A burn has five parts:
 
-1. **The hard burn out.** On the couches, at about a g, until the ship reaches her cruise speed. Nobody walks; there is nothing to do but lie there, so the burn's clock runs on through it at speed by itself, and no offer is made.
+1. **The hard burn out.** On the couches, at the drive's hard rating (`technology.md`, The drive: about 1.5 g on Hester's patched drive), until the ship reaches her cruise speed. Nobody walks; there is nothing to do but lie there, so the burn's clock runs on through it at speed by itself, and no offer is made.
 2. **The easy cruise.** The drive throttled down to a fraction of a g (about a quarter, the reading the bridge shows now), enough to keep weight aboard. The speed still rises a little. This is the long part, where the crew are on their feet and the hand lives aboard: the offers, the sittings, the post.
 3. **The flip.** At the midpoint, as now: strapped in, weightless while she turns, strapped in again (#992), in its slow motion.
 4. **The easy brake.** The cruise again, braking at the same fraction of a g.
@@ -40,7 +40,7 @@ An **offer** is something the hand could do or join: a shipmate who wants a word
 - **How many.** At most four offers at once, so the ship does not fill with tags. A new one waits for a place.
 - **Only where it is true.** An offer about someone shows only while they are where its words put them (`downtimeThere`, #1175), and over them, so it moves with them.
 - **The downtime slot stays.** A burn still has two to five slots (`lifeSlotCount`). Each slot's activities are offers; taking one spends the slot, and the rest of that slot's activities lapse. The downtime scene, the list of the five, goes: each of the five is its own tag.
-- **What counts as an offer.** The people and the life of the ship: the main characters' scenes (their introductions, middles and lates, not their fate scenes), the captain's own scenes, the crew's events, the money events, the passengers, the ship's traditions and colour, the quiet scenes, and downtime. The comms page's news stays where it is.
+- **What counts as an offer.** The people and the life of the ship: the main characters' later scenes (their middles and lates; their introductions and fate scenes open at once, so every player meets them, the owner, 2026-11-14), the captain's own scenes, the crew's events, the money events, the passengers, the ship's traditions and colour, the quiet scenes, and downtime. The comms page's news stays where it is.
 
 ## What stops the burn
 

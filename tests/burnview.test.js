@@ -2061,6 +2061,8 @@ test('a main character\'s beat drawn on a burn is an offer: taken, it plays; let
       G.dialog = null; t.event = null; t.offers = [];
       rec.arc = 4;  // the pivot next: a fate scene
       out.fateOffer = !!(call('happenings', [], 'transit').find(c => c.offer && c.offer.key === `cast:${key}`));
+      rec.arc = 0;  // the introduction next: every player meets them
+      out.introOffer = !!(call('happenings', [], 'transit').find(c => c.offer && c.offer.key === `cast:${key}`));
     } finally { Mods.filter = real; }
     out.id = castPerson(key).id; out.first = castPerson(key).first;
     return out;
@@ -2070,4 +2072,5 @@ test('a main character\'s beat drawn on a burn is an offer: taken, it plays; let
   assert.ok(r.unplayed, 'queued, the beat has not played'); assert.ok(r.lapsed, 'let lapse: gone, still unplayed, and waiting counted');
   assert.ok(r.taken.title && r.taken.played, `taken: ${JSON.stringify(r.taken)}`);
   assert.equal(r.fateOffer, false, 'a fate scene is no offer');
+  assert.equal(r.introOffer, false, 'nor an introduction: it opens at once');
 });

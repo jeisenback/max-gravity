@@ -106,6 +106,42 @@ Items 4 to 9 were fixed on 2026-11-11: the stale lines in `README.md`, `COMBAT.m
 
 The rule here is the repo's rule: write what the next work needs, nothing extra. Each item names the work it unblocks. The first three block chapter two's remaining pieces. The rest can wait for the work that needs them.
 
+### By chapter (the owner, 2026-11-14)
+
+What needs design, in the order the chapters need it. Chapter 1 is built and played now, so its baseline comes first; then what chapter 1 has to set up so chapter 2 can stand on it; then what chapter 2 needs of its own. Each line names its page.
+
+**Chapter 1, the baseline (now).**
+
+| What | Where | State |
+|---|---|---|
+| The burn: offers on the ship, urgent events, Run ahead, the free camera, the burn's shape | `bible/burn.md` | approved; built in part (#1182, #1183, #1184 stage 1, #1186); #1184 stage 2 (#1198), #1185, #1195 and #1187 to come |
+| The drive: what burns (deuterium and water), the hard rating, the grades, chapter 1's one patched drive | `bible/technology.md`, The drive | draft |
+| The cast: tiers, threads, pools, promotion, a director; first the chapter's places as pools of regulars and its minor powers' people | `bible/cast.md` | draft |
+| The rest of the technology the hand meets: the guns, torpedoes and point defence, sensors, armour, the shields (keep and explain, or retire), the fabricator, life support, each by grade | `bible/technology.md` | to write, after the drive |
+| Freight as the hand sees it: what the contracts and the ice runs carry, who ships it, what is legal where (the inspections) | a page on trade goods | to write: the hand does not trade, so chapter 1 needs only the goods' names, owners and legality |
+| Soak profiles: the bands each holds for | `tools/soak.js`, `tests/distribution/` | built (#1199) |
+
+**Chapter 1, setting up chapter 2.**
+
+| What | Where |
+|---|---|
+| The Ore Runner's drive and the refit she could have: the grade path from patched to licensed | `bible/technology.md`; `bible/ceres-coop.md` |
+| Parts and salvage by grade: what a wreck gives, what a printed part is rated for | `bible/technology.md`; spec `parts` |
+| The powers' faces the hand meets in chapter 1 (Kaur's buying office, the house that is Van Leeuwen, the Guild, the Hollows, the refinery), so chapter 2 knows them | `bible/cast.md`; `bible/owners.md` |
+| The goods the co-op will trade, seen first on the boards and in the ports' prices, and moved by the chapter's marks | the trade goods page |
+
+**Chapter 2, its own.**
+
+| What | Where |
+|---|---|
+| Trade goods and markets in full: what is made where, what each bloc taxes or bans, what the war does to prices, what the co-op may trade (`role()`) | the trade goods page; `bible/economy.md`, `bible/trade-and-law.md` |
+| Refits and upgrades by grade; burning harder as the captain's choice (#1195) | `bible/technology.md` |
+| The war's technology: Ballast's ships, the blockade, the patrols' grades | `bible/technology.md`; `bible/the-fuel-war.md` |
+| The co-op's members as a pool, and the vote (piece 3) | `bible/cast.md`; `bible/chapter-2.md` |
+| The major powers' people (Tycho, Kaur, Van Leeuwen, Ballast) | `bible/cast.md` |
+
+**Later chapters.** Yard and military technology within reach, a fleet's hulls of different grades, an outpost's technology, the restricted grade, and whether anything lies beyond it (the chapter 7 threat, the owner's to choose).
+
 ### Needed before chapter two goes on
 
 1. **The powers (`docs/bible/owners.md`), drafted 2026-11-11 for review.** Two layers: the blocs (the Arcology Pact, the Dome Pact, the Guild Federation) as each region's law, and the powers inside them in two tiers: nine major powers (four in play from chapter 2, five coming in with chapters 2 and 3) and the minor powers the bible already has, with the blocs of chapter 6 to come and one entry shape for adding more. It also sets how far the player reaches, a ring of powers a chapter. It lists what the code changes, in order, and unblocks chapter two pieces 2 and 5, and standing as a currency (`progression.md` layer 6).

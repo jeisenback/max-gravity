@@ -1225,7 +1225,7 @@ Mods.register({
           const rec = castRec(p.cast), intro = n.name === 'intro', missed = rec.wait || 0;
           rec.wait = missed + 1;  // a miss unless make() runs and clears it
           out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); },
-            ...(n.name === 'pivot' ? {} : { offer: { kind: 'cast', key: `cast:${p.cast}`, who: p.id, vars: { first: p.first } } }) });  // an offer on the ship, but a fate scene opens at once (#1184)
+            ...(n.name === 'pivot' || intro ? {} : { offer: { kind: 'cast', key: `cast:${p.cast}`, who: p.id, vars: { first: p.first } } }) });  // an offer on the ship; an introduction and a fate scene open at once (#1184; the owner, 2026-11-14: every player meets them)
         }
       } else if (castDue()) {
         const key = castDue();

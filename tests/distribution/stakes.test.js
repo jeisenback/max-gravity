@@ -5,6 +5,7 @@
 // the hand is hurt and dies (js/boarders.js, the second-hurt roll: a first hurt never kills, #1157), how many scenes a landing opens (#635), and that the ship's night comes into
 // the sample so the night scenes can play (tools/soak.js draws each event at its second of the burn). The exact rolls are pinned in tests/boarders.test.js.
 //
+// Profiles:  attentive (tools/soak.js SOAK_PROFILES, #1199): the danger and the scene mix as a player who takes every offer meets them.
 // Sample:    the narrow build's captain with a gunner, seeds 1 to 120, up to 40 runs each, four at a time, the two main characters drawn from the pool
 //            (120 chapters since the deck fight rework: 30 left a rate of a hurt in ten chapters at one hurt from its floor).
 // Tolerance: every game runs with no page errors and no broken text; the hand is hurt between 0.1 and 0.8 times a chapter (measured 0.14, 17 of 120, with the
