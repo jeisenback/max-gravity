@@ -137,6 +137,28 @@ test('someone on the ladder climbs at the couches too, not a walk on the spot (#
   const p = { role: 'gunner', room: 'medbay', x: LADDER, dk: 4.3, tdk: 2, tx: 0.2, seat: 0.2, couch: 0 };
   for (const ph of ['couch', 'move']) assert.equal(posture({ ...p }, ph, 0, false).name, 'climb', `${ph}: on the ladder`);
 });
+test('a climber faces the ladder, and the hands keep time with the rungs, not the clock', () => {
+  const p = o => ({ id: 'c:ines', role: 'pilot', room: 'galley', x: LADDER, dk: 1.4, tdk: 3, tx: 0.3, seat: 0.3, couch: 0, climbed: 0, ...o });
+  assert.equal(posture(p(), 'move', 0, false).view, 'back', 'from behind, on the rungs');
+  assert.equal(posture(p(), 'move', 0, false).frame, posture(p(), 'move', 5.3, false).frame, 'standing still on the ladder, the clock moves nothing');
+  const frames = [0, 28, 56, 84].map(climbed => posture(p({ climbed }), 'move', 0, false).frame);  // a frame each 28 world units: a deck and its plate, 112, over four
+  assert.equal(new Set(frames).size, 4, `a quarter of a deck each, all four frames: ${frames}`);
+});
+test('people in the same pose start at their own point in it, so they do not move as one', () => {
+  const ids = ['c:ines', 'c:tomas', 'c:cato', 'p1', 'p2', 'p3', 'you'];
+  for (const [name, o] of [['climb', { x: LADDER, dk: 1.4, tdk: 3, climbed: 40 }], ['work', { at: 'post', block: 'shift', room: 'engine' }], ['stand', {}]]) {
+    const frames = ids.map(id => posture({ id, role: 'engineer', room: 'galley', x: 0.4, dk: 1, tdk: 1, tx: null, seat: 0.9, couch: 0, ...o }, 'move', 2, false));
+    assert.ok(frames.every(f => f.name === name), `${name}: ${frames.map(f => f.name)}`);
+    assert.ok(new Set(frames.map(f => f.frame)).size > 1, `${name}: not all in step`);
+  }
+});
+test('the climb from behind draws in every frame, with every save restored and no shadow on a deck', () => {
+  for (let frame = 0; frame < POSTURES.climb.frames; frame++) {
+    const c = fakeCtx(), at = drawPerson(c, { name: 'climb', view: 'back', x: 0, deck: 0, face: 1, frame }, 400, 100, { color: '#ffb347', skin: '#c08a68', hair: '#2a1d18' });
+    assert.equal(c.depth, 0, `frame ${frame}`); assert.ok(at.y < 100, 'a tap point on the body');
+    assert.ok(!c.calls.includes('ellipse') || c.styles.every(st => st !== 'rgba(0,0,0,0.3)'), 'no shadow under someone on the ladder');
+  }
+});
 test('a camera outside a run shorter than the view eases to its middle, and only a new one snaps (#972)', () => {
   const y = camStep(300, 0, 0.1, 1000, 960);
   assert.ok(y > 300 && y < 480, `toward 480 and not the whole way: ${y}`);
