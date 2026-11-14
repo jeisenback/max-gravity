@@ -1623,7 +1623,7 @@ test('in a burn Space pauses and resumes, and 1, 2 and 3 pick the speed; the but
   await page.waitForSelector('#bspeed:not([hidden])');
   await page.click('#bspeed [data-speed="16"]');
   const r = await ev(() => ({ speed: G.speed, lit: [...document.querySelectorAll('#bspeed button.active')].map(b => b.dataset.speed), labels: [...document.querySelectorAll('#bspeed button')].map(b => b.textContent) }));
-  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x', 'Run ahead'] });
+  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x', '\u00bb'] });
   await page.click('#bspeed [data-speed="0"]');
   assert.equal(await speed(), 0);
   await ev(() => { G.speed = 2; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });

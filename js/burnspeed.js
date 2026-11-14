@@ -71,7 +71,8 @@ const lifeDt = dt => { const t = G.transit; return !t ? dt : t.event || G.dialog
 
 // ---------- the controls: Space, 1, 2 and 3 in a burn (game.js), and a button for each speed under the burn bar ----------
 const BURN_KEYS = { Digit1: 1, Digit2: 2, Digit3: 16, Digit4: RUN_AHEAD };
-const BURN_LABELS = { 0: 'Pause', 1: '1x', 2: '2x', 16: '16x', [RUN_AHEAD]: 'Run ahead' };
+const BURN_LABELS = { 0: 'Pause', 1: '1x', 2: '2x', 16: '16x', [RUN_AHEAD]: '\u00bb' };  // run ahead as a sign: the row stays narrow enough to keep clear of her name on the nose at 1000px (hulldetail.js, #936)
+const BURN_TITLES = { [RUN_AHEAD]: 'Run ahead (4)' };
 function setBurnSpeed(s) {
   if (!BURN_SPEEDS.includes(s)) return;
   if (s === RUN_AHEAD && G.speed !== RUN_AHEAD && G.transit) G.transit.aheadFrom = G.speed && G.speed !== RUN_AHEAD ? G.speed : G.speedBefore !== RUN_AHEAD && G.speedBefore ? G.speedBefore : 1;  // the speed it goes back to
@@ -98,7 +99,7 @@ Mods.register({
   id: 'burnspeed', name: 'Burn speed', builtin: true,
   init(M) {
     const el = Object.assign(document.createElement('div'), { id: 'bspeed', hidden: true });
-    el.innerHTML = BURN_SPEEDS.map(s => `<button data-speed="${s}">${BURN_LABELS[s]}</button>`).join('');
+    el.innerHTML = BURN_SPEEDS.map(s => `<button data-speed="${s}"${BURN_TITLES[s] ? ` title="${BURN_TITLES[s]}" aria-label="${BURN_TITLES[s]}"` : ''}>${BURN_LABELS[s]}</button>`).join('');
     el.addEventListener('click', e => { const b = e.target.closest('[data-speed]'); if (b) { Sfx.click(); setBurnSpeed(Number(b.dataset.speed)); b.blur(); } });  // blurred, so Space toggles the pause and does not press it again
     document.body.appendChild(el);
     M.on('frame', syncBurnSpeed);

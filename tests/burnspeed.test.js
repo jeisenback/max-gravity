@@ -16,7 +16,7 @@ test('the stages are spans of ship time: six hours of couches, twenty minutes st
   const s = B.burnStages(11);
   near(s.couch, 6 / (24 * 11), 'couch'); near(s.float, 3 / (1440 * 11), 'float'); near(s.secure, 23 / (1440 * 11), 'secure');
   assert.deepEqual({ ...B.burnStages(0.05) }, { couch: 0.06, secure: 0.06, float: 0.03 }, 'clamped to the shares of today on a burn too short for them');
-  assert.deepEqual([...B.BURN_SPEEDS], [0, 1, 2, 16]);
+  assert.deepEqual([...B.BURN_SPEEDS], [0, 1, 2, 16, 256], 'and run ahead (#1186)');
 });
 
 test('stageAt reads the stage at a share of the burn', () => {
