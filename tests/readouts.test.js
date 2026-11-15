@@ -20,7 +20,7 @@ test('the strip: the contract and its days, the hull, the fund, the savings, and
     startHand(); const st = G.state, hd = hired(), out = {};
     hd.plan = { run: aContract(st) }; st.credits = 3000;
     out.plan = stripItems(st, hd, st.armor, ship().armor, st.day);
-    hd.plan = null; hd.run = { ...aContract(st), due: st.day - 2 }; st.armor = Math.round(ship().armor / 2); hd.hurtUntil = st.day + 4;
+    hd.plan = null; hd.run = { ...aContract(st), due: st.day - 2 }; st.armor = Math.round(hullAt(0.5, ship().armor)); hd.hurtUntil = st.day + 4;  // half the armor past the skin (HULL_SKIN, #1208)
     out.late = stripItems(st, hd, st.armor, ship().armor, st.day);
     hd.run = { ...hd.run, due: st.day }; out.today = stripItems(st, hd, st.armor, ship().armor, st.day)[0][1];
     hd.run = null; hd.hurtUntil = 0; out.none = stripItems(st, hd, st.armor, ship().armor, st.day).map(([k]) => k);

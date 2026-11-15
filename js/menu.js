@@ -76,8 +76,34 @@ function renamePowers(st) {
   return out;
 }
 
+// Shields are retired (#1208, docs/bible/technology.md): a save from before them going has its hull's shield points put into its armor (OLD_SHIELDS,
+// the hulls' as they were), its shields' power share, condition, fitted part, spares, quirks and programs moved to point defence's, and a deflector
+// capacitor taken off for armor plating, up to the plating's limit, the rest of them paid back. Once: a save from before has no `version`.
+const OLD_SHIELDS = { shuttle: 60, lightfreighter: 90, courier: 110, freighter: 180, gunship: 300, raider: 70, destroyer: 320, cutter: 150, corsair: 140 };
+const CAPACITOR_PRICE = 50000;
+function retireShields(st) {
+  const move = o => { if (o && typeof o === 'object' && 'shields' in o) { o.pd = o.shields; delete o.shields; } };
+  const quirk = q => { if (!q || typeof q !== 'object') return; if (q.system === 'shields') q.system = 'pd'; for (const e of [q.plus, q.minus]) if (e && e.fight) { e.fight.armor = e.fight.shields; delete e.fight.shields; if (e.fight.armor === undefined) delete e.fight.armor; } };
+  move(st.power); move(st.condition); move(st.parts);
+  for (const p of Object.values(st.parts || {})) if (p) quirk(p.quirk);
+  for (const s of Array.isArray(st.spares) ? st.spares : []) if (s) { if (s.system === 'shields') s.system = 'pd'; quirk(s.quirk); }
+  for (const f of (st.hired && Array.isArray(st.hired.station) ? st.hired.station : [])) if (f) quirk(f.quirk);
+  for (const r of (st.programs && Array.isArray(st.programs.rules) ? st.programs.rules : [])) if (r && r.order === 'favor-shields') r.order = 'favor-pd';
+  const caps = (st.outfits && st.outfits.shield) || 0;
+  if (caps) {
+    const n = Math.min(caps, Math.max(0, OUTFITS.armor.max - (st.outfits.armor || 0)));
+    st.outfits.armor = (st.outfits.armor || 0) + n; delete st.outfits.shield;
+    if (typeof st.armor === 'number') st.armor += 40 * n;
+    if (typeof st.credits === 'number') st.credits += (caps - n) * CAPACITOR_PRICE;
+  }
+  if (typeof st.armor === 'number' && st.armor > 0) st.armor += OLD_SHIELDS[st.shipId] || 0;
+  st.version = SAVE_VERSION;
+  return st;
+}
+
 function migrate(st) {
   st = renamePowers(st);
+  if (st.version === undefined) retireShields(st);
   const defaults = stateDefaults(st.shipId);
   // A field that is missing, or present as a different kind of thing than its default (a string where a list goes, a number where an object goes), gets the default: a slot that crashes on
   // landing can never be opened again. A default of null stands for anything.

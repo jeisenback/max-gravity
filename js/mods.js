@@ -21,7 +21,7 @@ const MOD_EVENTS = [
   'key',          // (code) a key was pressed (not repeats)
   'uiClick',      // (action, arg) a port-screen button was clicked
   'fire',         // (ship) a ship fired its guns; ship === G.player for the player
-  'damage',       // (ship, shieldHit, byPlayer, hullDamage)
+  'damage',       // (ship, byPlayer, hullDamage)
   'destroyed',    // (ship, byPlayer)
   'enterSystem',  // (systemId) the local space was populated, after takeoff or arrival
   'landing',      // (planet) as landAt begins, before the port is set up: the ship as it came in
@@ -98,7 +98,7 @@ const Mods = {
   add(mod, kind, table, id, def) {
     const need = {
       system: ['name', 'au', 'angle', 'gov', 'planets'],
-      ship: ['name', 'price', 'cargo', 'fuel', 'shields', 'armor', 'accel', 'maxSpeed', 'turn', 'guns', 'size'],
+      ship: ['name', 'price', 'cargo', 'fuel', 'armor', 'accel', 'maxSpeed', 'turn', 'guns', 'size'],
       outfit: ['name', 'price', 'space', 'max', 'desc', 'mod'],
       commodity: ['id', 'name', 'base'],
       event: ['title', 'text', 'choices'],

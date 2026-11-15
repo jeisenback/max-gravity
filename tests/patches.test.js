@@ -203,7 +203,7 @@ test('in the game a repair in flight leaves the marks as patches, they stay thro
     const land = () => { G.transit = null; G.mode = 'landed'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); };
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     G.state.tutorial = null; out.fresh = [G.state.patches, G.state.hullMarks];
-    burn(); G.state.armor = Math.round(ship().armor * 0.55); tick(30);
+    burn(); G.state.armor = Math.round(hullAt(0.55, ship().armor)); tick(30);
     const marks = [...G.transit.marks]; out.marks = marks.length;
     ACTIVITIES.repair.run(); tick(5);  // the downtime repair: one mark back
     out.oneBack = [G.transit.marks.length, [...(G.state.patches || [])], marks[1]];
@@ -213,9 +213,9 @@ test('in the game a repair in flight leaves the marks as patches, they stay thro
     land(); out.port = [...G.state.patches];
     save(); loadGame(); out.loaded = [...G.state.patches];
     burn(); tick(30); out.newBurn = [...G.state.patches];
-    G.state.armor = Math.round(ship().armor * 0.95); tick(30); const scrape = G.transit.marks[0];
+    G.state.armor = Math.round(hullAt(0.95, ship().armor)); tick(30); const scrape = G.transit.marks[0];
     land(); out.scrape = [[...G.state.patches], scrape, G.state.armor === ship().armor, G.state.hullMarks];
-    G.state.armor = Math.round(ship().armor * 0.5); G.state.hullMarks = ['engine'];
+    G.state.armor = Math.round(hullAt(0.5, ship().armor)); G.state.hullMarks = ['engine'];
     repairScene(currentPlanet()).choices[0].run(); out.yard = [G.state.patches, G.state.hullMarks, G.state.armor === ship().armor];
     const old = JSON.parse(JSON.stringify(G.state)); delete old.patches; delete old.hullMarks; out.old = migrate(old).patches;
     out.bad = migrate({ ...JSON.parse(JSON.stringify(G.state)), patches: 'galley', hullMarks: 7 });
@@ -257,7 +257,7 @@ test('a field repair welds its own doublers on, so its marks are patches too; on
     const out = {};
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     G.state.tutorial = null; const st = G.state, at = name => { for (const sys of Object.values(SYSTEMS)) { const p = sys.planets.find(q => q.name === name); if (p) return p; } };
-    const fix = name => { st.armor = Math.round(ship().armor * 0.5); st.patches = ['galley']; st.hullMarks = ['engine', 'hold']; const p = at(name); const plan = repairPlan(p); repairScene(p).choices[0].run(); G.dialog = null; return [plan.yard, st.patches, st.hullMarks, st.armor === ship().armor]; };
+    const fix = name => { st.armor = Math.round(hullAt(0.5, ship().armor)); st.patches = ['galley']; st.hullMarks = ['engine', 'hold']; const p = at(name); const plan = repairPlan(p); repairScene(p).choices[0].run(); G.dialog = null; return [plan.yard, st.patches, st.hullMarks, st.armor === ship().armor]; };
     out.field = fix('Ring Nine'); out.yard = fix('Earth');
     st.patches = ['galley']; st.hullMarks = ['engine']; chapterTwoShip(st); out.coop = [st.patches, st.hullMarks];
     st.patches = ['galley']; st.hullMarks = ['engine']; st.credits = 1000000; buyIn('courier'); while (G.dialog) finishEvent(); out.bought = [st.patches, st.hullMarks, st.shipId];

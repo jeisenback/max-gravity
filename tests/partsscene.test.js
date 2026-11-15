@@ -26,7 +26,7 @@ const setup = () => {
   window.landed = (o = {}) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     G.state.story.next = 1e9; G.state.tutorial = null;
-    const c = condition(); Object.assign(c, { drive: 100, fire: 100, shields: 100, life: 100, sensors: 100 }, o.condition || {});
+    const c = condition(); Object.assign(c, { drive: 100, fire: 100, pd: 100, life: 100, sensors: 100 }, o.condition || {});
     if (o.fund !== undefined) hired().fund = o.fund;
     return c;
   };

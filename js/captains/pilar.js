@@ -8,7 +8,7 @@
 // A docking emergency at the helm: a point each for a medic who is not hurt, a hull above 60 percent, a drive in fair condition
 // (the thrusters take what the drive has left), and a second hand on the console with her. Three or more she lives, two she is
 // marked, fewer she dies.
-const dockingPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (condition().drive >= 60 ? 1 : 0) + (backup ? 1 : 0);
+const dockingPoints = backup => (roleHolder('medic') ? 1 : 0) + (hullLeftOf(G.state.armor, ship().armor) > 0.6 ? 1 : 0) + (condition().drive >= 60 ? 1 : 0) + (backup ? 1 : 0);
 function atTheHelm(backup) {
   const points = dockingPoints(backup), spoke = castRec('pilar').flags.spoke, cap = hiredCaptain();
   const outcome = castFate('pilar', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the helm near ${system().name}.`, 'Right hand doesn\'t close properly.', 'xo');
@@ -146,7 +146,7 @@ CAST.pilar = {
     pivot: {
       days: 70, title: 'The Docking Emergency',
       get text() {
-        const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, worn = condition().drive < 60;
+        const medic = roleHolder('medic'), low = hullLeftOf(G.state.armor, ship().armor) <= 0.6, worn = condition().drive < 60;
         return ('The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was ' +
             'never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her ' +
             'in by hand," she says, "if you let me, and if you don\'t put anything on the display." She says it item by item.')

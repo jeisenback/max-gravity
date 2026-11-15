@@ -69,7 +69,6 @@ function storyOnLanding() {
 function spawnAgent(name) {
   const n = spawnNpc('agent', false, true);
   Object.assign(n, { shipId: 'corsair', hostile: true, story: true, name });
-  n.shields = SHIPS.corsair.shields;
   n.armor = n.maxArmor = SHIPS.corsair.armor * 1.3;
 }
 
@@ -269,7 +268,7 @@ function spawnFleetShip(shipId, gov, name, enemy) {
   Object.assign(n, {
     shipId, gov, name, blockade: true, enemy, hostile: enemy, hunts: enemy ? null : 'enemy',
     x: station.x + Math.cos(a) * rand(450, 750), y: station.y + Math.sin(a) * rand(450, 750), vx: 0, vy: 0,
-    shields: s.shields, armor: s.armor, maxArmor: s.armor,
+    armor: s.armor, maxArmor: s.armor,
   });
   n.goal = station;
   return n;

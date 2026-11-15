@@ -125,7 +125,6 @@ function updateTorpedoes(dt) {
         if (hit.kind === 'patrol') changeRep(hit.gov, -8);
         else if (hit.kind === 'trader') changeRep(localGov(), -3);
       }
-      hit.hitAngle = Math.atan2(t.y - hit.y, t.x - hit.x);
       blowUp(t, true);
       if (hit === G.player) shake(8);
       Sfx.boom(hit);

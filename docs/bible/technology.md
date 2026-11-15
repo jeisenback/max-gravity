@@ -35,7 +35,7 @@ A higher grade buys a shorter trip (the hard burn reaches a higher cruise speed 
 
 **In play.**
 
-- *Chapter 1.* One drive, Hester's: patched. The hand sees the grades from below: a patrol's cutter overtaking them, a Tycho tanker passing at a speed the Ice Hauler cannot make, a pirate's drive worse than theirs. The engineer's work (the drive's condition, `js/wear.js`; the reactor's heat and the power split between drive and guns, `js/engineering.js`, its shields share retired with #1208) is the patched grade's daily cost.
+- *Chapter 1.* One drive, Hester's: patched. The hand sees the grades from below: a patrol's cutter overtaking them, a Tycho tanker passing at a speed the Ice Hauler cannot make, a pirate's drive worse than theirs. The engineer's work (the drive's condition, `js/wear.js`; the reactor's heat and the power split between drive, guns and point defence, `js/engineering.js`; shields retired, #1208) is the patched grade's daily cost.
 - *Chapter 2.* The Ore Runner is the player's to refit: keep her patched drive, or pay for a licensed one and its licence. Burning harder (a longer hard burn to a higher cruise speed, for a shorter trip, more reaction mass, more wear and more strain on the crew) becomes the captain's choice (#1195).
 - *Later.* A fleet's hulls of different grades; yard and military drives met as the war's ships; the restricted grade, if the owner wants it.
 
@@ -178,13 +178,13 @@ The antenna and the slot: a poor ship buys a cheap relay slot and gets her messa
 
 ### In play, and what the game changes
 
-- *Chapter 1.* Words only. Every system already exists in the game at the numbers above; scenes that name a gun, a torpedo or a plate use this page. Shields go (#1208).
+- *Chapter 1.* Words only. Every system already exists in the game at the numbers above; scenes that name a gun, a torpedo or a plate use this page. Shields are gone (#1208).
 - *Chapter 2.* A system's grade becomes something the co-op buys (a refit, #1210) and wears (parts and salvage, #1211); the war's ships are written in #1217.
 - *Later.* Military systems within reach, a fleet's hulls of different grades, and the restricted grade if the owner wants it.
 
 ## No shields
 
-There is no deflector field (the owner, 2026-11-14). A ship is kept whole by her armour, her point defence and not being where the shot is. The game's shields are retired (#1208): until that lands, read a ship's shields in the code as the outer layer of her armour.
+There is no deflector field (the owner, 2026-11-14). A ship is kept whole by her armour, her point defence and not being where the shot is. The game's shields are retired (#1208): each hull's shield points went into its armour, and the engineer's third share of the reactor runs the point defence.
 
 ## The fleet is old
 

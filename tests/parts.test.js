@@ -54,7 +54,7 @@ test('in the game a printed drive wears 1.75 times a yard one, nothing wears wit
 // ---------- used parts and their quirks (Task 2) ----------
 
 const quirks = () => load(['js/util.js', 'js/parts.js'], { Mods: { register() {} } }, ['PART_QUIRKS', 'PART_SOURCES', 'usedPartAt', 'fitPart', 'partWear', 'partEffect', 'partFight', 'partEdge']);
-const SYSTEMS5 = ['drive', 'fire', 'shields', 'life', 'sensors'];
+const SYSTEMS5 = ['drive', 'fire', 'pd', 'life', 'sensors'];
 const port = (name, services = ['trade', 'outfitter', 'refuel']) => ({ name, services });
 
 test('three used parts a system, each with where it came from, a plus and a minus', () => {
@@ -82,7 +82,7 @@ test('a fitted quirk\'s wear and perf factors are its system\'s; its fight numbe
   assert.equal(partWear(st, 'drive'), 0.8); assert.equal(partEffect(st, 'drive', 'perf'), 0.95); assert.equal(partEffect(st, 'life', 'wear'), 1);
   fitPart(st, 'fire', 'printed', { id: 't2', system: 'fire', from: 'test', plus: { fight: { dmgMult: 1.1 } }, minus: { edge: { post: -0.05 } } }, 1);
   assert.ok(Math.abs(partWear(st, 'fire') - 1.75) < 1e-9, 'a printed part with no wear quirk');
-  assert.deepEqual(JSON.parse(JSON.stringify(partFight(st))), { dmgMult: 1.1, shields: 1 });
+  assert.deepEqual(JSON.parse(JSON.stringify(partFight(st))), { dmgMult: 1.1, armor: 1 });
   assert.equal(partEdge(st, 'post'), -0.05); assert.equal(partEdge(st, 'word'), 0);
 });
 

@@ -35,7 +35,7 @@ decides, and the crew flies.
 **Posts are who plays which cards.**
 - Gunner: threats. Refits and fire-control condition count here.
 - Pilot: Evasive burns and escape cards. Drive power and drive condition count here.
-- Engineer: shields soaking damage, and later perhaps a mid-fight power reroute.
+- Engineer: point defence stopping a hit, and later perhaps a mid-fight power reroute.
 - Comms: the read on the enemy. Sensor condition decides how exactly you see her
   remaining cards.
 - A manual post means the captain does that job, at the captain's skill.
@@ -101,7 +101,7 @@ are built.
 |---|---|
 | Weapons power (30% is even) | Gun runs: +1 per 20 points above 30, -1 per 20 below. |
 | Drive power (40% is even) | Evasive burns: +1 per 20 points above 40, -1 per 20 below. |
-| Shields power | At 40% or more, with shields in good order, a deflector soaks the first half hit of the fight. Hits that land also wear the shields. |
+| Point defence power | At 40% or more, with the point defence in good order, it stops the first half hit of the fight. Hits that land also wear it. |
 | Fire control wear | Up to 2 fewer gun runs as the fire control wears; shots fired wear it. |
 | Sensors wear | Below 80%, each count you read of her hand can be off by one card. |
 | Fire control refit (project) | +1 gun run per refit, for good. |
@@ -134,14 +134,15 @@ gets exactly one, big or small.
 | Torpedo launcher | Needed to carry any Torpedo cards. |
 | Heavy rounds | Gun runs do +1 on a full hit. |
 | Armor plating | +1 Brace per plate. Brace is an answer that halves any threat. |
-| Deflector capacitor | Passive, not a card: the first half hit each fight does nothing. |
 | Drive tuning | One Evasive burn becomes a Hard burn, which also stops torpedoes. |
 | Cargo pod | -1 Evasive burn, because it's mass. |
 | Transponder spoofer | False ping: an answer that reveals one card in the enemy hand. |
 | Tank, berth | None. |
 
-Armor is a card because a plate is a choice you make in the fight. Shields are passive
-because nobody decides when to use a capacitor, and it keeps the deck smaller.
+Armor is a card because a plate is a choice you make in the fight. Point defence is passive
+because nobody decides when it shoots, and it keeps the deck smaller. There are no shields: the owner retired them
+on 2026-11-14 (#1208, `docs/bible/technology.md`). Each hull's shield points went into its armor, so a fight lasts about as
+long as before, and the deflector capacitor is gone (a save that had one has armor plating in its place).
 
 **Escorts.** Each escort adds +1 PDC screen, one Gun run and its hull's signature card.
 Those cards are marked as the escort's. If a threat lands fully against an escort's
@@ -241,7 +242,7 @@ engine, pure; `js/fightui.js`, the panel), as the turn-combat design sets out
 
 ### The ship fight
 
-The panel is the sensor board (`js/board.js`) with both sides' bars under it: shields, armor, and the weapons, drive and lock,
+The panel is the sensor board (`js/board.js`) with both sides' bars under it: armor, and the weapons, drive and lock,
 each with its own bar. Each turn her move and the captain's are shown first (a broadside at a part, closing, a pin on your
 drive, coming alongside, breaking off; the captain closes, holds or opens the range by the captain card's nerve). The hand aims
 each ready gun at a part or holds it, the torpedo and the turret where they are fitted, and presses Fire. Damage is rolled in a
@@ -254,7 +255,7 @@ She is met at forty kilometers, long range (a raider, a corsair), or thirty, mid
 board her or let her drift; a navy ship breaks off instead), broken off, escaped (you open past long range), boarded (the deck
 fight), your hull gone, or at the eighth turn (`FIGHT.TURNS`) one side breaks off: she does if she is the less whole, and else
 the captain runs, a lost fight. There is no standoff. A ship whose guns are gone and whose hull is whole gets away (a weak end, not
-a win). In the fight both sides' shields and armor are 0.45 of the ship's (`FIGHT.POOL`, #814), so that a fight usually ends
+a win). In the fight both sides' armor is 0.45 of the ship's (`FIGHT.POOL`, #814; the point defence's condition and parts scale the hand's, #1208), so that a fight usually ends
 before the eighth turn; the armor the hauler loses there comes back to the ship divided by it (seven lost in the fight is sixteen
 at the yard), and a fight never repairs it or takes it under 1. A heavy turn (the damage her guns do to
 your hull, which is not pooled, is over a fifth of your real maximum armor, about 44% of the hull you have in the fight) can cost a
@@ -269,14 +270,14 @@ Each type she can be has one threat, shown in her move, that "shoot her weapons"
 `docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md`, #808):
 
 - **A raider** (one gun, fast) closes from long range and comes alongside to board while her lock is whole, on the fourth turn.
-  Her 70 shields and 60 armor are 32 and 27 in the fight, and every gun at her hull cripples her in two or three turns, before
+  Her 130 armor (her 70 shields and 60 armor until #1208) is 59 in the fight, and every gun at her hull cripples her in two or three turns, before
   she is alongside: a lone raider is beaten by hull fire, by the owner's choice (#814; at #808 she boarded it). Shooting her
   lock as she closes stops the board too; her drive (34) is slow to shoot away at range, where an aimed shot hits for a
   quarter (long) or 0.4 (mid), so aiming only at it is boarded about one time in four. The lock lesson is the pair's.
 - **A corsair** (two guns, four torpedoes) arms a salvo of two on the first turn and every second turn after, and fires it the
   turn after; the board shows it a turn ahead. Holding the turret back that turn takes 60% off the salvo.
-- **A navy cutter** (thick shields) gets 7% of her shields back each turn: torpedoes and every gun overcharged at her hull beat
-  it; anything slower does not.
+- **A navy cutter** (thick armor). Until #1208 she got 7% of her shields back each turn, which only torpedoes and every gun
+  overcharged at her hull beat; with the shields gone she has no regeneration.
 - **A destroyer** (a patrol's, three in ten) has no regeneration and no launcher until the fight ladder (PR 3) decides how she is
   met: the tool does not play one.
 - **A raider pair**: two shown moves and fire from both, and two locks to stop. Every gun at the hulls is boarded every time;
@@ -411,9 +412,9 @@ the run that wrote this section (after the final review's tune, #808):
   cutters for each gun policy, at `FIGHT.POOL` 0.45). The six fixed policies (`random`; `focus`, her weapons; `drive`, her drive
   then her weapons; `lock`, her lock then her weapons; `hull`, every gun at her hull; `hullhold`, the same with the turret held
   back on her salvo) fire the turret and the torpedoes at her hull; `answer` reads her shown move: it holds the turret back when
-  she fires a salvo, aims at her lock while she closes or pins with it whole, against a ship whose shields come back sends the
-  torpedoes and every gun the heat allows overcharged at her hull, against any other holds its torpedoes until her shields are
-  down (a quarter or less), and else aims at her hull. Good ends are crippled, broken off and escaped; a lost fight is the captain running
+  she fires a salvo, aims at her lock while she closes or pins with it whole, sends a torpedo at the foe with the least armor
+  left, against a navy ship runs every gun the heat allows overcharged at her hull, and else aims at her hull. (Until #1208 it held
+  its torpedoes until her shields were down, and the overcharge was for a ship whose shields came back.) Good ends are crippled, broken off and escaped; a lost fight is the captain running
   or the hull gone.
 
   | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |

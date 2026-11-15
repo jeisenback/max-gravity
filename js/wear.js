@@ -1,6 +1,6 @@
 'use strict';
 
-// Ship condition: drive, fire control, shields, life support, and sensors wear a little
+// Ship condition: drive, fire control, point defence, life support, and sensors wear a little
 // with use (burns, fights, hits taken), and a worn system costs performance. A system in
 // bad shape can break down on a burn (a scene from the engineer), and every system can be
 // serviced in flight (an engineer's order) or overhauled at port. The Wear setting in the
@@ -11,7 +11,7 @@
 const SHIP_PARTS = {
   drive: { name: 'Drive' },
   fire: { name: 'Fire control' },
-  shields: { name: 'Shields' },
+  pd: { name: 'Point defence' },
   life: { name: 'Life support' },
   sensors: { name: 'Sensors' },
 };
@@ -100,7 +100,7 @@ Mods.register({
   init(M) {
     M.on('frame', wearTick);
     M.on('fire', o => { if (o === G.player) wear('fire', 0.05); });
-    M.on('damage', (o, shieldHit) => { if (o === G.player && shieldHit) wear('shields', 0.3); });
+    M.on('damage', o => { if (o === G.player) wear('pd', 0.3); });  // a hit is one the point defence did not stop
     M.action('overhaul', arg => {  // `${system}:${source}` (parts.js); a bare system is a yard part, as before
       const [part, source = 'yard'] = String(arg).split(':'), o = G.mode === 'landed' && partsOffers(G.state, currentPlanet(), part, G.state.day).find(x => x.source === source);
       if (!o || !role().mayAct('overhaul') || G.state.credits < o.price) return;

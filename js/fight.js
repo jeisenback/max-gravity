@@ -25,13 +25,13 @@ const FIGHT = {
   PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
   LOST_CARGO: 0.3,   // the share of the fullest good in the hold that she takes when the ship is lost, and that the captain jettisons to run (fightui.js, boarders.js)
   TURNS: 8,
-  POOL: 0.45,        // both sides' shields and armor in a fight are the ship's times this, so that a fight ends before TURNS (#814); the hand's real armor lost is the fight's
+  POOL: 0.45,        // both sides' armor in a fight is the ship's times this, so that a fight ends before TURNS (#814); the hand's real armor lost is the fight's
                      // divided by it (fightui.js). Tuned with the fight tool (3 seeds of 100) to the targets in tests/distribution/fights.test.js: answer has 99% good ends and loses 1%,
                      // in 6.2 turns, 32% of them at the cap (97% at 1.0); random play loses 38% and 19% of the real hull a fight; a lone raider falls to hull fire (COMBAT.md)
-  BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
+  BREAK: 0.3,        // her hull share (her armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
   PATCH: 0.1,        // the share of the pooled maximum armor a patch (the engineer's move) gives back
-  HEAVY_HIT: 0.2     // a turn is a heavy hit when the damage done to your hull (fight-scale, not pooled: the foe's damage is not scaled by FIGHT.POOL) is over this share of your real maximum armor, about 44% of the hull you have in the fight (fightui.js); a fifth, so that the hand is rarely
+  HEAVY_HIT: 0.2     // (of the armor past the skin, HULL_SKIN, data.js) a turn is a heavy hit when the damage done to your hull (fight-scale, not pooled: the foe's damage is not scaled by FIGHT.POOL) is over this share of your real maximum armor, about 44% of the hull you have in the fight (fightui.js); a fifth, so that the hand is rarely
                      // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes-fights.test.js)
 };
 
@@ -51,7 +51,7 @@ const FIGHT_MOVES = {
   'called-shot': {},      // the named gun's shot takes no AIM_MULT and rolls the top of its range; needs that gun firing
   'break-intercept': {},  // your vote to open the range stands this turn whatever her speed; needs a drive and a band to open
   redline: {},            // at the long band, the ship is away this turn (escaped), after the guns fire; needs a drive
-  patch: {},              // FIGHT.PATCH of the pooled maximum armor back; needs armor lost
+  patch: {},              // FIGHT.PATCH of the pooled maximum armor past the skin back; needs armor lost
   'hot-start': {},        // every shot this turn is overcharged at a plain shot's heat; needs a shot
   bypass: {},             // the drive's part back to full; needs it hurt
   spoof: {},              // she fires no volley and no salvo this turn; needs a foe up
@@ -86,26 +86,26 @@ function canUse(st, orders, id, known = []) {
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
-// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (tuned with the fight
-// tool, COMBAT.md). The destroyer has neither until the fight ladder (PR 3) decides how she is met: the fight tool does not play one.
+// What each kind of foe adds to her hull: a torpedo launcher with its torpedoes (tuned with the fight tool, COMBAT.md). The destroyer has none until
+// the fight ladder (PR 3) decides how she is met: the fight tool does not play one. (The cutter's shield coming back each turn went with the shields, #1208.)
 const FOE_TYPES = {
-  raider: { regen: 0, launcher: false },
-  corsair: { regen: 0, launcher: true, torps: 4 },
-  cutter: { regen: 0.07, launcher: false },
-  destroyer: { regen: 0, launcher: false }
+  raider: { launcher: false },
+  corsair: { launcher: true, torps: 4 },
+  cutter: { launcher: false },
+  destroyer: { launcher: false }
 };
 
-// A ship's side in a fight: her shields and armor scaled by FIGHT.POOL, her parts by FIGHT.PART_HP.
-function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher, breakAt }) {  // breakAt: her own break-off share, when the hand's record gives her one (Hard Case, traits.js)
-  const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade) * FIGHT.POOL), shields = Math.round(stats.shields * FIGHT.POOL);
+// A ship's side in a fight: her armor scaled by FIGHT.POOL, her parts by FIGHT.PART_HP.
+function shipSide(stats, { grade = 0, skill = 0, torps = 0, launcher = stats.launcher, breakAt }) {  // breakAt: her own break-off share, when the hand's record gives her one (Hard Case, traits.js)
+  const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade) * FIGHT.POOL);
   const part = key => ({ hp: FIGHT.PART_HP[key], max: FIGHT.PART_HP[key] });
   const weapons = FIGHT.PART_HP.weapons * stats.guns;
   return {
-    shields, maxShields: shields, armor, maxArmor: armor,
+    armor, maxArmor: armor,
     parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock'), ...(launcher ? { launcher: part('launcher') } : {}) },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
     speed: stats.accel * stats.turn,  // who wins the say on the range
-    launcher: !!launcher, pdc: !!stats.pdc, torps, regen, ...(breakAt ? { breakAt } : {})
+    launcher: !!launcher, pdc: !!stats.pdc, torps, ...(breakAt ? { breakAt } : {})
   };
 }
 
@@ -114,13 +114,12 @@ const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band
 // A mount whose share of the weapons bar is gone cannot fire, nor can one that is locked.
 const gunsReady = st => Math.max(0, Math.min(st.me.guns, Math.ceil(st.me.parts.weapons.hp / FIGHT.PART_HP.weapons)) - st.locked.length);
 
-// Damage to the hull goes to shields first, then armor; to a part, to its hp. Returns what it took: nothing from a part already at 0.
+// Damage to the hull goes to armor; to a part, to its hp. Returns what it took: nothing from a part already at 0.
 function dealDamage(side, part, dmg) {
   if (part === 'hull') {
-    const s = Math.min(side.shields, dmg), a = Math.min(side.armor, dmg - s);
-    side.shields -= s;
+    const a = Math.min(side.armor, dmg);
     side.armor -= a;
-    return s + a;
+    return a;
   }
   const took = Math.min(side.parts[part].hp, dmg);
   side.parts[part].hp -= took;
@@ -137,7 +136,7 @@ function resolveShipTurn(state, orders, moves, rand, known = [], roll = () => tr
     const landed = move === 'parley' ? !!roll() : undefined;
     events.push({ who: 'me', move, ...(landed === undefined ? {} : { landed }) });
     if (move === 'vent') { st.heat = 0; st.locked = []; }
-    if (move === 'patch') st.me.armor = Math.min(st.me.maxArmor, st.me.armor + Math.round(st.me.maxArmor * FIGHT.PATCH));
+    if (move === 'patch') st.me.armor = Math.min(st.me.maxArmor, st.me.armor + Math.round(hullPast(st.me.maxArmor) * FIGHT.PATCH));  // of the armor past the skin (HULL_SKIN, #1208)
     if (move === 'bypass') st.me.parts.drive.hp = st.me.parts.drive.max;
     if (move === 'break-intercept') { mv.captain = { kind: 'open' }; st.forceOpen = true; }
     if (landed) st.foes.forEach((foe, i) => { if (up(foe)) mv.foe[i] = { kind: 'break' }; });
@@ -184,13 +183,12 @@ function resolveShipTurn(state, orders, moves, rand, known = [], roll = () => tr
   const heat = st.heat + shots.reduce((h, { o }) => h + (o.over && !hot ? FIGHT.OVER_HEAT : 1), 0);
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
-  for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));
   st.turn++;
   return { state: st, events };
 }
 
-const hullShare = side => (side.shields + side.armor) / (side.maxShields + side.maxArmor);
-const poolShare = foes => foes.reduce((n, f) => n + f.shields + f.armor, 0) / foes.reduce((n, f) => n + f.maxShields + f.maxArmor, 0);
+const hullShare = side => side.armor / side.maxArmor;
+const poolShare = foes => foes.reduce((n, f) => n + f.armor, 0) / foes.reduce((n, f) => n + f.maxArmor, 0);
 const up = side => side.armor > 0 && side.parts.drive.hp > 0;
 
 // What the guns of foe i would do this turn: the range of one volley from the mounts it has left.

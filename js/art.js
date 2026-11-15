@@ -154,17 +154,6 @@ function drawShip(o, accent, toScreen) {
     ctx.beginPath(); ctx.arc(0.75, side * (widthAt(hull.outline, 0.75) + 0.12), 0.1, 0, Math.PI * 2); ctx.fill();
   }
   ctx.restore();
-
-  // Shield flash: an arc of the shield bubble lights up on the side that was hit.
-  const since = G.time - (o.shieldFlash || -9);
-  if (since < 0.25 && o.hitAngle !== undefined) {
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
-    ctx.strokeStyle = `rgba(140,200,255,${0.9 * (1 - since / 0.25)})`;
-    ctx.lineWidth = 2.5;
-    ctx.beginPath(); ctx.arc(sx, sy, L * 1.15, o.hitAngle - 0.9, o.hitAngle + 0.9); ctx.stroke();
-    ctx.restore();
-  }
 }
 
 // Half width of a hull outline at position x (linear between outline points).

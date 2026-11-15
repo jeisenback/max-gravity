@@ -22,53 +22,39 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
   }
 });
 
-// answerOrders (tools/answer.js, #814): the torpedo is held until her shields are down. It is a self-contained script on the game's globals, so it runs here in a bare context with those stubbed.
+// answerOrders (tools/answer.js): a torpedo at the foe with the least armor left (#1208: before, it was held until her shields were down, #814). It is a
+// self-contained script on the game's globals, so it runs here in a bare context with those stubbed.
 const vm = require('node:vm');
 const { answerOrders } = require('../tools/answer');
 function orders(foes, { torps = 2, launcher = true } = {}) {
   const ctx = vm.createContext({ FIGHT: { OVER_HEAT: 2, HEAT_CAP: 4 }, fightUp: f => f.armor > 0, gunsReady: st => st.me.guns });
   const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
-  const foe = (shields, armor, regen = 0) => ({ shields, maxShields: 100, armor, maxArmor: 100, regen, parts: { lock: { hp: 0 } } });
-  const state = { heat: 0, me: { guns: 2, launcher, torps }, foes: foes.map(([s, a, r]) => foe(s, a, r)) };
+  const foe = armor => ({ armor, maxArmor: 100, parts: { lock: { hp: 0 } } });
+  const state = { heat: 0, me: { guns: 2, launcher, torps }, foes: foes.map(foe) };
   // (the round trip brings the result out of the vm's realm, so deepEqual compares plain objects)
   return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [] } })));
 }
 
-test('answer holds torpedoes at full shields', () => {
-  assert.equal(orders([[100, 100, 0]]).torp, null, 'a foe that does not regenerate, at full shields');
-  assert.equal(orders([[100, 100, 0.1]]).torp, null, 'a foe that regenerates, at full shields');
-  assert.equal(orders([[26, 100, 0]]).torp, null, 'just over a quarter');
+test('answer fires a torpedo while it has one and a launcher, at a whole foe too', () => {
+  assert.deepEqual(orders([100]).torp, { foe: 0, part: 'hull' }, 'at full armor: there are no shields to spend it on');
+  assert.equal(orders([80], { torps: 0 }).torp, null, 'none left');
+  assert.equal(orders([80], { launcher: false }).torp, null, 'no launcher');
 });
 
-test('answer fires a torpedo once her shields are down', () => {
-  assert.deepEqual(orders([[25, 100, 0]]).torp, { foe: 0, part: 'hull' }, 'at a quarter, any type');
-  assert.deepEqual(orders([[0, 80, 0.1]]).torp, { foe: 0, part: 'hull' });
-  assert.equal(orders([[0, 80, 0]], { torps: 0 }).torp, null, 'none left');
-  assert.equal(orders([[0, 80, 0]], { launcher: false }).torp, null, 'no launcher');
-});
-
-test('answer fires at a foe that regenerates once her shields are under their maximum', () => {
-  const at = n => { const o = orders([[n, 100, 0.07]]); return o.torp; };
-  assert.deepEqual(at(80), { foe: 0, part: 'hull' }, 'dented, well over a quarter');
-  assert.equal(at(100), null, 'full');
-  assert.equal(orders([[80, 100, 0]]).torp, null, 'the same shields on a foe that does not regenerate are held');
-});
-
-test('answer fires at a pair', () => {
-  assert.deepEqual(orders([[100, 100, 0], [10, 60, 0]]).torp, { foe: 1, part: 'hull' }, 'at the one whose shields are down');
-  assert.deepEqual(orders([[10, 90, 0], [0, 50, 0]]).torp, { foe: 1, part: 'hull' }, 'at the one with the least left');
-  assert.equal(orders([[100, 100, 0], [100, 60, 0]]).torp, null, 'held while both are whole');
+test('answer fires at the one of a pair with the least armor left', () => {
+  assert.deepEqual(orders([100, 60]).torp, { foe: 1, part: 'hull' });
+  assert.deepEqual(orders([40, 90]).torp, { foe: 0, part: 'hull' });
 });
 
 // The gunner moves in answerOrders: run against the engine's own canUse (js/fight.js loaded into the same bare context), so the rule and the engine cannot disagree.
 const moveCtx = vm.createContext({ RANGE_BANDS: ['knife', 'close', 'mid', 'long'], GRADE_HULL: 0, GRADE_PUNCH: 0, fightUp: f => f.armor > 0 });
 vm.runInContext(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'fight.js'), 'utf8'), moveCtx);  // the engine, loaded once
-function moveOrders({ known, band = 2, heat = 0, locked = [], spent = [], regen = 0, shown, lockHp = 0, pdc = true, weapons = 126 }) {
+function moveOrders({ known, band = 2, heat = 0, locked = [], spent = [], navy = false, shown, lockHp = 0, pdc = true, weapons = 126 }) {
   const ctx = moveCtx;
   const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
-  const foe = { shields: 100, maxShields: 100, armor: 100, maxArmor: 100, regen, parts: { lock: { hp: lockHp }, drive: { hp: 34 }, weapons: { hp: 63 } } };
+  const foe = { armor: 100, maxArmor: 100, parts: { lock: { hp: lockHp }, drive: { hp: 34 }, weapons: { hp: 63 } } };
   const state = { kind: 'ship', band, heat, locked, spent, me: { guns: 2, launcher: false, torps: 0, pdc, parts: { weapons: { hp: weapons, max: 126 } } }, foes: [foe] };
-  return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [shown] }, known })));
+  return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [shown] }, known, spec: { kind: navy ? 'patrol' : 'pirate' } })));
 }
 const ALL = ['vent', 'lead', 'split'];
 
@@ -93,26 +79,23 @@ test('answer never orders a move the hand does not know', () => {
   assert.equal(moveOrders({ known: ['vent'], shown: { kind: 'pin' }, lockHp: 7, band: 3 }).move, undefined, 'a lead without lead');
 });
 
-test('answer counts the shot split gives back, vents only for a shot, picks one move by priority, and does not repeat a spent one', () => {
-  const heatOf = o => o.guns.reduce((h, g) => h + (g.over ? 2 : 1), 2);
-  const split = moveOrders({ known: ALL, shown: { kind: 'salvo' }, regen: 0.07, heat: 2, spent: ['vent'] });
-  assert.equal(split.move, 'split');
-  assert.ok(heatOf(split) <= 4, 'two guns at heat 2 on a split turn stay at the cap (vent spent: the budget stands)');
+test('answer vents only for a shot, picks one move by priority, and does not repeat a spent one', () => {
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'salvo' }, heat: 2, spent: ['vent'] }).move, 'split');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'hold' }, heat: 3 }).move, undefined, 'heat alone, no gun locked: vent would add no shot')
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1] }).move, 'vent', 'vent and lead both apply: vent first');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1], spent: ['vent'] }).move, 'lead', 'a spent vent leaves lead');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'salvo' }, spent: ['split'] }).move, undefined, 'a spent split is not ordered again');
 });
 
-test('answer runs the guns hot against shields that come back while it can still vent, and keeps the heat budget otherwise', () => {
+test('answer runs the guns hot against the navy while it can still vent, and keeps the heat budget otherwise (#1208: before, against shields that came back)', () => {
   const overs = o => o.guns.map(g => !!g.over);
-  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [true, true], 'vent unspent: every gun overcharged past the cap');
-  assert.deepEqual(overs(moveOrders({ known: ['vent'], shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [true, true], 'vent alone is enough');
+  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, navy: true, heat: 3 })), [true, true], 'vent unspent: every gun overcharged past the cap');
+  assert.deepEqual(overs(moveOrders({ known: ['vent'], shown: { kind: 'hold' }, navy: true, heat: 3 })), [true, true], 'vent alone is enough');
   for (const [why, o] of [['no moves', { known: [] }], ['no vent', { known: ['lead', 'split'] }], ['vent spent', { known: ALL, spent: ['vent'] }]]) {
-    assert.deepEqual(overs(moveOrders({ ...o, shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [false, false], `${why}: at heat 3 no gun is overcharged (the cap)`);
+    assert.deepEqual(overs(moveOrders({ ...o, shown: { kind: 'hold' }, navy: true, heat: 3 })), [false, false], `${why}: at heat 3 no gun is overcharged (the cap)`);
   }
-  const vented = moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0.07, heat: 5, locked: [0] });
+  const vented = moveOrders({ known: ALL, shown: { kind: 'hold' }, navy: true, heat: 5, locked: [0] });
   assert.equal(vented.move, 'vent', 'a gun locked: vent');
   assert.ok(vented.guns.reduce((h, g) => h + (g.over ? 2 : 1), 0) <= 4, 'the turn it vents, the heat budget from 0 stands');
-  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0, heat: 0 })), [false, false], 'shields that do not come back: no overcharge');
+  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, heat: 0 })), [false, false], 'a pirate: no overcharge');
 });

@@ -205,7 +205,7 @@ test('After the Loss, Hull Damage, Settling Up and the arc offers open in the pr
 
 test('the lane\'s four events, part trouble and Cato\'s round open in the preview in a burn, with the line typed (#796, batch 3)', async () => {
   await reload();
-  for (const [id, line] of [['scene:distress-call', 'text'], ['scene:pirates', 'title'], ['scene:derelict', 'text'], ['scene:coolant-leak', 'title'], ['scene:trouble', 'fault.shields'], ['scene:cato-round', 'text']]) {
+  for (const [id, line] of [['scene:distress-call', 'text'], ['scene:pirates', 'title'], ['scene:derelict', 'text'], ['scene:coolant-leak', 'title'], ['scene:trouble', 'fault.pd'], ['scene:cato-round', 'text']]) {
     await select(id);
     await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
     const f = await play();

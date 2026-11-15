@@ -23,7 +23,7 @@ test('signing the share and going on: the hand takes the bridge, and the Ore Run
   assert.equal(r.v.cap, false, 'no captain person'); assert.equal(r.v.bridge, true); assert.equal(r.v.masters, undefined, 'the lender sends no masters');
   assert.equal(r.v.papers.length, 1); assert.match(r.v.papers[0], /^endorsement/);
   assert.equal(r.v.ship, 'lightfreighter'); assert.equal(r.v.planet, 'Ceres Station'); assert.equal(r.v.mode, 'landed'); assert.equal(r.v.dialog, false);
-  assert.deepEqual(r.v.condition, { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 }); assert.equal(r.v.armor, true);
+  assert.deepEqual(r.v.condition, { drive: 70, life: 65, pd: 60, sensors: 70, fire: 45 }); assert.equal(r.v.armor, true);
   assert.ok(r.v.crew.some(c => c.cast === 'bexa' && c.role === 'icehand'), JSON.stringify(r.v.crew));
   assert.ok(r.v.crew.some(c => c.cast === 'pax' && c.role === 'gunner'), JSON.stringify(r.v.crew));
   assert.ok(r.v.crew.some(c => c.cast === 'cato'), 'Cato came');

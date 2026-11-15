@@ -18,21 +18,29 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 // `fuel` is reaction mass. Burn costs scale with distance (see burnFuel in game.js).
 // `berths` are shared by crew and passengers.
 const SHIPS = {
-  shuttle:   { name: 'Dust Skiff',  price: 100000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
+  shuttle:   { name: 'Dust Skiff',  price: 100000,  cargo: 20,  fuel: 300, berths: 4, armor: 110,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
                desc: 'A patched-up skiff held together with sealant and optimism. Every captain starts somewhere.' },
-  lightfreighter: { name: 'Ore Runner', price: 280000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
+  lightfreighter: { name: 'Ore Runner', price: 280000, cargo: 50, fuel: 300, berths: 5, armor: 190, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
                desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Dust Skiff.' },
-  courier:   { name: 'Needle courier', price: 450000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
+  courier:   { name: 'Needle courier', price: 450000, cargo: 35,  fuel: 380, berths: 7, armor: 190,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
                desc: 'All drive and very little else. Mail runners and smugglers swear by them.' },
-  freighter: { name: 'Ice Hauler',   price: 900000,  cargo: 120, fuel: 450, berths: 10, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
+  freighter: { name: 'Ice Hauler',   price: 900000,  cargo: 120, fuel: 450, berths: 10, armor: 440, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
-  gunship:   { name: 'Corvette',     price: 1600000, cargo: 15,  fuel: 380, berths: 6, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
+  gunship:   { name: 'Corvette',     price: 1600000, cargo: 15,  fuel: 380, berths: 6, armor: 520, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
                req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
-  raider:    { name: 'Raider',  price: 220000, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
-  destroyer: { name: 'Destroyer', price: 2400000, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
-  cutter:    { name: 'Patrol Cutter', price: 600000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
-  corsair:   { name: 'Corsair', price: 550000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
+  raider:    { name: 'Raider',  price: 220000, cargo: 10, fuel: 300, armor: 130,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  destroyer: { name: 'Destroyer', price: 2400000, cargo: 40, fuel: 600, armor: 800, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
+  cutter:    { name: 'Patrol Cutter', price: 600000, cargo: 10, fuel: 300, armor: 290, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
+  corsair:   { name: 'Corsair', price: 550000, cargo: 20, fuel: 300, armor: 260, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
+// A hull's skin (#1208): its shields went into its armor, and the shields took a fight's first hits and came back after it. So the first HULL_SKIN
+// of a ship's armor in a fight leaves nothing on the ship (fightui.js fightTook), and what is past it is the hull as it was: the Ice Hauler's 180
+// of 440. A share of the hull, a cost in armor, the repair line and the Hull readout read the armor past the skin: hullLeftOf is 1 whole and 0
+// at the skin; hullPast is the armor past it; hullAt the armor at a share of it. `max` is the ship's full armor.
+const HULL_SKIN = 0.41;
+const hullLeftOf = (armor, max) => (max > 0 ? Math.max(0, Math.min(1, (armor - HULL_SKIN * max) / ((1 - HULL_SKIN) * max))) : 0);
+const hullPast = max => max * (1 - HULL_SKIN);
+const hullAt = (share, max) => max * (HULL_SKIN + (1 - HULL_SKIN) * share);
 // Each hull's registry mark (#936), painted on her nose under her name and kept as marks on the bridge's certificate: the registry's letters
 // and her number. The Ice Hauler sails under a small Belt station registry (hiredscenes.js, the lender's letter), the co-op's Ore Runner
 // under Ceres's. Fixed per ship: the game keeps no registry of its own.
@@ -246,7 +254,6 @@ const OUTFITS = {
   launcher: { name: 'Torpedo launcher', price: 120000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
   heavy:   { name: 'Heavy rounds', price: 120000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
   armor:   { name: 'Armor plating', price: 40000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
-  shield:  { name: 'Deflector capacitor', price: 50000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },
   tank:    { name: 'Reaction mass tank', price: 30000, space: 5, max: 3, desc: '+100 reaction mass capacity.', mod: s => { s.fuel += 100; } },
   pod:     { name: 'Cargo pod', price: 25000, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
   drive:   { name: 'Drive tuning', price: 80000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },

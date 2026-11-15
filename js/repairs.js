@@ -10,7 +10,7 @@ const REPAIR_LABOR = { yard: 1000, field: 1500 }, REPAIR_WAIT = 4, STANDBY_PAY =
 
 function repairPlan(planet) {
   const st = G.state, max = ship().armor, lost = Math.max(0, max - st.armor), yard = planet.services.includes('shipyard');
-  let days = Math.max(1, Math.min(6, Math.ceil(lost / (max * 0.06))));
+  let days = Math.max(1, Math.min(6, Math.ceil(lost / (hullPast(max) * 0.06))));  // of the armor past the skin (HULL_SKIN, #1208)
   if (!yard) days = Math.min(9, Math.ceil(days * 1.5) + 1);  // no yard: field repairs, slower
   const tons = Math.max(1, Math.ceil(lost / REPAIR_PLATE)), held = (st.cargo.metal || 0) >= tons, stocked = price(planet, 'metal') !== null;
   const parts = held ? 0 : stocked ? Math.round(tradeTotal(planet, 'metal', tons, 1) * 1.3) : 0;  // the yard's markup
@@ -62,7 +62,7 @@ Mods.register({
     M.on('landed', planet => {
       const h = hired();
       if (!h || chapterOf(G.state) > 1) return;
-      if (planet.services.includes('refuel') && G.state.armor < ship().armor * (1 - REPAIR_AT)) { offerScene('business', repairScene(planet)); return; }
+      if (planet.services.includes('refuel') && hullLeftOf(G.state.armor, ship().armor) < 1 - REPAIR_AT) { offerScene('business', repairScene(planet)); return; }
       const sys = partsRepairDue(G.state, h, planet, purse());  // else a worn system's part, one yard scene a landing (parts.js, #1135)
       if (sys) { h.partsAt = G.state.day; offerScene('business', partsEvent(planet, sys)); }
     });

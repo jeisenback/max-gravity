@@ -23,9 +23,9 @@ test('a scrape is patched on landing and real damage opens the yard scene', asyn
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), out = {}, max = ship().armor;
-    dock(Math.floor(max * 0.1)); out.scrape = { armor: st.armor === max, scene: !!G.dialog && G.dialog.event.title === 'Hull Damage' };
+    dock(Math.floor(hullPast(max) * 0.1)); out.scrape = { armor: st.armor === max, scene: !!G.dialog && G.dialog.event.title === 'Hull Damage' };
     while (G.dialog) finishEvent();
-    dock(Math.floor(max * 0.4)); out.big = { scene: !!G.dialog && G.dialog.event.title === 'Hull Damage', armor: st.armor < max, text: G.dialog && G.dialog.event.text };
+    dock(Math.floor(hullPast(max) * 0.4)); out.big = { scene: !!G.dialog && G.dialog.event.title === 'Hull Damage', armor: st.armor < max, text: G.dialog && G.dialog.event.text };
     return out;
   });
   assert.deepEqual(r.scrape, { armor: true, scene: false });

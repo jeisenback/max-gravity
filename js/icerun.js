@@ -169,7 +169,7 @@ function iceStep(n, c, post) {
   if (c.bold) boldWithCaptain(won);  // the captain's nerve (captains.js)
   let out = text;
   const soft = !won && n === 0 && post === 'pilot' && perkOn('soft-hands');  // soft-hands (picks.js): the approach the pilot flies costs no hull on a lost roll
-  if (hull && !soft) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
+  if (hull && !soft) { const pts = Math.round(hullPast(ship().armor) * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
     Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) recordHand(c2.dead ? 'matesLost' : 'matesHurt'); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
     ` ${c2.first} is hurt.${hurtWarning(c2)}`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
@@ -233,7 +233,7 @@ const homeRun = h => ({ sid: h.run.sid, planet: h.run.planet, good: 'water', ton
 // Sailing from the rock (hired.js sail): no takeoff and no local space, straight into the burn, with the run record kept as it is.
 function sailHome() {
   const st = G.state, run = hired().run;
-  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor, shields: s.shields }); }  // a save reloaded on station has no ship yet (the takeoff makes one at a port)
+  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor }); }  // a save reloaded on station has no ship yet (the takeoff makes one at a port)
   st.dest = run.sid; st.route = { dock: run.planet, go: true };
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
