@@ -163,12 +163,18 @@ test('the sign-on reads the papers: a hand from Mars or the Belt came to Earth, 
     const plain = paras(start({ home: 'earth', before: 'none', known: 'none' }));
     const mars = paras(start({ home: 'mars', before: 'none', known: 'none' }));
     const full = paras(start({ home: 'belt', before: 'dock', known: 'shipmate' })), mate = G.state.crew.map(person).find(c => c && !c.cast && c.opinion === 1);
-    return { plain: { n: plain.length, queue: plain[0].includes(queue), startsAtQueue: plain[0].startsWith(queue) }, mars: { n: mars.length, queue: mars[0].includes(queue), startsAtQueue: mars[0].startsWith(queue), longer: mars[0].length > plain[0].length },
+    const other = G.state.crew.map(person).find(c => c && !c.cast && c.opinion !== 1), h = hired();  // the sign-on names whoever the papers record (h.origin.mate), by id (#1258)
+    h.origin.mate = other.id; const byId = { third: paras(signOnEvent().text)[2], other: other.first };
+    h.origin.mate = 'nobody'; const bogus = paras(signOnEvent().text)[2];
+    delete h.origin.mate; const none = paras(signOnEvent().text)[2];
+    return { byId, bogus, none, plain: { n: plain.length, queue: plain[0].includes(queue), startsAtQueue: plain[0].startsWith(queue) }, mars: { n: mars.length, queue: mars[0].includes(queue), startsAtQueue: mars[0].startsWith(queue), longer: mars[0].length > plain[0].length },
       full: { n: full.length, third: full[2], mate: mate ? mate.first : null, bad: /undefined|NaN/.test(full.join(' ')) }, choices: G.dialog.event.choices.map(c => c.label) };
   });
   assert.deepEqual(r.plain, { n: 3, queue: true, startsAtQueue: true }, 'an Earth hand with nothing to add: the scene as it was');
   assert.deepEqual(r.mars, { n: 3, queue: true, startsAtQueue: false, longer: true }, 'a Mars hand: how they came to Earth, before the queue, in the same paragraph');
   assert.equal(r.full.n, 4, 'answers given: a paragraph that reads them back'); assert.ok(r.full.mate, 'a shipmate was warmed'); assert.ok(r.full.third.includes(r.full.mate), `the shipmate is named: ${r.full.third}`); assert.equal(r.full.bad, false);
+  assert.ok(r.byId.third.includes(r.byId.other), `the sign-on names whoever the papers record: ${r.byId.third}`);
+  assert.ok(/Someone aboard/.test(r.bogus) && /Someone aboard/.test(r.none), 'an id nothing resolves, or none, reads as someone');
   assert.deepEqual(r.choices, ['For the money', 'To learn the work', 'To be somewhere else']);
   await done();
 });

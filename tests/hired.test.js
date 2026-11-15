@@ -979,20 +979,20 @@ test('the papers are kept on the hand and applied once: the sheet with the trade
     h.origin.told = true; applyPapers(G.state, h); out.patrol.cleared = !('told' in h.origin); out.patrol.again = h.record.fines;
     h = start({ home: 'belt', before: 'dock', known: 'shipmate' });
     const liked = generated().filter(c => c.opinion === 1);
-    out.mate = { liked: liked.length, others: generated().filter(c => c.opinion !== 1 && c.opinion !== 0).length, memory: liked.length ? liked[0].memories.length : 0, aff: youTies().aff, sheet: { ...h.sheet } };
-    h = start({ home: 'earth', before: 'none', known: 'none' }); out.none = { standing: Object.keys(h.standing).length, fines: h.record.fines || 0, liked: generated().filter(c => c.opinion !== 0).length };
+    out.mate = { liked: liked.length, others: generated().filter(c => c.opinion !== 1 && c.opinion !== 0).length, memory: liked.length ? liked[0].memories.length : 0, aff: youTies().aff, sheet: { ...h.sheet }, id: liked.length > 0 && h.origin.mate === liked[0].id };
+    h = start({ home: 'earth', before: 'none', known: 'none' }); out.none = { standing: Object.keys(h.standing).length, fines: h.record.fines || 0, liked: generated().filter(c => c.opinion !== 0).length, mate: 'mate' in h.origin };
     h = start(undefined); out.absent = { ...h.origin };
     const st = G.state; h.origin = { home: 'earth', before: 'none', known: 'shipmate' }; st.crew = st.crew.filter(id => person(id).cast);
-    let threw = null; try { applyPapers(st, h); } catch (e) { threw = String(e); } out.noCrew = { threw, liked: st.crew.map(person).filter(c => c.opinion === 1).length };
+    let threw = null; try { applyPapers(st, h); } catch (e) { threw = String(e); } out.noCrew = { threw, liked: st.crew.map(person).filter(c => c.opinion === 1).length, mate: 'mate' in h.origin };
     return out;
   });
   assert.deepEqual(r.mars, { papers: { home: 'mars', before: 'ferry', known: 'shipper' }, sheet: { hands: 2, eye: 4, nerve: 5, wit: 3 }, standing: 2, aff: 'Dome Pact', background: 'earth' });
   assert.deepEqual(r.ashore, r.mars, 'a hand put ashore keeps the papers: the home, the sheet with the trade, and the office that knows the name on the fresh record');
   assert.deepEqual(r.patrol, { fines: 1, told: [], marked: false, standing: 0, cleared: true, again: 2 }, 'a second applyPapers (a new berth) clears told and lands the fine again');
-  assert.deepEqual([r.mate.liked, r.mate.others, r.mate.memory, r.mate.aff], [1, 0, 1, 'Guild Federation']); assert.deepEqual(r.mate.sheet, { hands: 5, eye: 4, nerve: 3, wit: 2 }, 'the Warren and dock labour');
-  assert.deepEqual(r.none, { standing: 0, fines: 0, liked: 0 });
+  assert.deepEqual([r.mate.liked, r.mate.others, r.mate.memory, r.mate.aff, r.mate.id], [1, 0, 1, 'Guild Federation', true], 'the warmed mate\'s id is on the papers'); assert.deepEqual(r.mate.sheet, { hands: 5, eye: 4, nerve: 3, wit: 2 }, 'the Warren and dock labour');
+  assert.deepEqual(r.none, { standing: 0, fines: 0, liked: 0, mate: false });
   assert.deepEqual(r.absent, { home: 'earth', before: 'none', known: 'none' });
-  assert.deepEqual(r.noCrew, { threw: null, liked: 0 }, 'no generated crew: the shipmate answer applies to nobody');
+  assert.deepEqual(r.noCrew, { threw: null, liked: 0, mate: false }, 'no generated crew: the shipmate answer applies to nobody, and names nobody');
   await done();
 });
 
