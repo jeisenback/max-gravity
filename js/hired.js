@@ -117,7 +117,7 @@ function restockTorps(st, h, planet, launcher) {
 }
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : scopeOff('posts') ? 'gunner' : 'pilot';
-  const origin = { home: 'earth', before: 'none', known: 'none', ...(o.origin || {}) };  // the hand's papers at the sign-on (menu.js papersForm, spec 2026-11-14): the home, what they were, who knows the name; `papers` is the licences they hold (#1045)
+  const origin = { home: st.background, before: 'none', known: 'none', ...(o.origin || {}) };  // the hand's papers at the sign-on (menu.js papersForm, spec 2026-11-14): the home (the start's when none is given: the full build's Mars and Belt starts), what they were, who knows the name; `papers` is the licences they hold (#1045). A hand put ashore carries them (stakes.js)
   if (!BACKGROUNDS[origin.home]) origin.home = 'earth';
   st.shipId = 'freighter';
   st.outfits = { pdc: 1, launcher: 1 }; st.torpedoes = HAND_TORPS;  // a close-defense turret and a launcher with two torpedoes

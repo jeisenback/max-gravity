@@ -5,6 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
+const fs = require('fs'), path = require('path');
 
 after(closeBrowser);
 
@@ -203,4 +204,24 @@ test('the new-game form is the hand\'s papers: the home, the post, the sheet as 
   });
   assert.deepEqual(full, [], 'the form and the game agree on every home, post and trade in the full build');
   await owner.done();
+});
+
+// The sheet line reads as the sheet: its own heading, four words laid out apart with the moved points toned (#1251 review); the form is built on the view helpers (views.js) and kept to its golden.
+test('the papers\' sheet line has a heading and four words apart, the moved points toned, and the form is on the view helpers against its golden', async () => {
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  await hand.page.click('[data-action=menuBefore][data-arg=clerk]');
+  const r = await hand.ev(() => {
+    const line = document.querySelector('.menu-sheet'), spans = [...line.querySelectorAll('span')], color = el => getComputedStyle(el).color;
+    const plain = spans.find(x => !x.className), up = line.querySelector('.up'), down = line.querySelector('.down');
+    const out = Menu.views.papersForm({ home: 'belt', before: 'dock', known: 'patrol' });
+    return { display: getComputedStyle(line).display, text: line.innerText, heading: line.previousElementSibling.tagName + ' ' + line.previousElementSibling.textContent, toned: [color(up) !== color(plain), color(down) !== color(plain), color(up) !== color(down)], raw: !!out.isRaw, html: String(out) };
+  });
+  assert.equal(r.display, 'flex'); assert.doesNotMatch(r.text, /\d[A-Z]/, 'the words do not run together'); assert.equal(r.heading, 'H3 The sheet');
+  assert.deepEqual(r.toned, [true, true, true], 'the point moved up and the one moved down are toned apart from the rest');
+  assert.ok(r.raw, 'the form is built on the view helpers (h)');
+  const file = path.join(__dirname, 'fixtures', 'papers-form.html');
+  if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, r.html + '\n');
+  assert.equal(r.html + '\n', fs.readFileSync(file, 'utf8'), `papers form: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await hand.done();
 });

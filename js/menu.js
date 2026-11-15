@@ -242,15 +242,18 @@ const Menu = {
         <div class="menu-buttons row sticky"><button class="primary" data-action="menuStart">Start</button><button data-action="menuBack">Back</button></div>`;
     },
     // The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): where you are from, the post, the sheet the two make as four words, and two questions
-    // about the life before the ship, each permanent. The words are scene:sign-on's; the sheet is the one the sign-on gives (sheet.js papersSheet).
+    // about the life before the ship, each permanent. The words are scene:sign-on's; the sheet is the one the sign-on gives (sheet.js papersSheet). Built on the view
+    // helpers (views.js); its golden is tests/fixtures/papers-form.html.
     papersForm(f) {
       const say = key => sceneSay('scene:sign-on', key), home = BACKGROUNDS[f.home] ? f.home : 'earth', post = HIRED_POSTS.includes(f.post) ? f.post : scopeOff('posts') ? 'gunner' : 'pilot', before = f.before || 'none', known = f.known || 'none';  // the post as setupHired reads it (hired.js)
       const sheet = papersSheet(newSheet(home, post), before);
-      const row = (action, ids, label, on, hint) => `<h3>${label}</h3><div class="row">${ids.map(id => `<button class="${on === id ? 'on' : ''}" data-action="${action}" data-arg="${id}">${say(`${action === 'menuBefore' ? 'before' : 'known'}.${id}.label`)}${hint && hint(id) ? `<span class="hint">${hint(id)}</span>` : ''}</button>`).join('')}</div>`;
-      return `<h3>Where you are from</h3>
-          ${Object.entries(BACKGROUNDS).map(([id, b]) => `<button class="choice ${home === id ? 'on' : ''}" data-action="menuHome" data-arg="${id}"><b>${b.name}</b><span class="hint">${say(b.hand)}</span></button>`).join('')}
-          ${scopeOff('posts') ? '' : `<h3>Rated</h3><div class="row">${HIRED_POSTS.map(p => `<button class="${post === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`}
-          <div class="menu-sheet">${STATS.map(s => `<span class="${sheet[s] > STAT_BASE ? 'up' : sheet[s] < STAT_BASE ? 'down' : ''}">${s[0].toUpperCase()}${s.slice(1)} ${sheet[s]}</span>`).join('')}</div>
+      const button = (action, id, on, label, hint) => h`<button class="${on ? 'on' : ''}" data-action="${action}" data-arg="${id}">${label}${hint ? h`<span class="hint">${hint}</span>` : ''}</button>`;
+      const row = (action, ids, label, on, hint) => h`<h3>${label}</h3><div class="row">${ids.map(id => button(action, id, on === id, say(`${action === 'menuBefore' ? 'before' : 'known'}.${id}.label`), hint && hint(id)))}</div>`;
+      return h`<h3>Where you are from</h3>
+          ${Object.entries(BACKGROUNDS).map(([id, b]) => h`<button class="choice ${home === id ? 'on' : ''}" data-action="menuHome" data-arg="${id}"><b>${b.name}</b><span class="hint">${say(b.hand)}</span></button>`)}
+          ${scopeOff('posts') ? '' : h`<h3>Rated</h3><div class="row">${HIRED_POSTS.map(p => button('menuPost', p, post === p, POSTS[p].name))}</div>`}
+          <h3>${say('sheet')}</h3>
+          <div class="menu-sheet">${STATS.map(s => h`<span class="${sheet[s] > STAT_BASE ? 'up' : sheet[s] < STAT_BASE ? 'down' : ''}">${s[0].toUpperCase()}${s.slice(1)} ${sheet[s]}</span>`)}</div>
           ${row('menuBefore', ['dock', 'clerk', 'ferry', 'none'], say('question.before'), before, id => (id !== 'none' && !papersTrades(newSheet(home, post), id) ? say('trade.none') : ''))}
           ${row('menuKnown', ['shipper', 'patrol', 'shipmate', 'none'], say('question.known'), known, null)}`;
     },

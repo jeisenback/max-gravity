@@ -973,6 +973,8 @@ test('the papers are kept on the hand and applied once: the sheet with the trade
     const out = {}, generated = () => G.state.crew.map(person).filter(c => c && !c.cast);
     let h = start({ home: 'mars', before: 'ferry', known: 'shipper' });
     out.mars = { papers: { ...h.origin }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
+    putAshore(false); while (G.dialog) finishEvent(); h = hired();
+    out.ashore = { papers: { ...h.origin }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
     h = start({ home: 'earth', before: 'none', known: 'patrol' }); out.patrol = { fines: h.record.fines, told: [...h.traitsTold], marked: hasTrait(h, 'marked'), standing: Object.keys(h.standing).length };
     h = start({ home: 'belt', before: 'dock', known: 'shipmate' });
     const liked = generated().filter(c => c.opinion === 1);
@@ -984,10 +986,27 @@ test('the papers are kept on the hand and applied once: the sheet with the trade
     return out;
   });
   assert.deepEqual(r.mars, { papers: { home: 'mars', before: 'ferry', known: 'shipper' }, sheet: { hands: 2, eye: 4, nerve: 5, wit: 3 }, standing: 2, aff: 'Dome Pact', background: 'earth' });
+  assert.deepEqual(r.ashore, r.mars, 'a hand put ashore keeps the papers: the home, the sheet with the trade, and the office that knows the name on the fresh record');
   assert.deepEqual(r.patrol, { fines: 1, told: [], marked: false, standing: 0 });
   assert.deepEqual([r.mate.liked, r.mate.others, r.mate.memory, r.mate.aff], [1, 0, 1, 'Guild Federation']); assert.deepEqual(r.mate.sheet, { hands: 5, eye: 4, nerve: 3, wit: 2 }, 'the Warren and dock labour');
   assert.deepEqual(r.none, { standing: 0, fines: 0, liked: 0 });
   assert.deepEqual(r.absent, { home: 'earth', before: 'none', known: 'none' });
   assert.deepEqual(r.noCrew, { threw: null, liked: 0 }, 'no generated crew: the shipmate answer applies to nobody');
+  await done();
+});
+
+// A start whose background is not Earth (the full build: Mars, the Belt) with no papers given has the start's home on them, as before the papers (#1251 review).
+test('a full-build start at Mars or the Belt with no papers given is a hand from there: the home, the sheet and the affiliation follow the background', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    const out = {};
+    for (const background of ['mars', 'belt', 'earth']) {
+      startGame({ slot: 1, background, captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+      const h = hired(); out[background] = { home: h.origin.home, aff: youTies().aff, sheet: { ...h.sheet }, want: { ...newSheet(background, 'gunner') } };
+    }
+    return out;
+  });
+  assert.deepEqual([r.mars.home, r.mars.aff, r.belt.home, r.belt.aff, r.earth.home, r.earth.aff], ['mars', 'Dome Pact', 'belt', 'Guild Federation', 'earth', 'Arcology Pact']);
+  for (const bg of ['mars', 'belt', 'earth']) assert.deepEqual(r[bg].sheet, r[bg].want, `${bg}: the sheet of the background`);
   await done();
 });

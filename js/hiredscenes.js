@@ -1254,7 +1254,7 @@ const SCENE_LINES = {
     'home.earth': 'An arcology on Earth. Everyone you know is still in it, and the service charge went up in March.',
     'home.mars': 'The domes at Tharsis. Your mother still pays the Pact for the air, and asks when you are coming back.',
     'home.belt': 'The Ceres Warren. A water share was the first thing you owned, and the first thing you sold.',
-    'question.before': 'What you were before the ship', 'question.known': 'Who knows your name',
+    sheet: 'The sheet', 'question.before': 'What you were before the ship', 'question.known': 'Who knows your name',
     'before.dock.label': 'Dock labour', 'before.clerk.label': 'A clerk at a shipper\'s office', 'before.ferry.label': 'A rating on a short-haul ferry', 'before.none.label': 'Nothing worth a line',
     'known.shipper.label': 'A shipper at home', 'known.patrol.label': 'A patrol', 'known.shipmate.label': 'A shipmate', 'known.none.label': 'Nobody worth a line',
     'trade.none': 'no change on your sheet',
