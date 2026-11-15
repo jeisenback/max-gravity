@@ -4176,6 +4176,102 @@
   "text": "\"Ear infections this week, mostly from the top bunkrooms,\" Sam says. \"It's the filters up there. Maintenance has the ticket.\" Sam goes back to the screen."
  },
  {
+  "key": "port-folk:c-keeper.0",
+  "text": "Sam pours from the tap and marks it on the slate under the water ration. \"Renters pay at the end of the week, members pay now,\" Sam says. \"Which are you?\""
+ },
+ {
+  "key": "port-folk:c-keeper.1",
+  "text": "\"Second shift's off in twenty minutes,\" Sam says, setting glasses out along the bar. \"They'll come down the long stair. The lift's always slow at the change.\""
+ },
+ {
+  "key": "port-folk:c-keeper.2",
+  "text": "Sam wipes the bar where the ring's curve sends the glasses sliding. \"Put it down on the high side,\" Sam says. \"Everyone learns.\""
+ },
+ {
+  "key": "port-folk:c-noodles.0",
+  "text": "\"Pork or the mushroom. The mushroom's grown here. The pork came in frozen, and it costs like it.\" Mei Tan ladles broth into a bowl before you answer."
+ },
+ {
+  "key": "port-folk:c-noodles.1",
+  "text": "Mei Tan is writing the prices up on the board again. \"Water went up,\" she says. \"Broth's mostly water.\""
+ },
+ {
+  "key": "port-folk:c-noodles.2",
+  "text": "Mei Tan has the council's letter about the lease under the cash tin. \"Renewal's in June,\" she says. \"Yusuf says he'll read it before I sign. He reads everything twice.\""
+ },
+ {
+  "key": "port-folk:c-clerk.0",
+  "text": "\"If you're after a berth on one of ours, the board's behind you,\" Yusuf says. \"The hulls in chalk are full. The ones in pencil, ask me.\""
+ },
+ {
+  "key": "port-folk:c-clerk.1",
+  "text": "Yusuf has two quarters' books open side by side and a third on the screen. \"The lender's officer comes Thursday,\" he says, and goes back to the column."
+ },
+ {
+  "key": "port-folk:c-clerk.2",
+  "text": "\"Kettle wants the meeting moved to first shift,\" Yusuf says, writing it down. \"Half the members are on first shift. He says that's the point.\""
+ },
+ {
+  "key": "port-folk:c-warden.0",
+  "text": "Sam checks your papers against the screen and hands them back. \"Weapons stay on the ship. That's the knife on your belt too, if it's longer than your hand.\""
+ },
+ {
+  "key": "port-folk:c-warden.1",
+  "text": "Sam runs a finger down the manifest. \"Any machine parts in that? You'll want the licence, or it's duty at the counter.\" Sam stamps it before you answer."
+ },
+ {
+  "key": "port-folk:c-warden.2",
+  "text": "Sam is eating a bowl of Mei Tan's noodles at the lock desk, one eye on the feed from the pads. \"Two co-op boats in tonight,\" Sam says. \"They always come in together.\""
+ },
+ {
+  "key": "port-folk:c-buyer.0",
+  "text": "\"Posted price, delivered to the Vesta depot's tanks, less the assay,\" Saoirse Brennan says. \"If you're carrying ice, that's the number. If you're not, I'm busy.\""
+ },
+ {
+  "key": "port-folk:c-buyer.1",
+  "text": "Saoirse Brennan is reading the haulers' assays off a screen, one load at a time. \"Too much dust in that one,\" she says, and marks it down a tenth."
+ },
+ {
+  "key": "port-folk:c-buyer.2",
+  "text": "\"Arjun's gone back to Vesta for the month,\" Saoirse Brennan says. \"His father wants him at the depot.\" She signs a purchase order and puts it on the pile."
+ },
+ {
+  "key": "port-folk:c-guild.0",
+  "text": "Sam slides a form across the desk. \"Membership's by the year, off your wage once you're on a hauler. Until then it's cash.\" Sam taps the line for the signature."
+ },
+ {
+  "key": "port-folk:c-guild.1",
+  "text": "\"Mirela's in with the council,\" Sam says. \"Berth rates. It's always the berth rates.\""
+ },
+ {
+  "key": "port-folk:c-guild.2",
+  "text": "Sam is pinning the week's hauls on the board: which hull, which rock, what the ice assayed at. \"Kaur took the lot at the posted price,\" Sam says. \"Again.\""
+ },
+ {
+  "key": "port-folk:c-nurse.0",
+  "text": "\"Members are on the Guild's cover,\" Sam says. \"Renters pay at the desk first.\" She hands you a form on a board."
+ },
+ {
+  "key": "port-folk:c-nurse.1",
+  "text": "Sam is changing the sheets on the cots. \"Frostbite this week,\" she says. \"A suit heater went on the ice house's second shift. He'll keep the fingers.\""
+ },
+ {
+  "key": "port-folk:c-nurse.2",
+  "text": "\"Ilka's on nights again,\" Sam says, signing a chart. \"Fourth week. Nights pay a third more.\""
+ },
+ {
+  "key": "port-folk:parts.0",
+  "text": "Sam turns a pump housing over in both hands. \"Off a hauler they broke up last month,\" Sam says. \"Nobody'll rate it, but it's got years in it.\""
+ },
+ {
+  "key": "port-folk:parts.1",
+  "text": "\"Rated parts are at the outfitter,\" Sam says. \"Same part, three times the price, and a sticker.\" Sam goes back to the bench."
+ },
+ {
+  "key": "port-folk:parts.2",
+  "text": "Sam is sorting valve seals into jars by size. \"The council wants the stall fee in advance from next quarter,\" Sam says. \"So the seals are up.\""
+ },
+ {
   "key": "port-offers:plate.label",
   "text": "Buy a plate (120 cr)"
  },
@@ -4198,6 +4294,26 @@
  {
   "key": "port-offers:plate.result.2",
   "text": "Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in."
+ },
+ {
+  "key": "port-offers:bowl.label",
+  "text": "Buy a bowl (120 cr)"
+ },
+ {
+  "key": "port-offers:bowl.eaten",
+  "text": "You've eaten here today."
+ },
+ {
+  "key": "port-offers:bowl.result.0",
+  "text": "Mei Tan puts the bowl on the ledge of the stall with the chopsticks across it. \"Bowl comes back to me,\" she says. \"I'm not paying the deposit on another fifty.\""
+ },
+ {
+  "key": "port-offers:bowl.result.1",
+  "text": "Mei Tan gives you the mushroom, and a spoon of chilli oil you didn't ask for. A rigger off the yard's first shift eats standing next to you, out of the same pot."
+ },
+ {
+  "key": "port-offers:bowl.result.2",
+  "text": "Mei Tan fills the bowl to the rim. \"Last of the pot,\" she says. \"Second shift will want a new one.\" She puts the water on."
  },
  {
   "key": "port-offers:work.label",
