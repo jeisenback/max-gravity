@@ -29,14 +29,15 @@ function revisitSnap(st, planet) {
 }
 
 // What changed between two snapshots, in a fixed order (the war, the money, the lanes, a regular gone), at most three, as the lines say them. `name`
-// gives a regular's first name by id.
-function revisitFacts(before, now, name, say = revisitLines()) {
+// gives a regular's first name by id; `left`, a written regular's own words for going (regulars.js writtenLeft), or null.
+function revisitFacts(before, now, name, say = revisitLines(), left = () => null) {
   const out = [], fill = (k, v = {}) => out.push(fillLine(say[k], v));
   const warKey = w => (w ? w.join('|') : null);
   if (warKey(now.war) !== warKey(before.war)) { const w = now.war || before.war; fill(now.war ? 'war.on' : 'war.off', { a: w[0], b: w[1] }); }
   if (now.eco !== before.eco) fill(now.eco === 'boom' ? 'eco.boom' : now.eco === 'bust' ? 'eco.bust' : before.eco === 'boom' ? 'eco.settled' : 'eco.lifted');
   if (now.lanes !== before.lanes) fill(now.lanes ? 'lanes.bad' : 'lanes.quiet');
-  const gone = before.regs.filter(id => !now.regs.includes(id)).map(name).filter(Boolean);
+  const went = before.regs.filter(id => !now.regs.includes(id)), own = went.map(left).filter(Boolean), gone = went.filter(id => !left(id)).map(name).filter(Boolean);
+  out.push(...own);
   if (gone.length) fill('gone', { name: gone.join(' and ') });
   return out.slice(0, 3);
 }
@@ -45,7 +46,7 @@ function revisitFacts(before, now, name, say = revisitLines()) {
 function revisitLine(st, planet) {
   const was = (st.visited || {})[planet.name];
   if (!was || st.day - was.day < REVISIT_GAP) return null;
-  const say = revisitLines(), facts = revisitFacts(was.snap, revisitSnap(st, planet), id => st.people[id] && st.people[id].first, say);
+  const say = revisitLines(), facts = revisitFacts(was.snap, revisitSnap(st, planet), id => st.people[id] && st.people[id].first, say, id => writtenLeft(st.people[id]));
   const what = facts.length > 1 ? `${facts.slice(0, -1).join(', ')} and ${facts[facts.length - 1]}` : facts[0];
   return fillLine(say[facts.length ? 'frame' : 'quiet'], { days: st.day - was.day, what });
 }
