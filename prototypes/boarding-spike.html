@@ -1,0 +1,463 @@
+<title>Boarding Spike</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: the ship's cutaway is the page, sticky on the left; the hand's console runs down the right. One dark look, by choice: the burn view's cold frame. */
+:root {
+  --bg: #060a10; --panel: #0b121c; --raised: #111b29; --line: #1d2d41;
+  --fg: #d4e2f0; --dim: #7a8ea6; --accent: #7fb4ff; --hot: #ff6a4a; --warm: #ffd27f; --ok: #7bd59d;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
+.wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 430px); gap: 16px; max-width: 1440px; margin: 0 auto;
+  padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+.ship { position: sticky; top: 16px; align-self: start; display: grid; gap: 10px; min-width: 0; }
+canvas { display: block; width: 100%; max-width: min(100%, calc((100vh - 110px) / 1.2)); aspect-ratio: 1 / 1.2; margin: 0 auto; border: 1px solid var(--line); border-radius: 4px; background: #050a11; cursor: pointer; }
+.legend { font: 12px/1.5 var(--mono); color: var(--dim); display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; }
+.legend b { font-weight: 500; }
+.side { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 12px; display: grid; gap: 10px; min-width: 0; }
+.card h2 { margin: 0; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+h1 { margin: 0; font: 600 15px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.sub, .note { margin: 0; color: var(--dim); font-size: 13px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lab { font: 11px var(--mono); color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; min-width: 64px; }
+button { font: 500 12px var(--mono); background: var(--raised); border: 1px solid var(--line); color: var(--fg); padding: 6px 10px; border-radius: 3px; cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: 0.4; cursor: default; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { position: relative; padding-left: 24px; background: transparent; color: var(--dim); text-align: left; }
+.seg button::before { content: ""; position: absolute; left: 8px; top: 50%; width: 9px; height: 9px; margin-top: -5px; border: 1px solid var(--dim); border-radius: 50%; }
+.seg button[aria-pressed="true"] { color: var(--fg); background: var(--raised); border-color: var(--accent); }
+.seg button[aria-pressed="true"]::before { background: var(--accent); border-color: var(--accent); }
+.seg.col { flex-direction: column; align-items: stretch; }
+.acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.go { font-size: 14px; padding: 10px; background: #16304f; border-color: var(--accent); width: 100%; letter-spacing: 0.06em; }
+.read { font: 13px/1.5 var(--mono); margin: 0; }
+.bad { color: var(--hot); } .good { color: var(--ok); } .warm { color: var(--warm); }
+.summary { margin: 0; padding: 8px 10px; background: var(--raised); border-left: 2px solid var(--accent); font: 13px/1.55 var(--mono); }
+.summary b { color: var(--accent); font-weight: 600; }
+details > summary { cursor: pointer; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+details[open] > summary { margin-bottom: 10px; }
+details > div { display: grid; gap: 10px; }
+input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
+.roster { display: grid; gap: 4px; font: 12px var(--mono); }
+.roster div { display: grid; grid-template-columns: 70px 90px minmax(0, 1fr); gap: 8px; }
+.strip { display: grid; gap: 6px; max-height: 280px; overflow-y: auto; font: 12px/1.45 var(--mono); }
+.strip div { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; }
+.strip time { color: var(--dim); }
+.strip .ev { color: var(--dim); }
+.p-captain { color: #eef3f9; font-weight: 600; } .p-you { color: var(--warm); font-weight: 600; } .p-them { color: var(--hot); } .p-crew { color: var(--accent); }
+.over { border-color: var(--accent); } .over p { margin: 0; font: 500 14px var(--mono); }
+ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
+kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
+</style>
+
+<div class="wrap">
+  <section class="ship">
+    <canvas id="cv" aria-label="The Ice Hauler in section: seven decks around the well, with both sides' people and what each will do this turn"></canvas>
+    <div class="legend">
+      <span><b style="color:#ffd27f">Y</b> you</span><span><b style="color:#cfe3ff">circles</b> the crew</span><span><b style="color:#ff6a4a">diamonds</b> boarders</span>
+      <span>hollow: wounded</span><span>bars by a spot: its cover</span><span>dashed arrows: moves this turn</span><span>lines: shots this turn, with odds</span>
+    </div>
+  </section>
+  <aside class="side" id="side"></aside>
+</div>
+
+<script>
+'use strict';
+// Throwaway spike: is a boarding fought spot by spot through the tower's real rooms easier to read and better to play than the section strip?
+const DEG = Math.PI / 180, TAU = Math.PI * 2;
+const K = { TURNS: 12, WAVE_TURN: 1, PARTY: 6, FIRST: 3, BREAK: 2, SUIT: 0.5, CAP: 3, CHARGES: 2, CREW_TRUST: 0.7 };
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const pct = x => Math.round(x * 100);
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// ---------- the ship: the Ice Hauler's decks (js/layouts.js), nose up, the well between the rooms ----------
+const DECKS = [
+  { name: 'Flight deck', rooms: [{ name: 'Bridge', x0: 0, x1: 1 }] },
+  { name: 'Mess deck', rooms: [{ name: 'Galley', x0: 0, x1: 0.48 }, { name: 'Head and shower', x0: 0.52, x1: 1 }] },
+  { name: 'Crew deck', rooms: [{ name: 'Berths', x0: 0, x1: 1 }] },
+  { name: 'Gun deck', rooms: [{ name: 'Gunnery', x0: 0, x1: 0.48 }, { name: 'Workshop', x0: 0.52, x1: 1 }] },
+  { name: 'Lock deck', rooms: [{ name: 'Airlock', x0: 0, x1: 0.48 }, { name: 'Medbay', x0: 0.52, x1: 1 }] },
+  { name: 'Plant deck', rooms: [{ name: 'Life support', x0: 0, x1: 1 }] },
+  { name: 'Drive deck', rooms: [{ name: 'Engine', x0: 0, x1: 0.48 }, { name: 'Hold', x0: 0.52, x1: 1 }] },
+];
+// Spots: where a person can stand and what they stand behind. Cover 0 to 2, from what is really there.
+const SPOTS = [
+  ['helm', 0, 0.14, 1, 'the helm', 'console'], ['nav', 0, 0.86, 1, 'the nav station', 'console'],
+  ['table', 1, 0.16, 2, 'the galley table', 'table'], ['stove', 1, 0.36, 1, 'the stove', 'worktop'], ['headdoor', 1, 0.64, 1, 'the head door', 'door'], ['shower', 1, 0.86, 1, 'the shower', 'stall'],
+  ['bunksP', 2, 0.13, 2, 'the port bunks', 'bunks'], ['bunksM', 2, 0.33, 1, 'the middle bunks', 'bunks'], ['lockers', 2, 0.67, 1, 'the lockers', 'lockers'], ['bunksS', 2, 0.87, 2, 'the starboard bunks', 'bunks'],
+  ['gunseat', 3, 0.16, 1, 'the gun seat', 'seat'], ['magazine', 3, 0.37, 2, 'the magazine', 'racks'], ['bench', 3, 0.64, 2, 'the workbench', 'bench'], ['toolwall', 3, 0.86, 1, 'the tool wall', 'rack'],
+  ['outer', 4, 0.1, 0, 'the outer door', ''], ['inner', 4, 0.34, 1, 'the inner door', 'door frame'], ['medbed', 4, 0.66, 1, 'the medbay bed', 'bed'], ['cabinet', 4, 0.88, 1, 'the drug cabinet', 'cabinet'],
+  ['scrub', 5, 0.2, 2, 'the scrubbers', 'scrubbers'], ['tanks', 5, 0.8, 2, 'the water tanks', 'tanks'],
+  ['reactor', 6, 0.24, 2, 'the reactor shield', 'shield'], ['crates', 6, 0.76, 2, 'the crates', 'crates'],
+].map(([id, d, x, cover, name, what]) => ({ id, d, x, cover, name, what }));
+for (let d = 0; d < 7; d++) SPOTS.push({ id: 'w' + d, d, x: 0.5, cover: 0, name: `the well at the ${DECKS[d].name.toLowerCase()}`, what: '', well: true });
+const SPOT = Object.fromEntries(SPOTS.map(p => [p.id, p]));
+const ADJ = Object.fromEntries(SPOTS.map(p => [p.id, []]));
+const link = (a, b) => { ADJ[a].push(b); ADJ[b].push(a); };
+for (let d = 0; d < 7; d++) {
+  const row = SPOTS.filter(p => p.d === d && !p.well);
+  const left = row.filter(p => p.x < 0.5).sort((a, b) => b.x - a.x), right = row.filter(p => p.x > 0.5).sort((a, b) => a.x - b.x);
+  for (const side of [left, right]) side.forEach((p, i) => link(p.id, i ? side[i - 1].id : 'w' + d));
+  if (d < 6) link('w' + d, 'w' + (d + 1));
+}
+const hatchOf = (a, b) => SPOT[a].well && SPOT[b].well ? 'h' + Math.min(SPOT[a].d, SPOT[b].d) : null;   // the hatch in the well between two decks
+const HATCH_NAME = d => `the hatch between the ${DECKS[d].name.toLowerCase()} and the ${DECKS[d + 1].name.toLowerCase()}`;
+const BRIDGE = ['helm', 'nav', 'w0'];
+function bfs(from, goals, s, passHatches = true) {   // the next step from `from` toward the nearest goal, and how far
+  const goal = new Set(goals), prev = { [from]: null }, q = [from];
+  while (q.length) { const c = q.shift(); if (goal.has(c)) { let n = c, d = 0; while (prev[n] && prev[n] !== from) { n = prev[n]; d++; } return { next: c === from ? null : n, dist: c === from ? 0 : d + 1 }; }
+    for (const n of ADJ[c]) if (!(n in prev)) { const h = hatchOf(c, n); if (!passHatches && h && s.hatches[h]) continue; prev[n] = c; q.push(n); } }
+  return { next: null, dist: 99 };
+}
+// A line of fire: along a deck, or up or down the well one deck through an open hatch.
+function los(s, a, b) { const A = SPOT[a], B = SPOT[b]; if (A.d === B.d) return true; return A.well && B.well && Math.abs(A.d - B.d) === 1 && !s.hatches[hatchOf(a, b)]; }
+
+// ---------- people ----------
+const UI = { trust: 0.5, nerve: 0.5, level: 2, seed: 5, setupOpen: false, click: 'move' };
+const CREW = [
+  { id: 'you', name: 'You', role: 'hand', spot: 'gunseat' },
+  { id: 'cato', name: 'Cato', role: 'bosun', skill: 3, spot: 'bunksM' },
+  { id: 'tomas', name: 'Tomas', role: 'engineer', skill: 2, spot: 'bench', hatch: true },
+  { id: 'ines', name: 'Ines', role: 'pilot', skill: 2, spot: 'nav', hatch: true },
+  { id: 'hester', name: 'Hester', role: 'captain', skill: 3, spot: 'helm' },
+];
+const skillOf = f => f.id === 'you' ? UI.level : f.side === 'them' ? 2 : f.skill;
+let S;
+function newGame(seed) {
+  const s = { seed, r: mulberry(seed), turn: 0, over: null, hatches: {}, extraCover: {}, lastCharge: -9, charges: K.CHARGES, pending: K.PARTY - K.FIRST, log: [], fx: [],
+    figs: [...CREW.map(c => ({ ...c, side: 'us', hp: 2 })), ...Array.from({ length: K.FIRST }, (_, i) => ({ id: 'm' + (i + 1), name: 'Marine ' + (i + 1), side: 'them', hp: 2, spot: 'outer' }))],
+    order: { intent: 'hold' }, plan: null, theirs: null, charge: null, used: {} };
+  startTurn(s, true);
+  return s;
+}
+const fig = (s, id) => s.figs.find(f => f.id === id);
+const alive = (s, side) => s.figs.filter(f => f.hp > 0 && (!side || f.side === side));
+const at = (s, spot, side) => alive(s, side).filter(f => f.spot === spot);
+const coverOf = (s, id) => Math.min(2, SPOT[id].cover + (s.extraCover[id] || 0));
+const sideAt = (s, spot) => { const f = alive(s).find(x => x.spot === spot); return f ? f.side : null; };
+function log(s, who, text, kind = 'call') { s.log.unshift({ t: `T${s.turn + 1}`, who, text, kind }); if (s.log.length > 80) s.log.pop(); }
+
+// ---------- odds ----------
+// A shot: the shooter's skill, the target's cover, moving, range on the deck or up the well, aiming, and being hurt.
+function hitP(s, a, fromSpot, b, toSpot, moved, aimed) {
+  const A = SPOT[fromSpot], B = SPOT[toSpot];
+  const p = (a.side === 'us' ? 0.38 + 0.06 * skillOf(a) : 0.5) - 0.15 * coverOf(s, toSpot) - (moved ? 0.12 : 0) - (A.d !== B.d ? 0.05 : Math.abs(A.x - B.x) > 0.45 ? 0.1 : 0) + (aimed ? 0.2 : 0) - (a.hp === 1 ? 0.08 : 0);
+  return clamp(p, 0.05, 0.92) * (b.id === 'you' ? K.SUIT : 1);   // the hand's suit stops half of what reaches it
+}
+const orderOdds = c => clamp(0.5 + 0.08 * c.skill + 0.15 * UI.trust, 0.05, 0.95);
+const sealOdds = c => clamp(0.45 + 0.1 * c.skill, 0.05, 0.95);
+const INTENT = {
+  hold: { text: 'Hold the well at the berths and the gun deck.', goals: { cato: 'bunksM', tomas: 'bench', ines: 'nav', hester: 'helm' } },
+  push: { text: 'Push them back to the lock.', goals: { cato: 'inner', tomas: 'medbed', ines: 'nav', hester: 'helm' } },
+  fall: { text: 'Fall back to the mess deck. Hold the bridge.', goals: { cato: 'table', tomas: 'stove', ines: 'nav', hester: 'helm' } },
+};
+const strength = (s, side) => alive(s, side).reduce((n, f) => n + (f.hp === 2 ? 1 : 0.6), 0) + (side === 'them' ? s.pending : 0);
+function captainPick(s) {
+  const ours = strength(s, 'us'), theirs = strength(s, 'them'), high = alive(s, 'them').some(f => SPOT[f.spot].d <= 2);
+  if (high && ours < theirs && UI.nerve < 0.6) return 'fall';
+  if (s.pending === 0 && (theirs <= 2 || ours >= theirs + 2 - UI.nerve)) return 'push';
+  return 'hold';
+}
+function evidence(s, intent) { const ours = strength(s, 'us'), theirs = strength(s, 'them'); return { push: ours > theirs + 1 ? 0.25 : -0.2, fall: ours < theirs ? 0.25 : -0.25, hold: 0.1 }[intent]; }
+const nerveFit = intent => ({ push: (UI.nerve - 0.5) * 0.4, fall: (0.5 - UI.nerve) * 0.4, hold: 0 }[intent]);
+const takeOdds = (s, intent) => clamp(0.2 + 0.35 * UI.trust + 0.07 * UI.level + evidence(s, intent) + nerveFit(intent), 0.05, 0.95);
+
+// ---------- their plan: made at the start of the turn, and shown ----------
+function theirPlan(s) {
+  const plan = {}, into = {}; s.charge = null;
+  const them = alive(s, 'them').sort((a, b) => bfs(a.spot, BRIDGE, s).dist - bfs(b.spot, BRIDGE, s).dist);
+  them.forEach((m, i) => {
+    const step = bfs(m.spot, BRIDGE, s).next, hatch = step && hatchOf(m.spot, step);
+    const ours = alive(s, 'us').filter(o => los(s, m.spot, o.spot)).map(o => ({ o, p: hitP(s, m, m.spot, o, o.spot, false, false) })).sort((a, b) => b.p - a.p);
+    const blocked = step && sideAt(s, step) === 'us', full = step && at(s, step, 'them').length + (into[step] || 0) >= K.CAP;
+    if (hatch && s.hatches[hatch]) { plan[m.id] = { kind: 'cut', hatch, to: step }; return; }
+    if (blocked && !s.charge && s.charges > 0 && s.turn - s.lastCharge >= 2) { s.charge = { on: step, setter: m.id }; plan[m.id] = { kind: 'charge', on: step }; return; }
+    const advance = step && !blocked && !full && (i === 0 || !ours.length || ours[0].p < 0.3 || s.r() < 0.65);
+    if (advance) { plan[m.id] = { kind: 'move', to: step }; into[step] = (into[step] || 0) + 1; return; }
+    if (ours.length) { plan[m.id] = { kind: 'shoot', target: ours[0].o.id }; return; }
+    plan[m.id] = { kind: 'hold' };
+  });
+  return plan;
+}
+
+// ---------- our crew: the captain's intent, unless the hand's order says otherwise ----------
+function crewPlan(s) {
+  const plan = {}, p = s.plan, goals = INTENT[s.order.intent].goals;
+  for (const c of alive(s, 'us')) {
+    if (c.id === 'you') continue;
+    let move = null, aimed = false, act = 'shoot';
+    const charged = s.charge && s.charge.on === c.spot;
+    if (charged) { const back = bfs(c.spot, BRIDGE, s, false).next; if (back && sideAt(s, back) !== 'them') move = back; }   // they see the charge and get out of it
+    else { const g = goals[c.id]; if (g && g !== c.spot) { const st = bfs(c.spot, [g], s, false).next; if (st && sideAt(s, st) !== 'them' && at(s, st, 'us').length < K.CAP) move = st; } }
+    if (p.orderWho === c.id) {
+      if (p.orderWhat === 'move' && p.orderSpot) move = p.orderSpot;
+      if (p.orderWhat === 'hold') { move = null; aimed = true; }
+      if (p.orderWhat === 'cover') { move = null; act = 'cover'; }
+      if (p.orderWhat === 'seal') { move = null; act = 'seal'; }
+    }
+    const from = move || c.spot;
+    const t = act === 'shoot' ? alive(s, 'them').filter(m => los(s, from, m.spot)).map(m => ({ m, p: hitP(s, c, from, m, m.spot, !!move, aimed) })).sort((a, b) => b.p - a.p)[0] : null;
+    plan[c.id] = { move, act, aimed, target: t ? t.m.id : null, p: t ? t.p : 0 };
+  }
+  return plan;
+}
+const handFrom = s => s.plan.move || fig(s, 'you').spot;
+function handTargets(s) {
+  const you = fig(s, 'you'), from = handFrom(s), moved = !!s.plan.move, aimed = s.plan.act === 'aim';
+  return alive(s, 'them').filter(m => los(s, from, m.spot)).map(m => ({ m, p: hitP(s, you, from, m, m.spot, moved, aimed) })).sort((a, b) => b.p - a.p);
+}
+
+// ---------- the turn ----------
+function startTurn(s, first = false) {
+  s.plan = { move: null, act: 'shoot', target: null, orderWho: null, orderWhat: 'hold', orderSpot: null, orderHatch: null };
+  s.used = {};
+  if (!s.order.by || s.order.until < s.turn) { const i = captainPick(s); if (first || s.order.intent !== i) log(s, 'captain', INTENT[i].text); s.order = { intent: i }; }
+  s.theirs = theirPlan(s);
+  const t = handTargets(s); s.plan.target = t[0] ? t[0].m.id : null;
+}
+function commit() {
+  const s = S; if (s.over) return;
+  const p = s.plan, you = fig(s, 'you'), lines = [], hitSet = new Set(), now = performance.now();
+  const crew = crewPlan(s);
+  // the order: carried out, or not heard over the fight
+  if (p.orderWho) { const c = fig(s, p.orderWho), odds = p.orderWhat === 'seal' ? sealOdds(c) : orderOdds(c);
+    if (p.orderWhat === 'seal' && !p.orderHatch) { /* no hatch named */ }
+    else if (s.r() < odds) { if (p.orderWhat === 'seal') { s.hatches[p.orderHatch] = true; lines.push(`${c.name} seals ${HATCH_NAME(+p.orderHatch.slice(1))}.`); } else lines.push(`${c.name} does it.`); }
+    else { lines.push(`${c.name} doesn't hear you over the fight.`); const keep = crewPlan({ ...s, plan: { ...p, orderWho: null } })[c.id]; crew[c.id] = keep; } }
+  // our moves: yours, then the crew's
+  if (p.act === 'pull') { const back = bfs(you.spot, BRIDGE, s, false).next; if (back && sideAt(s, back) !== 'them') { const here = you.spot; at(s, here, 'us').forEach(f => { f.spot = back; f.moved = true; }); lines.push(`You pull back to ${SPOT[back].name}, with everyone there.`); } }
+  else if (p.move && sideAt(s, p.move) !== 'them') { you.spot = p.move; you.moved = true; }
+  for (const [id, c] of Object.entries(crew)) { const f = fig(s, id); if (c.move && !f.moved && sideAt(s, c.move) !== 'them' && at(s, c.move, 'us').length < K.CAP) { f.spot = c.move; f.moved = true; } }
+  // their moves: where one of ours now stands, they stop there
+  for (const [id, t] of Object.entries(s.theirs)) { const m = fig(s, id); if (!m || m.hp <= 0 || t.kind !== 'move') continue;
+    if (sideAt(s, t.to) === 'us') { t.kind = 'stopped'; continue; } if (at(s, t.to, 'them').length < K.CAP) { m.spot = t.to; m.moved = true; } }
+  // the shots, all at once, from where everyone now stands
+  const shots = [];
+  if (['shoot', 'aim'].includes(p.act) && p.target) shots.push({ a: you, b: fig(s, p.target), aimed: p.act === 'aim' });
+  for (const [id, c] of Object.entries(crew)) if (c.act === 'shoot' && c.target) shots.push({ a: fig(s, id), b: fig(s, c.target), aimed: c.aimed });
+  for (const [id, t] of Object.entries(s.theirs)) if (t.kind === 'shoot') shots.push({ a: fig(s, id), b: fig(s, t.target), aimed: false });
+  const results = shots.filter(x => x.a.hp > 0 && x.b.hp > 0).map(x => {
+    if (!los(s, x.a.spot, x.b.spot)) return { ...x, miss: 'no line' };
+    const odds = hitP(s, x.a, x.a.spot, x.b, x.b.spot, !!x.a.moved, x.aimed);
+    return { ...x, hit: s.r() < odds, odds };
+  });
+  for (const r of results) {
+    s.fx.push({ kind: 'shot', from: r.a.spot, to: r.b.spot, side: r.a.side, hit: !!r.hit, t0: now });
+    if (!r.hit) continue;
+    r.b.hp = r.aimed ? 0 : r.b.hp - 1; hitSet.add(r.b.id);
+    lines.push(`${r.a.side === 'us' ? (r.a.id === 'you' ? 'You' : r.a.name) : 'A marine'} ${r.b.hp > 0 ? 'wounds' : 'downs'} ${r.b.side === 'us' ? (r.b.id === 'you' ? 'you' : r.b.name) : 'a marine'} at ${SPOT[r.b.spot].name}.`);
+  }
+  if (p.act === 'cover') { s.extraCover[you.spot] = (s.extraCover[you.spot] || 0) + 1; lines.push(`You make cover at ${SPOT[you.spot].name}.`); }
+  for (const [id, c] of Object.entries(crew)) if (c.act === 'cover') { const f = fig(s, id); s.extraCover[f.spot] = (s.extraCover[f.spot] || 0) + 1; lines.push(`${f.name} makes cover at ${SPOT[f.spot].name}.`); }
+  // the charge: it blows unless its setter was hit this turn
+  if (s.charge) { const setter = fig(s, s.charge.setter);
+    if (setter.hp <= 0 || hitSet.has(setter.id)) lines.push(`The charge on ${SPOT[s.charge.on].name} never blows: its setter was hit.`);
+    else { const victims = at(s, s.charge.on, 'us').sort((a, b) => a.hp - b.hp); s.fx.push({ kind: 'blast', at: s.charge.on, t0: now });
+      if (victims.length) { victims[0].hp = 0; lines.push(`The charge blows at ${SPOT[s.charge.on].name}. ${victims[0].id === 'you' ? 'You are' : victims[0].name + ' is'} down.`); } else lines.push(`The charge blows at ${SPOT[s.charge.on].name} on nobody.`); }
+    s.charges--; s.lastCharge = s.turn; }
+  for (const [id, t] of Object.entries(s.theirs)) if (t.kind === 'cut') { const m = fig(s, id); if (m.hp > 0 && !hitSet.has(id)) { delete s.hatches[t.hatch]; lines.push(`They cut through ${HATCH_NAME(+t.hatch.slice(1))}.`); } else lines.push('The cutter was hit; the hatch holds.'); }
+  // the second wave lands at the lock
+  if (s.turn === K.WAVE_TURN && s.pending) { for (let i = 0; i < s.pending; i++) s.figs.push({ id: 'm' + (K.FIRST + i + 1), name: 'Marine ' + (K.FIRST + i + 1), side: 'them', hp: 2, spot: at(s, 'outer', 'them').length < K.CAP ? 'outer' : 'inner' }); lines.push(`${s.pending} more marines come through the outer door.`); s.pending = 0; }
+  s.figs.forEach(f => { f.moved = false; });
+  lines.forEach(l => log(s, 'ship', l, 'event'));
+  // the end
+  const them = alive(s, 'them').length + s.pending, onBridge = alive(s, 'them').some(m => SPOT[m.spot].d === 0) && !alive(s, 'us').some(o => SPOT[o.spot].d === 0);
+  if (you.hp <= 0) s.over = { win: false, text: 'You are down. The fight goes on without you.' };
+  else if (them <= K.BREAK) s.over = { win: true, text: them ? 'The last of them breaks and runs for the lock.' : 'The last of them is down.' };
+  else if (onBridge) s.over = { win: false, text: 'They hold the bridge. The ship is theirs.' };
+  else if (!alive(s, 'us').length) s.over = { win: false, text: 'None of ours are left standing.' };
+  else if (s.turn + 1 >= K.TURNS) s.over = { win: true, text: 'They pull back to their ship. The deck is ours.' };
+  if (s.over) { log(s, 'ship', s.over.text, 'event'); render(); return; }
+  s.turn++; startTurn(s); render();
+}
+function suggest(intent) {
+  const s = S; if (s.used.suggest || s.over) return; s.used.suggest = true;
+  log(s, 'you', { push: 'Captain, we can push them back to the lock.', hold: 'Captain, hold the well. Let them come to us.', fall: 'Captain, fall back to the mess deck.' }[intent]);
+  if (s.r() < takeOdds(s, intent)) { s.order = { intent, by: 'you', until: s.turn + 1 }; log(s, 'captain', `Good call. ${INTENT[intent].text}`); }
+  else log(s, 'captain', evidence(s, intent) < 0 ? "I don't see it. We keep to the order." : 'Negative. We keep to the order.');
+  const t = handTargets(s); if (!t.some(x => x.m.id === s.plan.target)) s.plan.target = t[0] ? t[0].m.id : null;
+  render();
+}
+
+// ---------- the cutaway ----------
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+let G = {};
+function geo(W, H) { const x0 = 34, x1 = W - 34, top = 30, dh = (H - top - 26) / 7.45, tank = dh * 0.45;
+  return { W, H, x0, x1, top, dh, tank, deckY: d => top + d * dh + (d > 5 ? tank : 0), X: f => x0 + f * (x1 - x0) }; }
+const spotXY = id => { const p = SPOT[id]; return [G.X(p.x), G.deckY(p.d) + G.dh * 0.68]; };
+function figXY(s, f) { const here = alive(s, f.side).filter(x => x.spot === f.spot), k = here.indexOf(f), [x, y] = spotXY(f.spot); return [x + (k - (here.length - 1) / 2) * 17, y - 12]; }
+function arrow(x1, y1, x2, y2, color, dash) { ctx.strokeStyle = color; ctx.setLineDash(dash || []); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.setLineDash([]);
+  const a = Math.atan2(y2 - y1, x2 - x1); ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - 7 * Math.cos(a - 0.4), y2 - 7 * Math.sin(a - 0.4)); ctx.moveTo(x2, y2); ctx.lineTo(x2 - 7 * Math.cos(a + 0.4), y2 - 7 * Math.sin(a + 0.4)); ctx.stroke(); }
+function draw() {
+  const W = cv.clientWidth, H = Math.round(W * 1.2), dpr = window.devicePixelRatio || 1;
+  if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); G = geo(W, H);
+  const s = S, now = performance.now(), wx0 = G.X(0.48), wx1 = G.X(0.52);
+  ctx.fillStyle = '#050a11'; ctx.fillRect(0, 0, W, H);
+  ctx.font = '11px "IBM Plex Mono", monospace';
+  // decks and rooms
+  DECKS.forEach((d, i) => { const y = G.deckY(i);
+    d.rooms.forEach(r => { const rx0 = G.X(r.x0), rx1 = G.X(r.x1); ctx.fillStyle = '#0c1624'; ctx.fillRect(rx0, y, rx1 - rx0, G.dh - 6); ctx.strokeStyle = '#23405f'; ctx.strokeRect(rx0 + 0.5, y + 0.5, rx1 - rx0 - 1, G.dh - 7);
+      ctx.fillStyle = '#5d7896'; ctx.fillText(r.name.toUpperCase(), rx0 + 6, y + 14); });
+    ctx.fillStyle = '#3e5674'; ctx.fillText(String(i + 1), 12, y + G.dh / 2 + 4);
+    ctx.fillStyle = '#081019'; ctx.fillRect(G.x0, y + G.dh - 6, G.x1 - G.x0, 6); });
+  ctx.fillStyle = '#0a1a2c'; ctx.fillRect(G.x0, G.deckY(5) + G.dh, G.x1 - G.x0, G.tank - 6); ctx.fillStyle = '#3e5674'; ctx.fillText('WATER TANK', G.x0 + 6, G.deckY(5) + G.dh + G.tank / 2);
+  // the well and its hatches
+  ctx.fillStyle = '#101f33'; ctx.fillRect(wx0, G.top, wx1 - wx0, G.deckY(6) + G.dh - 6 - G.top);
+  ctx.strokeStyle = '#2b4a6c'; for (let y = G.top + 6; y < G.deckY(6) + G.dh - 6; y += 9) { ctx.beginPath(); ctx.moveTo(wx0 + 3, y); ctx.lineTo(wx1 - 3, y); ctx.stroke(); }
+  for (let d = 0; d < 6; d++) { const y = G.deckY(d + 1) - 3 - (d === 5 ? G.tank : 0), sealed = s.hatches['h' + d];
+    ctx.fillStyle = sealed ? '#ffd27f' : '#2b4a6c'; ctx.fillRect(wx0 - 6, y - 2, wx1 - wx0 + 12, sealed ? 5 : 2);
+    if (sealed) { ctx.fillStyle = '#ffd27f'; ctx.fillText('SEALED', wx1 + 10, y + 4); }
+    else if (s.plan && s.plan.orderWhat === 'seal' && s.plan.orderHatch === 'h' + d) { ctx.strokeStyle = '#7fb4ff'; ctx.setLineDash([3, 2]); ctx.strokeRect(wx0 - 8, y - 5, wx1 - wx0 + 16, 9); ctx.setLineDash([]); ctx.fillStyle = '#7fb4ff'; ctx.fillText('TO SEAL', wx1 + 10, y + 4); } }
+  // spots, with their cover
+  for (const p of SPOTS) { const [x, y] = spotXY(p.id), cv2 = coverOf(s, p.id);
+    ctx.strokeStyle = '#3c5c80'; ctx.beginPath(); ctx.ellipse(x, y + 6, 11, 3, 0, 0, TAU); ctx.stroke();
+    ctx.fillStyle = '#4f6f92'; for (let k = 0; k < cv2; k++) ctx.fillRect(x - 15 - k * 4, y - 6, 2, 12);
+    if (!p.well) { ctx.fillStyle = '#4a6280'; ctx.textAlign = 'center'; ctx.fillText(p.what, x, y + 20); ctx.textAlign = 'left'; } }
+  const plan = s.plan, you = fig(s, 'you'), crew = s.over ? {} : crewPlan(s);
+  // where you can step, and the order's choices
+  if (!s.over) {
+    for (const n of [you.spot, ...ADJ[you.spot]]) if (sideAt(s, n) !== 'them' && !(hatchOf(you.spot, n) && s.hatches[hatchOf(you.spot, n)])) { const [x, y] = spotXY(n); ctx.strokeStyle = UI.click === 'move' ? 'rgba(255,210,127,0.55)' : 'rgba(255,210,127,0.18)'; ctx.beginPath(); ctx.arc(x, y - 4, 15, 0, TAU); ctx.stroke(); }
+    if (plan.orderWho && plan.orderWhat === 'move') { const c = fig(s, plan.orderWho); for (const n of ADJ[c.spot]) if (sideAt(s, n) !== 'them') { const [x, y] = spotXY(n); ctx.strokeStyle = UI.click === 'order' ? 'rgba(127,180,255,0.7)' : 'rgba(127,180,255,0.2)'; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.arc(x, y - 4, 18, 0, TAU); ctx.stroke(); ctx.setLineDash([]); } }
+  }
+  // what everyone will do this turn
+  if (!s.over) {
+    ctx.lineWidth = 1.3;
+    for (const [id, t] of Object.entries(s.theirs)) { const m = fig(s, id); if (!m || m.hp <= 0) continue; const [mx, my] = figXY(s, m);
+      if (t.kind === 'move') { const [x, y] = spotXY(t.to); arrow(mx, my, x, y - 10, 'rgba(255,106,74,0.85)', [4, 3]); }
+      if (t.kind === 'shoot') { const o = fig(s, t.target), [x, y] = figXY(s, o); ctx.strokeStyle = 'rgba(255,106,74,0.45)'; ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(x, y); ctx.stroke(); ctx.fillStyle = '#ff8a6a'; ctx.fillText(`${pct(hitP(s, m, m.spot, o, o.spot, false, false))}%`, (mx + x) / 2 + 4, (my + y) / 2 - 4); }
+      if (t.kind === 'cut') { const [x, y] = spotXY(t.to); ctx.fillStyle = '#ff6a4a'; ctx.fillText('CUTTING', wx1 + 10, (my + y) / 2); } }
+    if (s.charge) { const [x, y] = spotXY(s.charge.on), st = fig(s, s.charge.setter), [sx, sy] = figXY(s, st);
+      ctx.strokeStyle = '#ff9a3a'; ctx.lineWidth = 2; ctx.strokeRect(x - 26, y - 30, 52, 42); ctx.fillStyle = '#ff9a3a'; ctx.font = '600 11px "IBM Plex Mono", monospace'; ctx.fillText('CHARGE', x - 22, y - 34);
+      ctx.beginPath(); ctx.arc(sx, sy, 12, 0, TAU); ctx.stroke(); ctx.fillText('SETTER', sx + 14, sy - 10); ctx.font = '11px "IBM Plex Mono", monospace'; ctx.lineWidth = 1.3; }
+    for (const [id, c] of Object.entries(crew)) { const f = fig(s, id), [fx, fy] = figXY(s, f);
+      if (c.move) { const [x, y] = spotXY(c.move); arrow(fx, fy, x, y - 10, 'rgba(127,180,255,0.8)', [4, 3]); }
+      if (c.target) { const m = fig(s, c.target), [x, y] = figXY(s, m), [ox, oy] = c.move ? [spotXY(c.move)[0], spotXY(c.move)[1] - 12] : [fx, fy]; ctx.strokeStyle = 'rgba(127,180,255,0.35)'; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(x, y); ctx.stroke(); } }
+    const [yx, yy] = figXY(s, you);
+    if (plan.move) { const [x, y] = spotXY(plan.move); arrow(yx, yy, x, y - 10, '#ffd27f'); }
+    if (['shoot', 'aim'].includes(plan.act) && plan.target) { const m = fig(s, plan.target), [x, y] = figXY(s, m), [ox, oy] = plan.move ? [spotXY(plan.move)[0], spotXY(plan.move)[1] - 12] : [yx, yy];
+      ctx.strokeStyle = '#ffd27f'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(x, y); ctx.stroke(); ctx.lineWidth = 1.3;
+      const tp = handTargets(s).find(t => t.m.id === plan.target); ctx.fillStyle = '#ffd27f'; ctx.font = '600 12px "IBM Plex Mono", monospace'; ctx.fillText(tp ? `${pct(tp.p)}%` : 'NO LINE', (ox + x) / 2 + 6, (oy + y) / 2 + 14); ctx.font = '11px "IBM Plex Mono", monospace'; }
+    if (s.pending) { const [x, y] = spotXY('outer'); ctx.fillStyle = '#ff6a4a'; ctx.fillText(s.turn === K.WAVE_TURN ? `+${s.pending} LAND THIS TURN` : `+${s.pending} AT TURN ${K.WAVE_TURN + 1}`, x - 18, y - 40); }
+    ctx.lineWidth = 1;
+  }
+  // shots and blasts just resolved
+  s.fx = s.fx.filter(f => now - f.t0 < 900);
+  for (const f of s.fx) { const k = (now - f.t0) / 900;
+    if (f.kind === 'shot') { const [x1, y1] = spotXY(f.from), [x2, y2] = spotXY(f.to); ctx.strokeStyle = f.side === 'us' ? `rgba(255,226,160,${(1 - k) * (f.hit ? 1 : 0.4)})` : `rgba(255,120,90,${(1 - k) * (f.hit ? 1 : 0.4)})`; ctx.lineWidth = f.hit ? 2 : 1; ctx.beginPath(); ctx.moveTo(x1, y1 - 12); ctx.lineTo(x2, y2 - 12); ctx.stroke(); ctx.lineWidth = 1; }
+    if (f.kind === 'blast') { const [x, y] = spotXY(f.at); ctx.strokeStyle = `rgba(255,154,58,${1 - k})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x, y - 8, 8 + k * 30, 0, TAU); ctx.stroke(); ctx.lineWidth = 1; } }
+  // people
+  for (const f of s.figs) { if (f.hp > 0) continue; const [x, y] = spotXY(f.spot); ctx.strokeStyle = f.side === 'us' ? '#55708f' : '#7a3b30'; ctx.beginPath(); ctx.moveTo(x - 4 + (f.id.length % 3) * 5, y - 2); ctx.lineTo(x + 4 + (f.id.length % 3) * 5, y + 6); ctx.moveTo(x + 4 + (f.id.length % 3) * 5, y - 2); ctx.lineTo(x - 4 + (f.id.length % 3) * 5, y + 6); ctx.stroke(); }
+  ctx.textAlign = 'center';
+  for (const f of alive(s)) { const [x, y] = figXY(s, f), col = f.side === 'them' ? '#ff6a4a' : f.id === 'you' ? '#ffd27f' : '#cfe3ff';
+    ctx.fillStyle = col; ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath();
+    if (f.side === 'them') { ctx.moveTo(x, y - 8); ctx.lineTo(x + 7, y); ctx.lineTo(x, y + 8); ctx.lineTo(x - 7, y); ctx.closePath(); } else ctx.arc(x, y, 8, 0, TAU);
+    if (f.hp === 2) ctx.fill(); else { ctx.fillStyle = '#050a11'; ctx.fill(); ctx.stroke(); }
+    ctx.lineWidth = 1; ctx.fillStyle = f.hp === 2 ? '#06101c' : col; ctx.font = '600 10px "IBM Plex Mono", monospace';
+    ctx.fillText(f.side === 'them' ? '' : f.name[0], x, y + 3.5); ctx.font = '11px "IBM Plex Mono", monospace'; }
+  ctx.textAlign = 'left';
+  if (s.over) { ctx.fillStyle = 'rgba(5,10,17,0.8)'; ctx.fillRect(0, H / 2 - 28, W, 56); ctx.fillStyle = s.over.win ? '#7bd59d' : '#ff6a4a'; ctx.font = '600 15px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText(s.over.text.toUpperCase(), W / 2, H / 2 + 5); ctx.textAlign = 'left'; }
+  requestAnimationFrame(draw);
+}
+// Clicks on the ship: a red figure is your target; a ring is your move, or your order's spot; a hatch is your order's hatch.
+cv.addEventListener('click', e => {
+  const s = S; if (s.over) return; const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, p = s.plan, you = fig(s, 'you');
+  const near = (x, y, d) => Math.hypot(mx - x, my - y) < d;
+  const foe = alive(s, 'them').find(m => near(...figXY(s, m), 11));
+  if (foe) { p.target = foe.id; if (!['shoot', 'aim'].includes(p.act)) p.act = 'shoot'; return render(); }
+  if (p.orderWho && p.orderWhat === 'seal') { for (let d = 0; d < 6; d++) { const y = G.deckY(d + 1) - 3 - (d === 5 ? G.tank : 0); if (Math.abs(my - y) < 10 && mx > G.X(0.44) && mx < G.X(0.56)) { p.orderHatch = 'h' + d; return render(); } } }
+  const spot = SPOTS.find(q => near(spotXY(q.id)[0], spotXY(q.id)[1] - 4, 18)); if (!spot) return;
+  if (UI.click === 'order' && p.orderWho && p.orderWhat === 'move') { const c = fig(s, p.orderWho); if (ADJ[c.spot].includes(spot.id) && sideAt(s, spot.id) !== 'them') { p.orderSpot = spot.id; UI.click = 'move'; } return render(); }
+  if (spot.id === you.spot) p.move = null;
+  else if (ADJ[you.spot].includes(spot.id) && sideAt(s, spot.id) !== 'them' && !(hatchOf(you.spot, spot.id) && s.hatches[hatchOf(you.spot, spot.id)])) { p.move = spot.id; if (p.act === 'aim' || p.act === 'pull') p.act = 'shoot'; }
+  const t = handTargets(s); if (!t.some(x => x.m.id === p.target)) p.target = t[0] ? t[0].m.id : null;
+  render();
+});
+
+// ---------- the console ----------
+const side = document.getElementById('side');
+const seg = (act, opts, cur, cls = '') => `<div class="seg ${cls}">${opts.map(([v, l, dis]) => `<button data-act="${act}" data-v="${v}" aria-pressed="${String(v) === String(cur)}" ${dis ? 'disabled' : ''}>${l}</button>`).join('')}</div>`;
+const who = id => id === 'you' ? 'you' : fig(S, id).name;
+function theirWords(s) {
+  const n = { move: 0, shoot: [], cut: 0, stopped: 0 };
+  for (const [id, t] of Object.entries(s.theirs)) { if (fig(s, id).hp <= 0) continue; if (t.kind === 'move') n.move++; if (t.kind === 'shoot') n.shoot.push(who(t.target)); if (t.kind === 'cut') n.cut++; }
+  const p = [];
+  if (n.move) p.push(`${n.move} push${n.move > 1 ? '' : 'es'} toward the bridge`);
+  if (n.shoot.length) p.push(`${n.shoot.length} shoot${n.shoot.length > 1 ? '' : 's'} at ${[...new Set(n.shoot)].join(' and ')}`);
+  if (n.cut) p.push('one cuts at a sealed hatch (hit the cutter and it holds)');
+  if (s.charge) p.push(`<span class="warm">a charge on ${SPOT[s.charge.on].name}, set from ${SPOT[fig(s, s.charge.setter).spot].name}: hit the setter or get out of there</span>`);
+  if (s.pending && s.turn === K.WAVE_TURN) p.push(`${s.pending} more land at the lock at the end of the turn`);
+  return p.join('; ') || 'they hold';
+}
+function turnSummary(s) {
+  const p = s.plan, you = fig(s, 'you'), t = handTargets(s).find(x => x.m.id === p.target), moving = p.move ? `move to ${SPOT[p.move].name}` : `stay at ${SPOT[you.spot].name}`;
+  const act = p.act === 'pull' ? 'pull back toward the bridge with everyone at your spot' : p.act === 'cover' ? 'make cover there' : p.act === 'hold' ? 'hold fire' : t ? `${p.act === 'aim' ? 'take an aimed shot at' : 'shoot'} the marine at ${SPOT[t.m.spot].name} (${pct(t.p)}%${p.act === 'aim' ? ', a hit downs' : ''})` : 'have no one in line to shoot';
+  const ord = p.orderWho ? (p.orderWhat === 'move' ? (p.orderSpot ? `${who(p.orderWho)} moves to ${SPOT[p.orderSpot].name}` : `${who(p.orderWho)} moves (click a blue ring)`) : p.orderWhat === 'seal' ? (p.orderHatch ? `${who(p.orderWho)} seals ${HATCH_NAME(+p.orderHatch.slice(1))} (${pct(sealOdds(fig(s, p.orderWho)))}%)` : `${who(p.orderWho)} seals a hatch (click one in the well)`) : p.orderWhat === 'cover' ? `${who(p.orderWho)} makes cover` : `${who(p.orderWho)} holds and aims`) : '';
+  return `<p class="summary"><b>You</b> ${moving}, and ${act}.${ord ? `<br><b>Order</b> ${ord}${p.orderWhat !== 'seal' ? ` (${pct(orderOdds(fig(s, p.orderWho)))}% they hear you)` : ''}.` : ''}<br><b>They</b> ${theirWords(s)}.</p>`;
+}
+function render() {
+  const s = S, p = s.plan, you = fig(s, 'you'), t = s.over ? [] : handTargets(s), charged = s.charge && s.charge.on === you.spot, crewIds = alive(s, 'us').filter(f => f.id !== 'you');
+  const ordC = p.orderWho ? fig(s, p.orderWho) : null;
+  const strip = s.log.map(e => e.kind === 'event' ? `<div><time>${e.t}</time><span class="ev">${e.text}</span></div>` : `<div><time>${e.t}</time><span><span class="p-${e.who}">${e.who === 'captain' ? 'Hester' : 'You'}</span>: ${e.text}</span></div>`).join('');
+  const themUp = alive(s, 'them').length;
+  side.innerHTML = `
+  <div class="card"><h1>Boarding spike</h1><p class="sub">Throwaway. A corsair's marines come aboard the Ice Hauler at the lock deck: three now, three more after the first turn, with breaching charges. They want the bridge.</p>
+    <details id="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup: trust, captain, your level, seed</summary><div>
+      <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How far the crew trust you"><span class="read" id="trustv">${pct(UI.trust)}%</span></div>
+      <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="Hester's nerve"><span class="read" id="nervev">${UI.nerve < 0.35 ? 'cautious' : UI.nerve > 0.65 ? 'bold' : 'steady'}</span></div>
+      <div class="row"><span class="lab">Your level</span>${seg('level', [0, 1, 2, 3, 4, 5].map(n => [n, String(n)]), UI.level)}</div>
+      <div class="row"><span class="lab">Seed</span><span class="read">${UI.seed}</span><button data-act="restart">Restart</button><button data-act="newseed">New seed</button></div>
+    </div></details></div>
+  ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="newseed">New seed</button></div></div>` : ''}
+  <div class="card"><h2>Turn ${s.turn + 1} of ${K.TURNS}</h2>
+    <p class="read"><span class="p-captain">Hester:</span> ${INTENT[s.order.intent].text}${s.order.by ? ' <span class="note">On your suggestion.</span>' : ''}</p>
+    ${s.over ? '' : turnSummary(s)}
+    <div class="row"><span class="lab">Your move</span><span class="read">${p.move ? SPOT[p.move].name : 'stay'}</span><span class="note">click a yellow ring on the ship</span>${p.move ? '<button data-act="stay">Stay</button>' : ''}</div>
+    <div class="row"><span class="lab">Then</span>${seg('act', [['shoot', 'Shoot'], ['aim', 'Aimed shot', !!p.move], ['cover', 'Make cover'], ['pull', 'Pull back', !!p.move || !bfs(you.spot, BRIDGE, s, false).next], ['hold', 'Hold fire']], p.act)}</div>
+    ${['shoot', 'aim'].includes(p.act) ? `<div class="row"><span class="lab">Target</span>${t.length ? seg('target', t.map(x => [x.m.id, `${SPOT[x.m.spot].name}${x.m.hp === 1 ? ', wounded' : ''}: ${pct(x.p)}%`]), p.target, 'col') : '<span class="note">No one in line from there. Lines run along a deck, or one deck up or down the well.</span>'}</div>` : ''}
+    ${charged ? '<p class="read bad">You are standing on the charge. Hit its setter, or pull back.</p>' : ''}
+    <div class="row"><span class="lab">Order</span>${seg('who', [['', 'No order'], ...crewIds.map(c => [c.id, `${c.name}, ${c.role} ${c.skill}${c.hp === 1 ? ', wounded' : ''}`])], p.orderWho || '')}</div>
+    ${ordC ? `<div class="row"><span class="lab">To</span>${seg('what', [['hold', `Hold and aim ${pct(orderOdds(ordC))}%`], ['move', `Move ${pct(orderOdds(ordC))}%`], ['cover', `Make cover ${pct(orderOdds(ordC))}%`], ...(ordC.hatch ? [['seal', `Seal a hatch ${pct(sealOdds(ordC))}%`]] : [])], p.orderWhat)}</div>
+      <p class="note">${p.orderWhat === 'move' ? `Click a blue ring next to ${ordC.name}.` : p.orderWhat === 'seal' ? `${ordC.name} works it from their post. Click a hatch in the well. A sealed hatch stops movement and fire through the well until they cut it, which takes them a turn.` : 'The odds are whether they hear you. If not, they do what the captain asked.'}</p>` : ''}
+    <button class="go" data-act="go" ${s.over ? 'disabled' : ''}>End turn</button><p class="note">Or press <kbd>Space</kbd>.</p></div>
+  <div class="card"><h2>Suggest to Hester</h2><div class="acts">${['hold', 'push', 'fall'].filter(i => i !== s.order.intent).map(i => `<button data-act="suggest" data-v="${i}" ${s.used.suggest || s.over ? 'disabled' : ''}>${{ hold: 'Hold the well', push: 'Push to the lock', fall: 'Fall back' }[i]} ${pct(takeOdds(s, i))}%</button>`).join('')}</div>
+    <p class="note">Once a turn. The odds are her trust in you, your level, what the deck shows and her nerve.</p></div>
+  <div class="card"><h2>Who is standing</h2>
+    <p class="read"><span class="p-them">Boarders:</span> ${themUp} aboard${s.pending ? `, ${s.pending} more coming` : ''}. They break at ${K.BREAK}. Charges left: ${s.charges}.</p>
+    <div class="roster">${s.figs.filter(f => f.side === 'us').map(f => `<div><span class="${f.id === 'you' ? 'p-you' : 'p-crew'}">${f.name}</span><span class="${f.hp === 2 ? 'good' : f.hp === 1 ? 'warm' : 'bad'}">${['down', 'wounded', 'standing'][f.hp]}</span><span class="note">${f.hp > 0 ? SPOT[f.spot].name : ''}</span></div>`).join('')}</div></div>
+  <div class="card"><h2>Net</h2><div class="strip">${strip || '<span class="ev">Quiet.</span>'}</div></div>
+  <div class="card"><h2>What to judge</h2><ul class="q"><li>Can you tell what they will do before you commit, and why it worked or didn't?</li><li>Does fighting through the rooms you live in feel better than the section strip?</li><li>Are the charge, the wave and the well readable on the ship, without the log?</li></ul></div>`;
+}
+side.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; const s = S, p = s.plan, v = b.dataset.v, act = b.dataset.act;
+  if (act === 'go') return commit();
+  if (act === 'restart') { S = newGame(UI.seed); return render(); }
+  if (act === 'newseed') { UI.seed = 1 + Math.floor(Math.random() * 9999); S = newGame(UI.seed); return render(); }
+  if (act === 'suggest') return suggest(v);
+  if (act === 'level') { UI.level = +v; }
+  if (act === 'stay') p.move = null;
+  if (act === 'act') p.act = v;
+  if (act === 'target') p.target = v;
+  if (act === 'who') { p.orderWho = v || null; p.orderSpot = null; p.orderHatch = null; }
+  if (act === 'what') { p.orderWhat = v; p.orderSpot = null; p.orderHatch = null; if (v === 'move') UI.click = 'order'; }
+  const t = handTargets(s); if (['shoot', 'aim'].includes(p.act) && !t.some(x => x.m.id === p.target)) p.target = t[0] ? t[0].m.id : null;
+  render();
+});
+side.addEventListener('input', e => {
+  if (e.target.id === 'trust') { UI.trust = +e.target.value; document.getElementById('trustv').textContent = `${pct(UI.trust)}%`; }
+  if (e.target.id === 'nerve') { UI.nerve = +e.target.value; document.getElementById('nervev').textContent = UI.nerve < 0.35 ? 'cautious' : UI.nerve > 0.65 ? 'bold' : 'steady'; }
+});
+side.addEventListener('change', e => { if (['trust', 'nerve'].includes(e.target.id)) render(); });
+side.addEventListener('toggle', e => { if (e.target.id === 'setup') UI.setupOpen = e.target.open; }, true);
+document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON', 'INPUT', 'SUMMARY'].includes(e.target.tagName)) { e.preventDefault(); commit(); } });
+
+S = newGame(UI.seed); render(); requestAnimationFrame(draw);
+</script>

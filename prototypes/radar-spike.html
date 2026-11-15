@@ -1,0 +1,717 @@
+<title>Radar Fight Spike</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: the radar is the page, sticky on the left; the post's console runs down the right. One dark look, by choice: it is a sensor board. */
+:root {
+  --bg: #060a10; --panel: #0b121c; --raised: #111b29; --line: #1d2d41;
+  --fg: #d4e2f0; --dim: #7a8ea6; --accent: #7fb4ff; --hot: #ff6a4a; --warm: #ffd27f; --ok: #7bd59d;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
+.wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 410px); gap: 16px; max-width: 1440px; margin: 0 auto;
+  padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+.radar { position: sticky; top: 16px; align-self: start; display: grid; gap: 10px; min-width: 0; }
+canvas { display: block; width: 100%; max-width: min(100%, calc(100vh - 150px)); aspect-ratio: 1; margin: 0 auto; border: 1px solid var(--line); border-radius: 4px; background: #050a11; cursor: crosshair; }
+.legend { font: 12px/1.5 var(--mono); color: var(--dim); display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; }
+.legend b { font-weight: 500; }
+.side { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 12px; display: grid; gap: 10px; min-width: 0; }
+.card h2 { margin: 0; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.card h2 em { font-style: normal; color: var(--accent); }
+h1 { margin: 0; font: 600 15px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.sub { margin: 0; color: var(--dim); font-size: 13px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lab { font: 11px var(--mono); color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; min-width: 64px; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+button { font: 500 12px var(--mono); background: var(--raised); border: 1px solid var(--line); color: var(--fg); padding: 6px 10px; border-radius: 3px; cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #06101c; }
+.seg button { position: relative; padding-left: 24px; background: transparent; color: var(--dim); }
+.seg button::before { content: ""; position: absolute; left: 8px; top: 50%; width: 9px; height: 9px; margin-top: -5px; border: 1px solid var(--dim); border-radius: 50%; }
+.seg button[aria-pressed="true"] { color: var(--fg); background: var(--raised); border-color: var(--accent); }
+.seg button[aria-pressed="true"]::before { background: var(--accent); border-color: var(--accent); }
+.acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.summary { margin: 0; padding: 8px 10px; background: var(--raised); border-left: 2px solid var(--accent); font: 13px/1.5 var(--mono); }
+details > summary { cursor: pointer; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+details[open] > summary { margin-bottom: 10px; }
+details > div { display: grid; gap: 10px; }
+button:disabled { opacity: 0.4; cursor: default; }
+.go { font-size: 14px; padding: 10px; background: #16304f; border-color: var(--accent); width: 100%; letter-spacing: 0.06em; }
+.note { font-size: 13px; color: var(--dim); margin: 0; }
+.read { font: 13px/1.5 var(--mono); margin: 0; }
+.read .bad { color: var(--hot); } .read .good { color: var(--ok); } .read .warm { color: var(--warm); }
+.bars { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; font: 12px var(--mono); font-variant-numeric: tabular-nums; }
+.bar { height: 8px; background: var(--raised); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.bar.foe i { background: var(--hot); }
+.pips { display: flex; gap: 3px; } .pips span { width: 12px; height: 8px; background: var(--raised); border-radius: 1px; } .pips span.on { background: var(--warm); } .pips span.over { background: var(--hot); }
+.eng { display: grid; grid-template-columns: 70px auto 1fr auto; gap: 6px 8px; align-items: center; font: 12px var(--mono); }
+.incoming { border-color: var(--warm); }
+.msg { display: grid; gap: 6px; }
+.msg p { margin: 0; }
+.strip { display: grid; gap: 6px; max-height: 300px; overflow-y: auto; font: 12px/1.45 var(--mono); }
+.strip div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; }
+.strip time { color: var(--dim); }
+.strip .who { font-weight: 600; }
+.strip .reply { opacity: 0.85; padding-left: 12px; }
+.strip .ev { color: var(--dim); }
+.crew { display: grid; gap: 6px; font: 12px/1.45 var(--mono); }
+.crew div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px; }
+.p-gunner { color: #ff9a6a; } .p-pilot { color: var(--accent); } .p-engineer { color: var(--warm); } .p-comms { color: var(--ok); } .p-ship { color: var(--dim); } .p-captain { color: #eef3f9; font-weight: 600; }
+input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
+.over { border-color: var(--accent); }
+.over p { margin: 0; font: 500 14px var(--mono); }
+ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
+kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
+</style>
+
+<div class="wrap">
+  <section class="radar">
+    <canvas id="cv" aria-label="Radar: your ship at the center, the contact, torpedoes and predicted tracks"></canvas>
+    <div class="legend">
+      <span><b style="color:#cfe3ff">ship</b> you, nose line</span>
+      <span><b style="color:#ff6a4a">contact</b> corsair</span>
+      <span><b style="color:#ff6a4a">dashed ring</b> where she can be at turn end</span>
+      <span><b style="color:#ffd27f">ring</b> where your slug can land</span>
+      <span><b style="color:#4aa3ff">wedge</b> PDC arc</span>
+      <span><b style="color:#7fb4ff">CPA</b> closest approach</span><span>tracks run 4 turns, a dot and an error band each turn</span><span>1 turn = 20 s, rings 10 km</span>
+    </div>
+  </section>
+  <aside class="side" id="side"></aside>
+</div>
+
+<script>
+'use strict';
+// Throwaway spike: is the fight better played on the radar (A) or ordered at a post with the geometry drawn (B), and do calls between posts make a crew?
+const TAU = Math.PI * 2, DEG = Math.PI / 180;
+const K = { REACH: 50, TURN_S: 20, SUB: 24, ME_ACC: 3, FOE_ACC: 3.2, BEAR: 30 * DEG, PDC_R: 9, TORP_ACC: 6.5, TORP_MAX: 15, TORP_HIT: 1.0, TORP_DMG: 22, TORP_LIFE: 4,
+  GUN_DMG: [0, 12, 18, 24, 28], GUN_HEAT: [0, 1, 2, 3, 4], DRIVE: [0.45, 0.75, 1, 1.2, 1.35], PDC_RATE: [0, 0.55, 1, 1.4, 1.7], CREW_LVL: 2, TURN: 90 * DEG, GATE: 30 * DEG, HEAT_CAP: 5, FOE_GUN: 8, TURNS: 16, ESCAPE: 60, DETECT: 12, KEEP: 20, FOE_KEEP: 15, VENT_EVERY: 5, HIT: 0.7 };
+const falloff = r => r > 30 ? 0.5 : r > 20 ? 0.75 : 1;   // a slug's damage at long range
+const POSTS = ['gunner', 'pilot', 'engineer', 'comms'];
+const NAME = { gunner: 'Gunner', pilot: 'Pilot', engineer: 'Engineer', comms: 'Comms', all: 'All posts', ship: 'Ship', captain: 'Captain' };
+const PRESETS = { balanced: { drive: 2, guns: 2, pdc: 2 }, drive: { drive: 3, guns: 1, pdc: 2 }, guns: { drive: 1, guns: 3, pdc: 2 }, pdc: { drive: 1, guns: 2, pdc: 3 } };
+
+const V = (x, y) => ({ x, y });
+const add = (a, b) => V(a.x + b.x, a.y + b.y), sub = (a, b) => V(a.x - b.x, a.y - b.y), mul = (a, k) => V(a.x * k, a.y * k);
+const len = a => Math.hypot(a.x, a.y), norm = a => { const l = len(a) || 1; return V(a.x / l, a.y / l); };
+const ang = a => Math.atan2(a.y, a.x), dirv = (t, l = 1) => V(Math.cos(t) * l, Math.sin(t) * l);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const adiff = (a, b) => { let d = (a - b) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return Math.abs(d); };
+const brg = v => Math.round((Math.atan2(v.x, -v.y) / DEG + 360) % 360) % 360;
+const pad3 = n => String(n).padStart(3, '0');
+const clock = turn => { const s = turn * K.TURN_S; return `T+${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function move(b, a, dt) { b.p = V(b.p.x + b.v.x * dt + 0.5 * a.x * dt * dt, b.p.y + b.v.y * dt + 0.5 * a.y * dt * dt); b.v = V(b.v.x + a.x * dt, b.v.y + a.y * dt); }
+function segDist(a, b) { const d = sub(b, a), l2 = d.x * d.x + d.y * d.y; const t = l2 ? clamp(-(a.x * d.x + a.y * d.y) / l2, 0, 1) : 0; return len(add(a, mul(d, t))); }
+
+const UI = { setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
+let S;
+
+function newGame(seed) {
+  const r = mulberry(seed);
+  const s = { seed, r, r2: mulberry(seed * 31 + 5), turn: 0, phase: 'plan', comms: 'watch', nextId: 1,
+    me: { p: V(0, 0), v: V(0, -1), hull: 100, heat: 0, locked: false, nose: -Math.PI / 2, lastVent: -99 },
+    foe: { p: V(24, -30), v: V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
+    torps: [], tracers: [], fx: [], slug: null, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
+    ui: { face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
+      b: { pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
+  s.ui.pdcDir = ang(sub(s.foe.p, s.me.p));
+  s.errU = { p: unitDisk(s.r2), v: unitDisk(s.r2) };
+  return s;
+}
+
+// ---------- what the ship knows ----------
+const range = s => len(sub(s.foe.p, s.me.p));
+const losMe = s => norm(sub(s.foe.p, s.me.p));
+const near = (s, t) => len(sub(t.p, s.me.p)) < K.DETECT;
+const inbound = s => s.torps.filter(t => s.comms === 'watch' || near(s, t));       // what the board shows: comms watching, or close
+const known = s => s.torps.filter(t => near(s, t) || s.warned.has(t.id));          // what the crew acts on: their own close read, or a call-out
+function eta(s, t) { const rel = sub(t.p, s.me.p), rv = sub(t.v, s.me.v); const c = -(rel.x * rv.x + rel.y * rv.y) / (len(rel) || 1); return c > 0.5 ? len(rel) / c : 99; }
+const nearestOf = (s, list) => list.reduce((b, t) => (!b || len(sub(t.p, s.me.p)) < len(sub(b.p, s.me.p)) ? t : b), null);
+const threat = s => inbound(s).some(t => eta(s, t) < 3);
+const ventReady = s => s.turn - s.me.lastVent >= K.VENT_EVERY;
+function ask(s, key, val, n) { s.asks[key] = { val, until: s.turn + n - 1 }; }
+function asked(s, key) { const a = s.asks[key]; return a && a.until >= s.turn ? a.val : undefined; }
+function biasVec(s) { const los = norm(sub(s.me.p, s.foe.p)); return mul(V(-los.y, los.x), s.foe.bias); }
+function sideWord(s) { const l = losMe(s), b = biasVec(s); return l.x * b.y - l.y * b.x > 0 ? 'right' : 'left'; }
+function torpWarn(s) { const t = nearestOf(s, inbound(s)); return t ? `Torps inbound, bearing ${pad3(brg(sub(t.p, s.me.p)))}, impact in about ${Math.max(1, Math.round(eta(s, t)))} turn${Math.round(eta(s, t)) > 1 ? 's' : ''}.` : 'Torps inbound.'; }
+
+// ---------- the board's error ----------
+// Stock fire control sees everything, with error. Her contact is drawn off her true place by an error that is fixed for the turn, and it
+// grows the further ahead the board projects (a velocity error). The bands drawn are honest: the truth is inside them.
+const SENS = { BASE: 0.5, VEL: 0.5 };
+const degr = () => 1 + (1 - UI.sensors / 100) * (UI.hardened ? 0.6 : 2.5);   // worn sensors widen the error; hardened ones much less
+const sigmaOf = comms => SENS.BASE * (UI.accurate ? 0.5 : 1) * degr() * (comms === 'lock' ? 0.6 : 1);
+const bandAt = (g, t) => g * (1 + SENS.VEL * t);
+const unitDisk = rnd => dirv(rnd() * TAU, Math.sqrt(rnd()));
+const pct = x => Math.round(x * 100);
+function seenFoe(s, comms) { const g = sigmaOf(comms); return { ...s.foe, p: add(s.foe.p, mul(s.errU.p, g)), v: add(s.foe.v, mul(s.errU.v, g * SENS.VEL)) }; }
+
+// ---------- her ----------
+function foeAcc(s, rnd) {
+  const me = s.me, f = s.foe, rel = sub(me.p, f.p), r = len(rel), los = norm(rel);
+  let a = sub(add(me.v, mul(los, clamp((r - K.FOE_KEEP) * 0.3, -4, 4))), f.v);
+  if (len(a) > K.FOE_ACC * 0.6) a = mul(norm(a), K.FOE_ACC * 0.6);
+  const side = rnd() < 0.75 ? f.bias : -f.bias;                    // she has a habit: three times in four she jinks to the same side
+  a = add(a, mul(V(-los.y, los.x), side * K.FOE_ACC * (0.55 + 0.45 * rnd())));
+  return len(a) > K.FOE_ACC ? mul(norm(a), K.FOE_ACC) : a;
+}
+
+// ---------- the crew's own read (for every post you do not hold) ----------
+function aiPilot(s) { const a = asked(s, 'pilot'); return a && allows(s, a) ? a : orderOf(s).intent; }
+function aiGunner(s, bears) {
+  const af = asked(s, 'gunner.fire'), ap = asked(s, 'gunner.pdc');
+  const fire = af !== undefined ? af : bears && !(s.me.heat >= K.HEAT_CAP - 1 && s.foe.hull > 20);
+  return { fire, pdc: ap || (known(s).length ? 'threat' : 'forward') };
+}
+const aiEngineer = s => asked(s, 'engineer') || ORDER[orderOf(s).intent].power;
+function aiComms(s) { return asked(s, 'comms') || ORDER[orderOf(s).intent].comms; }
+
+// ---------- the captain ----------
+// The captain sets the intent each turn, by the state of the fight and their nerve. The gunner works the geometry inside it. Pilot, engineer
+// and comms carry it out, with a skill check on how well, and suggest changes, which the captain weighs.
+const ORDER = {
+  engage: { text: 'Close to twelve and work her.', power: 'guns', comms: 'lock' },
+  hold: { text: 'Hold at twenty. Trade with her.', power: 'balanced', comms: 'watch' },
+  open: { text: 'Open the range.', power: 'drive', comms: 'watch' },
+  break: { text: 'Break off. Open it all the way.', power: 'drive', comms: 'spoof' },
+  evade: { text: 'Evade. Fish in the water.', power: 'pdc', comms: 'spoof' },
+};
+const lvl = post => post === UI.post ? UI.level : K.CREW_LVL;
+const shares = s => [s.me.hull / 100, s.foe.hull / s.foe.max];
+const nerveWord = () => UI.nerve < 0.35 ? 'cautious' : UI.nerve > 0.65 ? 'bold' : 'steady';
+function captainPick(s) {
+  const n = UI.nerve, [ours, hers] = shares(s);
+  if (known(s).some(t => eta(s, t) < 2.5) && !(n > 0.75 && hers < 0.3)) return 'evade';
+  if (ours < 0.4 && hers > ours && n < 0.6) return 'break';
+  if (hers < ours - 0.2 || n > 0.65) return 'engage';
+  if (range(s) < 9 && n < 0.4) return 'open';
+  return 'hold';
+}
+const orderOf = s => s.order || { intent: 'hold' };
+function allows(s, a) { const i = orderOf(s).intent; return a === 'nose' ? (i === 'engage' || i === 'hold') : a === 'coast' ? i !== 'evade' : true; }
+function evidence(s, intent) { const [ours, hers] = shares(s), torps = known(s).some(t => eta(s, t) < 3);
+  return { evade: torps ? 0.3 : -0.2, engage: hers < ours ? 0.2 : -0.05, break: ours < 0.5 ? 0.25 : -0.3, open: torps || range(s) < 12 ? 0.15 : -0.1, hold: 0 }[intent]; }
+const nerveFit = intent => { const n = UI.nerve - 0.5; return { engage: n * 0.4, break: -n * 0.4, open: -n * 0.3, evade: 0, hold: 0 }[intent]; };
+// Whether the captain takes a suggestion: trust in whoever makes it, their skill, what the board shows, and the captain's nerve.
+const takeOdds = (s, post, intent) => clamp(0.2 + 0.35 * (post === UI.post ? UI.trust : 0.7) + 0.07 * lvl(post) + evidence(s, intent) + nerveFit(intent), 0.05, 0.95);
+// How well an order is carried out: the odds of each check, by the skill of whoever carries it out.
+const engOdds = pushed => clamp((pushed ? 0.45 : 0.6) + 0.08 * lvl('engineer'), 0.05, 0.97);
+const commsOdds = mode => mode === 'lock' || mode === 'spoof' ? clamp((mode === 'lock' ? 0.45 : 0.4) + 0.1 * lvl('comms'), 0.05, 0.97) : 1;
+const ventOdds = () => clamp(0.5 + 0.1 * lvl('engineer'), 0.05, 0.97);
+const scatterDeg = steady => (5 - lvl('pilot')) * 4 * (steady ? 0.5 : 1);
+function clampBurn(t, ord) {
+  if (ord.thr < 0.1) return { dir: t.dir, thr: Math.min(t.thr, 0.3) };       // a coasting order allows small trims
+  const lim = 45 * DEG; if (adiff(t.dir, ord.dir) <= lim) return { ...t };
+  return { dir: ord.dir + (Math.sin(t.dir - ord.dir) > 0 ? 1 : -1) * lim, thr: t.thr };
+}
+const topOf = p => Object.keys(p).reduce((a, b) => p[a] >= p[b] ? a : b);
+// The rolls, made when the turn is committed. What they change is kept in s.ov for the turn, and buildOrders reads it.
+function rollChecks(s, o) {
+  const ov = {}, say = l => s.turnLines.push(l), r = () => s.r2(), P = UI.post;
+  const steady = P === 'pilot' && UI.mode === 'B' && s.ui.b.pilot === 'steady';
+  if (o.thrust.thr > 0.02) { const g = (r() + r() + r() - 1.5) / 0.5, off = g * scatterDeg(steady) * DEG;
+    ov.thrust = { dir: o.thrust.dir + off, thr: clamp(o.thrust.thr * (1 + off * 0.5), 0, 1) };
+    if (Math.abs(off) > 8 * DEG) say(`The burn lands ${Math.round(Math.abs(off) / DEG)} degrees off the plot.`); }
+  const pushed = P === 'engineer' && s.ui.b.eng === 'push', changed = JSON.stringify(PRESETS[o.engIntent]) !== JSON.stringify(s.lastPower);
+  if (changed || pushed) {
+    if (r() < engOdds(pushed)) { ov.power = { ...o.power }; s.lastPower = { ...PRESETS[o.engIntent] }; say(pushed ? `Engineer pushes the ${topOf(o.power)} to 4.` : 'Engineer gets the power across in time.'); }
+    else if (pushed) { ov.power = { ...o.power }; ov.power[topOf(o.power)] = 1; say(`The breaker trips. The ${topOf(o.power)} drops to 1 this turn.`); }
+    else { ov.power = { ...s.lastPower }; say('The switch-over is late. Still on the old split this turn.'); }
+  }
+  if (commsOdds(o.comms) < 1 && r() >= commsOdds(o.comms)) { ov.comms = 'none'; say(o.comms === 'lock' ? 'Comms cannot hold a lock this turn. Blind past 12 km.' : 'The spoof does not take. Blind past 12 km.'); }
+  return ov;
+}
+
+// ---------- geometry from an intent ----------
+function pilotGeo(s, intent, acc) {
+  const me = s.me, foe = s.foe, r = range(s), los = losMe(s);
+  if (intent === 'coast') return { dir: me.nose, thr: 0, face: 'hold' };
+  if (intent === 'evade') { const t = nearestOf(s, known(s).length ? known(s) : inbound(s)); const from = t ? norm(sub(t.p, me.p)) : los; return { dir: ang(V(-from.y, from.x)), thr: 1, face: 'burn' }; }
+  const keep = intent === 'engage' ? 12 : K.KEEP;
+  const want = clamp(intent === 'close' ? 4 : intent === 'open' ? -4 : intent === 'break' ? -8 : (r - keep) * 0.3, -8, 4);
+  const a = sub(add(foe.v, mul(los, want)), me.v), al = len(a);
+  let thr = Math.min(1, al / acc), dir = al > 0.01 ? ang(a) : me.nose;
+  if (intent === 'nose') { dir = ang(los); thr = Math.min(thr, 0.25); }
+  if (intent === 'hold' || intent === 'engage') { const rv = sub(foe.v, me.v), closing = -(rv.x * los.x + rv.y * los.y); if (thr < 0.15 || (Math.abs(r - keep) < (intent === 'engage' ? 4 : 6) && Math.abs(closing) < 4)) thr = 0; }  // in the band and not closing fast: coast, nose on her
+  return { dir, thr, face: intent === 'open' || intent === 'break' ? 'burn' : 'her' };
+}
+function pdcGeo(s, mode, list) {
+  const t = nearestOf(s, list), to = ang(losMe(s));
+  if (mode === 'threat') return { dir: t ? ang(sub(t.p, s.me.p)) : to, w: 50 };
+  if (mode === 'wide') return { dir: to, w: 160 };
+  return { dir: to, w: 90 };
+}
+function autoAim(s, comms) {
+  const sf = seenFoe(s, comms), E = add(sf.p, sf.v); if (comms !== 'lock') return E;
+  const st = { me: s.me, foe: sf }, rnd = mulberry(s.turn * 97 + 3); let m = V(0, 0); for (let i = 0; i < 60; i++) m = add(m, mul(foeAcc(st, rnd), 0.5 / 60));
+  return add(E, m);                                                   // with a lock the crew knows her habit and leads her
+}
+// The hull keeps its facing between turns and swings at most K.TURN a turn. It swings toward the burn while burning; coasting, it turns to her
+// or holds, by the order (or the pilot's choice). The drive fires only once the nose is within K.GATE of the burn: a flip takes time.
+function turnToward(a, b, max) { const d = ((b - a) % TAU + TAU + Math.PI) % TAU - Math.PI; return a + clamp(d, -max, max); }
+const wantNose = (s, o) => o.thrust.thr > 0.05 ? o.thrust.dir : o.face === 'her' ? ang(sub(o.aim || s.foe.p, s.me.p)) : s.me.nose;
+function burnAt(nose0, want, thrust, acc, frac) { const nose = turnToward(nose0, want, K.TURN * frac); return { nose, a: thrust.thr > 0.05 && adiff(nose, thrust.dir) < K.GATE ? dirv(thrust.dir, thrust.thr * acc) : V(0, 0) }; }
+const spreadR = (s, o) => (0.2 + 0.03 * range(s)) * (1 + 0.7 * o.thrust.thr) * (o.comms === 'lock' ? 0.6 : 1) * (UI.accurate ? 0.75 : 1) * (0.6 + 0.4 * degr()) * (1.3 - 0.06 * lvl('gunner'));   // a better gunner lays a tighter shot
+function solution(s, o, shift = V(0, 0)) {
+  const sf = seenFoe(s, o.comms), st = { me: s.me, foe: { ...sf, p: add(sf.p, shift) } }, R = o.R, E = add(st.foe.p, sf.v), rnd = mulberry(4242 + s.turn); let hit = 0; const N = 160;
+  for (let i = 0; i < N; i++) {
+    let d; if (o.comms === 'lock') d = mul(foeAcc(st, rnd), 0.5); else { const a = rnd() * TAU, r = Math.sqrt(rnd()) * 0.5 * K.FOE_ACC; d = dirv(a, r); }
+    const n = dirv(rnd() * TAU, Math.sqrt(rnd()) * R); if (len(sub(add(E, d), add(o.aim, n))) <= K.HIT) hit++;
+  }
+  return hit / N;
+}
+// The solution as a range: she may really be anywhere in the band around where the board shows her.
+function solutionRange(s, o) { const b = bandAt(sigmaOf(o.comms), 1), r = [solution(s, o)]; for (let j = 0; j < 6; j++) r.push(solution(s, o, dirv(j * TAU / 6, b))); return [Math.min(...r), Math.max(...r)]; }
+
+
+// ---------- the projection: four turns ahead, as the board would compute it ----------
+// You burn this turn's plan, then coast. She coasts, unless comms has a lock: then her track bends the way her habit takes her.
+// Torpedoes steer at your projected track, as they really do. The PDC is left out: this is what happens if nothing stops them.
+function meanFoeAcc(st) { const rnd = mulberry(77); let m = V(0, 0); for (let i = 0; i < 30; i++) m = add(m, mul(foeAcc(st, rnd), 1 / 30)); return m; }
+function project(s, o, turns = 4, n = 12, bend = true) {
+  const dt = 1 / n, me = { p: { ...s.me.p }, v: { ...s.me.v } }, sf = seenFoe(s, o.comms), foe = { p: { ...sf.p }, v: { ...sf.v }, bias: s.foe.bias };
+  const am = dirv(o.thrust.dir, o.thrust.thr * o.acc), lock = o.comms === 'lock', cap = K.TORP_ACC * (o.comms === 'spoof' ? 0.45 : 1);
+  const torps = inbound(s).map(t => ({ p: { ...t.p }, v: { ...t.v }, age: t.age, path: [{ ...t.p }], hit: null }));
+  const mine = [{ ...me.p }], hers = [{ ...foe.p }]; let fa = V(0, 0);
+  for (let k = 1; k <= turns * n; k++) {
+    if ((k - 1) % n === 0) fa = lock && bend ? meanFoeAcc({ me, foe }) : V(0, 0);
+    const prev = { ...me.p };
+    move(me, k <= n ? burnAt(s.me.nose, o.want, o.thrust, o.acc, k / n).a : V(0, 0), dt); move(foe, fa, dt);
+    for (const t of torps) {
+      if (t.hit) continue; const before = sub(t.p, prev); let a = V(0, 0);
+      if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, 0.3)), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
+      move(t, a, dt); t.age += dt; t.path.push({ ...t.p });
+      const dd = segDist(before, sub(t.p, me.p)); t.min = Math.min(t.min === undefined ? 1e9 : t.min, dd);
+      if (dd < K.TORP_HIT) t.hit = { p: { ...me.p }, t: k / n };
+    }
+    mine.push({ ...me.p }); hers.push({ ...foe.p });
+  }
+  let cpa = { d: 1e9 }; mine.forEach((m, i) => { const d = len(sub(hers[i], m)); if (d < cpa.d) cpa = { d, i, t: i / n, m, h: hers[i] }; });
+  const g = sigmaOf(o.comms); cpa.band = bandAt(g, cpa.t);
+  return { mine, hers, torps, cpa, n, last: mine.length - 1, g };
+}
+const tierProject = (s, o) => project(s, o);
+function projWords(s, o) {
+  const pr = tierProject(s, o), c = pr.cpa, hit = pr.torps.filter(t => t.hit);
+  const cpa = c.i === 0 ? 'the range is opening' : c.i === pr.last ? 'still closing four turns out' : `${Math.max(0, c.d - c.band).toFixed(1)} to ${(c.d + c.band).toFixed(1)} km, in about ${c.t.toFixed(1)} turns`;
+  return `Closest approach: ${cpa}.` + (pr.torps.length ? `<br>Torps on this plan: ${hit.length} of ${pr.torps.length} hit${hit.length ? `, the first in ${Math.min(...hit.map(t => t.hit.t)).toFixed(1)} turns` : ''}, before the PDC.` : '');
+}
+
+// ---------- everyone's orders this turn ----------
+function buildOrders(s) {
+  const ui = s.ui, P = UI.post, A = UI.mode === 'A', o = {};
+  const ov = s.ov || {};
+  o.engIntent = P === 'engineer' ? ORDER[orderOf(s).intent].power : aiEngineer(s);
+  o.power = ov.power ? { ...ov.power } : { ...PRESETS[o.engIntent] };
+  if (!ov.power && P === 'engineer' && ui.b.eng === 'push') o.power[topOf(o.power)] = 4;
+  o.vent = (P === 'engineer' ? ui.vent : s.me.heat >= K.HEAT_CAP - 1) && ventReady(s);
+  o.comms = ov.comms || (P === 'comms' ? ui.comms : aiComms(s));
+  o.acc = K.ME_ACC * K.DRIVE[o.power.drive];
+  o.pilotIntent = P === 'pilot' && A ? 'manual' : P === 'pilot' ? orderOf(s).intent : aiPilot(s);
+  o.ordered = pilotGeo(s, P === 'pilot' ? orderOf(s).intent : o.pilotIntent, o.acc);
+  o.thrust = ov.thrust ? { ...ov.thrust } : P === 'pilot' && A ? clampBurn(ui.thrust, o.ordered) : { ...o.ordered, thr: o.ordered.thr * (P === 'pilot' && ui.b.pilot === 'steady' ? 0.6 : 1) };
+  o.face = P === 'pilot' && UI.mode === 'A' ? ui.face : o.ordered.face || 'her';
+  const locked = s.me.locked && !o.vent;
+  if (P === 'gunner' && A) { o.aim = ui.aim; o.fire = ui.fire && !!ui.aim; o.pdcIntent = 'manual'; o.pdcDir = ui.pdcDir; o.pdcW = ui.pdcW; }
+  else {
+    o.aim = autoAim(s, o.comms);
+    const bears0 = adiff(turnToward(s.me.nose, wantNose(s, o), K.TURN), ang(sub(o.aim, s.me.p))) <= K.BEAR;
+    const g = P === 'gunner' ? { fire: ui.b.fire, pdc: ui.b.pdc } : aiGunner(s, bears0 && !locked);
+    o.fire = g.fire; o.pdcIntent = g.pdc;
+    const pg = pdcGeo(s, g.pdc, P === 'gunner' ? inbound(s) : known(s)); o.pdcDir = pg.dir; o.pdcW = pg.w;
+  }
+  o.want = wantNose(s, o); o.nose = turnToward(s.me.nose, o.want, K.TURN);   // the nose at the end of the turn
+  o.bears = !!o.aim && adiff(o.nose, ang(sub(o.aim, s.me.p))) <= K.BEAR;
+  o.locked = locked;
+  o.canFire = o.fire && o.bears && !locked && o.power.guns > 0;
+  o.R = spreadR(s, o);
+  [o.solLo, o.solHi] = o.aim ? solutionRange(s, o) : [0, 0]; o.sol = (o.solLo + o.solHi) / 2;
+  return o;
+}
+
+// ---------- calls ----------
+const CALLS = {
+  gunner: [
+    { id: 'nose', to: 'pilot', label: 'Nose on her', text: () => 'Nose on her. I need the bow for two turns.', conflict: s => threat(s) || !allows(s, 'nose'), apply: s => ask(s, 'pilot', 'nose', 2), yes: 'Nose on her. Coasting in.', no: 'Not against the captain\'s order.' },
+    { id: 'guns', to: 'engineer', label: 'Power to the gun', text: () => 'Give the gun three.', conflict: s => inbound(s).length > 0, apply: s => ask(s, 'engineer', 'guns', 2), yes: 'Gun has three. Watch your heat.', no: 'The PDC keeps it while those torps are out.' },
+    { id: 'lock', to: 'comms', label: 'Lock on her', text: () => 'Get me a lock on her.', conflict: s => s.foe.armed, apply: s => ask(s, 'comms', 'lock', 2), yes: s => `Locking. She jinks to the ${sideWord(s)} of the line.`, no: "She's arming. I'm watching her tubes." },
+  ],
+  pilot: [
+    { id: 's-evade', to: 'captain', intent: 'evade', label: 'Evade', text: () => 'Captain, let me jink. She has fish in the water.' },
+    { id: 's-open', to: 'captain', intent: 'open', label: 'Open the range', text: () => 'Captain, give me room. Open the range.' },
+    { id: 's-engage', to: 'captain', intent: 'engage', label: 'Close on her', text: () => 'Captain, she turns slow. We can close.' },
+  ],
+  engineer: [
+    { id: 'ease', to: 'gunner', label: 'Ease off the gun', text: s => `Ease off the gun a turn. Heat is at ${s.me.heat}.`, conflict: s => s.foe.hull <= 20, apply: s => ask(s, 'gunner.fire', false, 1), yes: 'Holding a turn.', no: "She's nearly done. One more." },
+    { id: 's-hold', to: 'captain', intent: 'hold', label: 'Hold and cool', text: () => 'Captain, hold here a turn. The gun needs to cool.' },
+    { id: 's-break', to: 'captain', intent: 'break', label: 'Break off', avail: s => s.me.hull < 70, text: () => 'Captain, we are hurt. Break off.' },
+  ],
+  comms: [
+    { id: 'warn', to: 'all', label: 'Call the torps', avail: s => inbound(s).some(t => !s.warned.has(t.id)), text: s => torpWarn(s), conflict: () => false, apply: s => inbound(s).forEach(t => s.warned.add(t.id)), yes: 'Copy. Tracking them.', no: '' },
+    { id: 's-evade', to: 'captain', intent: 'evade', label: 'Evade', avail: s => inbound(s).length > 0, text: () => 'Captain, torps inbound. Evade.' },
+    { id: 's-engage', to: 'captain', intent: 'engage', label: 'Close, she is hurt', avail: s => s.foe.hull / s.foe.max < s.me.hull / 100, text: () => 'Captain, she is hurt worse than we are. Close.' },
+  ],
+};
+function logCall(s, from, to, text, kind = 'call') { s.log.unshift({ t: clock(s.turn), from, to, text, kind }); if (s.log.length > 60) s.log.pop(); }
+function playerCall(id) {
+  const s = S, P = UI.post, c = CALLS[P].find(x => x.id === id); if (!c || s.used[id] || s.phase !== 'plan') return;
+  s.used[id] = true; logCall(s, P, c.to, c.text(s));
+  if (c.to === 'all') { c.apply(s); logCall(s, 'gunner', P, c.yes, 'reply'); return render(); }
+  if (c.to === 'captain') {
+    if (Math.random() < takeOdds(s, P, c.intent)) { s.order = { intent: c.intent, until: s.turn + (c.intent === 'evade' ? 0 : 1), by: P }; logCall(s, 'captain', P, `Good call. ${ORDER[c.intent].text}`, 'reply'); }
+    else logCall(s, 'captain', P, evidence(s, c.intent) < 0 ? "I don't see it. We keep to the order." : 'Negative. We keep to the order.', 'reply');
+    return render();
+  }
+  const conflict = c.conflict(s), p = clamp(0.3 + 0.65 * UI.trust - (conflict ? 0.5 : 0), 0.05, 0.97);
+  if (Math.random() < p) { c.apply(s); logCall(s, c.to, P, typeof c.yes === 'function' ? c.yes(s) : c.yes, 'reply'); }
+  else logCall(s, c.to, P, c.no + (conflict ? '' : ' (they do not trust your read yet)'), 'reply');
+  render();
+}
+// The crew talk on their own: to each other, and to you. A call to you waits for an answer; one between them is weighed by their own read.
+function aiCalls(s) {
+  if (s.over) return; const P = UI.post; s.incoming = [];
+  const send = (from, to, text, effect, suggest) => {
+    if (from === P) return;
+    logCall(s, from, to, text);
+    if (to === P || to === 'all') { s.incoming.push({ from, text, suggest }); if (to === 'all' && effect) effect.apply(s); return; }
+    if (!effect) return;
+    const conflict = effect.conflict ? effect.conflict(s) : false;
+    if (Math.random() < (conflict ? 0.35 : 0.9)) { effect.apply(s); logCall(s, to, from, effect.yes, 'reply'); } else logCall(s, to, from, effect.no, 'reply');
+  };
+  const fresh = inbound(s).filter(t => !s.warned.has(t.id));
+  if (fresh.length && s.comms === 'watch') send('comms', 'all', torpWarn(s), { apply: s2 => fresh.forEach(t => s2.warned.add(t.id)) }, 'pdcThreat');
+  if (s.foe.armed && s.comms === 'watch') send('comms', 'all', "She's arming a salvo. It comes this turn.", null, null);
+  // the captain decides after comms has called out what it sees
+  if (!(s.order && s.order.until >= s.turn)) { const i = captainPick(s); if (!s.order || s.order.intent !== i) logCall(s, 'captain', 'all', ORDER[i].text); s.order = { intent: i, until: -1 }; }
+  const o = buildOrders(s);
+  if (s.me.heat >= K.HEAT_CAP - 1 && o.fire) send('engineer', 'gunner', `Gun heat at ${s.me.heat}. Ease off a turn or it locks.`, { conflict: s2 => s2.foe.hull <= 20, apply: s2 => ask(s2, 'gunner.fire', false, 1), yes: 'Holding a turn.', no: "She's nearly done. One more." }, 'hold');
+  if (s.noBear && asked(s, 'pilot') !== 'nose' && allows(s, 'nose')) send('gunner', 'pilot', "Nose on her. The gun can't bear.", { conflict: s2 => threat(s2), apply: s2 => ask(s2, 'pilot', 'nose', 2), yes: 'Nose on her. Coasting in.', no: 'Not with fish in the water.' }, 'nose');
+  if (o.pilotIntent === 'evade' && P !== 'pilot') send('pilot', 'gunner', "Burning hard off her. The gun won't bear this turn.", null, null);
+}
+function answer(i, yes) {
+  const s = S, m = s.incoming[i]; if (!m) return; s.incoming.splice(i, 1);
+  if (yes && m.suggest) {
+    const A = UI.mode === 'A', ui = s.ui;
+    if (m.suggest === 'pdcThreat') { const t = nearestOf(s, inbound(s)); if (A) { if (t) ui.pdcDir = ang(sub(t.p, s.me.p)); ui.pdcW = 50; UI.tool = 'pdc'; } else ui.b.pdc = 'threat'; }
+    if (m.suggest === 'hold') { if (A) ui.fire = false; else ui.b.fire = false; }
+    if (m.suggest === 'nose' && A) ui.thrust = { dir: ang(losMe(s)), thr: 0 };
+  }
+  if (m.suggest) logCall(s, UI.post, m.from, yes ? 'Copy.' : 'No.', 'reply');
+  render();
+}
+
+// ---------- the turn ----------
+let reduce = false; try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+function commit() {
+  const s = S; if (s.phase !== 'plan' || s.over) return;
+  s.turnLines = []; s.ov = rollChecks(s, buildOrders(s));
+  const o = buildOrders(s);
+  s.exec = { o, k: 0, fa: foeAcc(s, s.r), nose0: s.me.nose }; s.comms = o.comms; s.incoming = [];
+  if (o.vent) { if (s.r2() < ventOdds()) { s.me.heat = 0; s.me.locked = false; s.turnLines.push('Engineer vents the gun. Heat to 0.'); } else { s.me.heat = Math.max(0, s.me.heat - 2); s.turnLines.push('The vent sticks. Heat down 2.'); } s.me.lastVent = s.turn; }
+  s.noBear = !o.bears;
+  const f = s.foe;
+  if (f.armed && f.torps > 0) {
+    const los = norm(sub(s.me.p, f.p)), perp = V(-los.y, los.x);
+    for (const side of [-1, 1]) s.torps.push({ id: s.nextId++, p: { ...f.p }, v: add(add(f.v, mul(los, 3)), mul(perp, 6 * side)), age: 0, trail: [] });
+    f.torps -= 2; f.armed = false; s.turnLines.push('She launches two torpedoes.');
+  }
+  s.slug = o.canFire ? { from: { ...s.me.p }, to: add(o.aim, dirv(s.r2() * TAU, Math.sqrt(s.r2()) * o.R)), R: o.R } : null;
+  if (o.fire && !o.canFire) s.turnLines.push(o.locked ? 'The gun is locked with heat.' : !o.bears ? "The gun can't bear: the ship's nose is off her." : 'No power to the gun.');
+  s.phase = 'exec'; render();
+  const dur = reduce ? 0 : 1400, t0 = performance.now();
+  const step = now => {
+    const target = dur ? Math.min(K.SUB, Math.floor((now - t0) / dur * K.SUB)) : K.SUB;
+    while (s.exec.k < target) { substep(s); s.exec.k++; }
+    if (s.exec.k < K.SUB) requestAnimationFrame(step); else { resolveEnd(s); render(); }
+  };
+  requestAnimationFrame(step);
+}
+function substep(s) {
+  const dt = 1 / K.SUB, o = s.exec.o, me = s.me, now = performance.now(), mePrev = { ...me.p };
+  const bn = burnAt(s.exec.nose0, o.want, o.thrust, o.acc, (s.exec.k + 1) / K.SUB); me.nose = bn.nose; move(me, bn.a, dt);
+  move(s.foe, s.exec.fa, dt);
+  const cap = K.TORP_ACC * (o.comms === 'spoof' ? 0.45 : 1);
+  for (const t of s.torps) {
+    const before = sub(t.p, mePrev); let a = V(0, 0);
+    if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, 0.3)), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
+    move(t, a, dt); t.age += dt; t.trail.push({ ...t.p }); if (t.trail.length > 16) t.trail.shift();
+    const after = sub(t.p, me.p);
+    if (segDist(before, after) < K.TORP_HIT) { t.dead = true; me.hull = Math.max(0, me.hull - K.TORP_DMG); s.fx.push({ p: { ...me.p }, t0: now, kind: 'hit' }); s.turnLines.push(`Torpedo hit. ${K.TORP_DMG} off our hull.`); continue; }
+    if (o.power.pdc > 0 && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 0.05 * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW)) {
+      t.dead = true; s.fx.push({ p: { ...t.p }, t0: now, kind: 'pop' }); s.turnLines.push('The PDC kills a torpedo.');
+    }
+  }
+  if (o.power.pdc > 0 && s.torps.some(t => !t.dead && len(sub(t.p, me.p)) < K.PDC_R + 3))
+    for (let i = 0; i < 3; i++) s.tracers.push({ p: { ...me.p }, a: o.pdcDir + (Math.random() - 0.5) * o.pdcW * DEG, t0: now });
+  s.torps = s.torps.filter(t => !t.dead && t.age < K.TORP_LIFE + 2);
+}
+function resolveEnd(s) {
+  const o = s.exec.o, me = s.me, f = s.foe, now = performance.now();
+  if (s.slug) {
+    const miss = len(sub(f.p, s.slug.to));
+    if (miss <= K.HIT) { const d = Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s))); f.hull = Math.max(0, f.hull - d); s.fx.push({ p: { ...f.p }, t0: now, kind: 'boom' }); s.turnLines.push(`Hit. ${d} off her hull.`); }
+    else s.turnLines.push(`Miss. The slug passed ${(miss - K.HIT).toFixed(1)} km wide of her.`);
+    me.heat += K.GUN_HEAT[o.power.guns];
+  }
+  const r = range(s);
+  if (r < 35 && f.hull > 0 && s.r() < clamp(0.55 - 0.01 * r - 0.2 * o.thrust.thr - (o.comms === 'spoof' ? 0.25 : 0), 0.05, 0.9)) { me.hull = Math.max(0, me.hull - K.FOE_GUN); s.turnLines.push(`Her gun hits us. ${K.FOE_GUN} off our hull.`); }
+  me.heat = Math.max(0, me.heat - (me.locked ? 2 : 1)); me.locked = me.heat >= K.HEAT_CAP;
+  if (me.locked) s.turnLines.push('Gun heat over the cap: locked next turn.');
+  if (f.torps > 0 && s.turn % 3 === 0) f.armed = true;
+  s.turnLines.forEach(l => logCall(s, 'ship', null, l, 'event'));
+  s.turn++; s.slug = null; s.used = {}; s.phase = 'plan'; s.exec = null;
+  s.ui.aim = null; s.ui.vent = false; s.ov = {}; s.errU = { p: unitDisk(s.r2), v: unitDisk(s.r2) };
+  const r2 = range(s);
+  if (f.hull <= 0) s.over = { win: true, text: 'Her hull is gone. She is dead in space.' };
+  else if (me.hull <= 0) s.over = { win: false, text: 'Our hull is gone.' };
+  else if (r2 > K.ESCAPE) s.over = { win: false, text: 'Out past 60 km. Contact broken.' };
+  else if (s.turn >= K.TURNS) s.over = { win: f.hull / f.max < me.hull / 100, text: f.hull / f.max < me.hull / 100 ? 'She breaks off, the worse hurt.' : 'The captain breaks off. We were the worse hurt.' };
+  if (s.over) logCall(s, 'ship', null, s.over.text, 'event'); else aiCalls(s);
+}
+
+// ---------- the radar ----------
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+let geo = { cx: 0, cy: 0, sc: 1, W: 0 };
+function draw() {
+  const W = cv.clientWidth, dpr = window.devicePixelRatio || 1;
+  if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(W * dpr); }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const s = S, cx = W / 2, cy = W / 2, sc = (W / 2 - 54) / K.REACH; geo = { cx, cy, sc, W };
+  const me = s.me.p, P = w => [cx + (w.x - me.x) * sc, cy + (w.y - me.y) * sc], now = performance.now();
+  const o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, plan = s.phase === 'plan' && !s.over;
+  ctx.fillStyle = '#050a11'; ctx.fillRect(0, 0, W, W);
+  ctx.lineWidth = 1; ctx.font = '11px "IBM Plex Mono", monospace';
+  for (let k = 10; k <= K.REACH; k += 10) { ctx.strokeStyle = k % 20 ? '#13233a' : '#1d3350'; ctx.beginPath(); ctx.arc(cx, cy, k * sc, 0, TAU); ctx.stroke(); ctx.fillStyle = '#3e5674'; ctx.fillText(String(k), cx + 3, cy - k * sc + 12); }
+  for (let b = 0; b < 360; b += 30) { const a = (b - 90) * DEG; ctx.strokeStyle = '#1d3350'; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (K.REACH * sc - 6), cy + Math.sin(a) * (K.REACH * sc - 6)); ctx.lineTo(cx + Math.cos(a) * K.REACH * sc, cy + Math.sin(a) * K.REACH * sc); ctx.stroke();
+    if (b % 90 === 0) { ctx.fillStyle = '#3e5674'; ctx.fillText(pad3(b), cx + Math.cos(a) * (K.REACH * sc + 2) - 11, cy + Math.sin(a) * (K.REACH * sc + 2) + 4); } }
+  // the gun's bearing: the spinal gun bears only within 30 degrees of the nose
+  ctx.fillStyle = o.bears ? 'rgba(123,213,157,0.06)' : 'rgba(122,142,166,0.05)';
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, K.REACH * sc, o.nose - K.BEAR, o.nose + K.BEAR); ctx.closePath(); ctx.fill();
+  // PDC arc
+  if (o.power.pdc > 0) { const r = K.PDC_R * sc, h = o.pdcW * DEG / 2, dens = clamp(60 / o.pdcW, 0.35, 1.4);
+    ctx.fillStyle = `rgba(74,163,255,${0.06 + 0.1 * dens})`; ctx.strokeStyle = 'rgba(74,163,255,0.6)';
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - h, o.pdcDir + h); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+  // my track: this turn's burn, then three turns ballistic
+  const line = (pts, from, to) => { ctx.beginPath(); for (let i = from; i <= to; i++) i > from ? ctx.lineTo(...P(pts[i])) : ctx.moveTo(...P(pts[i])); ctx.stroke(); };
+  let pr = null;
+  if (plan) {
+    pr = tierProject(s, o);
+    ctx.strokeStyle = '#cfe3ff'; line(pr.mine, 0, pr.n);
+    ctx.setLineDash([3, 4]); ctx.strokeStyle = 'rgba(207,227,255,0.45)'; line(pr.mine, pr.n, pr.last);
+    ctx.strokeStyle = 'rgba(255,106,74,0.55)'; line(pr.hers, 0, pr.last); ctx.setLineDash([]);
+    for (let k = 1; k * pr.n <= pr.last; k++) { ctx.fillStyle = '#cfe3ff'; ctx.beginPath(); ctx.arc(...P(pr.mine[k * pr.n]), k === 1 ? 2.5 : 1.6, 0, TAU); ctx.fill(); ctx.fillStyle = '#ff6a4a'; ctx.beginPath(); ctx.arc(...P(pr.hers[k * pr.n]), 1.6, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(255,106,74,0.08)'; ctx.strokeStyle = 'rgba(255,106,74,0.35)'; ctx.beginPath(); ctx.arc(...P(pr.hers[k * pr.n]), Math.max(2, bandAt(pr.g, k) * sc), 0, TAU); ctx.fill(); ctx.stroke(); }
+    if (UI.post === 'pilot' && UI.mode === 'A' && o.ordered.thr >= 0.1) { ctx.fillStyle = 'rgba(255,210,127,0.1)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, 70, o.ordered.dir - 45 * DEG, o.ordered.dir + 45 * DEG); ctx.closePath(); ctx.fill(); }
+    if (o.thrust.thr > 0.02) { const e = scatterDeg(UI.post === 'pilot' && UI.mode === 'B' && s.ui.b.pilot === 'steady') * DEG * 2; ctx.strokeStyle = 'rgba(207,227,255,0.6)';
+      for (const sg of [-1, 1]) { const q = P(add(add(me, s.me.v), mul(dirv(o.thrust.dir + sg * e, o.thrust.thr * o.acc), 0.5))); ctx.beginPath(); ctx.arc(...q, 2.5, 0, TAU); ctx.stroke(); } }
+    { const q = P(pr.mine[pr.n]); ctx.save(); ctx.translate(...q); ctx.rotate(o.nose + Math.PI / 2); ctx.strokeStyle = '#cfe3ff'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(6, 6); ctx.lineTo(0, 3); ctx.lineTo(-6, 6); ctx.closePath(); ctx.stroke(); ctx.restore(); }   // the ship at the end of the turn, as she will face
+    const c = pr.cpa, mq = P(c.m), hq = P(c.h);
+    if (c.i > 0) { ctx.strokeStyle = 'rgba(127,180,255,0.9)'; ctx.setLineDash([1, 3]); ctx.beginPath(); ctx.moveTo(...mq); ctx.lineTo(...hq); ctx.stroke(); ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(...mq, 4, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.arc(...hq, 4, 0, TAU); ctx.stroke(); }
+    ctx.fillStyle = '#7fb4ff', ctx.fillText(c.i === 0 ? 'OPENING' : c.i === pr.last ? 'CLOSEST PAST 4t' : `CPA ${Math.max(0, c.d - c.band).toFixed(1)}-${(c.d + c.band).toFixed(1)} km @ ${c.t.toFixed(1)}t`, (mq[0] + hq[0]) / 2 + 8, (mq[1] + hq[1]) / 2 + 4);
+    if (o.thrust.thr > 0.02) { ctx.strokeStyle = '#ffd27f'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx, cy); const tip = dirv(o.thrust.dir, 14 + 46 * o.thrust.thr); ctx.lineTo(cx + tip.x, cy + tip.y); ctx.stroke(); ctx.lineWidth = 1; }
+  }
+  // her: track, reach at turn end, and her habit when locked
+  const f = seenFoe(s, o.comms), fp = P(f.p);   // where the board shows her, not where she is
+  if (plan) {
+    const E = add(f.p, f.v);
+    ctx.setLineDash([3, 4]);
+    ctx.strokeStyle = 'rgba(255,106,74,0.85)'; ctx.beginPath(); ctx.arc(...P(E), 0.5 * K.FOE_ACC * sc, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    if (o.comms === 'lock') { const b = mul(biasVec(s), 0.5 * K.FOE_ACC * 1.7), q0 = P(E), q1 = P(add(E, b)); ctx.strokeStyle = '#ff6a4a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(...q0); ctx.lineTo(...q1); ctx.stroke(); ctx.lineWidth = 1; ctx.fillStyle = '#ff9a7a'; ctx.fillText('her habit', q1[0] + 4, q1[1]); }
+  }
+  // the shot
+  if (plan && o.aim) {
+    const q = P(o.aim); ctx.strokeStyle = o.canFire ? '#ffd27f' : 'rgba(255,210,127,0.4)'; ctx.setLineDash(o.canFire ? [] : [2, 3]);
+    ctx.beginPath(); ctx.arc(...q, Math.max(3, o.R * sc), 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(q[0] - 5, q[1]); ctx.lineTo(q[0] + 5, q[1]); ctx.moveTo(q[0], q[1] - 5); ctx.lineTo(q[0], q[1] + 5); ctx.stroke();
+    ctx.fillStyle = '#ffd27f'; ctx.fillText(o.canFire ? `${pct(o.solLo)}-${pct(o.solHi)}%` : o.locked ? 'LOCKED' : !o.bears ? "WON'T BEAR" : o.fire ? 'NO POWER' : 'HOLD', q[0] + o.R * sc + 6, q[1] - 6);
+  }
+  if (s.slug && s.exec) { const t = s.exec.k / K.SUB, p0 = add(s.slug.from, mul(sub(s.slug.to, s.slug.from), Math.max(0, t - 0.08))), p1 = add(s.slug.from, mul(sub(s.slug.to, s.slug.from), t));
+    ctx.strokeStyle = '#ffe3a8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(...P(p0)); ctx.lineTo(...P(p1)); ctx.stroke(); ctx.lineWidth = 1; }
+  // torpedoes the board can see
+  for (const t of inbound(s)) {
+    ctx.strokeStyle = 'rgba(255,207,127,0.35)'; ctx.beginPath(); t.trail.forEach((q, i) => i ? ctx.lineTo(...P(q)) : ctx.moveTo(...P(q))); ctx.stroke();
+    const q = P(t.p); ctx.fillStyle = '#ffcf7f'; ctx.beginPath(); ctx.moveTo(q[0], q[1] - 4); ctx.lineTo(q[0] + 4, q[1]); ctx.lineTo(q[0], q[1] + 4); ctx.lineTo(q[0] - 4, q[1]); ctx.closePath(); ctx.fill();
+  }
+  if (pr) for (const t of pr.torps) {
+    ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(255,207,127,0.6)'; line(t.path, 0, t.path.length - 1); ctx.setLineDash([]);
+    ctx.fillStyle = '#ffcf7f';
+    if (t.hit) { const q = P(t.hit.p); ctx.strokeStyle = '#ffcf7f'; ctx.beginPath(); ctx.moveTo(q[0] - 4, q[1] - 4); ctx.lineTo(q[0] + 4, q[1] + 4); ctx.moveTo(q[0] + 4, q[1] - 4); ctx.lineTo(q[0] - 4, q[1] + 4); ctx.stroke(); const b = bandAt(pr.g, t.hit.t); ctx.strokeStyle = 'rgba(255,207,127,0.45)'; ctx.beginPath(); ctx.arc(...q, Math.max(5, b * sc), 0, TAU); ctx.stroke(); ctx.fillText(`IMPACT ${Math.max(0.1, t.hit.t - 0.15 * b).toFixed(1)}-${(t.hit.t + 0.15 * b).toFixed(1)}t`, q[0] + 7, q[1] + 12); }
+    else { const q = P(t.path[t.path.length - 1]); ctx.fillText(t.min < bandAt(pr.g, 2) ? 'MAY HIT' : 'MISSES', q[0] + 6, q[1]); }
+  }
+  // PDC tracers
+  s.tracers = s.tracers.filter(t => now - t.t0 < 350);
+  ctx.strokeStyle = 'rgba(160,205,255,0.8)';
+  for (const t of s.tracers) { const k = (now - t.t0) / 350, d0 = k * K.PDC_R, d1 = Math.max(0, d0 - 1.2); const u = dirv(t.a); ctx.beginPath(); ctx.moveTo(...P(add(t.p, mul(u, d1)))); ctx.lineTo(...P(add(t.p, mul(u, d0)))); ctx.stroke(); }
+  s.fx = s.fx.filter(x => now - x.t0 < 700);
+  for (const x of s.fx) { const k = (now - x.t0) / 700, q = P(x.p); ctx.strokeStyle = x.kind === 'pop' ? `rgba(160,205,255,${1 - k})` : `rgba(255,140,90,${1 - k})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(...q, 4 + k * (x.kind === 'hit' ? 26 : 16), 0, TAU); ctx.stroke(); ctx.lineWidth = 1; }
+  // the ships
+  ctx.strokeStyle = 'rgba(255,106,74,0.7)'; ctx.beginPath(); ctx.moveTo(...fp); ctx.lineTo(fp[0] + f.v.x * sc, fp[1] + f.v.y * sc); ctx.stroke();
+  ctx.fillStyle = '#ff6a4a'; ctx.beginPath(); ctx.arc(...fp, 5, 0, TAU); ctx.fill();
+  ctx.save(); ctx.translate(cx, cy); ctx.rotate(s.me.nose + Math.PI / 2); ctx.fillStyle = '#cfe3ff'; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(6, 6); ctx.lineTo(0, 3); ctx.lineTo(-6, 6); ctx.closePath(); ctx.fill(); ctx.restore();
+  ctx.strokeStyle = 'rgba(207,227,255,0.35)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + s.me.v.x * sc, cy + s.me.v.y * sc); ctx.stroke();
+  // header
+  const l = losMe(s), closing = -((f.v.x - s.me.v.x) * l.x + (f.v.y - s.me.v.y) * l.y);
+  ctx.fillStyle = '#7fb4ff'; ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillText(`RANGE ${range(s).toFixed(1)} km   ${closing >= 0 ? 'CLOSING' : 'OPENING'} ${Math.abs(closing).toFixed(1)} km/turn   BRG ${pad3(brg(sub(f.p, me)))}   ${clock(s.turn)}`, 12, 20);
+  const alerts = []; if (f.armed && s.comms === 'watch') alerts.push('SALVO ARMING'); const n = inbound(s).length; if (n) alerts.push(`${n} TORP${n > 1 ? 'S' : ''} INBOUND`); if (o.locked) alerts.push('GUN LOCKED'); if (s.comms !== 'watch') alerts.push(s.comms === 'lock' ? 'COMMS ON LOCK: BLIND PAST 12 km' : 'SPOOFING: BLIND PAST 12 km');
+  ctx.fillStyle = '#ff6a4a'; ctx.fillText(alerts.join('   '), 12, 38);
+  ctx.fillStyle = '#cfe3ff'; ctx.fillText(`YOU  FACING ${pad3(brg(dirv(s.me.nose)))}${plan && adiff(s.me.nose, o.nose) > 0.05 ? ` > ${pad3(brg(dirv(o.nose)))}` : ''}   COURSE ${pad3(brg(s.me.v))} at ${len(s.me.v).toFixed(1)} km/turn`, 12, W - 12);
+  { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) {   // the course, drawn as three turns of travel const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); ctx.fillStyle = 'rgba(207,227,255,0.8)'; if (L > 30) ctx.fillText('course', tx + 6, ty - 6); } }
+  if (s.over) { ctx.fillStyle = 'rgba(5,10,17,0.75)'; ctx.fillRect(0, cy - 30, W, 60); ctx.fillStyle = s.over.win ? '#7bd59d' : '#ff6a4a'; ctx.font = '600 16px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText(s.over.text.toUpperCase(), cx, cy + 6); ctx.textAlign = 'left'; }
+  requestAnimationFrame(draw);
+}
+
+// ---------- the radar's hand (A only) ----------
+let dragging = false;
+function radarAt(e) {
+  const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, s = S;
+  if (UI.mode !== 'A' || s.phase !== 'plan' || s.over) return;
+  const dx = mx - geo.cx, dy = my - geo.cy, world = V(s.me.p.x + dx / geo.sc, s.me.p.y + dy / geo.sc);
+  if (UI.post === 'pilot') { const d = Math.hypot(dx, dy); s.ui.thrust = d < 10 ? { dir: s.me.nose, thr: 0 } : { dir: Math.atan2(dy, dx), thr: clamp((d - 10) / 60, 0, 1) }; }
+  else if (UI.post === 'gunner') { if (UI.tool === 'aim') s.ui.aim = world; else s.ui.pdcDir = Math.atan2(dy, dx); }
+}
+cv.addEventListener('pointerdown', e => { dragging = true; radarAt(e); });
+cv.addEventListener('pointermove', e => { if (dragging) radarAt(e); });
+window.addEventListener('pointerup', () => { if (dragging) { dragging = false; render(); } });
+
+// ---------- the console ----------
+const side = document.getElementById('side');
+const seg = (act, opts, cur) => `<div class="seg">${opts.map(([v, l]) => `<button data-act="${act}" data-v="${v}" aria-pressed="${String(v) === String(cur)}">${l}</button>`).join('')}</div>`;
+const pips = (n, max = 3, cls = 'on') => `<span class="pips">${Array.from({ length: max }, (_, i) => `<span class="${i < n ? cls : ''}"></span>`).join('')}</span>`;
+const PILOT_WORD = { engage: 'closing to 12 km', break: 'breaking off', hold: 'holding 20 km', close: 'closing', open: 'opening the range', evade: 'evading torps', nose: 'nose on her', coast: 'coasting', manual: 'your burn' };
+const PDC_WORD = { forward: 'on her bow', threat: 'on the threat', wide: 'wide', manual: 'your arc' };
+const COMMS_WORD = { watch: 'watching her tubes', lock: 'lock on her', spoof: 'spoofing', none: 'no lock this turn, blind' };
+function offHer(s, o) { return Math.round(adiff(o.nose, ang(losMe(s))) / DEG); }
+
+function postPanel(s, o) {
+  const A = UI.mode === 'A', P = UI.post, ui = s.ui;
+  if (P === 'gunner') {
+    const status = o.locked ? '<span class="bad">Gun locked with heat this turn.</span>' : !o.aim ? '<span class="warm">No shot placed.</span>' : !o.bears ? `<span class="bad">Won't bear: the nose is ${offHer(s, o)} degrees off her. Ask the pilot.</span>` : o.fire ? '<span class="good">Gun bears.</span>' : 'Holding fire.';
+    const read = `<p class="read">${status}<br>Solution ${o.aim ? `${pct(o.solLo)} to ${pct(o.solHi)}%` : 'none'}   spread ${o.R.toFixed(2)} km   her reach ${(0.5 * K.FOE_ACC).toFixed(1)} km<br>Damage ${Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s)))} a hit${falloff(range(s)) < 1 ? ' (cut at this range)' : ''}<br>Heat ${s.me.heat} of ${K.HEAT_CAP}   PDC ${Math.round(o.pdcW)} degrees${o.comms === 'lock' ? '<br><span class="good">Comms has a lock: the spread is tighter and her habit shows.</span>' : ''}</p>`;
+    if (A) return `<div class="row"><span class="lab">Tool</span>${seg('tool', [['aim', 'Place the shot'], ['pdc', 'Set PDC arc']], UI.tool)}</div>
+      <div class="row"><span class="lab">Gun</span>${seg('afire', [[true, 'Fire'], [false, 'Hold']], ui.fire)}</div>
+      <div class="row"><span class="lab">PDC arc</span><input id="pdcw" type="range" min="30" max="160" step="5" value="${ui.pdcW}" aria-label="PDC arc width"><span class="read" id="pdcwv">${ui.pdcW} deg</span></div>
+      <p class="note">${UI.tool === 'aim' ? "Click the radar where she will be at the end of the turn. The dashed ring is everywhere her drive can put her. Your ring is where the slug can land: it grows with range and when the ship burns. A slug that lands within 0.7 km of her hits." : 'Click the radar to point the PDC. A narrow arc is dense and kills what is inside it. A wide one covers more and kills less.'}</p>${read}`;
+    return `<div class="row"><span class="lab">Gun</span>${seg('bfire', [[true, 'Fire'], [false, 'Hold']], ui.b.fire)}</div>
+      <div class="row"><span class="lab">PDC</span>${seg('bpdc', [['forward', 'On her bow'], ['threat', 'On the threat'], ['wide', 'Wide']], ui.b.pdc)}</div>
+      <p class="note">The fire control lays the shot on where she will be. You decide whether to fire and where the PDC looks.</p>${read}`;
+  }
+  if (P === 'pilot') {
+    const steady = !A && ui.b.pilot === 'steady';
+    const read = `<p class="read">Burn ${Math.round(o.thrust.thr * 100)}%${o.thrust.thr > 0.02 ? `, bearing ${pad3(brg(dirv(o.thrust.dir)))}` : ''}   drive ${o.acc.toFixed(1)} km/turn&sup2;<br>Your level ${UI.level}: the burn lands within about ${Math.round(scatterDeg(steady) * 2)} degrees of the plot (the two rings).<br>${o.bears ? '<span class="good">Nose within 30 degrees of her: the gun bears.</span>' : `<span class="warm">Nose ${offHer(s, o)} degrees off her: the gun won't bear.</span>`}<br>${projWords(s, o)}</p>`;
+    if (A) return `<p class="note">Drag on the radar to set the burn, inside the captain's order: ${o.ordered.thr >= 0.1 ? 'the yellow wedge is what the order allows.' : 'the order is to coast, so small trims only, up to 30%.'} A coasting ship can turn her nose to the target; a burning one points where she burns.</p>
+      <div class="row"><button data-act="coast">Coast</button><button data-act="asorder">Burn as ordered</button></div>
+      <div class="row"><span class="lab">Coasting</span>${seg('face', [['her', 'Turn to her'], ['hold', 'Hold facing']], ui.face)}</div>
+      <p class="note">The hull swings 90 degrees a turn. The drive fires only once the nose is within 30 degrees of the burn, so turning round eats into the burn.</p>${read}`;
+    return `<div class="row"><span class="lab">Burn</span>${seg('bpilot', [['order', 'As ordered'], ['steady', 'Steady: 60%, half the scatter']], ui.b.pilot)}</div>${read}`;
+  }
+  if (P === 'engineer') return `<div class="row"><span class="lab">Carry out</span>${seg('beng', [['book', `By the book ${pct(engOdds(false))}%`], ['push', `Push it ${pct(engOdds(true))}%`]], ui.b.eng)}</div>
+    <p class="note">The order sets the split. By the book: the power gets across in time, or the old split stays a turn. Push it: the top system runs at 4, or the breaker trips and it drops to 1. By the book only rolls when the split changes.</p>
+    <div class="row"><button class="toggle" data-act="vent" aria-pressed="${ui.vent}" ${ventReady(s) ? '' : 'disabled'}>Vent the gun ${pct(ventOdds())}%</button><span class="note">${ventReady(s) ? 'Heat to 0 and the lock off. If it sticks, heat down 2.' : `Ready in ${K.VENT_EVERY - (s.turn - s.me.lastVent)} turns.`}</span></div>
+    <p class="read">This turn: drive ${o.power.drive}, gun ${o.power.guns}, PDC ${o.power.pdc}   last turn ${s.lastPower.drive}/${s.lastPower.guns}/${s.lastPower.pdc}<br>Gun heat ${s.me.heat} of ${K.HEAT_CAP}${o.locked ? '  <span class="bad">locked</span>' : ''}</p>`;
+  const pref = ORDER[orderOf(s).intent].comms;
+  return `<div class="row"><span class="lab">Mode</span>${seg('comms', [['watch', 'Watch 100%'], ['lock', `Lock ${pct(commsOdds('lock'))}%`], ['spoof', `Spoof ${pct(commsOdds('spoof'))}%`]], ui.comms)}</div>
+    <p class="note">The captain wants ${COMMS_WORD[pref]}. Watch: the board sees torps at any range and her salvo a turn ahead. Lock: tightens the gun and the board's error on her, and shows her habit. Spoof: her torps steer badly and her gun misses more. Lock and spoof leave you blind past 12 km, and if the roll fails you are blind for nothing.</p>
+    <p class="read">${inbound(s).length ? `<span class="warm">${torpWarn(s)}</span>` : 'No torps on the board.'}${s.foe.armed && s.comms === 'watch' ? '<br><span class="bad">She is arming a salvo.</span>' : ''}<br>${projWords(s, o)}</p>`;
+}
+function turnSummary(s, o) {
+  const swing = Math.round(adiff(s.me.nose, o.nose) / DEG), burning = o.thrust.thr > 0.05, p = [];
+  p.push(burning ? `Burn ${pct(o.thrust.thr)}% toward ${pad3(brg(dirv(o.thrust.dir)))}` : 'Coast');
+  p.push(swing ? `the hull swings ${swing} degrees to face ${pad3(brg(dirv(o.nose)))}` : `the hull stays facing ${pad3(brg(dirv(o.nose)))}`);
+  if (burning && adiff(s.me.nose, o.thrust.dir) >= K.GATE) p.push(adiff(o.nose, o.thrust.dir) < K.GATE ? 'the drive lights once the nose comes round' : 'the drive does not light: the nose will not come round this turn');
+  p.push(o.canFire ? 'the gun fires' : o.fire ? `the gun cannot fire (${o.locked ? 'heat' : !o.aim ? 'no shot placed' : !o.bears ? 'the nose is off her' : 'no power'})` : 'the gun holds');
+  p.push(`PDC ${PDC_WORD[o.pdcIntent]}`);
+  return `<p class="summary"><b>This turn:</b> ${p.join(', ')}.</p>`;
+}
+function orderCard(s) {
+  const i = orderOf(s).intent, d = ORDER[i], by = s.order && s.order.by;
+  return `<p class="read"><span class="p-captain">Captain (${nerveWord()}):</span> ${d.text}${by ? ` <span class="note">On ${by === UI.post ? 'your' : NAME[by] + "'s"} suggestion.</span>` : ''}<br><span class="note">Pilot ${PILOT_WORD[i]}. Engineer feeds ${d.power}. Comms ${COMMS_WORD[d.comms]}.</span></p>`;
+}
+function crewPanel(s, o) {
+  const rows = { pilot: `${PILOT_WORD[o.pilotIntent]}: burn ${Math.round(o.thrust.thr * 100)}%, nose ${offHer(s, o)} deg off her`,
+    gunner: `${o.fire ? (o.canFire ? `firing, solution ${pct(o.solLo)}-${pct(o.solHi)}%` : "wants to fire, can't") : 'holding fire'}; PDC ${PDC_WORD[o.pdcIntent]}`,
+    engineer: `drive ${o.power.drive}, gun ${o.power.guns}, PDC ${o.power.pdc}${o.vent ? ', venting' : ''}`, comms: COMMS_WORD[o.comms] };
+  return POSTS.filter(p => p !== UI.post).map(p => `<div><span class="p-${p}">${NAME[p]}</span><span>${rows[p]}</span></div>`).join('');
+}
+function render() {
+  const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = s.phase === 'plan' && !s.over;
+  const strip = s.log.map(e => e.kind === 'event' ? `<div><time>${e.t}</time><span class="ev">${e.text}</span></div>`
+    : `<div class="${e.kind === 'reply' ? 'reply' : ''}"><time>${e.kind === 'reply' ? '' : e.t}</time><span><span class="who p-${e.from}">${e.from === P ? 'You' : NAME[e.from]}</span>${e.kind === 'call' ? ` to ${e.to === P ? 'you' : NAME[e.to]}` : ''}: ${e.text}</span></div>`).join('');
+  side.innerHTML = `
+  <div class="card"><h1>Radar fight spike</h1><p class="sub">Throwaway. The hauler against a corsair with four torpedoes. Same seed in both modes, so you can play it twice and compare.</p>
+    <div class="row"><span class="lab">Mode</span>${seg('mode', [['A', 'A: you plot'], ['B', 'B: you order']], UI.mode)}</div>
+    <div class="row"><span class="lab">Post</span>${seg('post', POSTS.map(p => [p, NAME[p]]), P)}</div>
+    <details id="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup: trust, captain, your level, fire control, sensors, seed</summary><div>
+    <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How much the crew trusts you"><span class="read" id="trustv">${Math.round(UI.trust * 100)}%</span></div>
+    <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="The captain's nerve"><span class="read" id="nervev">${nerveWord()}</span></div>
+    <div class="row"><span class="lab">Your level</span>${seg('level', [0, 1, 2, 3, 4, 5].map(n => [n, String(n)]), UI.level)}<span class="note">the crew are 2</span></div>
+    <div class="row"><span class="lab">Accuracy</span>${seg('acc', [[false, 'Stock'], [true, 'Upgraded']], UI.accurate)}</div>
+    <div class="row"><span class="lab">Resilience</span>${seg('hard', [[false, 'Stock'], [true, 'Hardened']], UI.hardened)}</div>
+    <div class="row"><span class="lab">Sensors</span><input id="sens" type="range" min="20" max="100" step="5" value="${UI.sensors}" aria-label="Sensor condition"><span class="read" id="sensv">${UI.sensors}%</span></div>
+    <p class="note">Every ship sees the whole fight, with error: the red bands are where she really is, and they widen the further ahead the board looks. Accuracy halves the error and tightens the gun. Hardened keeps worn sensors from widening it much. A comms lock narrows it on her. Board error now ${sigmaOf(o.comms).toFixed(2)} km.</p>
+    <div class="row"><span class="lab">Seed</span><span class="read">${UI.seed}</span><button data-act="restart">Restart</button><button data-act="newseed">New seed</button></div>
+    </div></details></div>
+  ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="flip">Again in ${UI.mode === 'A' ? 'B' : 'A'}</button></div></div>` : ''}
+  <div class="card"><h2>Your post: <em>${NAME[P]}</em>${(P === 'engineer' || P === 'comms') ? '   (A and B the same here)' : ''}</h2>${orderCard(s)}${turnSummary(s, o)}${postPanel(s, o)}
+    <button class="go" data-act="go" ${plan ? '' : 'disabled'}>${s.phase === 'exec' ? 'Burning...' : 'End turn'}</button><p class="note">Or press <kbd>Space</kbd>.</p></div>
+  <div class="card"><h2>${clock(s.turn)}   turn ${s.turn + 1} of ${K.TURNS}</h2>
+    <div class="bars"><span>Our hull</span><span class="bar"><i style="width:${s.me.hull}%"></i></span><span>${s.me.hull}</span>
+    <span>Her hull</span><span class="bar foe"><i style="width:${s.foe.hull / s.foe.max * 100}%"></i></span><span>${s.foe.hull}</span>
+    <span>Gun heat</span>${pips(s.me.heat, K.HEAT_CAP, s.me.heat >= K.HEAT_CAP - 1 ? 'over' : 'on')}<span>${s.me.heat}</span>
+    <span>Her torps</span>${pips(s.foe.torps, 4, 'over')}<span>${s.foe.torps}</span></div></div>
+  ${s.incoming.length ? `<div class="card incoming"><h2>Calls to you</h2>${s.incoming.map((m, i) => `<div class="msg"><p><span class="who p-${m.from}">${NAME[m.from]}</span>: ${m.text}</p><div class="row">${m.suggest ? `<button data-act="ans" data-i="${i}" data-y="1">Do it</button><button data-act="ans" data-i="${i}" data-y="0">No</button>` : `<button data-act="ans" data-i="${i}" data-y="0">Heard</button>`}</div></div>`).join('')}</div>` : ''}
+  <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%` : ''}</button>`).join('')}</div>
+    <p class="note">One of each a turn. ${P === 'gunner' ? 'The posts weigh it against the captain\'s order and how far they trust you.' : 'A suggestion to the captain shows its odds: your trust, your level, what the board shows, and the captain\'s nerve.'}</p></div>
+  <div class="card"><h2>The crew this turn</h2><div class="crew">${crewPanel(s, o)}</div></div>
+  <div class="card"><h2>Net</h2><div class="strip">${strip || '<span class="ev">Quiet.</span>'}</div></div>
+  <div class="card"><h2>What to judge</h2><ul class="q"><li>A against B: is plotting on the radar more fun, or just more work?</li><li>At a post without the gun, is there still a fight to play?</li><li>Do the calls make a crew, or are they menu chores?</li></ul></div>`;
+}
+
+side.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; const s = S, ui = s.ui, v = b.dataset.v, act = b.dataset.act, bool = v === 'true';
+  if (act === 'mode') { UI.mode = v; }
+  else if (act === 'acc') UI.accurate = bool;
+  else if (act === 'level') UI.level = +v;
+  else if (act === 'asorder') ui.thrust = { ...buildOrders(s).ordered };
+  else if (act === 'hard') UI.hardened = bool;
+  else if (act === 'post') { UI.post = v; s.incoming = []; }
+  else if (act === 'restart') { S = newGame(UI.seed); aiCalls(S); }
+  else if (act === 'newseed') { UI.seed = 1 + Math.floor(Math.random() * 9999); S = newGame(UI.seed); aiCalls(S); }
+  else if (act === 'flip') { UI.mode = UI.mode === 'A' ? 'B' : 'A'; S = newGame(UI.seed); aiCalls(S); }
+  else if (act === 'go') return commit();
+  else if (act === 'tool') UI.tool = v;
+  else if (act === 'afire') ui.fire = bool;
+  else if (act === 'bfire') ui.b.fire = bool;
+  else if (act === 'bpdc') ui.b.pdc = v;
+  else if (act === 'bpilot') ui.b.pilot = v;
+  else if (act === 'beng') ui.b.eng = v;
+  else if (act === 'comms') { ui.comms = v; ui.b.comms = v; }
+  else if (act === 'coast') { ui.thrust = { dir: s.me.nose, thr: 0 }; ui.face = 'hold'; }
+  else if (act === 'face') ui.face = v;
+  else if (act === 'nosefoe') { ui.thrust = { dir: ang(losMe(s)), thr: 0 }; ui.face = 'her'; }
+  else if (act === 'vent') ui.vent = !ui.vent;
+  else if (act === 'pw') { const k = b.dataset.k, d = +b.dataset.d, used = ui.power.drive + ui.power.guns + ui.power.pdc; const n = ui.power[k] + d; if (n >= 0 && n <= 3 && (d < 0 || used < 6)) ui.power[k] = n; }
+  else if (act === 'call') return playerCall(b.dataset.id);
+  else if (act === 'ans') return answer(+b.dataset.i, b.dataset.y === '1');
+  render();
+});
+side.addEventListener('input', e => {
+  if (e.target.id === 'trust') { UI.trust = +e.target.value; document.getElementById('trustv').textContent = `${Math.round(UI.trust * 100)}%`; }
+  if (e.target.id === 'nerve') { UI.nerve = +e.target.value; document.getElementById('nervev').textContent = nerveWord(); }
+  if (e.target.id === 'sens') { UI.sensors = +e.target.value; document.getElementById('sensv').textContent = `${UI.sensors}%`; }
+  if (e.target.id === 'pdcw') { S.ui.pdcW = +e.target.value; document.getElementById('pdcwv').textContent = `${S.ui.pdcW} deg`; }
+});
+side.addEventListener('toggle', e => { if (e.target.id === 'setup') UI.setupOpen = e.target.open; }, true);
+side.addEventListener('change', e => { if (e.target.id === 'pdcw' || e.target.id === 'sens') render(); if (e.target.id === 'nerve') { if (S.phase === 'plan' && !S.over && !(S.order && S.order.by)) S.order = { intent: captainPick(S), until: -1 }; render(); } });
+document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON', 'INPUT'].includes(e.target.tagName)) { e.preventDefault(); commit(); } });
+
+S = newGame(UI.seed); aiCalls(S); render(); requestAnimationFrame(draw);
+</script>
