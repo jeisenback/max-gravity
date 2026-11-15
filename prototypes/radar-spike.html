@@ -245,7 +245,7 @@ function pilotGeo(s, intent, acc) {
   const a = sub(add(foe.v, mul(los, want)), me.v), al = len(a);
   let thr = Math.min(1, al / acc), dir = al > 0.01 ? ang(a) : me.nose;
   if (intent === 'nose') { dir = ang(los); thr = Math.min(thr, 0.25); }
-  if (intent === 'hold' || intent === 'engage') { const rv = sub(foe.v, me.v), closing = -(rv.x * los.x + rv.y * los.y); if (thr < 0.15 || (Math.abs(r - keep) < (intent === 'engage' ? 4 : 6) && Math.abs(closing) < 4)) thr = 0; }  // in the band and not closing fast: coast, nose on her
+  if (intent === 'hold' || intent === 'engage') { const rv = sub(foe.v, me.v), closing = -(rv.x * los.x + rv.y * los.y); if (thr < 0.15 || (Math.abs(r - keep) < (intent === 'engage' ? 6 : 10) && Math.abs(closing) < 6)) thr = 0; else thr = Math.min(thr, 0.6); }   // coast nose-on in a wide band; outside it, a short burn  // in the band and not closing fast: coast, nose on her
   return { dir, thr, face: intent === 'open' || intent === 'break' ? 'burn' : 'her' };
 }
 function pdcGeo(s, mode, list) {
@@ -637,9 +637,21 @@ function turnSummary(s, o) {
   p.push(`PDC ${PDC_WORD[o.pdcIntent]}`);
   return `<p class="summary"><b>This turn:</b> ${p.join(', ')}.</p>`;
 }
+// Where an order leaves the nose at the end of this turn, and so whether the bow gun bears on her.
+function gunCost(s, intent) {
+  const acc = K.ME_ACC * K.DRIVE[PRESETS[ORDER[intent].power].drive], g = pilotGeo(s, intent, acc);
+  const want = g.thr > 0.05 ? g.dir : g.face === 'her' ? ang(losMe(s)) : s.me.nose, end = turnToward(s.me.nose, want, K.TURN), off = Math.round(adiff(end, ang(losMe(s))) / DEG);
+  return { bears: off <= K.BEAR / DEG, off, burn: g.thr > 0.05 };
+}
+const gunTag = (s, intent) => { const c = gunCost(s, intent); return c.bears ? ' <span class="good">gun bears</span>' : ' <span class="bad">no gun</span>'; };
+function gunWords(s, intent) {
+  const c = gunCost(s, intent);
+  if (c.bears) return `<span class="good">The gun bears this turn${c.burn ? ': the burn is toward her' : ': coasting, nose on her'}.</span>`;
+  return `<span class="bad">The hull ends ${c.off} degrees off her: no gun this turn.</span>${c.burn ? ' The drive points away from her to do this.' : ''}`;
+}
 function orderCard(s) {
   const i = orderOf(s).intent, d = ORDER[i], by = s.order && s.order.by;
-  return `<p class="read"><span class="p-captain">Captain (${nerveWord()}):</span> ${d.text}${by ? ` <span class="note">On ${by === UI.post ? 'your' : NAME[by] + "'s"} suggestion.</span>` : ''}<br><span class="note">Pilot ${PILOT_WORD[i]}. Engineer feeds ${d.power}. Comms ${COMMS_WORD[d.comms]}.</span></p>`;
+  return `<p class="read"><span class="p-captain">Captain (${nerveWord()}):</span> ${d.text}${by ? ` <span class="note">On ${by === UI.post ? 'your' : NAME[by] + "'s"} suggestion.</span>` : ''}<br><span class="note">Pilot ${PILOT_WORD[i]}. Engineer feeds ${d.power}. Comms ${COMMS_WORD[d.comms]}.</span><br>${gunWords(s, i)}</p>`;
 }
 function crewPanel(s, o) {
   const rows = { pilot: `${PILOT_WORD[o.pilotIntent]}: burn ${Math.round(o.thrust.thr * 100)}%, nose ${offHer(s, o)} deg off her`,
@@ -674,7 +686,7 @@ function render() {
     <span>Gun heat</span>${pips(s.me.heat, K.HEAT_CAP, s.me.heat >= K.HEAT_CAP - 1 ? 'over' : 'on')}<span>${s.me.heat}</span>
     <span>Her torps</span>${pips(s.foe.torps, 4, 'over')}<span>${s.foe.torps}</span></div></div>
   ${s.incoming.length ? `<div class="card incoming"><h2>Calls to you</h2>${s.incoming.map((m, i) => `<div class="msg"><p><span class="who p-${m.from}">${NAME[m.from]}</span>: ${m.text}</p><div class="row">${m.suggest ? `<button data-act="ans" data-i="${i}" data-y="1">Do it</button><button data-act="ans" data-i="${i}" data-y="0">No</button>` : `<button data-act="ans" data-i="${i}" data-y="0">Heard</button>`}</div></div>`).join('')}</div>` : ''}
-  <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%` : ''}</button>`).join('')}</div>
+  <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%${gunTag(s, c.intent)}` : ''}</button>`).join('')}</div>
     <p class="note">One of each a turn. ${P === 'gunner' ? 'The posts weigh it against the captain\'s order and how far they trust you.' : 'A suggestion to the captain shows its odds: your trust, your level, what the board shows, and the captain\'s nerve.'}</p></div>
   <div class="card"><h2>The crew this turn</h2><div class="crew">${crewPanel(s, o)}</div></div>
   <div class="card"><h2>Net</h2><div class="strip">${strip || '<span class="ev">Quiet.</span>'}</div></div>
