@@ -11,7 +11,9 @@ Each is one self-contained page. Open it in a desktop browser.
   sensor condition), the PDC arc, and posts: the captain sets the intent, the gunner works the geometry, and pilot, engineer
   and comms carry it out with skill checks and make suggestions. Mode A plots on the radar; mode B gives the post's orders.
   Time runs in turns, or in real time with pause (1x, 2x, 16x), pausing itself at events: a salvo armed or launched, a
-  torpedo nearing the PDC's range, a hit, a call to you, a new order, the gun locked with heat.
+  torpedo nearing the PDC's range, a hit, a call to you, coming into gun range, a change of plan into or out of
+  evade or break-off; never on a standing condition. The gunner's fire control runs the gun or the PDC for each order
+  cycle, never both.
   She is met at 250 km by default, with fast, long-legged torpedoes launched from about 165 km and a radar that zooms
   (50, 150, 400 km); the 40 km fight is kept as the short opening.
 - `boarding-spike.html`: a corsair's marines boarding the Ice Hauler, fought spot by spot through her real decks (the

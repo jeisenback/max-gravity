@@ -128,8 +128,8 @@ function newGame(seed) {
     me: { p: V(0, 0), v: V(0, -1), hull: 100, heat: 0, locked: false, nose: -Math.PI / 2, lastVent: -99 },
     foe: { p: UI.opening === 'long' ? V(160.7, -191.5) : V(24, -30), v: UI.opening === 'long' ? V(-6.4, 7.7) : V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
     torps: [], tracers: [], fx: [], slug: null, paused: false, pauseWhy: '', nearSaid: new Set(), lastIntent: 'hold', hull0: 100, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
-    ui: { face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
-      b: { pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
+    ui: { role: 'attack', face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
+      b: { role: 'attack', pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
   s.ui.pdcDir = ang(sub(s.foe.p, s.me.p));
   s.errU = { p: unitDisk(s.r2), v: unitDisk(s.r2) };
   return s;
@@ -178,7 +178,8 @@ function aiPilot(s) { const a = asked(s, 'pilot'); return a && allows(s, a) ? a 
 function aiGunner(s, bears) {
   const af = asked(s, 'gunner.fire'), ap = asked(s, 'gunner.pdc');
   const fire = af !== undefined ? af : bears && range(s) < 60 && !(s.me.heat >= K.HEAT_CAP - 1 && s.foe.hull > 20);
-  return { fire, pdc: ap || (known(s).length ? 'threat' : 'forward') };
+  const role = ap === 'threat' || known(s).some(t => eta(s, t) < 1.6) ? 'pd' : 'attack';   // the PDC when a torpedo will reach its range this cycle
+  return { fire, pdc: ap || (known(s).length ? 'threat' : 'forward'), role };
 }
 const aiEngineer = s => asked(s, 'engineer') || ORDER[orderOf(s).intent].power;
 function aiComms(s) { return asked(s, 'comms') || ORDER[orderOf(s).intent].comms; }
@@ -329,18 +330,19 @@ function buildOrders(s) {
   o.thrust = ov.thrust ? { ...ov.thrust } : P === 'pilot' && A ? clampBurn(ui.thrust, o.ordered) : { ...o.ordered, thr: o.ordered.thr * (P === 'pilot' && ui.b.pilot === 'steady' ? 0.6 : 1) };
   o.face = P === 'pilot' && UI.mode === 'A' ? ui.face : o.ordered.face || 'her';
   const locked = s.me.locked && !o.vent;
-  if (P === 'gunner' && A) { o.aim = ui.aim || (UI.time === 'real' && ui.aimRel ? add(add(seenFoe(s, o.comms).p, seenFoe(s, o.comms).v), ui.aimRel) : null); o.fire = ui.fire && !!ui.aim; o.pdcIntent = 'manual'; o.pdcDir = ui.pdcDir; o.pdcW = ui.pdcW; }
+  if (P === 'gunner' && A) { o.aim = ui.aim || (UI.time === 'real' && ui.aimRel ? add(add(seenFoe(s, o.comms).p, seenFoe(s, o.comms).v), ui.aimRel) : null); o.role = ui.role; o.fire = ui.fire && !!o.aim; o.pdcIntent = 'manual'; o.pdcDir = ui.pdcDir; o.pdcW = ui.pdcW; }
   else {
     o.aim = autoAim(s, o.comms);
     const bears0 = adiff(turnToward(s.me.nose, wantNose(s, o), K.TURN), ang(sub(o.aim, s.me.p))) <= K.BEAR;
-    const g = P === 'gunner' ? { fire: ui.b.fire, pdc: ui.b.pdc } : aiGunner(s, bears0 && !locked);
-    o.fire = g.fire; o.pdcIntent = g.pdc;
+    const g = P === 'gunner' ? { fire: ui.b.fire, pdc: ui.b.pdc, role: ui.b.role } : aiGunner(s, bears0 && !locked);
+    o.fire = g.fire; o.pdcIntent = g.pdc; o.role = g.role;
     const pg = pdcGeo(s, g.pdc, P === 'gunner' ? inbound(s) : known(s)); o.pdcDir = pg.dir; o.pdcW = pg.w;
   }
   o.want = wantNose(s, o); o.nose = turnToward(s.me.nose, o.want, K.TURN);   // the nose at the end of the turn
   o.bears = !!o.aim && adiff(o.nose, ang(sub(o.aim, s.me.p))) <= K.BEAR;
   o.locked = locked;
-  o.canFire = o.fire && o.bears && !locked && o.power.guns > 0;
+  o.canFire = o.role === 'attack' && o.fire && o.bears && !locked && o.power.guns > 0;
+  o.pdcOn = o.role === 'pd' && o.power.pdc > 0;
   o.R = spreadR(s, o);
   [o.solLo, o.solHi] = o.aim ? solutionRange(s, o) : [0, 0]; o.sol = (o.solLo + o.solHi) / 2;
   return o;
@@ -409,7 +411,7 @@ function answer(i, yes) {
   const s = S, m = s.incoming[i]; if (!m) return; s.incoming.splice(i, 1);
   if (yes && m.suggest) {
     const A = UI.mode === 'A', ui = s.ui;
-    if (m.suggest === 'pdcThreat') { const t = nearestOf(s, inbound(s)); if (A) { if (t) ui.pdcDir = ang(sub(t.p, s.me.p)); ui.pdcW = 50; UI.tool = 'pdc'; } else ui.b.pdc = 'threat'; }
+    if (m.suggest === 'pdcThreat') { const t = nearestOf(s, inbound(s)); if (A) { if (t) ui.pdcDir = ang(sub(t.p, s.me.p)); ui.pdcW = 50; UI.tool = 'pdc'; ui.role = 'pd'; } else { ui.b.pdc = 'threat'; ui.b.role = 'pd'; } }
     if (m.suggest === 'hold') { if (A) ui.fire = false; else ui.b.fire = false; }
     if (m.suggest === 'nose' && A) ui.thrust = { dir: ang(losMe(s)), thr: 0 };
   }
@@ -434,7 +436,7 @@ function commit() {
     if (UI.time === 'real') { s.paused = true; s.pauseWhy = 'She launches two torpedoes.'; }
   }
   s.slug = o.canFire ? { from: { ...s.me.p }, to: add(o.aim, dirv(s.r2() * TAU, Math.sqrt(s.r2()) * o.R)), R: o.R } : null;
-  if (o.fire && !o.canFire) s.turnLines.push(o.locked ? 'The gun is locked with heat.' : !o.bears ? "The gun can't bear: the ship's nose is off her." : 'No power to the gun.');
+  if (o.fire && !o.canFire && o.role === 'attack') s.turnLines.push(o.locked ? 'The gun is locked with heat.' : !o.bears ? "The gun can't bear: the ship's nose is off her." : 'No power to the gun.');
   s.hull0 = s.me.hull; s.phase = 'exec'; render();
   // Turns: the turn plays out in 1.4 s. Real time: a turn is one order cycle of 20 s, played at the chosen speed, paused at events;
   // at its end the next cycle is committed at once with the orders as they stand.
@@ -463,8 +465,8 @@ function boundaryEvent(s) {
   if (s.me.hull < s.hull0) { s.hull0 = s.me.hull; return 'We are hit.'; }
   if (s.incoming.some(m => m.suggest)) return 'A call for you.';
   if (s.foe.armed && s.comms === 'watch') return 'She is arming a salvo. It comes next cycle.';
-  if (s.lastIntent !== orderOf(s).intent) { s.lastIntent = orderOf(s).intent; return "The captain's order changes."; }
-  if (s.me.locked) return 'The gun is locked with heat.';
+  { const ni = orderOf(s).intent, oi = s.lastIntent; s.lastIntent = ni; if (ni !== oi && [ni, oi].some(x => x === 'evade' || x === 'break')) return `The captain changes the plan: ${ORDER[ni].text}`; }   // only a real change of plan
+  if (!s.inGun && range(s) < 35) { s.inGun = true; return 'She is in gun range.'; }   // a new event, once; standing conditions (heat) never pause
   return null;
 }
 function playPause() {
@@ -483,11 +485,11 @@ function substep(s) {
     move(t, a, dt); t.age += dt; t.trail.push({ ...t.p }); if (t.trail.length > 16) t.trail.shift();
     const after = sub(t.p, me.p);
     if (segDist(before, after) < K.TORP_HIT) { t.dead = true; me.hull = Math.max(0, me.hull - K.TORP_DMG); s.fx.push({ p: { ...me.p }, t0: now, kind: 'hit' }); s.turnLines.push(`Torpedo hit. ${K.TORP_DMG} off our hull.`); continue; }
-    if (o.power.pdc > 0 && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 1 - Math.exp(-0.14 * len(sub(t.v, me.v)) / K.SUB * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW))) {
+    if (o.pdcOn && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 1 - Math.exp(-0.14 * len(sub(t.v, me.v)) / K.SUB * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW))) {
       t.dead = true; s.fx.push({ p: { ...t.p }, t0: now, kind: 'pop' }); s.turnLines.push('The PDC kills a torpedo.');
     }
   }
-  if (o.power.pdc > 0 && s.torps.some(t => !t.dead && len(sub(t.p, me.p)) < K.PDC_R + 3))
+  if (o.pdcOn && s.torps.some(t => !t.dead && len(sub(t.p, me.p)) < K.PDC_R + 3))
     for (let i = 0; i < 3; i++) s.tracers.push({ p: { ...me.p }, a: o.pdcDir + (Math.random() - 0.5) * o.pdcW * DEG, t0: now });
   s.torps = s.torps.filter(t => !t.dead && t.age < K.TORP_LIFE + 2);
 }
@@ -535,7 +537,8 @@ function draw() {
   ctx.fillStyle = o.bears ? 'rgba(123,213,157,0.06)' : 'rgba(122,142,166,0.05)';
   ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, REACH * sc, o.nose - K.BEAR, o.nose + K.BEAR); ctx.closePath(); ctx.fill();
   // PDC arc
-  if (o.power.pdc > 0) { const r = K.PDC_R * sc, h = o.pdcW * DEG / 2, dens = clamp(60 / o.pdcW, 0.35, 1.4);
+  if (o.power.pdc > 0 && o.role !== 'pd') { const r = K.PDC_R * sc; ctx.strokeStyle = 'rgba(74,163,255,0.35)'; ctx.setLineDash([2, 4]); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - o.pdcW * DEG / 2, o.pdcDir + o.pdcW * DEG / 2); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = 'rgba(127,180,255,0.7)'; ctx.fillText('PDC STOWED', cx + r * Math.cos(o.pdcDir) + 4, cy + r * Math.sin(o.pdcDir)); }
+  if (o.pdcOn) { const r = K.PDC_R * sc, h = o.pdcW * DEG / 2, dens = clamp(60 / o.pdcW, 0.35, 1.4);
     ctx.fillStyle = `rgba(74,163,255,${0.06 + 0.1 * dens})`; ctx.strokeStyle = 'rgba(74,163,255,0.6)';
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - h, o.pdcDir + h); ctx.closePath(); ctx.fill(); ctx.stroke(); }
   // my track: this turn's burn, then three turns ballistic
@@ -643,10 +646,14 @@ function postPanel(s, o) {
     const status = o.locked ? '<span class="bad">Gun locked with heat this turn.</span>' : !o.aim ? '<span class="warm">No shot placed.</span>' : !o.bears ? `<span class="bad">Won't bear: the nose is ${offHer(s, o)} degrees off her. Ask the pilot.</span>` : o.fire ? '<span class="good">Gun bears.</span>' : 'Holding fire.';
     const read = `<p class="read">${status}<br>Solution ${o.aim ? `${pct(o.solLo)} to ${pct(o.solHi)}%` : 'none'}   spread ${o.R.toFixed(2)} km   her reach ${(0.5 * K.FOE_ACC).toFixed(1)} km<br>Damage ${Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s)))} a hit${falloff(range(s)) < 1 ? ' (cut at this range)' : ''}<br>Heat ${s.me.heat} of ${K.HEAT_CAP}   PDC ${Math.round(o.pdcW)} degrees${o.comms === 'lock' ? '<br><span class="good">Comms has a lock: the spread is tighter and her habit shows.</span>' : ''}</p>`;
     if (A) return `<div class="row"><span class="lab">Tool</span>${seg('tool', [['aim', 'Place the shot'], ['pdc', 'Set PDC arc']], UI.tool)}</div>
+      <div class="row"><span class="lab">Fire control</span>${seg('role', [['attack', 'The gun'], ['pd', 'The PDC']], ui.role)}</div>
+      <p class="note">For the whole order cycle: the fire control runs the gun or the PDC, never both. Choose the PDC when a torpedo will reach its 9 km this cycle.</p>
       <div class="row"><span class="lab">Gun</span>${seg('afire', [[true, 'Fire'], [false, 'Hold']], ui.fire)}</div>
       <div class="row"><span class="lab">PDC arc</span><input id="pdcw" type="range" min="30" max="160" step="5" value="${ui.pdcW}" aria-label="PDC arc width"><span class="read" id="pdcwv">${ui.pdcW} deg</span></div>
       <p class="note">${UI.tool === 'aim' ? "Click the radar where she will be at the end of the turn. The dashed ring is everywhere her drive can put her. Your ring is where the slug can land: it grows with range and when the ship burns. A slug that lands within 0.7 km of her hits." : 'Click the radar to point the PDC. A narrow arc is dense and kills what is inside it. A wide one covers more and kills less.'}</p>${read}`;
-    return `<div class="row"><span class="lab">Gun</span>${seg('bfire', [[true, 'Fire'], [false, 'Hold']], ui.b.fire)}</div>
+    return `<div class="row"><span class="lab">Fire control</span>${seg('brole', [['attack', 'The gun'], ['pd', 'The PDC']], ui.b.role)}</div>
+      <p class="note">For the whole order cycle: the fire control runs the gun or the PDC, never both. Choose the PDC when a torpedo will reach its 9 km this cycle.</p>
+      <div class="row"><span class="lab">Gun</span>${seg('bfire', [[true, 'Fire'], [false, 'Hold']], ui.b.fire)}</div>
       <div class="row"><span class="lab">PDC</span>${seg('bpdc', [['forward', 'On her bow'], ['threat', 'On the threat'], ['wide', 'Wide']], ui.b.pdc)}</div>
       <p class="note">The fire control lays the shot on where she will be. You decide whether to fire and where the PDC looks.</p>${read}`;
   }
@@ -673,8 +680,8 @@ function turnSummary(s, o) {
   p.push(burning ? `Burn ${pct(o.thrust.thr)}% toward ${pad3(brg(dirv(o.thrust.dir)))}` : 'Coast');
   p.push(swing ? `the hull swings ${swing} degrees to face ${pad3(brg(dirv(o.nose)))}` : `the hull stays facing ${pad3(brg(dirv(o.nose)))}`);
   if (burning && adiff(s.me.nose, o.thrust.dir) >= K.GATE) p.push(adiff(o.nose, o.thrust.dir) < K.GATE ? 'the drive lights once the nose comes round' : 'the drive does not light: the nose will not come round this turn');
-  p.push(o.canFire ? 'the gun fires' : o.fire ? `the gun cannot fire (${o.locked ? 'heat' : !o.aim ? 'no shot placed' : !o.bears ? 'the nose is off her' : 'no power'})` : 'the gun holds');
-  p.push(`PDC ${PDC_WORD[o.pdcIntent]}`);
+  p.push(o.role === 'pd' ? 'the fire control runs the PDC, so the gun is silent' : o.canFire ? 'the gun fires' : o.fire ? `the gun cannot fire (${o.locked ? 'heat' : !o.aim ? 'no shot placed' : !o.bears ? 'the nose is off her' : 'no power'})` : 'the gun holds');
+  p.push(o.role === 'pd' ? `PDC ${PDC_WORD[o.pdcIntent]}` : 'the PDC is stowed');
   return `<p class="summary"><b>This turn:</b> ${p.join(', ')}.</p>`;
 }
 // Where an order leaves the nose at the end of this turn, and so whether the bow gun bears on her.
@@ -756,6 +763,8 @@ side.addEventListener('click', e => {
   else if (act === 'go') return commit();
   else if (act === 'tool') UI.tool = v;
   else if (act === 'afire') ui.fire = bool;
+  else if (act === 'role') ui.role = v;
+  else if (act === 'brole') ui.b.role = v;
   else if (act === 'bfire') ui.b.fire = bool;
   else if (act === 'bpdc') ui.b.pdc = v;
   else if (act === 'bpilot') ui.b.pilot = v;
