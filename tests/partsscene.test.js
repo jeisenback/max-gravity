@@ -45,14 +45,15 @@ test('a system under the line at a port with an outfitter is put up for repair, 
   const r = await ev(() => {
     const out = {};
     landed({ condition: { fire: 70 } }); const first = offered('Earth'); out.first = first.map(e => e.title); out.again = offered('Earth').length;
-    landed({ condition: { fire: 80 } }); out.above = offered('Earth').length;
+    landed({ condition: { fire: 88 } }); out.above = offered('Earth').length;  // over the line, 85 (the owner, 2026-11-15, #1148)
+    landed({ condition: { fire: 80 } }); out.under = offered('Earth').length;  // under it now, as it was not at 75
     landed({ condition: { fire: 70 } }); out.noOutfitter = offered('Mars').length;
     landed({ condition: { fire: 70 }, fund: 10 }); out.broke = offered('Earth').length;
     return out;
   });
   await done();
   assert.equal(r.first.length, 1); assert.match(r.first[0], /Fire Control/);
-  assert.equal(r.again, 0, 'once a stay'); assert.equal(r.above, 0); assert.equal(r.broke, 0, 'not when the fund cannot pay the printed part');
+  assert.equal(r.again, 0, 'once a stay'); assert.equal(r.above, 0); assert.equal(r.under, 1, 'at 80, under the line'); assert.equal(r.broke, 0, 'not when the fund cannot pay the printed part');
 });
 
 test('the scene: the captain\'s pick stands when the hand says nothing; arguing passes or fails by a word with the captain; the fund pays and the line names the part', async () => {

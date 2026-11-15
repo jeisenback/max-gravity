@@ -93,10 +93,11 @@ function stationFight(h) {
 
 // ---------- the repair in port: Hester's part, the hand's say (Task 4) ----------
 // On landing at a port with an outfitter, the worst system under REPAIR_BELOW is put up for repair, once a stay (h.partsAt, the day it was offered),
+// 85 (the owner, 2026-11-15, #1148: over eight chapters about a quarter of a repair a chapter at Slow wear, one at Normal; none and 0.9 at the old 75);
 // when the fund can pay at least the printed part, in chapter one (repairs.js offers it after the hull repair: one yard scene a landing). The captain's
 // pick is a fixed score from her card, no dice: thrift weighs a part's price against what the fund holds, nerve the risk of a used or printed one.
 // The words are the lines of 'scene:parts' (hiredscenes.js).
-const REPAIR_BELOW = 75, PART_RISK = { yard: 0, used: 1, printed: 2 }, PART_POST = { fire: 'gunner' };  // the post that works a system: the gunner the guns' fire control, the engineer the rest
+const REPAIR_BELOW = 85, PART_RISK = { yard: 0, used: 1, printed: 2 }, PART_POST = { fire: 'gunner' };  // the post that works a system: the gunner the guns' fire control, the engineer the rest
 const partPost = sys => PART_POST[sys] || 'engineer';
 function partsRepairDue(st, h, planet, fund) {  // fund: what the ship's money holds (boarders.js purse)
   if (!h || (h.chapter || 1) > 1 || h.partsAt === st.day || !(planet.services || []).includes('outfitter')) return null;
