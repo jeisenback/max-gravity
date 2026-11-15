@@ -119,7 +119,7 @@ A dome town: the hub domes' markets and council halls, and the outer domes' farm
 | **Grigor Mattei**, 60s, farmer from the outer domes | the Red Line, in town for the council | his dome's share of the water | a hearing; the share cut; gone home to the outer domes, angry, and the share is the news a month later (gone) |
 | **Lena Ostrowski**, 40s, air-bill clerk | the Red Line | to stop sending the bills | sending them; a family that cannot pay; gone, to a job in the outer domes, at less (gone) |
 | **Teo Quint**, 25, council clerk | the Red Line | his sister off Ballast's books (`people/yelena.md`) | writing to her; no answer; an answer, short (stays) |
-| **Halima Rao**, 30s, mural painter | the Red Line | the lake murals repainted before the council sells the wall | a commission refused; painting at night; the mural finished, and the council fines her and keeps it (stays) |
+| **Halima Rao**, 30s, mural painter | the Red Line | the lake mural in the square kept, when the council puts the new share board up over it | the council's vote; painting the lake again at night beside the board; finished, and the council fines her and leaves it up (stays) |
 
 **The customs officer** (Dome Pact): counts the water first, and the rest after.
 
@@ -131,7 +131,7 @@ The ice rocks are sites, with no inner places (`places.md`), so no regulars: wha
 
 After the owner's review: the pools as data by port; the draw, seeded by the run and the port; written regulars taking their places before generated ones (`fillBar`, `js/bar.js`); their arcs in the regulars' arc library; and each port's official's manner in their lines. A follow-up issue, filed with this page.
 
-Built in parts (#1242). Only the regulars written for the bar are seated: the game's live places are the bar's two stools, and one written for a stall, a bench, a desk, the hiring board, the shrine or the lock waits for that place (the owner, 2026-11-15). Part 1: the draw and Lagos Ring's and Ceres's bar regulars (`WRITTEN_REGULARS`, `js/regulars.js`); a regular who goes has the dock's return line in their own words. Part 2: Pallas's, the Hollows' and Eros's. A regular is one person, so the Lund twins are Pim at the bar, with Petra in his arc. Then Luna and Mars; and the officials' manners.
+Built in parts (#1242). Only the regulars written for the bar are seated: the game's live places are the bar's two stools, and one written for a stall, a bench, a desk, the hiring board, the shrine or the lock waits for that place (the owner, 2026-11-15). Part 1: the draw and Lagos Ring's and Ceres's bar regulars (`WRITTEN_REGULARS`, `js/regulars.js`); a regular who goes has the dock's return line in their own words. Part 2: Pallas's, the Hollows' and Eros's. A regular is one person, so the Lund twins are Pim at the bar, with Petra in his arc. Part 3: Luna's and Mars's. Then the officials' manners.
 
 ## Assumptions to confirm
 

@@ -76,6 +76,19 @@ const WRITTEN_REGULARS = {
     ray: { first: 'Ray', last: 'Bastian', job: 'recycler mechanic', end: 'stays' },
     benedetta: { first: 'Benedetta', last: 'Iyer', job: 'archivist', end: 'stays' },
   },
+  'Luna': {
+    calla: { first: 'Calla', last: 'Mendez', job: 'nurse', end: 'stays' },
+    viktor: { first: 'Viktor', last: 'Pruss', job: 'yard master, retired', end: 'gone' },
+    sunny: { first: 'Sunny', last: 'Abara', job: 'sweeper', end: 'gone' },
+    orla: { first: 'Orla', last: 'Byrne', job: 'riggers\' foreman', end: 'stays' },
+  },
+  'Mars': {
+    anika: { first: 'Anika', last: 'Veld', job: 'dome engineer', end: 'stays' },
+    grigor: { first: 'Grigor', last: 'Mattei', job: 'farmer', end: 'gone' },
+    lena: { first: 'Lena', last: 'Ostrowski', job: 'air-bill clerk', end: 'gone' },
+    teo: { first: 'Teo', last: 'Quint', job: 'council clerk', end: 'stays' },
+    halima: { first: 'Halima', last: 'Rao', job: 'mural painter', end: 'stays' },
+  },
 };
 const WRITTEN_LINES = {  // lines:written-regulars: each one's beats, and for one who goes, the return line's words for it
   Earth: {
@@ -177,6 +190,46 @@ const WRITTEN_LINES = {  // lines:written-regulars: each one's beats, and for on
       'had an offer from the Dome Pact for the Old Town\'s founding papers, and said no.',
       'says someone broke into the archive on Thursday. Nothing was taken, which worries her more.',
       'has given a copy of the founding papers to every ship that will take one. One of them is yours.'] },
+  },
+  'Luna': {
+    calla: { beats: [
+      'has the yards\' promise of a lung clinic for the dust towns in writing, and keeps the paper folded in her pocket.',
+      'says the yards have put the clinic off another year. The paper is still in her pocket.',
+      'runs the clinic now, in a shipping container behind the hiring board. She\'s on her own there four nights a week.'] },
+    viktor: { beats: [
+      'tells you how the drydocks were run when he ran one. Nobody else at the table is listening.',
+      'was asked for his advice by a young yard master in trouble with a refit. He\'s been working it out on a napkin all evening.'],
+      left: 'Viktor has gone to the young master\'s yard to advise on the refit, and he took the napkin' },
+    sunny: { beats: [
+      'is saving for a seat down to Lagos to see her mother, and counts the savings twice a week.',
+      'says the fare\'s gone up. She\'s back to counting from the start.'],
+      left: 'Sunny went down the well on a cheap seat to see her mother' },
+    orla: { beats: [
+      'has a petition for her riggers\' overtime, which the yard calls voluntary. Half the dust towns have signed it.',
+      'says the yard locked her riggers out for three days over it.',
+      'got the riggers paid, half of it, and says the yard knows her name now.'] },
+  },
+  'Mars': {
+    anika: { beats: [
+      'surveyed the old lake pumps on her own time, and says three of them would run with new seals.',
+      'says the council turned down the pumps. Too costly, they said, for a lake nobody\'s seen in forty years.',
+      'has one of the pumps running, on a weekend shift she doesn\'t get paid for. She has water under her fingernails to prove it.'] },
+    grigor: { beats: [
+      'is in town for the council\'s water hearing, and has his dome\'s figures in a folder on the bar.',
+      'says the council cut his dome\'s share of the water. He\'s angry, and quiet with it.'],
+      left: 'Grigor went home to the outer domes, and a month later his dome\'s water share was the news' },
+    lena: { beats: [
+      'sends out the domes\' air bills, and doesn\'t like to say how many come back unpaid.',
+      'had to send the bill to a family that can\'t pay it. She hasn\'t slept much since.'],
+      left: 'Lena has taken a job in the outer domes, at less pay, and someone else sends the bills' },
+    teo: { beats: [
+      'writes to his sister every week. She works on Ballast\'s books, and he wants her off them.',
+      'hasn\'t had an answer from his sister in a month, and checks his messages between drinks.',
+      'had an answer from his sister: two lines. He reads it to you, and doesn\'t say what he thinks of it.'] },
+    halima: { beats: [
+      'says the council has voted to put the new share board up over the lake mural in the square. She\'s asked them to put it somewhere else, and they said there isn\'t anywhere else.',
+      'is painting the lake again at night, on the wall beside the board. She has paint on her sleeves and a council notice in her pocket.',
+      'finished it. The council fined her for it, and left it up.'] },
   },
 };
 const writtenLines = () => linedText('lines:written-regulars', WRITTEN_LINES);
