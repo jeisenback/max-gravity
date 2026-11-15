@@ -4,7 +4,7 @@ Status: approved by the owner on 2026-11-07 (#891). Built on `ceres-coop.md`, `c
 
 ## Where she stands
 
-A member of the Ceres Crew Co-operative, 41, from Ceres Station, with a share in the Ore Runner. Her post aboard is deckhand, and she has the tow and salvage lines: anything that goes out of the lock on a line is hers. She pulled dead ships into Ceres on a salvage tug for twenty years, on a yard's wage, and never owned the tug.
+A member of the Ceres Crew Co-operative, 41, from Ceres Station, with a share in the Ore Runner. Her post aboard is pilot (the owner, 2026-11-15, #1239), and she has the tow and salvage lines as well: anything that goes out of the lock on a line is hers. She pulled dead ships into Ceres on a salvage tug for twenty years, on a yard's wage, and never owned the tug.
 
 ## Money
 
@@ -61,7 +61,7 @@ The Ore Runner kept flying, and kept the co-op's. She wants the one ship everybo
 
 ## Changes from the current game
 
-- In the code she is a hired pilot (`role: 'pilot'`, js/cast.js). In the bible she is a member, and her post is deckhand on the tow and salvage lines; Ines is the pilot.
+- In the code she is a hired pilot (`role: 'pilot'`, js/cast.js). In the bible she is a member; her post is pilot, as the code has it, with the tow and salvage lines as well.
 - Her ambition, "a ship nobody wanted", is the Ore Runner itself, and the old promise ("If you ever have ships, I'd like to be asked") goes: she has already bought in.
 - Her arrival says "the blockade killed the work". There is no blockade until chapter three (`the-fuel-war.md`); it becomes the yards cutting salvage contracts.
 - Her pivot, "The Tow", stays: a hulk to bring in on the line, and a line added to the list.
@@ -69,7 +69,6 @@ The Ore Runner kept flying, and kept the co-op's. She wants the one ship everybo
 
 ## Assumptions to confirm
 
-- Her post is deckhand on the tow and salvage lines.
 - Her father Tunde, the tug and his death on a tow; her mother on Luna.
 - She towed the Ore Runner in once, years ago.
 - In the squeeze, her wish to keep the hull flying pulls her toward a charter.

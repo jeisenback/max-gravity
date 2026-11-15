@@ -178,7 +178,7 @@ function setupHired(o) {
     deckTold: false,  // the first deck fight's briefing is given (captains.js deckExplanation, #850)
     debt: o.debt !== undefined ? o.debt : HIRED_DEBT
   };  // o.debt: a hand put ashore carries what is left (stakes.js)
-  applyPapers(st, st.hired);
+  applyPapers(st, st.hired, !!(o.putOffBy || o.captainLost || o.carried));  // a hand back at the sign-on after a ship (stakes.js)
   // The port screen says only what Signing On (signon.js) does not: who put a hand ashore, or that the captain was lost. The ship, the captain, the post and
   // the savings are said there, once.
   if (o.captainLost) return [`${o.captainLost} didn't come back from the bridge. You carry your savings and what you learned.`];
@@ -187,11 +187,13 @@ function setupHired(o) {
 
 // Who knows the hand's name (the second answer on the papers at the sign-on, h.origin), applied once at the sign-on: the home's freight office trusts the ship (contracts.js), a patrol has a fine
 // on the record already (traits.js), or one of the generated crew shipped with the hand before and starts warm. Nothing for 'none', and nothing when no generated crew is aboard.
-function applyPapers(st, h) {
+// `again`: a hand on their next ship (put ashore, the captain lost), where the office and the patrol know the name again but no second old shipmate is
+// aboard (the owner, 2026-11-15, #1260).
+function applyPapers(st, h, again = false) {
   const known = (h.origin || {}).known;
   if (known === 'shipper') h.standing[SHIPPERS.gov[CULTURE_FACTION[h.origin.home]]] = STANDING_GOOD;
   else if (known === 'patrol') recordAdd(h, 'fines');
-  else if (known === 'shipmate') { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) like(pick(mates), 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); }
+  else if (known === 'shipmate' && !again) { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) like(pick(mates), 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); }
 }
 
 // ---------- burn events ----------
