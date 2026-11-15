@@ -53,6 +53,47 @@ From the ship's berth down to the rim, in the order a hand walks it:
 
 The Ring keeps Lagos time. The lights on the rim go down at Lagos's night, and the yard works three shifts through it.
 
+## Ceres: the station
+
+Status of this section: draft for the owner's review, 2026-11-15 (#1247). The place is `ceres.md`; its people are `regulars.md` and `powers-people.md`. It is written to the same rules as the Ring's, so the view can be built as the second port's layout (`PORT_LAYOUTS`, `js/portview.js`; #1256).
+
+Ceres Station is the Guild Council's (`ceres.md`): the yard and the docks on a crater floor, at a thirtieth of a g, and the town dug into the crater wall, in caverns with a drum turning in each for weight, the rings. The view is a cut through the crater wall: the surface at the top, the shaft down through the rock on the left, and a slice of an upper ring and of the lower ring below it, each a turning drum shown as its floor and its rooms, the rock between them.
+
+### What the view cuts through
+
+From the ship's pad down to the Warren, in the order a hand walks it:
+
+1. **The pad and the lock, on the crater floor.** The ship sits on her pad under the floodlights, and a pressurised walkway runs from her lock to the station's. The lock office is the council's, with the Guild Federation's mark on the hatch: the customs, and the dockmaster's window. Outside, on the yard's side, the **yard gate**, with a bench beside it, and the **co-op's office**, two rooms up a stair from the yard floor: a counter, a board with the hulls on it, and a back room (`ceres-coop.md`). A noodle stall stands under the stair. At a thirtieth of a g, people move in long slow steps and hold the rails.
+2. **The shaft.** A lift car on a rail down a shaft through the rock, and the long stair beside it that the yard crews use when the car is slow. Weight comes back at the ring's hub door: people step off the car, through the hub, and down the ring's spoke stair to its floor, at about a third of a g.
+3. **An upper ring.** A slice of its floor, curving up gently at each end, as the Ring's does:
+   - **the market:** the council's trade floor, stalls round it, the water ration posted on a board;
+   - **the Guild's office:** the Ice Haulers' Guild's room, a board of names, Mirela Sandoval's desk (`powers-people.md`);
+   - **Kaur's buying office:** a counter with a price board for ice, the chief buyer behind it;
+   - **the clinic:** the council's, on the guilds' cover.
+4. **The lower ring, the Warren.** Older and colder, its floor lower and its light worse:
+   - **the Warren:** the bar the lower rings are named for, three deep at a shift change, the water ration over the taps, the floor tilting with the ring's curve (`js/bar.js`);
+   - **the laundries and the rooms:** the renters' rooms by the month, a laundry with its machines running;
+   - **the shrine:** for the people the ice took, with the names on it.
+
+What the view leaves out: the yard's cradles beyond the gate, the ice house below the Warren, the council's chamber, the docks' far pads. They are there, and named in scenes.
+
+### Its people
+
+- **The fixed people,** the same on every visit (as the Ring's leaseholders and staff, How a port runs, below): the dockmaster at the lock office, the Warren's keeper, the stallholder under the co-op's stair, the clinic's nurse, the Guild's organiser, Kaur's chief buyer.
+- **The regulars,** drawn for the run (`regulars.md`, Ceres Station and the Warren): the Warren's stools, the bench at the yard gate. A regular whose place is the noodle stall or the co-op's counter is that place's person when the run draws them; otherwise the place has its fixed person.
+- **Yard crews and dock crews** on the shifts: down the long stair at a change, at the Warren after.
+- **The co-op's members** between hulls, at the co-op's office and the Warren.
+- **The ship's crew ashore:** in the market by day and at the Warren after, as at the Ring.
+- **Main characters with a reason to be here:** Bexa and Pax, from chapter 2, or as the run draws them (`chapter-2.md`, The cast).
+
+### Its hours
+
+Ceres time, a day of twenty-four hours, three yard shifts (`ceres.md`). The market opens with the first shift and closes with the second. The Warren is busiest at the change from the second shift to the third. The rings' lights go down at the station's night, the Warren's last. The surface keeps its floodlights on through every shift.
+
+### Its scenes' places
+
+Where a scene at Ceres gathers (#1103): the share and the meetings at the co-op's office; the strike's organiser at the Guild's office; the bar's talk at the Warren; the day ashore in the market; repairs at the yard gate; a landing's arrivals at the lock. Offers (above) show here as at the Ring: on the room, or over the person.
+
 ## The screen in port
 
 How the port view and the port's pages share the screen (for #1101). Draft for the owner, 2026-11-12.
