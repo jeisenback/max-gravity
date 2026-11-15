@@ -1969,17 +1969,17 @@ test('a new burn starts the camera where the player left it (#1182)', async () =
 
 // ---------- #1186: run ahead (docs/bible/burn.md, Running ahead) ----------
 
-test('run ahead takes a burn to arrival in the flip\'s slow motion and a few seconds more, with no downtime scene on the way (#1186)', async () => {
+test('run ahead takes a burn to arrival in the flip\'s slow motion and a few seconds more, with no downtime offered on the way (#1186)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     burn(); const t = G.transit, days = t.days; t.times = []; t.chatter = 1e9; t.lifeOffered = {}; setBurnSpeed(RUN_AHEAD);
     let real = 0, downtime = false; const dt = 1 / 30;
-    for (let i = 0; i < 30 * 120 && G.mode === 'transit'; i++) { update(dt); Mods.emit('frame', dt); real += dt; if (G.dialog && G.dialog.event && G.dialog.event.downtime) downtime = true; while (G.dialog && G.mode === 'transit') finishEvent(); }
+    for (let i = 0; i < 30 * 120 && G.mode === 'transit'; i++) { update(dt); Mods.emit('frame', dt); real += dt; if ((G.transit && G.transit.offers || []).some(o => o.slot) || (G.dialog && G.dialog.event && G.dialog.event.downtime)) downtime = true; while (G.dialog && G.mode === 'transit') finishEvent(); }
     return { arrived: G.mode !== 'transit', real, days, downtime };
   });
   await done();
-  assert.ok(r.arrived, 'arrived'); assert.equal(r.downtime, false, 'no downtime scene while running ahead');
+  assert.ok(r.arrived, 'arrived'); assert.equal(r.downtime, false, 'no downtime offered while running ahead');
   assert.ok(r.real < 25 + 15, `${r.days} days in ${r.real.toFixed(1)} real seconds, the flip's 25 among them`);
 });
 

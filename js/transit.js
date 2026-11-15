@@ -710,9 +710,8 @@ function drawTransit(W, H) {
 
   // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it; the camera keeps the hand in the part a
   // docked dialog leaves clear.
-  const tags = drawCutaway(shipBox, L.clear);
+  drawCutaway(shipBox, L.clear);
   G.burnBoxes = { bar: L.bar, ship: shipBox };  // where each block was drawn, for the taps and the tests (#262)
-  if (tags.length) G.burnBoxes.tags = tags;  // the downtime scene's tags in the cutaway (shiplife.js), while it is open
   if (L.dock) Object.assign(G.burnBoxes, { dock: L.dock, clear: L.clear });  // a scene's dock (the frame puts the dialog in it) and the ship it leaves clear
   if (destBox) G.burnBoxes.dest = destBox;
   drawBurnBar(L.bar, L.datesLine, progress);

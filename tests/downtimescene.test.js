@@ -1,7 +1,7 @@
 'use strict';
 
-// Downtime as a scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md): once a slot, at a change of the ship's day, one scene
-// says what's on in the ship; each choice is tagged where it happens; comms lines fade over the ship.
+// Downtime (docs/superpowers/specs/2026-11-12-downtime-scene-design.md; as offers since #1185): once a slot, at a change of the ship's day, each of
+// the slot's activities is its own tag where it happens; taking one spends the slot and the rest lapse. Comms lines fade over the ship.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -10,13 +10,13 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { downtimeDue, downtimeSettled, downtimeLeft, downtimeThere, offersTick, offerOnShip, OFFER_LIFE, OFFER_REAL, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeSettled', 'downtimeLeft', 'downtimeThere', 'offersTick', 'offerOnShip', 'OFFER_LIFE', 'OFFER_REAL', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
+const { downtimeDue, downtimeThere, offersTick, offerOnShip, OFFER_LIFE, OFFER_REAL, sitPerson, onDeck, shipDay, SHIP_DAY, DOWNTIME_BLOCKS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['downtimeDue', 'downtimeThere', 'offersTick', 'offerOnShip', 'OFFER_LIFE', 'OFFER_REAL', 'sitPerson', 'onDeck', 'shipDay', 'SHIP_DAY', 'DOWNTIME_BLOCKS']);
 const plain = x => JSON.parse(JSON.stringify(x));
 
 // ---------- the pure rules (task 1) ----------
 
-test('the downtime scene is due at a change to breakfast, a shift, the meal or supper, once a slot', () => {
+test('downtime is due at a change to breakfast, a shift, the meal or supper, once a slot', () => {
   const t = { total: 100, left: 90, slots: 2 };  // the 'before' slot
   assert.equal(downtimeDue(t, 'shift', 'breakfast'), true);
   assert.equal(downtimeDue(t, 'shift', 'shift'), false, 'no change');
@@ -40,27 +40,6 @@ test('the shortest slot still has a change that is due', () => {
     const blocks = []; for (let e = start; e < start + 0.6 * SHIP_DAY; e += 0.5) blocks.push(shipDay(e).block);
     assert.ok(blocks.some((b, i) => i && b !== blocks[i - 1] && DOWNTIME_BLOCKS.includes(b)), `from ${start}`);
   }
-});
-
-test('the scene waits for those it tags to be where they are going: arrived and off the ladder; a room tag or someone not drawn does not wait (#1168)', () => {
-  const people = [{ id: 'a', tx: null, dk: 1, tdk: 1 }, { id: 'b', tx: 0.4, dk: 1, tdk: 1 }, { id: 'c', tx: null, dk: 1.5, tdk: 2 }];
-  assert.equal(downtimeSettled([{ id: 'a' }, { room: 'galley' }, { id: 'gone' }], people), true);
-  assert.equal(downtimeSettled([{ id: 'a' }, { id: 'b' }], people), false, 'still walking');
-  assert.equal(downtimeSettled([{ id: 'c' }], people), false, 'on the ladder');
-  assert.equal(downtimeSettled(null, people), true, 'no tags');
-});
-
-test('the time left to open it runs to the last light before the slot ends or the crew strap in; a night inside the slot is waited out (#1168)', () => {
-  const near = (a, b) => Math.abs(a - b) < 1e-6;
-  // an 8-day burn, four slots: 10 burn seconds in, the first slot ends at a quarter of the burn (elapsed 160, f 0.075, the lights up)
-  assert.ok(near(downtimeLeft({ days: 8, total: 640, left: 630, elapsed: 10, slots: 4 }, 1), 150), 'a night inside the slot is waited out');
-  assert.ok(near(downtimeLeft({ days: 8, total: 640, left: 630, elapsed: 10, slots: 4 }, 2), 75), 'at twice the pace the slot ends at elapsed 85, in the light');
-  // the slot ends in the dark: its last light is when they went down (elapsed 140 ends at f 1.825, dark; the lights went at day 1's 0.58, elapsed 120.4)
-  assert.ok(near(downtimeLeft({ days: 8, total: 640, left: 640 - 100, elapsed: 100, slots: 4 }, 1.5), 120.4 - 100), 'the slot ends in the dark');
-  // just after the flip on a one-day burn on a tuned drive: the lights go, and the couches come before they are up again
-  const left = downtimeLeft({ days: 1, total: 80, left: 38, elapsed: 39, slots: 2, flipped: true }, 1.1);  // f is 45/80, the lights go at 0.58
-  assert.ok(downtimeLeft({ days: 1, total: 80, left: 38, elapsed: 39, slots: 2, flipped: true }, 1) > 20, 'on a plain drive the lights are up again before the couches');
-  assert.ok(left > 0 && left < 3, `${left}`);
 });
 
 test('a line that puts someone in a place is offered only when they are there; one with no place, or someone not drawn, always is', () => {
@@ -109,6 +88,7 @@ test('onDeck: a room for a place, an id for a person, nothing without a where', 
   const people = [{ id: 'c:ines', role: 'pilot' }];
   assert.deepEqual(plain(onDeck([{ label: 'Cards', where: 'galley' }, { label: 'Ask', where: ps => ps[0].id }, { label: 'X' }, { label: 'Y', where: () => null }], people)),
     [{ label: 'Cards', room: 'galley' }, { label: 'Ask', id: 'c:ines' }]);
+  assert.equal(onDeck([{ label: 'Ask', at: 'engine', where: () => 'c:ines' }], people)[0].at, 'engine', 'a person\'s keeps where its line puts them');
 });
 
 // ---------- what's on, and where (task 2) ----------
@@ -174,27 +154,27 @@ test('a shadowed or taught mate is the same in the line, the tag and the run', a
 
 // ---------- the scene (task 3) ----------
 
-// Steps the burn as the game loop does (update, then the frame's hooks), closing other scenes and passing on the downtime scene; returns each
-// downtime scene opened, with the slot, the block, the lights and the phase it opened in.
+// Steps the burn as the game loop does (update, then the frame's hooks), closing any scene; returns each slot's downtime offers as they go up, with
+// the slot, the block, the lights and the phase, and lets them go (onDown, given the offers, does otherwise).
 const runHelpers = () => {
+  window.slotOffers = () => (G.transit.offers || []).filter(o => o.slot);
   window.stepBurn = (dt, n, onDown) => {
     const seen = [];
     for (let i = 0; i < n && G.mode === 'transit' && G.transit; i++) {
       update(dt); Mods.emit('frame', dt);
-      if (!G.dialog) continue;
-      const e = G.dialog.event;
-      if (e && e.downtime) {
-        seen.push({ slot: lifeSlot(), block: shipDay(G.transit.elapsed).block, dark: isDark(), ph: phase() });
-        const pass = e.choices.findIndex(c => c.label === sceneSay('scene:shiplife', 'none.label'));
-        if (onDown) onDown(e); else chooseEvent(pass);
+      const t = G.transit; if (!t) break;
+      const up = slotOffers();
+      if (up.length && !seen.some(x => x.slot === up[0].slot)) {
+        seen.push({ slot: up[0].slot, block: shipDay(t.elapsed).block, dark: isDark(), ph: phase(), n: up.length });
+        if (onDown) onDown(up); else t.offers = t.offers.filter(o => !o.slot);
       }
-      finishEvent();
+      while (G.dialog && G.mode === 'transit') finishEvent();
     }
     return seen;
   };
 };
 
-test('on a burn the downtime scene opens once a slot, at a change of the ship day, at 1x and at 16x', async () => {
+test('on a burn downtime\'s offers go up once a slot, at a change of the ship day, at 1x and at 16x', async () => {
   const { ev, done } = await open();
   await ev(burnHelpers); await ev(runHelpers);
   const r = await ev(() => {
@@ -217,22 +197,6 @@ test('on a burn the downtime scene opens once a slot, at a change of the ship da
       assert.equal(s.dark, false); assert.equal(s.ph, 'move');
     }
   }
-});
-
-test('on a whole burn at 1x each downtime scene opens with the people it tags already where they are going, and not as the crew come off the couches (#1168)', async () => {
-  const { ev, done } = await open();
-  await ev(burnHelpers); await ev(runHelpers);
-  const r = await ev(() => {
-    const t = onBurn(); t.left = t.total; t.elapsed = 0; setBurnSpeed(1);
-    const at = [];
-    const seen = stepBurn(0.05, 40000, e => { at.push({ settled: downtimeSettled(e.tags, shipPeople()), tagged: e.tags.filter(g => g.id).length, elapsed: G.transit.elapsed }); chooseEvent(e.choices.length - 1); });
-    return { at, slots: seen.map(x => x.slot), couches: burnStages(t.days).couch * t.total / burnSpeed() };
-  });
-  await done();
-  assert.ok(r.at.length >= 2, JSON.stringify(r));
-  assert.ok(r.at.some(x => x.tagged), 'some scene tags a person');
-  for (const x of r.at) assert.ok(x.settled, `opened with someone it tags still on the move: ${JSON.stringify(r)}`);
-  assert.ok(r.at[0].elapsed > r.couches + 2, `the first waits past the moment the crew are up: ${JSON.stringify(r)}`);
 });
 
 test('while the downtime scene is open nobody is gathered: those it names keep to where they are (#1169)', async () => {
@@ -271,28 +235,29 @@ test('the scene offers Tomas\'s coolant loop only while Tomas is in the engine r
   assert.equal(r.galley.n, r.engine.n, 'the gap is filled');
 });
 
-test('choosing an activity runs it, spends the slot, logs it and sends the hand there; Pass spends nothing and it does not come back', async () => {
+test('taking an activity\'s offer runs it, spends the slot, logs it and sends the hand there, and the rest lapse; let go, nothing is spent and none comes back', async () => {
   const { ev, done } = await open();
   await ev(burnHelpers); await ev(runHelpers);
   const r = await ev(() => {
-    const t = onBurn(), slot = lifeSlot();
-    openEvent(downtimeScene(true)); const e = G.dialog.event, i = e.choices.findIndex(c => c.label === 'Practice at your post');
-    t.comms = []; chooseEvent(i); finishEvent();
-    const you = shipPeople().find(p => p.role === 'you'), chose = { spent: !lifeFree(t), log: t.comms.some(c => /^\[Ship\] Downtime: Practice/.test(c.text || c)), room: you.room, block: you.block };
-    // a fresh slot: Pass at the change, and the next change in the slot opens nothing
+    const t = onBurn(), real = window.downtimeFive;
+    window.downtimeFive = () => [ACTIVITIES.meal, ...baseActivities().filter(a => a !== ACTIVITIES.meal && (!a.can || a.can())).slice(0, 3)];
+    let n, prac;
+    try { n = downtimeOffers(t); prac = slotOffers().find(o => o.label === 'Practice at your post'); } finally { window.downtimeFive = real; }
+    t.comms = []; offerClick({ offer: prac }); const result = !!document.getElementById('event-result'); finishEvent(); lifeTick(0.016);
+    const you = shipPeople().find(p => p.role === 'you'), chose = { n, spent: !lifeFree(t), log: t.comms.some(c => /^\[Ship\] Downtime: Practice/.test(c.text || c)), room: you.room, block: you.block, result, left: slotOffers().length };
+    // a fresh slot: its offers go up at the change to a shift; let go, the next change in the slot puts up none
     const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
     let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
-    for (let k = 0; k < 3000 && !G.dialog; k++) { u.elapsed += 0.1; lifeTick(0.1); }  // it waits until those it tags are settled (#1168)
-    const opened = !!(G.dialog && G.dialog.event.downtime);
-    if (opened) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
+    lifeTick(0.016); const up = slotOffers().length; u.offers = [];
     d = 0; while (shipDay(u.elapsed).block !== 'meal' && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); }
-    return { chose, post: postOf(POSTS[hired().post].role), slot, opened, passFree: lifeFree(u), again: !!G.dialog };
+    return { chose, post: postOf(POSTS[hired().post].role), up, passFree: lifeFree(u), again: slotOffers().length, dialog: !!G.dialog };
   });
   await done();
-  assert.equal(r.chose.spent, true); assert.equal(r.chose.log, true);
+  assert.ok(r.chose.n >= 2, 'one offer an activity'); assert.equal(r.chose.result, true, 'its result page');
+  assert.equal(r.chose.spent, true); assert.equal(r.chose.log, true); assert.equal(r.chose.left, 0, 'the rest of the slot lapse');
   assert.equal(r.chose.room, r.post, 'the hand goes to their post'); assert.equal(r.chose.block, 'activity');
-  assert.equal(r.opened, true, 'the scene opens at the change to a shift');
-  assert.equal(r.passFree, true, 'Pass spends nothing'); assert.equal(r.again, false, 'and it does not come back that slot');
+  assert.ok(r.up > 0, 'offers go up at the change to a shift'); assert.equal(r.dialog, false, 'no scene opens');
+  assert.equal(r.passFree, true, 'let go, nothing is spent'); assert.equal(r.again, 0, 'and none comes back that slot');
 });
 
 test('Sit with someone names one person, the one having a hard time first, and opens the sitting with them', async () => {
@@ -310,26 +275,25 @@ test('Sit with someone names one person, the one having a hard time first, and o
   assert.equal(r.label, `Sit with ${r.first}`); assert.equal(r.tag, r.id); assert.equal(r.next, true);
 });
 
-test('with a scene already open at the change, the downtime scene waits for the next change in the slot', async () => {
+test('with a scene already open at the change, downtime\'s offers wait for the next change in the slot', async () => {
   const { ev, done } = await open();
-  await ev(burnHelpers);
+  await ev(burnHelpers); await ev(runHelpers);
   const r = await ev(() => {
     const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
     let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
     openEvent({ title: 'Something else', text: 'x', choices: [{ label: 'OK', run: () => '' }] });
-    lifeTick(0.016); const under = G.dialog.event.title;
-    finishEvent(); lifeTick(0.016); const sameBlock = !!G.dialog;
-    d = 0; while (shipDay(u.elapsed).block !== 'meal' && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); if (G.dialog) break; }
-    for (let k = 0; k < 3000 && !G.dialog; k++) { u.elapsed += 0.1; lifeTick(0.1); }  // then waits until those it tags are settled (#1168)
-    return { under, sameBlock, next: !!(G.dialog && G.dialog.event.downtime), block: shipDay(u.elapsed).block };
+    lifeTick(0.016); const under = slotOffers().length;
+    finishEvent(); lifeTick(0.016); const sameBlock = slotOffers().length;
+    d = 0; while (shipDay(u.elapsed).block !== 'meal' && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); if (slotOffers().length) break; }
+    return { under, sameBlock, next: slotOffers().length, block: shipDay(u.elapsed).block };
   });
   await done();
-  assert.equal(r.under, 'Something else', 'not stacked on the open scene');
-  assert.equal(r.sameBlock, false, 'not later in the same block');
-  assert.equal(r.next, true, `at the next change (${r.block})`);
+  assert.equal(r.under, 0, 'none under the open scene');
+  assert.equal(r.sameBlock, 0, 'not later in the same block');
+  assert.ok(r.next > 0, `at the next change (${r.block})`);
 });
 
-test('a slot where nothing can run opens no scene', async () => {
+test('a slot where nothing can run puts up no offers', async () => {
   const { ev, done } = await open();
   await ev(burnHelpers);
   const r = await ev(() => {
@@ -337,24 +301,25 @@ test('a slot where nothing can run opens no scene', async () => {
     try {
       const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
       let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
-      lifeTick(0.016); return !!G.dialog;
+      lifeTick(0.016); return { dialog: !!G.dialog, offers: (u.offers || []).filter(o => o.slot).length };
     } finally { window.downtimeFive = real; }
   });
   await done();
-  assert.equal(r, false);
+  assert.deepEqual(r, { dialog: false, offers: 0 });
 });
 
-test('a burn from an older save, with no lifeOffered or lifeBlock, still gets its scene and nothing throws', async () => {
+test('a burn from an older save, with no lifeOffered or lifeBlock, still gets its offers and nothing throws', async () => {
   const { ev, done } = await open();
   await ev(burnHelpers);
   const r = await ev(() => {
     const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.2; delete u.lifeOffered; delete u.lifeBlock;
     let threw = null, d = 0;
-    try { while (!G.dialog && d++ < 4000) { u.elapsed += 0.1; lifeTick(0.1); } } catch (e) { threw = String(e); }  // the clock and the people in step: it waits for those it tags (#1168)
-    return { threw, opened: !!(G.dialog && G.dialog.event.downtime) };
+    const up = () => (u.offers || []).some(o => o.slot);
+    try { while (!up() && d++ < 4000) { u.elapsed += 0.1; lifeTick(0.1); } } catch (e) { threw = String(e); }
+    return { threw, offered: up() };
   });
   await done();
-  assert.deepEqual(r, { threw: null, opened: true });
+  assert.deepEqual(r, { threw: null, offered: true });
 });
 
 test('there is no Spend some downtime button anywhere: not under the ship, not on the Interior sheet', async () => {
@@ -368,23 +333,26 @@ test('there is no Spend some downtime button anywhere: not under the ship, not o
 
 // ---------- the tags in the cutaway (task 4) ----------
 
-test('while the downtime scene is open its choices are tagged: on the room for a place, over the person for a person; none after', async () => {
+// The slot's offers put up, shown and drawn: the tags drawn (G.cutOffers, not the markers for one out of view), as { label, room | id, box }.
+const tagHelpers = () => {
+  window.drawnTags = () => { const t = G.transit; t.offers = offersTick(t.offers, shipPeople(), 0, 0); render(); return (G.cutOffers || []).filter(b => !b.mark).map(b => ({ label: b.offer.label, room: b.offer.room, id: b.offer.who, x: b.x, y: b.y, w: b.w, h: b.h })); };
+};
+
+test('downtime\'s offers are tagged: on the room for a place, over the person for a person; none once one is taken', async () => {
   const { ev, done } = await open();
-  await ev(burnHelpers);
+  await ev(burnHelpers); await ev(tagHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
-    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in view, the galley too
     const mate = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain');
     const real = window.downtimeFive;
     window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Cards in the galley', on: () => 'x', where: 'galley', run: () => '' },
-      { label: 'Talk to them', on: () => 'x', where: () => mate.id, run: () => '' }, { label: 'And again', on: () => 'x', where: () => mate.id, run: () => '' },
-      { label: 'A long label for whoever stands nearest the edge', on: () => 'x', where: () => window.edgeId, run: () => '' }];
+      { label: 'Talk to them', on: () => 'x', where: () => mate.id, run: () => '' }, { label: 'And again', on: () => 'x', where: () => mate.id, run: () => '' }];
     try {
-      openEvent(downtimeScene()); render();
-      window.edgeId = G.cutHits.slice().sort((a, b) => b.head.x - a.head.x)[0].id; finishEvent(); openEvent(downtimeScene()); render();
-      const tags = (G.burnBoxes.tags || []).slice(), rooms = G.cutRooms.slice(), hits = G.cutHits.slice(), clear = G.burnBoxes.clear || G.burnBoxes.ship;
-      finishEvent(); render();
-      return { tags, rooms, hits, clear, mate: mate.id, after: (G.burnBoxes.tags || []).length };
+      t.offers = []; downtimeOffers(t); render();
+      const tags = drawnTags(), rooms = G.cutRooms.slice(), hits = G.cutHits.slice(), clear = G.burnBoxes.clear || G.burnBoxes.ship;
+      offerClick({ offer: t.offers.find(o => o.room === 'galley') }); finishEvent(); lifeTick(0.016);
+      return { tags, rooms, hits, clear, mate: mate.id, after: drawnTags().length };
     } finally { window.downtimeFive = real; }
   });
   await done();
@@ -398,24 +366,24 @@ test('while the downtime scene is open its choices are tagged: on the room for a
       assert.ok(h && g.y + g.h <= h.head.y && g.x <= h.head.x && g.x + g.w >= h.head.x, `${g.label} over ${g.id}'s head`);
     }
   }
-  assert.ok(r.tags.some(g => g.room === 'galley'), 'the meal on the galley');
   const meets = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
   for (let i = 0; i < r.tags.length; i++) for (let j = i + 1; j < r.tags.length; j++) assert.ok(!meets(r.tags[i], r.tags[j]), `${r.tags[i].label} and ${r.tags[j].label} do not overlap`);
   assert.equal(r.tags.filter(g => g.room === 'galley').length, 2, 'two on one room, stacked');
-  for (const g of r.tags) assert.ok(g.x >= r.clear.x && g.x + g.w <= r.clear.x + r.clear.w + 0.5, `${g.label} inside the part the scene leaves clear`);
+  for (const g of r.tags) assert.ok(g.x >= r.clear.x && g.x + g.w <= r.clear.x + r.clear.w + 0.5, `${g.label} inside the part left clear`);
+  assert.equal(r.tags.filter(g => g.id === r.mate).length <= 1, true, 'the mate named once');
   if (r.hits.some(h => h.id === r.mate)) assert.ok(r.tags.some(g => g.id === r.mate), 'the person tagged when in view');
-  assert.equal(r.after, 0, 'no tags once the scene is closed');
+  assert.equal(r.after, 0, 'none once one is taken');
 });
 
-test('a tagged person out of view gets no tag, and nothing throws', async () => {
+test('an offer about someone not aboard gets no tag, and nothing throws', async () => {
   const { ev, done } = await open();
-  await ev(burnHelpers);
+  await ev(burnHelpers); await ev(tagHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
-    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in view, the galley too
     const real = window.downtimeFive;
     window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Nobody', on: () => 'x', where: () => 'c:nobody-aboard', run: () => '' }];
-    try { openEvent(downtimeScene()); let threw = null; try { render(); } catch (e) { threw = String(e); } return { threw, tags: (G.burnBoxes.tags || []).map(g => g.room || g.id) }; } finally { window.downtimeFive = real; finishEvent(); }
+    try { t.offers = []; downtimeOffers(t); let threw = null, tags = []; try { tags = drawnTags().map(g => g.room || g.id); } catch (e) { threw = String(e); } return { threw, tags }; } finally { window.downtimeFive = real; }
   });
   await done();
   assert.equal(r.threw, null); assert.deepEqual(r.tags, ['galley']);
@@ -512,16 +480,16 @@ test('a scene does not name the same shipmate in two choices, and Sit with someo
 
 // ---------- the minors (#1086, #1087, #1089) ----------
 
-test('the tags go once a choice is made: none on the result page (#1086)', async () => {
+test('the tags go once one is taken: none on the result page (#1086)', async () => {
   const { ev, done } = await open();
-  await ev(burnHelpers);
+  await ev(burnHelpers); await ev(tagHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
-    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in view, the galley too
     const real = window.downtimeFive; window.downtimeFive = () => [ACTIVITIES.meal];
     try {
-      openEvent(downtimeScene()); render(); const before = (G.burnBoxes.tags || []).length;
-      UI.act('choose', 0); render(); const result = !!document.getElementById('event-result'), after = (G.burnBoxes.tags || []).length;
+      t.offers = []; downtimeOffers(t); const before = drawnTags().length;
+      offerClick({ offer: t.offers[0] }); render(); const result = !!document.getElementById('event-result'), after = (G.cutOffers || []).length;
       finishEvent(); return { before, result, after };
     } finally { window.downtimeFive = real; }
   });

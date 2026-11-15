@@ -9272,7 +9272,10 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
@@ -9280,7 +9283,7 @@
   "text": "There's a pot on in the galley, and somebody has laid the table. Hana has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9311,7 +9314,10 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
@@ -9319,7 +9325,7 @@
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9340,7 +9346,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Tiko leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
     "next": null
    }
   ],
@@ -9348,7 +9354,7 @@
   "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9369,7 +9375,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Tiko leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
     "next": null
    }
   ],
@@ -9377,7 +9383,7 @@
   "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9386,14 +9392,17 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
   "title": "At Breakfast",
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9402,14 +9411,17 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
   "title": "On Shift",
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9418,14 +9430,17 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
   "title": "At the Meal",
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9434,14 +9449,17 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
   "title": "At Supper",
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {
@@ -9450,14 +9468,17 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Everyone goes back to their own business.",
+    "text": "The ship's one printed copy of \"Letters to Pallas\" by Ada Kessel does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader's place by the crease. Ines reads it twice, the second time with a pencil. Cato leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn't rub them out.",
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    }
   ],
   "title": "Downtime",
   "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Cato is walking the cargo in the hold with the manifest. Hana has the suits out of their lockers at the airlock. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
-   "Not now"
+   "Pass around \"Letters to Pallas\""
   ]
  },
  {

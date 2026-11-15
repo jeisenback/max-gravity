@@ -97,7 +97,7 @@ test('downtime offers what is on, and tastes decide who enjoys it', async () => 
   assert.equal(r.now.length, 3, `three things on: ${r.now}`);
   assert.ok(r.now[0].includes('Dome Day Concert'), 'the one-off comes first');
   assert.ok(r.now.some(l => r.airing.some(t => l.includes(`"${t}"`))), 'a real show title is offered');
-  assert.ok(r.menu.length >= 5 && r.menu.includes('Share a meal') && r.menu.includes('Not now'), 'the existing items are still there');
+  assert.ok(r.menu.length >= 5 && r.menu.includes('Share a meal'), 'the existing items are still there');
   for (const l of r.now) assert.ok(r.menu.includes(l), `${l} is in the menu`);
   assert.equal(r.plain.length, 3);
   assert.ok(r.plain.some(l => l.startsWith('Watch "')) && r.plain.some(l => l.startsWith('Stream the')) && r.plain.some(l => l.startsWith('Pass around "')), `a show, a match and a book: ${r.plain}`);
