@@ -8,7 +8,9 @@
 // Profiles:  attentive (tools/soak.js SOAK_PROFILES, #1199): the danger and the scene mix as a player who takes every offer meets them.
 // Sample:    the narrow build's captain with a gunner, seeds 1 to 120, up to 40 runs each, four at a time, the two main characters drawn from the pool
 //            (120 chapters since the deck fight rework: 30 left a rate of a hurt in ten chapters at one hurt from its floor).
-// Tolerance: every game runs with no page errors and no broken text; the hand is hurt between 0.1 and 0.8 times a chapter (measured 0.14, 17 of 120, with the
+// Tolerance: every game runs with no page errors and no broken text; the hand is hurt between 0.05 and 0.8 times a chapter (the owner, 2026-11-15: lowered from 0.1
+//            once shields were retired, #1208, put the rate at the old floor: measured 0.108 on main over seeds 1 to 240, 26 hurts, 0.133 and 0.083 by halves, and 0.092,
+//            22 hurts, with the burn's people's scenes as offers, #1198; earlier measured 0.14, 17 of 120, with the
 //            deck fight's DECK.SUIT 0.2; 0.10, 3 of 30, on seeds 11 to 40 before it; 0.40 earlier, and 0.27 after the turn-based fights made a hurt rarer, #786);
 //            at most a fifth of the chapters end in the hand's death, 24 of 120 (measured 0; about 1 in 30 is the aim; a floor would fail one run in three at that rate, so there is none);
 //            of the landings, 70 to 95 percent open at least one scene (75 before the bible's smaller crew, #879: measured 74 and 8 over 120 chapters, the owner, 2026-11-01) and 5 to 20 percent open two or more (measured 86 and 12 over 120 chapters; 87 and 15 over 30,
@@ -29,7 +31,7 @@ test('the hand is hurt about as often as tuned and rarely dies, a landing opens 
   const runs = await soaks(Array.from({ length: 120 }, (_, i) => i + 1), { legs: 40, realDraw: true });
   for (const r of runs) { assert.deepEqual(r.bad, [], `seed ${r.seed}`); assert.deepEqual(r.errors, [], `seed ${r.seed}`); }
   const hurts = runs.reduce((n, r) => n + r.hand.hurt, 0) / runs.length;
-  assert.ok(hurts >= 0.1 && hurts <= 0.8, `the hand was hurt ${hurts.toFixed(2)} times a chapter`);
+  assert.ok(hurts >= 0.05 && hurts <= 0.8, `the hand was hurt ${hurts.toFixed(2)} times a chapter`);
   const deaths = runs.filter(r => r.ending && r.ending.title === 'The Last Run').length;
   assert.ok(deaths <= runs.length / 5, `${deaths} of ${runs.length} chapters ended in the hand's death`);
   const mix = [0, 0, 0];
