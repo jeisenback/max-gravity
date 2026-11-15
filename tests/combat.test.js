@@ -116,7 +116,7 @@ test('classic fights: a corvette beats a corsair, torpedoes help a shuttle', asy
       Object.assign(G.player, { x: 0, y: 0, vx: 0, vy: 0 });
       spawnNpc('pirate', false, true);
       const n = G.npcs[G.npcs.length - 1], s0 = SHIPS[foeId];
-      Object.assign(n, { shipId: foeId, hostile: true, x: 700, y: 0, vx: 0, vy: 0, shields: s0.shields, armor: s0.armor, maxArmor: s0.armor });
+      Object.assign(n, { shipId: foeId, hostile: true, x: 700, y: 0, vx: 0, vy: 0, armor: s0.armor, maxArmor: s0.armor });
       G.npcs = [n]; G.target = n;
       for (let t = 0; t < 90; t += 1 / 60) {
         const pl = G.player, d = dist(pl, n), off = turnToward(pl, Math.atan2(n.y - pl.y, n.x - pl.x), 1 / 60);
@@ -143,7 +143,7 @@ test('boarding, prizes, injuries and the medic', async () => {
   const r = await ev(() => {
     const out = {};
     const fresh = () => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; while (G.dialog) finishEvent(); G.mode = 'landed'; takeOff(); G.spawnTimer = 1e9; G.npcs = []; G.torps = []; };
-    const spawn = (kind, shipId, x) => { spawnNpc(kind, false, true); const n = G.npcs[G.npcs.length - 1], s = SHIPS[shipId]; Object.assign(n, { shipId, x: G.player.x + x, y: G.player.y, vx: 0, vy: 0, shields: s.shields, armor: s.armor, maxArmor: s.armor }); return n; };
+    const spawn = (kind, shipId, x) => { spawnNpc(kind, false, true); const n = G.npcs[G.npcs.length - 1], s = SHIPS[shipId]; Object.assign(n, { shipId, x: G.player.x + x, y: G.player.y, vx: 0, vy: 0, armor: s.armor, maxArmor: s.armor }); return n; };
     const beat = n => { let i = 0; while (!n.disabled && !n.dead && i++ < 200) damage(n, 6, true); };
     const choose = (ev, label) => ev.choices.find(x => x.label.startsWith(label)).run();
     fresh();
@@ -213,7 +213,7 @@ test('every hail answers without errors, and captains remember you', async () =>
     for (let i = 0; i < 30; i++) { G.npcs = []; if (spawnNpc('trader', false).persona === t.persona) seen++; }
     // A captain you kill is gone for good.
     let n; do { G.npcs = []; n = spawnNpc('pirate', false); } while (!n.persona);
-    const id = n.persona.id; n.shields = 0; damage(n, 999);
+    const id = n.persona.id; damage(n, 999);
     return { answered, seen, gone: !G.state.people[id] };
   });
   assert.ok(r.answered > 15, `answered ${r.answered} hail choices`);

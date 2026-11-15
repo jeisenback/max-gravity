@@ -442,7 +442,7 @@ Mods.register({
         },
       ],
       choices: [{ label: 'Understood', effects: { story: { stage: 'act3' }, storyLog: 'Ceres was blockaded. Set out to run water through.' },
-        result: 'You go through the checklist twice: guns, shields, reaction mass, hold. Then a third time, out of habit, because your hands need something to do. A single line of numbers on the console will decide whether you get through. (Water is cheapest on Europa, Enceladus, and Triton.)' }],
+        result: 'You go through the checklist twice: guns, point defence, reaction mass, hold. Then a third time, out of habit, because your hands need something to do. A single line of numbers on the console will decide whether you get through. (Water is cheapest on Europa, Enceladus, and Triton.)' }],
     });
 
     scene({

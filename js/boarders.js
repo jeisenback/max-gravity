@@ -234,7 +234,7 @@ function shipTaken(s) {
   let hold = '';  // she empties part of the hold as well
   if (hasTradeCargo()) { const { cid, qty } = shedCargo(FIGHT.LOST_CARGO); hold = ` ${sceneSay('scene:fight', d.foe.kind === 'patrol' ? 'end.lost.cargo.patrol' : 'end.lost.cargo', { qty, good: goodName(cid) })}`; }
   if (cap) like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
-  st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
+  st.armor = Math.max(1, st.armor - Math.round(hullPast(ship().armor) * 0.1));  // of the armor past the skin (HULL_SKIN, #1208)
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
   if ((s.youHurt || handHurt()) && role().canDie && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
   if (cap && d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
@@ -265,8 +265,8 @@ function assaultSettle(s, won, lost) {
     return `${endWords(s, 'took', { cr: fmt(take), last: cap.last, post: where })}${lost}`;
   }
   if (cap) like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
-  st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
-  return `${endWords(s, 'driven', {})} Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
+  st.armor = Math.max(1, st.armor - Math.round(hullPast(ship().armor) * 0.05));
+  return `${endWords(s, 'driven', {})} Armor -${Math.round(hullPast(ship().armor) * 0.05)}.${lost}`;
 }
 
 const listNames = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);

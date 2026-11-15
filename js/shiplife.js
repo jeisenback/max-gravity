@@ -206,7 +206,7 @@ const crewHurt = st => st.crew.filter(id => (st.people || {})[id] && (st.injured
 function shipState(st, t, maxArmor, rnd, who) {
   const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crewHurt(st);
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
-  const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
+  const d = maxArmor > 0 ? 1 - hullLeftOf(st.armor, maxArmor) : 0;  // past the skin (HULL_SKIN, #1208)
   const out = { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null };
   out.watch = ableWatch(watchTonight(t), out);
   out.bill = billFor(st, out, st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
@@ -1181,7 +1181,7 @@ function drawCutaway(box, clear = box, dock = null) {
   const mood = crewSpirits(st, st.crew), night = nightStateOf(st, t, handHurt()), ask = typeof CAST === 'object' && CAST.cato ? CAST.cato.middleAsk() : [];
   bunks.forEach((b, k) => { if (b && owners[k].id && mood.low.includes(owners[k].id)) b.low = true; });  // a low person's own curtain drawn (#936)
   const s = { bunks, w, spirits: mood.good, registry: SHIP_REGISTRY[st.shipId] || null, bill: billSheet(crewRoster(st), night.bill, night.watch, shipDay(t.elapsed).day, askedMiddle(st, ask)), time: now, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: dock ? 0 : nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
-    damage: { marks: new Set(t.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: Math.round(tripAge(t) * 64) / 64, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people),
+    damage: { marks: new Set(t.marks || []), severe: 1 - hullLeftOf(G.state.armor, ship().armor) > 2 / 3, patches: new Set(G.state.patches || []) }, age: Math.round(tripAge(t) * 64) / 64, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people),
     ...(dock ? { lock: dock.lock, seal: dock.seal } : {}) };  // the marks lifeTick keeps (shipState); the trip's age in 64ths, so a room kept as an image is drawn again only when it shows (#1123)
   roomSprites = ROOM_SPRITE_CACHE;  // each prop part drawn once, then copied (#1117)
   try {
@@ -1347,7 +1347,7 @@ const ACTIVITIES = {
   repair: {
     get label() { return lifeSay('repair.label'); }, can: () => G.state.armor < ship().armor, on: () => lifeSay('repair.on'), where: 'engine',
     run() {
-      const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
+      const max = ship().armor, amount = Math.round(hullPast(max) * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) toActivity(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : lifePick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day

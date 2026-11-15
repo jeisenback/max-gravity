@@ -78,8 +78,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     // part, 'focus' always at her weapons, 'drive' at her drive until it is gone and then her weapons, 'lock' at her lock and then her weapons, 'hull' every gun at
     // her hull, and 'hullhold' the same with the turret held back on a turn she fires a salvo; these six fire the turret (hullhold but on her salvo) and send a
     // torpedo at her hull while there are any. 'answer' reads her shown move (s.shown): it holds the turret back when she fires a salvo, aims at her lock while she
-    // pins or closes with it whole, and against a ship whose shields come back (regen) sends the torpedoes at her hull and overcharges every gun the heat allows;
-    // else it aims at her hull (tools/answer.js). A deck fight after it is played by the 'shoot' policy. Every fixed aim is at the first ship (foe 0); fireTurn
+    // pins or closes with it whole, sends a torpedo at the foe with the least armor left, and else aims at her hull (tools/answer.js). A deck fight after it is played by the 'shoot' policy. Every fixed aim is at the first ship (foe 0); fireTurn
     // sends an order on to the next ship that still has the part.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
     const salvo = s => s.state.foes.some((f, i) => fightUp(f) && s.shown && s.shown.foe[i] && s.shown.foe[i].kind === 'salvo');

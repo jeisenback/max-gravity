@@ -78,10 +78,8 @@ const Sfx = {
   },
 
   laser(o) { this.tone('square', 1400, 160, 0.12, this.near(o) * (o === G.player ? 0.12 : 0.07)); },
-  hit(o, shield) {
-    const v = this.near(o) * 0.3;
-    if (shield) this.tone('sine', 900, 450, 0.15, v);
-    else this.hiss(2500, 300, 0.18, v);
+  hit(o) {
+    this.hiss(2500, 300, 0.18, this.near(o) * 0.3);
   },
   boom(o) {
     const v = this.near(o);
@@ -119,7 +117,7 @@ Mods.register({
   id: 'sound', name: 'Sound', builtin: true,
   init(M) {
     M.on('fire', o => Sfx.laser(o));
-    M.on('damage', (o, shield) => Sfx.hit(o, shield));
+    M.on('damage', o => Sfx.hit(o));
     M.on('destroyed', o => Sfx.boom(o));
     M.on('landed', () => Sfx.dock());
     M.on('takeoff', () => Sfx.launch());

@@ -27,7 +27,7 @@ const partWear = (st, sys) => PART_SOURCES[fittedPart(st, sys).source].wear * pa
 // ---------- used parts: where each came from, and its quirk (Task 2) ----------
 // A used part's history: the system it fits, where it came from (a line in the voice), and one quirk, a plus and a minus, each one effect of a kind
 // the wear, the fight and the checks read: { wear: k } (how fast its system wears), { perf: k } (its system's performance, capped at PERF_CAP),
-// { fight: { dmgMult: k } | { shields: k } } (the hand's ship in a fight), { edge: { <check kind>: n } } (the hand's checks, sheet.js DIFFICULTY).
+// { fight: { dmgMult: k } | { armor: k } } (the hand's ship in a fight: the guns' damage, or the armor the point defence keeps whole), { edge: { <check kind>: n } } (the hand's checks, sheet.js DIFFICULTY).
 const PART_QUIRKS = [
   { id: 'ore-tug-coil', system: 'drive', from: 'a drive coil off a Ganymede ore tug, rewound twice', plus: { wear: 0.8 }, minus: { perf: 0.95 } },
   { id: 'hot-injector', system: 'drive', from: 'an injector rail from a scrapped courier, tuned to run hot', plus: { perf: 1.05 }, minus: { wear: 1.3 } },
@@ -35,9 +35,9 @@ const PART_QUIRKS = [
   { id: 'cutter-feed', system: 'fire', from: 'a feed off a Compact patrol cutter, faster than it needs to be', plus: { fight: { dmgMult: 1.06 } }, minus: { wear: 1.25 } },
   { id: 'raider-board', system: 'fire', from: 'a fire-control board from a Rook raider, the old tallies still scratched on the case', plus: { edge: { post: 0.05 } }, minus: { perf: 0.95 } },
   { id: 'escort-mount', system: 'fire', from: 'a gun mount out of a decommissioned escort, stiff in the cold', plus: { wear: 0.85 }, minus: { fight: { dmgMult: 0.96 } } },
-  { id: 'picket-bank', system: 'shields', from: 'a capacitor bank off a Fleet picket, rated for a hull twice this size', plus: { fight: { shields: 1.08 } }, minus: { wear: 1.25 } },
-  { id: 'taped-emitter', system: 'shields', from: 'a field emitter out of the Boneyard, wrapped in somebody else\'s tape', plus: { wear: 0.85 }, minus: { fight: { shields: 0.95 } } },
-  { id: 'yacht-regulator', system: 'shields', from: 'a regulator from a yacht that never saw a fight', plus: { perf: 1.05 }, minus: { fight: { shields: 0.96 } } },
+  { id: 'picket-bank', system: 'pd', from: 'a turret drive off a Fleet picket, rated for a hull twice this size', plus: { fight: { armor: 1.08 } }, minus: { wear: 1.25 } },
+  { id: 'taped-emitter', system: 'pd', from: 'a point-defence mount out of the Boneyard, wrapped in somebody else\'s tape', plus: { wear: 0.85 }, minus: { fight: { armor: 0.95 } } },
+  { id: 'yacht-regulator', system: 'pd', from: 'a tracking radar from a yacht that never saw a fight', plus: { perf: 1.05 }, minus: { fight: { armor: 0.96 } } },
   { id: 'hospital-stack', system: 'life', from: 'a scrubber stack out of a hospital ship, quieter than the old one', plus: { wear: 0.8 }, minus: { perf: 0.96 } },
   { id: 'grower-plant', system: 'life', from: 'an air plant from a Juno grower\'s barge, still smelling faintly of soil', plus: { perf: 1.05 }, minus: { wear: 1.2 } },
   { id: 'camp-reclaimer', system: 'life', from: 'a water reclaimer off a mining camp, its filters labelled in a Hollows hand', plus: { wear: 0.9 }, minus: { perf: 0.97 } },
@@ -64,7 +64,7 @@ function partEffect(st, sys, kind) {
 }
 const fittedQuirks = st => Object.values(st.parts || {}).map(p => p.quirk).filter(Boolean);
 function partFight(st) {
-  const out = { dmgMult: 1, shields: 1 };
+  const out = { dmgMult: 1, armor: 1 };
   for (const q of fittedQuirks(st)) for (const e of [q.plus, q.minus]) if (e.fight) for (const k of Object.keys(out)) if (e.fight[k]) out[k] *= e.fight[k];
   return out;
 }
@@ -86,7 +86,7 @@ const stationPart = (post, id) => (STATION_PARTS[post] || []).find(p => p.id ===
 // The effects of the hand's fitted station parts and their quirks, for a post: each part's own effect and, if it was used, its quirk's plus and minus.
 const stationEffects = h => (h && h.station || []).flatMap(f => { const p = stationPart(h.post, f.id); return [...(p ? [p.effect] : []), ...(f.quirk ? [f.quirk.plus, f.quirk.minus] : [])]; });
 function stationFight(h) {
-  const out = { dmgMult: 1, shields: 1 };
+  const out = { dmgMult: 1, armor: 1 };
   for (const e of stationEffects(h)) if (e.fight) for (const k of Object.keys(out)) if (e.fight[k]) out[k] *= e.fight[k];
   return out;
 }

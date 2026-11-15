@@ -7,7 +7,7 @@
 
 // The one fight she should not have picked: a point each for a medic who is not hurt, a hull above 60 percent, a gunner at the
 // guns, and a second person at the lock with him. Three or more he lives, two he is marked, fewer he dies.
-const lockPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (roleHolder('gunner') ? 1 : 0) + (backup ? 1 : 0);
+const lockPoints = backup => (roleHolder('medic') ? 1 : 0) + (hullLeftOf(G.state.armor, ship().armor) > 0.6 ? 1 : 0) + (roleHolder('gunner') ? 1 : 0) + (backup ? 1 : 0);
 function atTheLock(backup) {
   const points = lockPoints(backup), told = castRec('ansel').flags.told, cap = hiredCaptain();
   const outcome = castFate('ansel', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the boarding lock near ${system().name}.`, 'The hand that held the sheet doesn\'t close properly.', 'xo');
@@ -148,7 +148,7 @@ CAST.ansel = {
     pivot: {
       days: 70, title: 'The Fight She Shouldn\'t Have Picked',
       get text() {
-        const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
+        const medic = roleHolder('medic'), low = hullLeftOf(G.state.armor, ship().armor) <= 0.6;
         return ('A ship has come up on your stern, long and dark, and it\'s one of Dobrescu\'s. Captain Pell has seen it on the board and is already ' +
             'at the guns, laughing, with a figure in her head. "We can take her," she says. "We could take her." Ansel is at the boarding lock with ' +
             'his coat on and the sheet in one hand. "I\'d like to speak to them," he says. "Give me ten minutes, and the lock, and don\'t fire." He ' +
@@ -162,7 +162,7 @@ CAST.ansel = {
         { label: 'Let him go to the lock', run: () => atTheLock(false) },
         { label: 'Send a second person with him', ...gated(needCrew(2)), run: () => atTheLock(true) },
         { label: 'Back the captain, and open fire', memory: 'You opened fire on Dobrescu\'s ship against my word.', run() {
-          castFlag('ansel', 'benched'); castLike('ansel', -3, this.memory); captainLike(1, sceneSay('scene:memories', 'ansel.backed.memory')); G.state.armor = Math.round(G.state.armor * 0.7);
+          castFlag('ansel', 'benched'); castLike('ansel', -3, this.memory); captainLike(1, sceneSay('scene:memories', 'ansel.backed.memory')); G.state.armor -= Math.round(0.3 * Math.max(0, G.state.armor - HULL_SKIN * ship().armor));  // a third of the armor past the skin (HULL_SKIN, #1208)
           return ('You give the word, and the guns speak, and the long ship answers, and for a minute it\'s loud and bright and Pell is laughing. The ' +
               'hull takes what it takes. Ansel stands at the lock with the sheet and doesn\'t say anything. When it\'s over he writes a number on it, ' +
               'and puts it in his pocket, and doesn\'t show it to anyone.');

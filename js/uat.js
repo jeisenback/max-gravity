@@ -232,7 +232,7 @@ UAT_ITEMS.push(
 // ---------- general tools ----------
 const UAT_TOOLS = {
   cash: () => { G.state.credits += 500000; },
-  refuel: () => { const st = G.state; st.fuel = ship().fuel; st.armor = ship().armor; if (G.player) { G.player.armor = G.player.maxArmor; G.player.shields = ship().shields; } },
+  refuel: () => { const st = G.state; st.fuel = ship().fuel; st.armor = ship().armor; if (G.player) G.player.armor = G.player.maxArmor; },
   days: () => { const st = G.state; for (let i = 0; i < 10; i++) { st.day++; Mods.emit('newDay', st.day); } },
   cargo: () => { const st = G.state; for (const c of COMMODITIES) { const q = Math.min(20, cargoFree()); if (q > 0) st.cargo[c.id] = (st.cargo[c.id] || 0) + q; } },
   happen: () => { if (G.mode === 'transit' && !G.transit.event) startHappening(); },

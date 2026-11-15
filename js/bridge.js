@@ -82,7 +82,7 @@ UI.views.nav = navigationPanel;
 const armament = () => {
   const st = G.state, s = ship();
   const fitted = Object.entries(st.outfits).filter(([id, n]) => n > 0 && OUTFITS[id]).map(([id, n]) => `${OUTFITS[id].name}${n > 1 ? ` x${n}` : ''}`);
-  return `<p class="desc">${s.guns} gun${s.guns > 1 ? 's' : ''}. Armor ${st.armor}/${s.armor}, shields ${s.shields}.</p>
+  return `<p class="desc">${s.guns} gun${s.guns > 1 ? 's' : ''}. Armor ${st.armor}/${s.armor}.</p>
     <p class="hint">${fitted.length ? `Fitted: ${fitted.join(', ')}.` : 'No outfits fitted.'}</p>`;
 };
 

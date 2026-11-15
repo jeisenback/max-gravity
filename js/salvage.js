@@ -232,7 +232,7 @@ const siteUsed = site => (site.wreck ? wreckDone(site.wreck) : !!site.seen);
 function sailFromSite(st, sid) {
   const site = siteOf(st, st.systemId), c = career(), job = c && c.job, other = siteOf(st, sid);
   if (!site || sid === site.id || !(SYSTEMS[sid] || (other && other.found !== null)) || G.mode !== 'landed' || G.dialog || (site.wreck && !wreckDone(site.wreck))) return false;
-  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor, shields: s.shields }); }  // on station there is no ship in local space
+  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor }); }  // on station there is no ship in local space
   st.dest = sid;
   st.route = other ? null : { dock: job && job.sid === sid ? job.planet : (SYSTEMS[sid].planets.find(p => p.services.includes('trade')) || SYSTEMS[sid].planets[0]).name, go: true };
   const from = orbitPos(st.systemId), to = orbitPos(sid);

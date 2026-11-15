@@ -21,9 +21,9 @@ const POSTS = {
 const ORDERS = {
   engineer: [{
     id: 'patch', name: 'Patch the hull', desc: 'Field repairs, up to three quarters of full armor. Once a day.',
-    can: () => G.state.armor < Math.floor(ship().armor * 0.75), idle: 'Nothing to patch: the armor is above three quarters of full.',
+    can: () => G.state.armor < Math.floor(hullAt(0.75, ship().armor)), idle: 'Nothing to patch: the armor is above three quarters of full.',
     run(ok, doer, skill) {
-      const st = G.state, cap = Math.floor(ship().armor * 0.75), who = doer ? doer.first || doer.name : 'You';
+      const st = G.state, cap = Math.floor(hullAt(0.75, ship().armor)), who = doer ? doer.first || doer.name : 'You';
       if (!ok) return `${who} spend${doer ? 's' : ''} a watch on the plating and get${doer ? 's' : ''} nowhere. The seams will need a yard.`;
       const gain = Math.min(cap - st.armor, 4 + 4 * skill);
       st.armor += gain;

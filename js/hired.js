@@ -482,7 +482,7 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // thinks of you. signOn signs for the share at Ceres (#882).
 const USED_ID = 'used';
 const USED_OFFER_AT = Math.round(0.55 * BUY_IN.mid);
-const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
+const USED_CONDITION = { drive: 70, life: 65, pd: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : BUY_IN.mid, forSale: dealOpen() } : SHIPS[id]);
 const dealOpen = () => !!hired() && !!hired().deal;  // the berth is held until you sign (the owner, 2026-11-03, #882)
 const tomasAboard = () => castAboard().find(c => c.cast === 'tomas') || null;
@@ -797,7 +797,7 @@ Mods.register({
     M.on('landed', planet => {
       if (!hired() || chapterOf(G.state) > 1 || !planet.services.includes('refuel')) return;  // the captain's; the co-op buys its own (#891)
       G.state.fuel = ship().fuel;
-      if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) { G.state.armor = ship().armor; mendHull(G.state, G.state.hullMarks || [], []); }  // a scrape is patched on the way in, its mark a patch on the wall (#935); real damage is the yard's (repairs.js)
+      if (hullLeftOf(G.state.armor, ship().armor) >= 1 - REPAIR_AT) { G.state.armor = ship().armor; mendHull(G.state, G.state.hullMarks || [], []); }  // a scrape is patched on the way in, its mark a patch on the wall (#935); real damage is the yard's (repairs.js)
     });
     M.on('landed', planet => {
       const text = hired() && chapterOf(G.state) === 1 && settleRun(planet);  // the captain's run and the hand's wage; the co-op's contracts settle on its board (ownerboard.js)

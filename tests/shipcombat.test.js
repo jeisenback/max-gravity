@@ -23,15 +23,15 @@ test('the fight\'s sides are the two ships: a slow hauler is out-turned by a rai
   const r = await ev(() => {
     const st = setup(), out = {}, f = foe('raider').foe; window.makeEnemy = () => f; window.rateFoe = s => { s.grade = 0; s.pack = false; return s; };
     const side = () => { G.nextEvent = null; startShipFight({ kind: 'pirate' }, false); const s = G.nextEvent.fight.state; G.nextEvent = null; return s; };
-    const a = side(); out.plain = { me: [a.me.shields, a.me.armor, a.me.speed], her: [a.foes[0].shields, a.foes[0].armor, a.foes[0].speed] };
-    st.outfits.armor = 1; st.outfits.shield = 1; st.armor = ship().armor;
-    const b = side(); out.fitted = [b.me.maxShields, b.me.maxArmor];
+    const a = side(); out.plain = { me: [a.me.armor, a.me.speed], her: [a.foes[0].armor, a.foes[0].speed] };
+    st.outfits.armor = 1; st.armor = ship().armor;
+    const b = side(); out.fitted = b.me.maxArmor;
     st.armor = 100; out.worn = side().me.armor;
     return out;
   });
-  assert.deepEqual(r.plain.me, [81, 117, 180], 'the hauler: 180 shields and 260 armor (81 and 117 at FIGHT.POOL 0.45), and slow (accel 100 times turn 1.8)');
-  assert.deepEqual(r.plain.her, [32, 27, 828], 'the raider: thin (70 and 60), and four times as quick');
-  assert.deepEqual(r.fitted, [104, 135], 'a deflector capacitor and armor plating, +50 and +40: 230 and 300, at FIGHT.POOL');
+  assert.deepEqual(r.plain.me, [198, 180], 'the hauler: 440 armor (198 at FIGHT.POOL 0.45; her old shields in it, #1208), and slow (accel 100 times turn 1.8)');
+  assert.deepEqual(r.plain.her, [59, 828], 'the raider: thin (130), and four times as quick');
+  assert.equal(r.fitted, 216, 'armor plating, +40: 480, at FIGHT.POOL');
   assert.equal(r.worn, 45, 'the fight starts from the hull the ship has: 100, at FIGHT.POOL');
   await done();
 });
@@ -57,7 +57,7 @@ test('pirate crews differ by the lane: veterans have a longer hull and a harder 
     return out;
   });
   assert.ok(r.bad.grade > r.calm.grade * 2, `grade ${r.calm.grade} to ${r.bad.grade}`); assert.ok(r.bad.packs > 0.2 && r.calm.packs === 0, `packs ${r.calm.packs} / ${r.bad.packs}`);
-  assert.deepEqual(r.vet, [54, 86, 1, 1.3], 'a veteran: thirty percent more hull a grade (120 and 192, at FIGHT.POOL), fifteen percent more punch'); assert.deepEqual(r.pair, [2, true]);
+  assert.deepEqual(r.vet, [117, 150, 1, 1.3], 'a veteran: fourteen percent more hull a grade (260 and 333, at FIGHT.POOL; on her armor with her shields folded in, about the thirty percent of her plate it was before #1208), fifteen percent more punch'); assert.deepEqual(r.pair, [2, true]);
   await done();
 });
 

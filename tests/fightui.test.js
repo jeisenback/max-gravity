@@ -79,7 +79,7 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.deepEqual(r.rows.map(([l, on]) => [l.replace(/a hit does \d+ to \d+/, 'a hit does N to M'), on]), [['Gun 1: a hit does N to M', ['Hull']], ['Gun 2: a hit does N to M', ['Hull']], ['Torpedo, 2 left', ['Hold']]], 'the guns start on her hull, the torpedo held');
   assert.deepEqual(r.picks, Array(3).fill(row.join(' | ')), 'a raider has no launcher to aim at');
   assert.equal(r.pressed, ['true', 'false', 'false', 'false', 'false', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'].join(''), 'the target picked is marked for a screen reader too');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 81 of 81, armor 117 of 117, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: shields 32 of 32, armor 27 of 27, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: armor 198 of 198, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: armor 59 of 59, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   assert.deepEqual(r.flow, ['Gun 1', 'Gun 2', 'Turret'], 'the charges and the turret, in the flow of the scene with the rows');
   assert.equal(r.heading, 'Orders to the guns');
@@ -139,10 +139,10 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
     // lost: the hull is one point from gone, and her broadside is at it
     const st = fightGame('gunner'), h = hired(); h.fund = 1000; const cap = person(h.captain), op = cap.opinion;
     s = battle(); s.state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // two guns would shoot away her weapons (20) before she fires
-    Object.assign(s.state.me, { shields: 0, armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
+    Object.assign(s.state.me, { armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
     const real = Math.random; Math.random = () => 0.99;  // the captain is not lost on her bridge (a roll of one in three)
     const ret = chooseEvent(choiceAt('Fire')), close = G.nextEvent; Math.random = real;
-    out.lost = { ret, title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op, armor: st.armor };
+    out.lost = { ret, title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op, armor: hullLeftOf(st.armor, ship().armor) };
     finishEvent(); out.lost.shown = G.dialog && G.dialog.event.title; out.lost.labels = G.dialog.choices.map(c => c.label);
     out.lost.down = chooseEvent(0); out.lost.then = G.nextEvent;
     return out;
@@ -152,7 +152,7 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
   assert.equal(r.lost.ret, null); assert.equal(r.lost.title, 'Battle Stations');
   assert.match(r.lost.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox because there's no choice, and they take 300 cr of the ship's fund and go\./);
   assert.equal(r.lost.fund, 700); assert.equal(r.lost.opinion, -1, 'the captain marks it');
-  assert.equal(r.lost.armor, 1, 'the hull at its last point');
+  assert.equal(r.lost.armor, 0, 'the hull at its last point: nothing left past the skin (HULL_SKIN, #1208)');
   assert.equal(r.lost.shown, 'Battle Stations', 'the close is shown on the panel'); assert.deepEqual(r.lost.labels, ['Stand down']); assert.equal(r.lost.down, null); assert.equal(r.lost.then, null, 'and nothing follows it');
   await done();
 });
@@ -166,7 +166,7 @@ test('a head start from the contact screen is a free first volley: ours at her w
       const st = fightGame('gunner'), armor = st.armor;
       startShipFight({ kind: 'pirate' }, false, { edge, shift, text: 'Battle stations.' });
       const s = G.nextEvent.fight, f = s.state;
-      out[name] = { weapons: f.foes[0].parts.weapons.hp, hull: f.me.shields + f.me.armor, full: f.me.maxShields + f.me.maxArmor, band: RANGE_BANDS[f.band], turn: f.turn, last: f.log[f.log.length - 1], armor: st.armor === armor };
+      out[name] = { weapons: f.foes[0].parts.weapons.hp, hull: f.me.armor, full: f.me.maxArmor, band: RANGE_BANDS[f.band], turn: f.turn, last: f.log[f.log.length - 1], armor: st.armor === armor };
     }
     return out;
   });
@@ -192,7 +192,7 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
     return out;
   }, text);
-  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['The Old Days', false], armor: 40, fight: 'Battle Stations', me: 18 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept (40, at FIGHT.POOL 0.45)');
+  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['The Old Days', false], armor: 220, fight: 'Battle Stations', me: 99 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept, with the Ice Hauler\'s 180 shield points folded in (#1208: 220, at FIGHT.POOL 0.45)');
   await done();
 });
 
@@ -548,12 +548,12 @@ test('a gun aimed at the launcher lands on the hull of a ship that has none', as
   await ev(helpers);
   const r = await ev(() => {
     fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
-    const s = battle(), [lead, consort] = s.state.foes, was = [lead.shields + lead.armor, consort.shields + consort.armor];
+    const s = battle(), [lead, consort] = s.state.foes, was = [lead.armor, consort.armor];
     s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
     let threw = null;
     try { fireTurn(s, { guns: [{ foe: 0, part: 'launcher' }], torp: null, pdc: 'fire' }); } catch (e) { threw = String(e); }
     const [a, b] = s.state.foes;
-    return { threw, lead: a.shields + a.armor - was[0], consort: b.shields + b.armor - was[1], last: s.state.log[s.state.log.length - 1], launcher: !!a.parts.launcher };
+    return { threw, lead: a.armor - was[0], consort: b.armor - was[1], last: s.state.log[s.state.log.length - 1], launcher: !!a.parts.launcher };
   });
   assert.equal(r.threw, null); assert.equal(r.launcher, false);
   assert.ok(r.lead < 0, `the lead's hull is hit: ${JSON.stringify(r)}`); assert.equal(r.consort, 0);
@@ -667,17 +667,18 @@ test('a lost fight\'s armor is billed at the next yard', async () => {
   await done();
 });
 
-test('armor lost in a fight comes back to the ship at full scale, and a fight never repairs it', async () => {
+test('armor lost in a fight past its skin comes back to the ship at full scale, and a fight never repairs it (HULL_SKIN, #1208)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const out = [];
     for (const less of [0, 11, -3]) {  // whole, an odd amount down (its scaled armor rounds up), and at 3
       const st = fightGame('gunner'), real = less < 0 ? -less : ship().armor - less; st.armor = real;
-      const s = battle(), me = s.state.me, start = me.armor, row = { real, start, max: me.maxArmor, ship: ship().armor, pool: FIGHT.POOL };
+      const s = battle(), me = s.state.me, start = me.armor, skin = HULL_SKIN * me.maxArmor, row = { real, start, max: me.maxArmor, ship: ship().armor, pool: FIGHT.POOL, skin };
       row.atStart = st.armor;
       fightTook(s, []); row.unhurt = st.armor;
       me.armor = Math.max(0, start - 7); fightTook(s, []); row.after7 = st.armor;
+      me.armor = Math.max(0, start - Math.ceil(skin) - 7); fightTook(s, []); row.past7 = st.armor;
       me.armor = 0; fightTook(s, []); row.atZero = st.armor;
       out.push(row);
     }
@@ -688,8 +689,10 @@ test('armor lost in a fight comes back to the ship at full scale, and a fight ne
     assert.equal(x.max, Math.round(x.pool * x.ship), 'her maximum is the ship\'s scaled');
     assert.equal(x.atStart, x.real, 'starting a fight changes nothing');
     assert.equal(x.unhurt, x.real, `a turn with no armor lost leaves the real armor as it was, rounding or not: ${JSON.stringify(x)}`);
-    assert.equal(x.after7, Math.max(1, x.real - Math.round(Math.min(7, x.start) / x.pool)), `seven fight armor lost is 7 / POOL real: ${JSON.stringify(x)}`);
-    assert.equal(x.atZero, 1, 'and it never goes under 1');
+    const past = lost => Math.max(1, x.real - Math.max(0, Math.round((Math.min(lost, x.start) - x.skin) / x.pool)));
+    assert.equal(x.after7, past(7), `seven fight armor lost lands on the skin: ${JSON.stringify(x)}`);
+    assert.equal(x.past7, past(Math.ceil(x.skin) + 7), `past the skin, what is lost is lost / POOL real: ${JSON.stringify(x)}`);
+    assert.equal(x.atZero, past(x.start), `all of it: what was past the skin, and never under 1: ${JSON.stringify(x)}`);
   }
   await done();
 });
@@ -715,7 +718,7 @@ test('the yard bills the real armor lost', async () => {
   await ev(helpers);
   const r = await ev(() => {
     const st = fightGame('gunner'); st.armor = ship().armor;
-    const s = battle(); s.state.me.armor -= 10; fightTook(s, []);
+    const s = battle(); s.state.me.armor -= Math.round(HULL_SKIN * s.state.me.maxArmor) + 10; fightTook(s, []);  // ten past the skin (#1208)
     shipFightEnd(s, 'broke');
     const plan = repairPlan({ ...currentPlanet(), services: ['shipyard', 'trade'] });
     return { lost: plan.lost, max: ship().armor, armor: st.armor, pool: FIGHT.POOL };
@@ -752,11 +755,11 @@ test('in a pack fight, a shot at her hull or her lock goes to the ship still in 
       fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
       const s = battle(), [lead, consort] = s.state.foes;
       lead.parts.weapons.hp = 0; lead.parts.drive.hp = 0;  // the lead is crippled: out of the fight, with her armor left
-      const was = [lead.shields + lead.armor + lead.parts.lock.hp, consort.shields + consort.armor + consort.parts.lock.hp];
+      const was = [lead.armor + lead.parts.lock.hp, consort.armor + consort.parts.lock.hp];
       s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
       fireTurn(s, { guns: [{ foe: 0, part }], torp: null, pdc: 'fire' });
       const [a, b] = s.state.foes;
-      out[part] = { lead: a.shields + a.armor + a.parts.lock.hp - was[0], consort: b.shields + b.armor + b.parts.lock.hp - was[1], line: s.state.log[s.state.log.length - 1] };
+      out[part] = { lead: a.armor + a.parts.lock.hp - was[0], consort: b.armor + b.parts.lock.hp - was[1], line: s.state.log[s.state.log.length - 1] };
     }
     return out;
   });
@@ -776,7 +779,7 @@ test('a head start that hurts the hand bills the clinic to the hand\'s own credi
     st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879); delete h.hurtUntil;
     h.fund = 10000; st.credits = 5000;
     const real = headStart;
-    headStart = state => { const s2 = JSON.parse(JSON.stringify(state)); s2.me.shields = 0; s2.me.armor -= 100; return { state: s2, events: [{ who: 'foe', foe: 0, part: 'hull', dmg: 100 }] }; };  // a heavy first volley
+    headStart = state => { const s2 = JSON.parse(JSON.stringify(state)); s2.me.armor -= 100; return { state: s2, events: [{ who: 'foe', foe: 0, part: 'hull', dmg: 100 }] }; };  // a heavy first volley
     rolls([0.99, 0.99, 0.01, 0.99]);  // the run fails, no casualty, the hand's own roll, and no death
     try { hiredFunds(() => startDuel({ kind: 'pirate' }, true)); } finally { headStart = real; }
     return { fund: h.fund, credits: st.credits, hurt: handHurt() };
@@ -1048,12 +1051,12 @@ test('the fight\'s bars are their own block, pinned at the top of the panel, and
   assert.match(r.label, new RegExp(`weapons \\d+ of \\d+, down ${r.lost}`));
 });
 
-test('while a ship fight is up the sidebar shows the fight\'s own shields and armor, the numbers the panel shows', async () => {
+test('while a ship fight is up the sidebar shows the fight\'s own armor, the numbers the panel shows', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { fightGame('gunner'); const s = battle(); UI.act('choose', String(choiceAt('Fire'))); const me = G.dialog.event.fight.state.me; return { hud: hudHull(G.player, G.dialog), me: [me.shields, me.maxShields, me.armor, me.maxArmor], none: (G.dialog = null, hudHull({ shields: 5, armor: 6, maxArmor: 9 }, null, 8)) }; });
+  const r = await ev(() => { fightGame('gunner'); const s = battle(); UI.act('choose', String(choiceAt('Fire'))); const me = G.dialog.event.fight.state.me; return { hud: hudHull(G.player, G.dialog), me: [me.armor, me.maxArmor], none: (G.dialog = null, hudHull({ armor: 6, maxArmor: 9 }, null)) }; });
   await done();
-  assert.deepEqual(r.hud, r.me); assert.deepEqual(r.none, [5, 8, 6, 9]);
+  assert.deepEqual(r.hud, r.me); assert.deepEqual(r.none, [6, 9]);
 });
 
 test('a gun\'s order reads as an order: what it aims at, and what a hit does', async () => {

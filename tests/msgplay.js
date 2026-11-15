@@ -90,7 +90,7 @@ const playMessages = () => {
   says('crew:wages', 1, st => { crewman(st); }, () => payCrew(10));
   says('crew:quits', 1, st => { crewman(st); st.credits = 1; }, () => payCrew(10));
   const drifter = () => ({ name: 'Wren', kind: 'trader', armor: 1, maxArmor: 100, disabled: false });
-  for (const touch of [false, true]) says(`boarding:disabled:${touch ? 'touch' : 'keys'}`, 1, () => { Touch.on = touch; }, () => { onDamage(drifter(), false, true, 5); Touch.on = false; });
+  for (const touch of [false, true]) says(`boarding:disabled:${touch ? 'touch' : 'keys'}`, 1, () => { Touch.on = touch; }, () => { onDamage(drifter(), true, 5); Touch.on = false; });
   says('boarding:hurt:crew', 1, st => { crewman(st, 'gunner'); }, () => hurtCrew());
   says('boarding:hurt:cast', 1, st => { st.crew = [castPerson('tomas').id]; }, () => hurtCrew());
   says('boarding:marked', 1, st => { st.crew = [castPerson('tomas').id]; castFate('tomas', 'mark', 'Hurt.', 'Marked once.'); }, () => hurtCrew(), true, () => (G.state.cast.tomas.fate || {}));

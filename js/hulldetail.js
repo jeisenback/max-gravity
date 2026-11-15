@@ -28,7 +28,7 @@ function hullSeams(o, seen = () => true) {
     for (const x of [o.x0, o.x1 - sk]) if (!worldSprite(ctx, DECK_SPRITES, `seams|${at}|${x}|${y0}`, [x - 1, y0, x + sk + 1, Math.min(o.bottom, y0 + HULL_BAND)], g => hullSeamLines(g, o))) { hullSeamLines(ctx, o); break bands; }
   }
   // Scars: a scorch for each eighth of the armor lost, in the same places every frame, on either side.
-  const lost = Math.max(0, 1 - G.state.armor / ship().armor), n = Math.floor(lost * 8);
+  const lost = 1 - hullLeftOf(G.state.armor, ship().armor), n = Math.floor(lost * 8);  // past the skin (HULL_SKIN, #1208)
   for (let i = 0; i < n; i++) {
     const y = o.top + (0.1 + ((i * 0.37) % 0.78)) * (o.bottom - o.top), edge = i % 2 ? o.x1 - sk / 2 : o.x0 + sk / 2, w = 18 + (i % 3) * 9;
     const g = ctx.createRadialGradient(edge, y, 0, edge, y, w);

@@ -87,7 +87,7 @@ const RUMORS = {
 // ---------- effect helpers used by events ----------
 
 function hurt(frac) {
-  const p = G.player, dmg = Math.round(p.maxArmor * frac);
+  const p = G.player, dmg = Math.round(hullPast(p.maxArmor) * frac);  // a share of the armor past the skin (HULL_SKIN, #1208)
   p.armor = Math.max(1, p.armor - dmg);
   return dmg;
 }
