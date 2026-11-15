@@ -1,16 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Radar Fight Spike</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: the radar is the page, sticky on the left; the post's console runs down the right. One dark look, by choice: it is a sensor board. */
+/* Temporary prototype (prototypes/README.md). Layout: the radar is the page, sticky on the left; the post's console runs down the right. One dark look, by choice: it is a sensor board. */
 :root {
   --bg: #060a10; --panel: #0b121c; --raised: #111b29; --line: #1d2d41;
   --fg: #d4e2f0; --dim: #7a8ea6; --accent: #7fb4ff; --hot: #ff6a4a; --warm: #ffd27f; --ok: #7bd59d;
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; --sans: 'IBM Plex Sans', system-ui, sans-serif;
   color-scheme: dark;
 }
-html, body { height: 100%; }
+html, body { height: 100%; margin: 0; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
 .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 410px); gap: 16px; max-width: 1440px; margin: 0 auto;
   padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
@@ -70,6 +74,8 @@ input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
 ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
 kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <section class="radar">
@@ -564,7 +570,7 @@ function draw() {
   const alerts = []; if (f.armed && s.comms === 'watch') alerts.push('SALVO ARMING'); const n = inbound(s).length; if (n) alerts.push(`${n} TORP${n > 1 ? 'S' : ''} INBOUND`); if (o.locked) alerts.push('GUN LOCKED'); if (s.comms !== 'watch') alerts.push(s.comms === 'lock' ? 'COMMS ON LOCK: BLIND PAST 12 km' : 'SPOOFING: BLIND PAST 12 km');
   ctx.fillStyle = '#ff6a4a'; ctx.fillText(alerts.join('   '), 12, 38);
   ctx.fillStyle = '#cfe3ff'; ctx.fillText(`YOU  FACING ${pad3(brg(dirv(s.me.nose)))}${plan && adiff(s.me.nose, o.nose) > 0.05 ? ` > ${pad3(brg(dirv(o.nose)))}` : ''}   COURSE ${pad3(brg(s.me.v))} at ${len(s.me.v).toFixed(1)} km/turn`, 12, W - 12);
-  { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) {   // the course, drawn as three turns of travel const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); ctx.fillStyle = 'rgba(207,227,255,0.8)'; if (L > 30) ctx.fillText('course', tx + 6, ty - 6); } }
+  /* the course, drawn as three turns of travel */ { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) { const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); ctx.fillStyle = 'rgba(207,227,255,0.8)'; if (L > 30) ctx.fillText('course', tx + 6, ty - 6); } }
   if (s.over) { ctx.fillStyle = 'rgba(5,10,17,0.75)'; ctx.fillRect(0, cy - 30, W, 60); ctx.fillStyle = s.over.win ? '#7bd59d' : '#ff6a4a'; ctx.font = '600 16px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText(s.over.text.toUpperCase(), cx, cy + 6); ctx.textAlign = 'left'; }
   requestAnimationFrame(draw);
 }
@@ -715,3 +721,5 @@ document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON'
 
 S = newGame(UI.seed); aiCalls(S); render(); requestAnimationFrame(draw);
 </script>
+</body>
+</html>

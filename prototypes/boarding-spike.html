@@ -1,16 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Boarding Spike</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: the ship's cutaway is the page, sticky on the left; the hand's console runs down the right. One dark look, by choice: the burn view's cold frame. */
+/* Temporary prototype (prototypes/README.md). Layout: the ship's cutaway is the page, sticky on the left; the hand's console runs down the right. One dark look, by choice: the burn view's cold frame. */
 :root {
   --bg: #060a10; --panel: #0b121c; --raised: #111b29; --line: #1d2d41;
   --fg: #d4e2f0; --dim: #7a8ea6; --accent: #7fb4ff; --hot: #ff6a4a; --warm: #ffd27f; --ok: #7bd59d;
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; --sans: 'IBM Plex Sans', system-ui, sans-serif;
   color-scheme: dark;
 }
-html, body { height: 100%; }
+html, body { height: 100%; margin: 0; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
 .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 430px); gap: 16px; max-width: 1440px; margin: 0 auto;
   padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
@@ -57,6 +61,8 @@ input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
 ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
 kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <section class="ship">
@@ -461,3 +467,5 @@ document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON'
 
 S = newGame(UI.seed); render(); requestAnimationFrame(draw);
 </script>
+</body>
+</html>

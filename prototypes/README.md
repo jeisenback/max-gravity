@@ -13,5 +13,9 @@ Each is one self-contained page. Open it in a desktop browser.
 - `boarding-spike.html`: a corsair's marines boarding the Ice Hauler, fought spot by spot through her real decks (the
   layout in `js/layouts.js`). Two waves, breaching charges with their setters, hatches in the well, Hester's standing intent,
   one order a turn to a named crewmate, and every side's intent drawn before the turn is committed.
+- `answer-spike.html`: the ship fight as threat and answer. Each turn she shows what she will do (arm, a salvo, a
+  broadside at a named room, closing, a grapple, breaking off; a veteran may feint), each post answers with one action
+  from its own list at the odds shown, the captain sets the stance, and hits land on the cutaway's rooms. Built to set
+  beside `radar-spike.html`.
 
 What each was asked to answer is on the page itself, under "What to judge".
