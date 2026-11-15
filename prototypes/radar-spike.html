@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Temporary prototype (prototypes/README.md). Layout: the radar is the page, sticky on the left; the post's console runs down the right. One dark look, by choice: it is a sensor board. */
+/* Temporary prototype (prototypes/README.md). Layout: a top bar of settings; the stage (what is happening, the radar, what has happened);
+   the hand's post down the right. One dark look, by choice: it is a sensor board. */
 :root {
   --bg: #060a10; --panel: #0b121c; --raised: #111b29; --line: #1d2d41;
   --fg: #d4e2f0; --dim: #7a8ea6; --accent: #7fb4ff; --hot: #ff6a4a; --warm: #ffd27f; --ok: #7bd59d;
@@ -16,79 +17,87 @@
 }
 html, body { height: 100%; margin: 0; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
-.wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 410px); gap: 16px; max-width: 1440px; margin: 0 auto;
-  padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
-.radar { position: sticky; top: 16px; align-self: start; display: grid; gap: 10px; min-width: 0; }
-canvas { display: block; width: 100%; max-width: min(100%, calc(100vh - 150px)); aspect-ratio: 1; margin: 0 auto; border: 1px solid var(--line); border-radius: 4px; background: #050a11; cursor: crosshair; }
-.legend { font: 12px/1.5 var(--mono); color: var(--dim); display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; }
+.app { display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); gap: 10px 16px; max-width: 1500px; margin: 0 auto; padding: 10px 16px; box-sizing: border-box; min-height: 100%; }
+.top { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; position: relative; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.top .grp { display: flex; gap: 6px; align-items: center; }
+.top .seg button { padding: 3px 8px 3px 20px; font-size: 11px; }
+.top .seg button::before { left: 6px; width: 7px; height: 7px; margin-top: -4px; }
+.play { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.stage { display: grid; gap: 8px; align-content: start; min-width: 0; }
+canvas { display: block; width: 100%; max-width: min(100%, calc(100vh - 370px)); aspect-ratio: 1; margin: 0 auto; border: 1px solid var(--line); border-radius: 4px; background: #050a11; cursor: crosshair; }
+.sit { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1.2fr 1.1fr; gap: 6px; }
+.sit .cell { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 5px 9px; font: 12px/1.45 var(--mono); min-width: 0; }
+.sit .cell.alert { border-color: var(--hot); } .sit .cell.paused { border-color: var(--warm); }
+.sit .k { display: block; color: var(--dim); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.sit .v { color: var(--fg); }
+.gauge { display: grid; grid-template-columns: 30px minmax(0, 1fr) 26px; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+.bar { height: 6px; background: var(--raised); border-radius: 2px; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--accent); } .bar.foe i { background: var(--hot); }
+.tl { display: grid; gap: 6px; }
+.track { position: relative; height: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 3px; }
+.track i { position: absolute; top: 3px; width: 4px; height: 12px; margin-left: -2px; border-radius: 1px; cursor: pointer; }
+.track b { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--fg); opacity: 0.5; }
+.evs { display: grid; gap: 2px; font: 12px/1.45 var(--mono); }
+.evs div { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 8px; cursor: default; padding: 0 4px; border-radius: 2px; }
+.evs div:hover { background: var(--raised); }
+.evs time, .track + .evs .t { color: var(--dim); }
+.legend { font: 11px/1.5 var(--mono); color: var(--dim); display: flex; flex-wrap: wrap; gap: 2px 14px; }
 .legend b { font-weight: 500; }
-.side { display: grid; gap: 12px; align-content: start; min-width: 0; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 12px; display: grid; gap: 10px; min-width: 0; }
+.side { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; display: grid; gap: 8px; min-width: 0; }
 .card h2 { margin: 0; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
 .card h2 em { font-style: normal; color: var(--accent); }
-h1 { margin: 0; font: 600 15px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
-.sub { margin: 0; color: var(--dim); font-size: 13px; }
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.lab { font: 11px var(--mono); color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; min-width: 64px; }
+h1 { margin: 0; font: 600 13px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.row { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.lab { font: 11px var(--mono); color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; min-width: 56px; }
 .seg { display: flex; flex-wrap: wrap; gap: 4px; }
-button { font: 500 12px var(--mono); background: var(--raised); border: 1px solid var(--line); color: var(--fg); padding: 6px 10px; border-radius: 3px; cursor: pointer; }
+button { font: 500 12px var(--mono); background: var(--raised); border: 1px solid var(--line); color: var(--fg); padding: 5px 10px; border-radius: 3px; cursor: pointer; }
 button:hover:not(:disabled) { border-color: var(--accent); }
-button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: 0.4; cursor: default; }
 .toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #06101c; }
 .seg button { position: relative; padding-left: 24px; background: transparent; color: var(--dim); }
 .seg button::before { content: ""; position: absolute; left: 8px; top: 50%; width: 9px; height: 9px; margin-top: -5px; border: 1px solid var(--dim); border-radius: 50%; }
 .seg button[aria-pressed="true"] { color: var(--fg); background: var(--raised); border-color: var(--accent); }
 .seg button[aria-pressed="true"]::before { background: var(--accent); border-color: var(--accent); }
 .acts { display: flex; flex-wrap: wrap; gap: 6px; }
-.summary { margin: 0; padding: 8px 10px; background: var(--raised); border-left: 2px solid var(--accent); font: 13px/1.5 var(--mono); }
+.go { font-size: 13px; padding: 6px 18px; background: #16304f; border-color: var(--accent); letter-spacing: 0.06em; }
+.summary { margin: 0; padding: 7px 10px; background: var(--raised); border-left: 2px solid var(--accent); font: 13px/1.5 var(--mono); }
 details > summary { cursor: pointer; font: 600 11px var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
-details[open] > summary { margin-bottom: 10px; }
-details > div { display: grid; gap: 10px; }
-button:disabled { opacity: 0.4; cursor: default; }
-.go { font-size: 14px; padding: 10px; background: #16304f; border-color: var(--accent); width: 100%; letter-spacing: 0.06em; }
+.setup { position: relative; }
+.setup-panel { position: absolute; top: calc(100% + 8px); left: 0; z-index: 10; width: 440px; background: var(--panel); border: 1px solid var(--accent); border-radius: 4px; padding: 12px; display: grid; gap: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+.how > div { display: grid; gap: 6px; margin-top: 6px; }
 .note { font-size: 13px; color: var(--dim); margin: 0; }
 .read { font: 13px/1.5 var(--mono); margin: 0; }
-.read .bad { color: var(--hot); } .read .good { color: var(--ok); } .read .warm { color: var(--warm); }
-.bars { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; font: 12px var(--mono); font-variant-numeric: tabular-nums; }
-.bar { height: 8px; background: var(--raised); border-radius: 2px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--accent); }
-.bar.foe i { background: var(--hot); }
-.pips { display: flex; gap: 3px; } .pips span { width: 12px; height: 8px; background: var(--raised); border-radius: 1px; } .pips span.on { background: var(--warm); } .pips span.over { background: var(--hot); }
-.eng { display: grid; grid-template-columns: 70px auto 1fr auto; gap: 6px 8px; align-items: center; font: 12px var(--mono); }
+.bad { color: var(--hot); } .good { color: var(--ok); } .warm { color: var(--warm); }
+.pips { display: inline-flex; gap: 3px; vertical-align: middle; } .pips span { width: 10px; height: 7px; background: var(--raised); border-radius: 1px; } .pips span.on { background: var(--warm); } .pips span.over { background: var(--hot); }
 .incoming { border-color: var(--warm); }
-.msg { display: grid; gap: 6px; }
-.msg p { margin: 0; }
-.strip { display: grid; gap: 6px; max-height: 300px; overflow-y: auto; font: 12px/1.45 var(--mono); }
-.strip div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; }
-.strip time { color: var(--dim); }
-.strip .who { font-weight: 600; }
-.strip .reply { opacity: 0.85; padding-left: 12px; }
-.strip .ev { color: var(--dim); }
-.crew { display: grid; gap: 6px; font: 12px/1.45 var(--mono); }
-.crew div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px; }
+.msg { display: grid; gap: 6px; } .msg p { margin: 0; }
+.strip { display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font: 12px/1.45 var(--mono); margin-top: 6px; }
+.strip div { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 8px; }
+.strip time { color: var(--dim); } .strip .who { font-weight: 600; } .strip .reply { opacity: 0.85; padding-left: 12px; } .strip .ev { color: var(--dim); }
+.crew { display: grid; gap: 4px; font: 12px/1.45 var(--mono); }
+.crew div { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 8px; }
 .p-gunner { color: #ff9a6a; } .p-pilot { color: var(--accent); } .p-engineer { color: var(--warm); } .p-comms { color: var(--ok); } .p-ship { color: var(--dim); } .p-captain { color: #eef3f9; font-weight: 600; }
 input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
-.over { border-color: var(--accent); }
-.over p { margin: 0; font: 500 14px var(--mono); }
+.over { border-color: var(--accent); } .over p { margin: 0; font: 500 14px var(--mono); }
 ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
-kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
+kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; color: var(--dim); }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <section class="radar">
-    <canvas id="cv" aria-label="Radar: your ship at the center, the contact, torpedoes and predicted tracks"></canvas>
+<div class="app">
+  <header class="top" id="top"></header>
+  <main class="stage">
+    <div class="sit" id="sit"></div>
+    <canvas id="cv" aria-label="Radar: your ship at the center, the contact, torpedoes, predicted tracks and where things happened"></canvas>
+    <div class="tl" id="tl"></div>
     <div class="legend">
-      <span><b style="color:#cfe3ff">ship</b> you, nose line</span>
-      <span><b style="color:#ff6a4a">contact</b> corsair</span>
-      <span><b style="color:#ff6a4a">dashed ring</b> where she can be at turn end</span>
-      <span><b style="color:#ffd27f">ring</b> where your slug can land</span>
-      <span><b style="color:#4aa3ff">wedge</b> PDC arc</span>
-      <span><b style="color:#7fb4ff">CPA</b> closest approach</span><span>tracks run 4 turns, a dot and an error band each turn</span><span>1 turn = 20 s; rings at fifths of the radar's reach</span>
+      <span><b style="color:#cfe3ff">ship</b> you, nose line, course arrow</span><span><b style="color:#ff6a4a">contact</b> her, track and error bands</span>
+      <span><b style="color:#ff6a4a">dashed ring</b> where she can be at cycle end</span><span><b style="color:#ffd27f">ring</b> where your slug can land</span>
+      <span><b style="color:#4aa3ff">wedge</b> PDC arc</span><span><b style="color:#7fb4ff">CPA</b> closest approach</span><span>marks fade over 3 cycles; hover the timeline to find one</span>
     </div>
-  </section>
+  </main>
   <aside class="side" id="side"></aside>
 </div>
 
@@ -118,7 +127,7 @@ function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Ma
 function move(b, a, dt) { b.p = V(b.p.x + b.v.x * dt + 0.5 * a.x * dt * dt, b.p.y + b.v.y * dt + 0.5 * a.y * dt * dt); b.v = V(b.v.x + a.x * dt, b.v.y + a.y * dt); }
 function segDist(a, b) { const d = sub(b, a), l2 = d.x * d.x + d.y * d.y; const t = l2 ? clamp(-(a.x * d.x + a.y * d.y) / l2, 0, 1) : 0; return len(add(a, mul(d, t))); }
 
-const UI = { opening: 'long', zoom: 'auto', time: 'real', speed: 16, setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
+const UI = { hl: null, logOpen: false, opening: 'long', zoom: 'auto', time: 'real', speed: 16, setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
 let S;
 
 function newGame(seed) {
@@ -127,7 +136,7 @@ function newGame(seed) {
   const s = { seed, r, r2: mulberry(seed * 31 + 5), turn: 0, phase: 'plan', comms: 'watch', nextId: 1,
     me: { p: V(0, 0), v: V(0, -1), hull: 100, heat: 0, locked: false, nose: -Math.PI / 2, lastVent: -99 },
     foe: { p: UI.opening === 'long' ? V(160.7, -191.5) : V(24, -30), v: UI.opening === 'long' ? V(-6.4, 7.7) : V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
-    torps: [], tracers: [], fx: [], slug: null, paused: false, pauseWhy: '', nearSaid: new Set(), lastIntent: 'hold', hull0: 100, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
+    events: [], torps: [], tracers: [], fx: [], slug: null, paused: false, pauseWhy: '', nearSaid: new Set(), lastIntent: 'hold', hull0: 100, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
     ui: { role: 'attack', face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
       b: { role: 'attack', pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
   s.ui.pdcDir = ang(sub(s.foe.p, s.me.p));
@@ -315,6 +324,11 @@ function projWords(s, o) {
   return `Closest approach: ${cpa}.` + (pr.torps.length ? `<br>Torps on this plan: ${hit.length} of ${pr.torps.length} hit${hit.length ? `, the first in ${Math.min(...hit.map(t => t.hit.t)).toFixed(1)} turns` : ''}, before the PDC.` : '');
 }
 
+// ---------- what has happened: each event with its time (in cycles) and, where it has one, its place ----------
+const EVC = { launch: '#ff6a4a', kill: '#7fb4ff', hitus: '#ff3d3d', hither: '#ffd27f', miss: '#56687a', order: '#eef3f9' };
+const evT = s => s.turn + (s.phase === 'exec' && s.exec ? s.exec.k / K.SUB : 0);
+function ev(s, kind, text, p) { s.events.push({ t: evT(s), kind, text, p: p ? { ...p } : null }); }
+
 // ---------- everyone's orders this turn ----------
 function buildOrders(s) {
   const ui = s.ui, P = UI.post, A = UI.mode === 'A', o = {};
@@ -401,7 +415,7 @@ function aiCalls(s) {
   if (fresh.length && s.comms === 'watch') send('comms', 'all', torpWarn(s), { apply: s2 => fresh.forEach(t => s2.warned.add(t.id)) }, 'pdcThreat');
   if (s.foe.armed && s.comms === 'watch') send('comms', 'all', "She's arming a salvo. It comes this turn.", null, null);
   // the captain decides after comms has called out what it sees
-  if (!(s.order && s.order.until >= s.turn)) { const i = captainPick(s); if (!s.order || s.order.intent !== i) logCall(s, 'captain', 'all', ORDER[i].text); s.order = { intent: i, until: -1 }; }
+  if (!(s.order && s.order.until >= s.turn)) { const i = captainPick(s); if (!s.order || s.order.intent !== i) { logCall(s, 'captain', 'all', ORDER[i].text); ev(s, 'order', `Hester: ${ORDER[i].text}`); } s.order = { intent: i, until: -1 }; }
   const o = buildOrders(s);
   if (s.me.heat >= K.HEAT_CAP - 1 && o.fire) send('engineer', 'gunner', `Gun heat at ${s.me.heat}. Ease off a turn or it locks.`, { conflict: s2 => s2.foe.hull <= 20, apply: s2 => ask(s2, 'gunner.fire', false, 1), yes: 'Holding a turn.', no: "She's nearly done. One more." }, 'hold');
   if (s.noBear && asked(s, 'pilot') !== 'nose' && allows(s, 'nose')) send('gunner', 'pilot', "Nose on her. The gun can't bear.", { conflict: s2 => threat(s2), apply: s2 => ask(s2, 'pilot', 'nose', 2), yes: 'Nose on her. Coasting in.', no: 'Not with fish in the water.' }, 'nose');
@@ -432,7 +446,7 @@ function commit() {
   if (f.armed && f.torps > 0) {
     const los = norm(sub(s.me.p, f.p)), perp = V(-los.y, los.x);
     for (const side of [-1, 1]) s.torps.push({ id: s.nextId++, p: { ...f.p }, v: add(add(f.v, mul(los, UI.opening === 'long' ? 6 : 3)), mul(perp, (UI.opening === 'long' ? 10 : 6) * side)), age: 0, trail: [] });
-    f.torps -= 2; f.armed = false; s.turnLines.push('She launches two torpedoes.');
+    f.torps -= 2; f.armed = false; s.turnLines.push('She launches two torpedoes.'); ev(s, 'launch', 'She launches two torpedoes.', f.p);
     if (UI.time === 'real') { s.paused = true; s.pauseWhy = 'She launches two torpedoes.'; }
   }
   s.slug = o.canFire ? { from: { ...s.me.p }, to: add(o.aim, dirv(s.r2() * TAU, Math.sqrt(s.r2()) * o.R)), R: o.R } : null;
@@ -484,9 +498,9 @@ function substep(s) {
     if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, Math.min(3, len(sub(me.p, t.p)) / Math.max(8, len(t.v))))), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
     move(t, a, dt); t.age += dt; t.trail.push({ ...t.p }); if (t.trail.length > 16) t.trail.shift();
     const after = sub(t.p, me.p);
-    if (segDist(before, after) < K.TORP_HIT) { t.dead = true; me.hull = Math.max(0, me.hull - K.TORP_DMG); s.fx.push({ p: { ...me.p }, t0: now, kind: 'hit' }); s.turnLines.push(`Torpedo hit. ${K.TORP_DMG} off our hull.`); continue; }
+    if (segDist(before, after) < K.TORP_HIT) { t.dead = true; me.hull = Math.max(0, me.hull - K.TORP_DMG); s.fx.push({ p: { ...me.p }, t0: now, kind: 'hit' }); s.turnLines.push(`Torpedo hit. ${K.TORP_DMG} off our hull.`); ev(s, 'hitus', `A torpedo hits us: ${K.TORP_DMG} off the hull.`, me.p); continue; }
     if (o.pdcOn && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 1 - Math.exp(-0.14 * len(sub(t.v, me.v)) / K.SUB * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW))) {
-      t.dead = true; s.fx.push({ p: { ...t.p }, t0: now, kind: 'pop' }); s.turnLines.push('The PDC kills a torpedo.');
+      t.dead = true; s.fx.push({ p: { ...t.p }, t0: now, kind: 'pop' }); s.turnLines.push('The PDC kills a torpedo.'); ev(s, 'kill', 'The PDC kills a torpedo.', t.p);
     }
   }
   if (o.pdcOn && s.torps.some(t => !t.dead && len(sub(t.p, me.p)) < K.PDC_R + 3))
@@ -497,12 +511,12 @@ function resolveEnd(s) {
   const o = s.exec.o, me = s.me, f = s.foe, now = performance.now();
   if (s.slug) {
     const miss = len(sub(f.p, s.slug.to));
-    if (miss <= K.HIT) { const d = Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s))); f.hull = Math.max(0, f.hull - d); s.fx.push({ p: { ...f.p }, t0: now, kind: 'boom' }); s.turnLines.push(`Hit. ${d} off her hull.`); }
-    else s.turnLines.push(`Miss. The slug passed ${(miss - K.HIT).toFixed(1)} km wide of her.`);
+    if (miss <= K.HIT) { const d = Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s))); f.hull = Math.max(0, f.hull - d); s.fx.push({ p: { ...f.p }, t0: now, kind: 'boom' }); s.turnLines.push(`Hit. ${d} off her hull.`); ev(s, 'hither', `Our slug hits her: ${d} off her hull.`, f.p); }
+    else { s.turnLines.push(`Miss. The slug passed ${(miss - K.HIT).toFixed(1)} km wide of her.`); ev(s, 'miss', `Our slug misses by ${(miss - K.HIT).toFixed(1)} km.`, s.slug.to); }
     me.heat += K.GUN_HEAT[o.power.guns];
   }
   const r = range(s);
-  if (r < 35 && f.hull > 0 && s.r() < clamp(0.55 - 0.01 * r - 0.2 * o.thrust.thr - (o.comms === 'spoof' ? 0.25 : 0), 0.05, 0.9)) { me.hull = Math.max(0, me.hull - K.FOE_GUN); s.turnLines.push(`Her gun hits us. ${K.FOE_GUN} off our hull.`); }
+  if (r < 35 && f.hull > 0 && s.r() < clamp(0.55 - 0.01 * r - 0.2 * o.thrust.thr - (o.comms === 'spoof' ? 0.25 : 0), 0.05, 0.9)) { me.hull = Math.max(0, me.hull - K.FOE_GUN); s.turnLines.push(`Her gun hits us. ${K.FOE_GUN} off our hull.`); ev(s, 'hitus', `Her gun hits us: ${K.FOE_GUN} off the hull.`, me.p); }
   me.heat = Math.max(0, me.heat - (me.locked ? 2 : 1)); me.locked = me.heat >= K.HEAT_CAP;
   if (me.locked) s.turnLines.push('Gun heat over the cap: locked next turn.');
   if (f.torps > 0 && !f.armed && (UI.opening === 'long' ? range(s) < 170 && s.turn - (f.lastArm === undefined ? -99 : f.lastArm) >= 4 : s.turn % 3 === 0)) { f.armed = true; f.lastArm = s.turn; }
@@ -537,7 +551,7 @@ function draw() {
   ctx.fillStyle = o.bears ? 'rgba(123,213,157,0.06)' : 'rgba(122,142,166,0.05)';
   ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, REACH * sc, o.nose - K.BEAR, o.nose + K.BEAR); ctx.closePath(); ctx.fill();
   // PDC arc
-  if (o.power.pdc > 0 && o.role !== 'pd') { const r = K.PDC_R * sc; ctx.strokeStyle = 'rgba(74,163,255,0.35)'; ctx.setLineDash([2, 4]); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - o.pdcW * DEG / 2, o.pdcDir + o.pdcW * DEG / 2); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = 'rgba(127,180,255,0.7)'; ctx.fillText('PDC STOWED', cx + r * Math.cos(o.pdcDir) + 4, cy + r * Math.sin(o.pdcDir)); }
+  if (o.power.pdc > 0 && o.role !== 'pd') { const r = K.PDC_R * sc; ctx.strokeStyle = 'rgba(74,163,255,0.35)'; ctx.setLineDash([2, 4]); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - o.pdcW * DEG / 2, o.pdcDir + o.pdcW * DEG / 2); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = 'rgba(127,180,255,0.7)'; if (UI.post === 'gunner') ctx.fillText('PDC STOWED', cx + r * Math.cos(o.pdcDir) + 4, cy + r * Math.sin(o.pdcDir)); }
   if (o.pdcOn) { const r = K.PDC_R * sc, h = o.pdcW * DEG / 2, dens = clamp(60 / o.pdcW, 0.35, 1.4);
     ctx.fillStyle = `rgba(74,163,255,${0.06 + 0.1 * dens})`; ctx.strokeStyle = 'rgba(74,163,255,0.6)';
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, o.pdcDir - h, o.pdcDir + h); ctx.closePath(); ctx.fill(); ctx.stroke(); }
@@ -589,7 +603,6 @@ function draw() {
     ctx.setLineDash([2, 4]); ctx.strokeStyle = 'rgba(255,207,127,0.6)'; line(t.path, 0, t.path.length - 1); ctx.setLineDash([]);
     ctx.fillStyle = '#ffcf7f';
     if (t.hit) { const q = P(t.hit.p); ctx.strokeStyle = '#ffcf7f'; ctx.beginPath(); ctx.moveTo(q[0] - 4, q[1] - 4); ctx.lineTo(q[0] + 4, q[1] + 4); ctx.moveTo(q[0] + 4, q[1] - 4); ctx.lineTo(q[0] - 4, q[1] + 4); ctx.stroke(); const b = bandAt(pr.g, t.hit.t); ctx.strokeStyle = 'rgba(255,207,127,0.45)'; ctx.beginPath(); ctx.arc(...q, Math.max(5, b * sc), 0, TAU); ctx.stroke(); ctx.fillText(`IMPACT ${Math.max(0.1, t.hit.t - 0.15 * b).toFixed(1)}-${(t.hit.t + 0.15 * b).toFixed(1)}t`, q[0] + 7, q[1] + 12); }
-    else { const q = P(t.path[t.path.length - 1]); ctx.fillText(t.min < bandAt(pr.g, 2) ? 'MAY HIT' : 'MISSES', q[0] + 6, q[1]); }
   }
   // PDC tracers
   s.tracers = s.tracers.filter(t => now - t.t0 < 350);
@@ -601,17 +614,19 @@ function draw() {
   ctx.strokeStyle = 'rgba(255,106,74,0.7)'; ctx.beginPath(); ctx.moveTo(...fp); ctx.lineTo(fp[0] + f.v.x * sc, fp[1] + f.v.y * sc); ctx.stroke();
   ctx.fillStyle = '#ff6a4a'; ctx.beginPath(); ctx.arc(...fp, 5, 0, TAU); ctx.fill();
   ctx.save(); ctx.translate(cx, cy); ctx.rotate(s.me.nose + Math.PI / 2); ctx.fillStyle = '#cfe3ff'; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(6, 6); ctx.lineTo(0, 3); ctx.lineTo(-6, 6); ctx.closePath(); ctx.fill(); ctx.restore();
-  ctx.strokeStyle = 'rgba(207,227,255,0.35)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + s.me.v.x * sc, cy + s.me.v.y * sc); ctx.stroke();
-  // header
-  const l = losMe(s), closing = -((f.v.x - s.me.v.x) * l.x + (f.v.y - s.me.v.y) * l.y);
-  ctx.fillStyle = '#7fb4ff'; ctx.font = '12px "IBM Plex Mono", monospace';
-  ctx.fillText(`RANGE ${range(s).toFixed(1)} km   ${closing >= 0 ? 'CLOSING' : 'OPENING'} ${Math.abs(closing).toFixed(1)} km/turn   BRG ${pad3(brg(sub(f.p, me)))}   ${clock(s.turn)}`, 12, 20);
-  const alerts = []; if (f.armed && s.comms === 'watch') alerts.push('SALVO ARMING'); const n = inbound(s).length; if (n) alerts.push(`${n} TORP${n > 1 ? 'S' : ''} INBOUND`); if (o.locked) alerts.push('GUN LOCKED'); if (s.comms !== 'watch') alerts.push(s.comms === 'lock' ? 'COMMS ON LOCK: BLIND PAST 12 km' : 'SPOOFING: BLIND PAST 12 km');
-  ctx.fillStyle = '#ff6a4a'; ctx.fillText(alerts.join('   '), 12, 38);
-  if (UI.time === 'real' && !s.over) { ctx.textAlign = 'right'; ctx.fillStyle = s.paused || s.phase === 'plan' ? '#ffd27f' : '#7bd59d'; ctx.fillText(s.paused || s.phase === 'plan' ? `PAUSED${s.pauseWhy ? ': ' + s.pauseWhy.toUpperCase() : ''}` : `RUNNING ${UI.speed}x`, W - 12, 20); ctx.textAlign = 'left'; }
-  ctx.fillStyle = '#cfe3ff'; ctx.fillText(`YOU  FACING ${pad3(brg(dirv(s.me.nose)))}${plan && adiff(s.me.nose, o.nose) > 0.05 ? ` > ${pad3(brg(dirv(o.nose)))}` : ''}   COURSE ${pad3(brg(s.me.v))} at ${len(s.me.v).toFixed(1)} km/turn`, 12, W - 12);
-  /* the course, drawn as three turns of travel */ { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) { const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); ctx.fillStyle = 'rgba(207,227,255,0.8)'; if (L > 30) ctx.fillText('course', tx + 6, ty - 6); } }
+  /* the course, drawn as three turns of travel */ { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) { const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); } }
+  // what has happened: marks where it happened, fading over 3 cycles; the one hovered in the timeline ringed
+  const T = evT(s);
+  s.events.forEach((e, i) => { if (!e.p) return; const age = T - e.t, hl = UI.hl === i; if (age > 3 && !hl) return;
+    const q = P(e.p), c = EVC[e.kind]; ctx.globalAlpha = hl ? 1 : Math.max(0.15, 1 - age / 3); ctx.strokeStyle = c; ctx.fillStyle = c; ctx.lineWidth = 1.5;
+    if (e.kind === 'kill') { ctx.beginPath(); ctx.moveTo(q[0] - 5, q[1] - 5); ctx.lineTo(q[0] + 5, q[1] + 5); ctx.moveTo(q[0] + 5, q[1] - 5); ctx.lineTo(q[0] - 5, q[1] + 5); ctx.stroke(); }
+    else if (e.kind === 'hitus' || e.kind === 'hither') { for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4; ctx.beginPath(); ctx.moveTo(q[0] + Math.cos(a) * 4, q[1] + Math.sin(a) * 4); ctx.lineTo(q[0] + Math.cos(a) * 9, q[1] + Math.sin(a) * 9); ctx.stroke(); } }
+    else if (e.kind === 'launch') { ctx.beginPath(); ctx.arc(q[0], q[1], 7, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.arc(q[0], q[1], 2, 0, TAU); ctx.fill(); }
+    else { ctx.beginPath(); ctx.arc(q[0], q[1], 2.5, 0, TAU); ctx.fill(); }
+    if (hl) { ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(q[0], q[1], 16 + 3 * Math.sin(now / 150), 0, TAU); ctx.stroke(); ctx.font = '600 12px "IBM Plex Mono", monospace'; ctx.fillText(e.text, q[0] + 22, q[1] - 10); ctx.font = '11px "IBM Plex Mono", monospace'; }
+    ctx.lineWidth = 1; ctx.globalAlpha = 1; });
   if (s.over) { ctx.fillStyle = 'rgba(5,10,17,0.75)'; ctx.fillRect(0, cy - 30, W, 60); ctx.fillStyle = s.over.win ? '#7bd59d' : '#ff6a4a'; ctx.font = '600 16px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText(s.over.text.toUpperCase(), cx, cy + 6); ctx.textAlign = 'left'; }
+  refresh(false);
   requestAnimationFrame(draw);
 }
 
@@ -632,7 +647,7 @@ cv.addEventListener('pointermove', e => { if (dragging) radarAt(e); });
 window.addEventListener('pointerup', () => { if (dragging) { dragging = false; render(); } });
 
 // ---------- the console ----------
-const side = document.getElementById('side');
+const side = document.getElementById('side'), topEl = document.getElementById('top'), sit = document.getElementById('sit'), tl = document.getElementById('tl');
 const seg = (act, opts, cur) => `<div class="seg">${opts.map(([v, l]) => `<button data-act="${act}" data-v="${v}" aria-pressed="${String(v) === String(cur)}">${l}</button>`).join('')}</div>`;
 const pips = (n, max = 3, cls = 'on') => `<span class="pips">${Array.from({ length: max }, (_, i) => `<span class="${i < n ? cls : ''}"></span>`).join('')}</span>`;
 const PILOT_WORD = { engage: 'closing to 12 km', break: 'breaking off', hold: 'holding 20 km', close: 'closing', open: 'opening the range', evade: 'evading torps', nose: 'nose on her', coast: 'coasting', manual: 'your burn' };
@@ -706,45 +721,73 @@ function crewPanel(s, o) {
     engineer: `drive ${o.power.drive}, gun ${o.power.guns}, PDC ${o.power.pdc}${o.vent ? ', venting' : ''}`, comms: COMMS_WORD[o.comms] };
   return POSTS.filter(p => p !== UI.post).map(p => `<div><span class="p-${p}">${NAME[p]}</span><span>${rows[p]}</span></div>`).join('');
 }
-function render() {
-  const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = (s.phase === 'plan' || (UI.time === 'real' && s.paused)) && !s.over;
+// What is happening now, in one bar over the radar.
+function sitHTML(s, o) {
+  const f = seenFoe(s, o.comms), l = losMe(s), r = range(s), closing = -((f.v.x - s.me.v.x) * l.x + (f.v.y - s.me.v.y) * l.y);
+  const torps = inbound(s), nt = nearestOf(s, torps), e = nt ? eta(s, nt) : null, real = UI.time === 'real';
+  const state = s.over ? 'ENDED' : real ? (s.paused || s.phase === 'plan' ? 'PAUSED' : `RUNNING ${UI.speed}x`) : s.phase === 'exec' ? 'PLAYING' : 'YOUR TURN';
+  const why = s.over ? s.over.text : real && (s.paused || s.phase === 'plan') && s.pauseWhy ? s.pauseWhy : `cycle ${s.turn + 1} of ${K.TURNS}`;
+  const i = orderOf(s).intent;
+  return `<div class="cell ${state === 'PAUSED' ? 'paused' : ''}"><span class="k">${clock(s.turn)}</span><span class="v ${state === 'PAUSED' ? 'warm' : state.startsWith('RUN') ? 'good' : ''}">${state}</span><br>${why}</div>
+    <div class="cell"><span class="k">Her</span>${r.toFixed(0)} km, ${closing >= 0 ? 'closing' : 'opening'} ${Math.abs(closing).toFixed(1)}/cycle<br>${s.foe.armed && s.comms === 'watch' ? '<span class="bad">arming a salvo</span>' : `${s.foe.torps} torpedoes left`}</div>
+    <div class="cell ${e !== null && e < 2 ? 'alert' : ''}"><span class="k">Threat</span>${nt ? `<span class="bad">${torps.length} torpedo${torps.length > 1 ? 's' : ''} inbound</span><br>impact in ${e < 50 ? e.toFixed(1) + ' cycles' : 'a while'}` : s.comms === 'watch' ? 'no torpedoes on the board<br>&nbsp;' : '<span class="warm">blind past 12 km</span><br>comms on ' + s.comms}</div>
+    <div class="cell"><span class="k">Hester (${nerveWord()})</span>${ORDER[i].text}</div>
+    <div class="cell"><div class="gauge"><span>Us</span><span class="bar"><i style="width:${s.me.hull}%"></i></span><span>${s.me.hull}</span></div><div class="gauge"><span>Her</span><span class="bar foe"><i style="width:${s.foe.hull / s.foe.max * 100}%"></i></span><span>${s.foe.hull}</span></div><div class="gauge"><span>Heat</span>${pips(s.me.heat, K.HEAT_CAP, s.me.heat >= K.HEAT_CAP - 1 ? 'over' : 'on')}<span>${s.me.locked ? '<span class="bad">lock</span>' : ''}</span></div></div>`;
+}
+// What has happened: a timeline of the fight, the last few events in words, and the full log folded away.
+const clockAt = t => { const sec = Math.round(t * K.TURN_S); return `T+${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`; };
+function tlHTML(s) {
+  const N = K.TURNS, T = evT(s), P = UI.post;
+  const ticks = s.events.map((e, i) => `<i data-i="${i}" title="${clockAt(e.t)}  ${e.text}" style="left:${Math.min(100, e.t / N * 100)}%;background:${EVC[e.kind]}"></i>`).join('');
+  const recent = s.events.map((e, i) => [e, i]).filter(([e]) => e.kind !== 'miss' || T - e.t < 1).slice(-6).reverse().map(([e, i]) => `<div data-i="${i}"><time>${clockAt(e.t)}</time><span style="color:${EVC[e.kind]}">${e.text}</span></div>`).join('');
   const strip = s.log.map(e => e.kind === 'event' ? `<div><time>${e.t}</time><span class="ev">${e.text}</span></div>`
     : `<div class="${e.kind === 'reply' ? 'reply' : ''}"><time>${e.kind === 'reply' ? '' : e.t}</time><span><span class="who p-${e.from}">${e.from === P ? 'You' : NAME[e.from]}</span>${e.kind === 'call' ? ` to ${e.to === P ? 'you' : NAME[e.to]}` : ''}: ${e.text}</span></div>`).join('');
-  side.innerHTML = `
-  <div class="card"><h1>Radar fight spike</h1><p class="sub">Throwaway. The hauler against a corsair with four torpedoes. Same seed in both modes, so you can play it twice and compare.</p>
-    <div class="row"><span class="lab">Mode</span>${seg('mode', [['A', 'A: you plot'], ['B', 'B: you order']], UI.mode)}</div>
-    <div class="row"><span class="lab">Post</span>${seg('post', POSTS.map(p => [p, NAME[p]]), P)}</div>
-    <div class="row"><span class="lab">Time</span>${seg('time', [['turns', 'Turns'], ['real', 'Real time with pause']], UI.time)}</div>
-    ${UI.time === 'real' ? `<div class="row"><span class="lab">Speed</span>${seg('speed', [[1, '1x'], [2, '2x'], [16, '16x']], UI.speed)}</div>` : ''}
-    <div class="row"><span class="lab">Zoom</span>${seg('zoom', [['auto', 'Auto'], ['50', '50 km'], ['150', '150 km'], ['400', '400 km']], UI.zoom)}</div>
-    <details id="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup: trust, captain, your level, fire control, sensors, seed</summary><div>
-    <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How much the crew trusts you"><span class="read" id="trustv">${Math.round(UI.trust * 100)}%</span></div>
-    <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="The captain's nerve"><span class="read" id="nervev">${nerveWord()}</span></div>
-    <div class="row"><span class="lab">Your level</span>${seg('level', [0, 1, 2, 3, 4, 5].map(n => [n, String(n)]), UI.level)}<span class="note">the crew are 2</span></div>
-    <div class="row"><span class="lab">Opening</span>${seg('opening', [['long', 'Long: met at 250 km'], ['short', 'Short: met at 40 km']], UI.opening)}</div>
-    <div class="row"><span class="lab">Accuracy</span>${seg('acc', [[false, 'Stock'], [true, 'Upgraded']], UI.accurate)}</div>
-    <div class="row"><span class="lab">Resilience</span>${seg('hard', [[false, 'Stock'], [true, 'Hardened']], UI.hardened)}</div>
-    <div class="row"><span class="lab">Sensors</span><input id="sens" type="range" min="20" max="100" step="5" value="${UI.sensors}" aria-label="Sensor condition"><span class="read" id="sensv">${UI.sensors}%</span></div>
-    <p class="note">Every ship sees the whole fight, with error: the red bands are where she really is, and they widen the further ahead the board looks. Accuracy halves the error and tightens the gun. Hardened keeps worn sensors from widening it much. A comms lock narrows it on her. Board error now ${sigmaOf(o.comms).toFixed(2)} km.</p>
-    <div class="row"><span class="lab">Seed</span><span class="read">${UI.seed}</span><button data-act="restart">Restart</button><button data-act="newseed">New seed</button></div>
-    </div></details></div>
-  ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="flip">Again in ${UI.mode === 'A' ? 'B' : 'A'}</button></div></div>` : ''}
-  <div class="card"><h2>Your post: <em>${NAME[P]}</em>${(P === 'engineer' || P === 'comms') ? '   (A and B the same here)' : ''}</h2>${orderCard(s)}${turnSummary(s, o)}${postPanel(s, o)}
-    ${UI.time === 'real' ? `${s.paused && s.pauseWhy ? `<p class="read warm">Paused: ${s.pauseWhy}</p>` : ''}<button class="go" data-act="pause" ${s.over ? 'disabled' : ''}>${s.paused || s.phase === 'plan' ? 'Play' : 'Pause'}</button><p class="note"><kbd>Space</kbd> plays and pauses. The burn and the PDC change at once; power, comms and the next shot at the next order cycle, ${clock(s.phase === 'exec' ? s.turn + 1 : s.turn)}.</p>` : `<button class="go" data-act="go" ${plan ? '' : 'disabled'}>${s.phase === 'exec' ? 'Burning...' : 'End turn'}</button><p class="note">Or press <kbd>Space</kbd>.</p>`}</div>
-  <div class="card"><h2>${clock(s.turn)}   turn ${s.turn + 1} of ${K.TURNS}</h2>
-    <div class="bars"><span>Our hull</span><span class="bar"><i style="width:${s.me.hull}%"></i></span><span>${s.me.hull}</span>
-    <span>Her hull</span><span class="bar foe"><i style="width:${s.foe.hull / s.foe.max * 100}%"></i></span><span>${s.foe.hull}</span>
-    <span>Gun heat</span>${pips(s.me.heat, K.HEAT_CAP, s.me.heat >= K.HEAT_CAP - 1 ? 'over' : 'on')}<span>${s.me.heat}</span>
-    <span>Her torps</span>${pips(s.foe.torps, 4, 'over')}<span>${s.foe.torps}</span></div></div>
-  ${s.incoming.length ? `<div class="card incoming"><h2>Calls to you</h2>${s.incoming.map((m, i) => `<div class="msg"><p><span class="who p-${m.from}">${NAME[m.from]}</span>: ${m.text}</p><div class="row">${m.suggest ? `<button data-act="ans" data-i="${i}" data-y="1">Do it</button><button data-act="ans" data-i="${i}" data-y="0">No</button>` : `<button data-act="ans" data-i="${i}" data-y="0">Heard</button>`}</div></div>`).join('')}</div>` : ''}
-  <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%${gunTag(s, c.intent)}` : ''}</button>`).join('')}</div>
-    <p class="note">One of each a turn. ${P === 'gunner' ? 'The posts weigh it against the captain\'s order and how far they trust you.' : 'A suggestion to the captain shows its odds: your trust, your level, what the board shows, and the captain\'s nerve.'}</p></div>
-  <div class="card"><h2>The crew this turn</h2><div class="crew">${crewPanel(s, o)}</div></div>
-  <div class="card"><h2>Net</h2><div class="strip">${strip || '<span class="ev">Quiet.</span>'}</div></div>
-  <div class="card"><h2>What to judge</h2><ul class="q"><li>A against B: is plotting on the radar more fun, or just more work?</li><li>At a post without the gun, is there still a fight to play?</li><li>Do the calls make a crew, or are they menu chores?</li></ul></div>`;
+  return `<div class="track" title="The fight so far: each mark is an event. Hover one to find it on the radar.">${ticks}<b style="left:${Math.min(100, T / N * 100)}%"></b></div>
+    <div class="evs">${recent || '<div><time></time><span class="note">Nothing has happened yet.</span></div>'}</div>
+    <details id="fulllog" ${UI.logOpen ? 'open' : ''}><summary>Full log and the crew's talk</summary><div class="strip">${strip}</div></details>`;
 }
-
-side.addEventListener('click', e => {
+function render() {
+  const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = (s.phase === 'plan' || (UI.time === 'real' && s.paused)) && !s.over;
+  // the post's panel: its explanations fold into one "how this post works"
+  const notes = []; const pp = postPanel(s, o).replace(/<p class="note">([\s\S]*?)<\/p>/g, (m, t) => { notes.push(t); return ''; });
+  const playBtn = UI.time === 'real' ? `<button class="go" data-act="pause" ${s.over ? 'disabled' : ''}>${s.paused || s.phase === 'plan' ? 'Play' : 'Pause'}</button>` : `<button class="go" data-act="go" ${plan ? '' : 'disabled'}>${s.phase === 'exec' ? 'Playing' : 'End turn'}</button>`;
+  topEl.innerHTML = `<h1>Radar fight spike</h1>
+    <div class="grp"><span class="lab">Post</span>${seg('post', POSTS.map(p => [p, NAME[p]]), P)}</div>
+    <div class="grp"><span class="lab">Mode</span>${seg('mode', [['A', 'A: plot'], ['B', 'B: order']], UI.mode)}</div>
+    <div class="grp"><span class="lab">Time</span>${seg('time', [['turns', 'Turns'], ['real', 'Real time']], UI.time)}${UI.time === 'real' ? seg('speed', [[1, '1x'], [2, '2x'], [16, '16x']], UI.speed) : ''}</div>
+    <div class="grp"><span class="lab">Zoom</span>${seg('zoom', [['auto', 'Auto'], ['50', '50'], ['150', '150'], ['400', '400 km']], UI.zoom)}</div>
+    <details id="setup" class="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup</summary><div class="setup-panel">
+      <p class="note">Throwaway. The hauler against a corsair with four torpedoes. The same seed plays the same fight, so you can compare modes and posts.</p>
+      <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How much the crew trusts you"><span class="read" id="trustv">${Math.round(UI.trust * 100)}%</span></div>
+      <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="The captain's nerve"><span class="read" id="nervev">${nerveWord()}</span></div>
+      <div class="row"><span class="lab">Your level</span>${seg('level', [0, 1, 2, 3, 4, 5].map(n => [n, String(n)]), UI.level)}<span class="note">the crew are 2</span></div>
+      <div class="row"><span class="lab">Opening</span>${seg('opening', [['long', 'Long: 250 km'], ['short', 'Short: 40 km']], UI.opening)}</div>
+      <div class="row"><span class="lab">Accuracy</span>${seg('acc', [[false, 'Stock'], [true, 'Upgraded']], UI.accurate)}</div>
+      <div class="row"><span class="lab">Resilience</span>${seg('hard', [[false, 'Stock'], [true, 'Hardened']], UI.hardened)}</div>
+      <div class="row"><span class="lab">Sensors</span><input id="sens" type="range" min="20" max="100" step="5" value="${UI.sensors}" aria-label="Sensor condition"><span class="read" id="sensv">${UI.sensors}%</span></div>
+      <p class="note">Board error now ${sigmaOf(o.comms).toFixed(2)} km. Accuracy halves it and tightens the gun; hardened keeps worn sensors from widening it; a comms lock narrows it on her.</p>
+      <div class="row"><span class="lab">Seed</span><span class="read">${UI.seed}</span><button data-act="restart">Restart</button><button data-act="newseed">New seed</button></div>
+      <ul class="q"><li>A against B: is plotting on the radar more fun, or just more work?</li><li>At a post without the gun, is there still a fight to play?</li><li>Do the calls make a crew, or are they menu chores?</li></ul>
+    </div></details>
+    <div class="play">${playBtn}<kbd>Space</kbd></div>`;
+  side.innerHTML = `
+  ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="flip">Again in ${UI.mode === 'A' ? 'B' : 'A'}</button></div></div>` : ''}
+  <div class="card"><h2>Your post: <em>${NAME[P]}</em></h2>${turnSummary(s, o)}${P === 'gunner' || P === 'pilot' ? `<p class="read">${gunWords(s, orderOf(s).intent)}</p>` : ''}${pp}
+    ${notes.length ? `<details class="how"><summary>How this post works</summary><div>${notes.map(n => `<p class="note">${n}</p>`).join('')}</div></details>` : ''}</div>
+  ${s.incoming.length ? `<div class="card incoming"><h2>Calls to you</h2>${s.incoming.map((m, i) => `<div class="msg"><p><span class="who p-${m.from}">${NAME[m.from]}</span>: ${m.text}</p><div class="row">${m.suggest ? `<button data-act="ans" data-i="${i}" data-y="1">Do it</button><button data-act="ans" data-i="${i}" data-y="0">No</button>` : `<button data-act="ans" data-i="${i}" data-y="0">Heard</button>`}</div></div>`).join('')}</div>` : ''}
+  <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" title="${P === 'gunner' ? 'The posts weigh it against the captain\'s order and how far they trust you.' : 'The odds: your trust, your level, what the board shows, and the captain\'s nerve.'}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%${gunTag(s, c.intent)}` : ''}</button>`).join('')}</div></div>
+  <div class="card"><h2>The crew this cycle</h2><div class="crew">${crewPanel(s, o)}</div></div>`;
+  refresh(true);
+}
+// The situation bar and the timeline also follow the fight while it runs, between full renders.
+let lastRefresh = 0, lastEvN = -1;
+function refresh(force) {
+  const now = performance.now(), s = S; if (!force && now - lastRefresh < 250) return; lastRefresh = now;
+  const o = s.phase === 'plan' ? buildOrders(s) : s.exec.o;
+  sit.innerHTML = sitHTML(s, o);
+  if (force || s.events.length !== lastEvN || s.phase === 'exec') { lastEvN = s.events.length; tl.innerHTML = tlHTML(s); }
+}
+document.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return; const s = S, ui = s.ui, v = b.dataset.v, act = b.dataset.act, bool = v === 'true';
   if (act === 'mode') { UI.mode = v; }
   else if (act === 'acc') UI.accurate = bool;
@@ -779,14 +822,17 @@ side.addEventListener('click', e => {
   else if (act === 'ans') return answer(+b.dataset.i, b.dataset.y === '1');
   render();
 });
-side.addEventListener('input', e => {
+document.addEventListener('input', e => {
   if (e.target.id === 'trust') { UI.trust = +e.target.value; document.getElementById('trustv').textContent = `${Math.round(UI.trust * 100)}%`; }
   if (e.target.id === 'nerve') { UI.nerve = +e.target.value; document.getElementById('nervev').textContent = nerveWord(); }
   if (e.target.id === 'sens') { UI.sensors = +e.target.value; document.getElementById('sensv').textContent = `${UI.sensors}%`; }
   if (e.target.id === 'pdcw') { S.ui.pdcW = +e.target.value; if (S.phase === 'exec') S.exec.o.pdcW = S.ui.pdcW; document.getElementById('pdcwv').textContent = `${S.ui.pdcW} deg`; }
 });
-side.addEventListener('toggle', e => { if (e.target.id === 'setup') UI.setupOpen = e.target.open; }, true);
-side.addEventListener('change', e => { if (e.target.id === 'pdcw' || e.target.id === 'sens') render(); if (e.target.id === 'nerve') { if (S.phase === 'plan' && !S.over && !(S.order && S.order.by)) S.order = { intent: captainPick(S), until: -1 }; render(); } });
+document.addEventListener('toggle', e => { if (e.target.id === 'setup') UI.setupOpen = e.target.open; if (e.target.id === 'fulllog') UI.logOpen = e.target.open; }, true);
+// hovering an event in the timeline rings where it happened on the radar
+document.getElementById('tl').addEventListener('mouseover', e => { const el = e.target.closest('[data-i]'); UI.hl = el ? +el.dataset.i : null; });
+document.getElementById('tl').addEventListener('mouseleave', () => { UI.hl = null; });
+document.addEventListener('change', e => { if (e.target.id === 'pdcw' || e.target.id === 'sens') render(); if (e.target.id === 'nerve') { if (S.phase === 'plan' && !S.over && !(S.order && S.order.by)) S.order = { intent: captainPick(S), until: -1 }; render(); } });
 document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON', 'INPUT'].includes(e.target.tagName)) { e.preventDefault(); if (UI.time === 'real') playPause(); else commit(); } });
 
 S = newGame(UI.seed); aiCalls(S); render(); requestAnimationFrame(draw);
