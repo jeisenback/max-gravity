@@ -27,7 +27,7 @@ test('a port\'s layout is whole: every room has a drawer, sits on one of its lev
       for (let i = 1; i < rooms.length; i++) assert.equal(rooms[i].x0, rooms[i - 1].x1, `${port} level ${L}: ${rooms[i - 1].id} meets ${rooms[i].id}`);
     });
   }
-  assert.deepEqual(Object.keys(PORT_LAYOUTS), ['Earth'], 'Earth\'s port, Lagos Ring, first');
+  assert.deepEqual(Object.keys(PORT_LAYOUTS), ['Earth', 'Ceres Station'], 'Earth\'s port, Lagos Ring, first; then Ceres (#1256)');
 });
 
 test('at Earth the Ring is the stage on every page, with the notes in a ticker under it when nothing is open, drawn at 12 px or more, and the page docks beside it on a wide window and under it on a narrower one; Close gives the view the stage and the rail opens it again; Mars keeps its strip (#1101, #1132)', async () => {
