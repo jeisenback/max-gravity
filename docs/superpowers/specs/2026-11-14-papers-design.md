@@ -1,6 +1,6 @@
 # The Hand's Papers: A Character Creation Screen
 
-Status: draft for the owner's review, 2026-11-14 (#1251). Agreed in conversation from three options. Builds on the new-game form (`js/menu.js`), the sheet (`js/sheet.js` `newSheet`, the one check rule), the sign-on scene (`js/signon.js`, `scene:sign-on` in `js/hiredscenes.js`), the record and the traits (`js/traits.js`, #964), the shippers' standing (`js/contracts.js`), the people's opinions (`js/people.js`), and the Record card (`js/character.js`).
+Status: draft for the owner's review, 2026-11-14 (#1251). Agreed in conversation from three options; the patrol answer's reach to Marked kept by the owner on 2026-11-15, and the intro added. Builds on the new-game form (`js/menu.js`), the sheet (`js/sheet.js` `newSheet`, the one check rule), the sign-on scene (`js/signon.js`, `scene:sign-on` in `js/hiredscenes.js`), the record and the traits (`js/traits.js`, #964), the shippers' standing (`js/contracts.js`), the people's opinions (`js/people.js`), and the Record card (`js/character.js`).
 
 ## Why
 
@@ -37,7 +37,12 @@ The form keeps `before` and `known` beside `background` and `post`; `startGame` 
 
 - The sheet: `newSheet(background, post)` as now, then the trade of `before` applied with the floor and the cap, in a pure `papersSheet(sheet, before)` in `js/sheet.js` so the form and the game compute the same sheet.
 - `known`: applied once where the hand is made (`js/hired.js:137`): the standing, the record's fine (through `recordAdd`, so a later `recordHand('fines')` reads one already there: the second fine of the run makes the hand Marked, as it would for anyone with one on the record), or the shipmate's opinion and memory (`like(c, 1, memory)` on a generated crew member).
-- The sign-on scene gains a paragraph that reads the two answers back, one line each (`before.<id>` and `known.<id>` lines in `scene:sign-on`), between the post's paragraph and the week's.
+- **The intro is the sign-on scene** (`js/signon.js`): a hired start shows no notes at its first landing, and the scene is the first thing the player reads. It is rewritten to read the papers:
+  - The opening stays Earth's (`text.earth`, the queue at the foot of the elevator), since the ship is there. A hand from Mars or the Belt gets one sentence before it on how they came to Earth to sign on (`came.mars`, `came.belt`: the passage down from the domes, the League's berth on a freighter from Ceres), in the voice; an Earth hand gets none.
+  - The post's paragraph as now.
+  - A new paragraph that reads the two answers back, one line each (`before.<id>` and `known.<id>` in `scene:sign-on`), and nothing for an answer declined.
+  - The week's paragraph and the terms as now; the papers line names the home's government.
+  The sign-on's own question (why you signed on) stays its closing choice.
 - The first heave-to (`js/engage.js`, the heave-to choice's result) adds one line when `h.papers.known === 'patrol'` and this is the run's first fine (read before `recordHand('fines')` counts it): the officer has the name from before. That stop also makes the hand Marked, and Marked's moment plays with it.
 
 ## The Record card (`js/character.js`)
