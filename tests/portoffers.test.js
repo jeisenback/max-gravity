@@ -85,6 +85,20 @@ test('an offer is a tag on the Ring\'s view, over its person or on its room, and
   assert.deepEqual(errors, []);
 });
 
+test('a story\'s turn opens at once at the Ring, after the mourning and before the offers; with no view it plays among what the port brings, as before', async () => {
+  const r = await run(() => {
+    const st = hand(), out = {};
+    land(() => { offerScene('ambient', scene('Port')); offerScene('turn', scene('Turn')); offerScene('mourn', scene('Mourning')); });
+    out.ring = [playAll(), G.portOffers.map(o => o.label)];
+    st.systemId = 'mars'; st.planet = 'Mars';
+    land(() => { offerScene('ambient', scene('Port')); offerScene('turn', scene('Turn')); offerScene('people', scene('Visit')); });
+    out.mars = playAll();
+    return out;
+  });
+  assert.deepEqual(r.ring, [['Mourning', 'Turn'], ['Port']]);
+  assert.deepEqual(r.mars, ['Visit', 'Port', 'Turn'], 'in the order offered among what the port brings');
+});
+
 test('a port with no view plays its landing as before: nothing waits', async () => {
   const r = await run(() => {
     const st = hand(); st.systemId = 'mars'; st.planet = 'Mars';
