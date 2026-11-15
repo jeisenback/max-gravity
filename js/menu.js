@@ -134,10 +134,10 @@ function migrate(st) {
 
 // ---------- starting out ----------
 const BACKGROUNDS = {
-  earth: { name: 'Earth', text: 'Start on Earth with 120,000 credits and a patched-up Dust Skiff. The tutorial walks you through your first trade run.', at: ['earth', 'Earth'], credits: 120000 },
-  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Pact.', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Pact': 10 },
+  earth: { name: 'Earth', text: 'Start on Earth with 120,000 credits and a patched-up Dust Skiff. The tutorial walks you through your first trade run.', hand: 'home.earth', at: ['earth', 'Earth'], credits: 120000 },
+  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Pact.', hand: 'home.mars', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Pact': 10 },
     intro: () => ['You grew up under the domes of Tharsis, where everyone argues about the future. Now you have a Dust Skiff, 100,000 credits, and a way off the planet.', 'Mars pays well for Electronics from Earth, and sells Refined Metals cheap.'] },
-  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Guild Federation.', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Guild Federation': 10 },
+  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Guild Federation.', hand: 'home.belt', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Guild Federation': 10 },
     intro: () => ['You were born in the Ceres Warren, and you know what water is worth. Now you have a Dust Skiff, 90,000 credits, and the whole Belt to work.', 'Ceres is always short of water and food. Europa and Ganymede, at Jupiter, sell both cheap.'] },
 };
 
@@ -173,7 +173,7 @@ function loadSlot(n) {
 
 // ---------- screens ----------
 const Menu = {
-  view: 'main', pausedFrom: null, note: '', confirm: null, form: { background: 'earth', tutorial: true },
+  view: 'main', pausedFrom: null, note: '', confirm: null, form: { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' },  // home, before, known: the hand's papers (spec 2026-11-14)
 
   showTitle() {
     G.mode = 'title';
@@ -256,9 +256,9 @@ const Menu = {
           <h3>${narrow ? 'Your post' : 'How you start'}</h3>
           ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
           ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work ${scopeOff('posts') ? 'the guns' : 'one post'}. The captain picks where she goes; you save toward a ship of your own.</p>
-          ${scopeOff('posts') ? '' : `<div class="row">${HIRED_POSTS.map(p => `<button class="${(f.post || 'pilot') === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`}`
+          ${this.views.papersForm(f)}`
             : `<label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>`}
-          ${narrow ? '' : `<h3>Where you start</h3>
+          ${narrow || f.mode === 'hired' ? '' : `<h3>Where you start</h3>
           ${Object.entries(BACKGROUNDS).map(([id, b]) => `<button class="choice ${f.background === id ? 'on' : ''}" data-action="menuBackground" data-arg="${id}"><b>${b.name}</b><span class="hint">${b.text}</span></button>`).join('')}
           ${f.background === 'earth' && f.mode !== 'hired' ? `<label class="check"><input type="checkbox" id="ngTutorial" ${f.tutorial ? 'checked' : ''}> Play the tutorial</label>` : ''}`}
           <h3>Save slot</h3>
@@ -266,6 +266,22 @@ const Menu = {
           ${m[f.slot] ? `<p class="hint">Slot ${f.slot} holds Captain ${esc(m[f.slot].captain)}'s game. Starting here replaces it.</p>` : ''}
         </div>
         <div class="menu-buttons row sticky"><button class="primary" data-action="menuStart">Start</button><button data-action="menuBack">Back</button></div>`;
+    },
+    // The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): where you are from, the post, the sheet the two make as four words, and two questions
+    // about the life before the ship, each permanent. The words are scene:sign-on's; the sheet is the one the sign-on gives (sheet.js papersSheet). Built on the view
+    // helpers (views.js); its golden is tests/fixtures/papers-form.html.
+    papersForm(f) {
+      const say = key => sceneSay('scene:sign-on', key), home = BACKGROUNDS[f.home] ? f.home : 'earth', post = HIRED_POSTS.includes(f.post) ? f.post : scopeOff('posts') ? 'gunner' : 'pilot', before = f.before || 'none', known = f.known || 'none';  // the post as setupHired reads it (hired.js)
+      const sheet = papersSheet(newSheet(home, post), before);
+      const button = (action, id, on, label, hint) => h`<button class="${on ? 'on' : ''}" data-action="${action}" data-arg="${id}">${label}${hint ? h`<span class="hint">${hint}</span>` : ''}</button>`;
+      const row = (action, ids, label, on, hint) => h`<h3>${label}</h3><div class="row">${ids.map(id => button(action, id, on === id, say(`${action === 'menuBefore' ? 'before' : 'known'}.${id}.label`), hint && hint(id)))}</div>`;
+      return h`<h3>Where you are from</h3>
+          ${Object.entries(BACKGROUNDS).map(([id, b]) => h`<button class="choice ${home === id ? 'on' : ''}" data-action="menuHome" data-arg="${id}"><b>${b.name}</b><span class="hint">${say(b.hand)}</span></button>`)}
+          ${scopeOff('posts') ? '' : h`<h3>Rated</h3><div class="row">${HIRED_POSTS.map(p => button('menuPost', p, post === p, POSTS[p].name))}</div>`}
+          <h3>${say('sheet')}</h3>
+          <div class="menu-sheet">${STATS.map(s => h`<span class="${sheet[s] > STAT_BASE ? 'up' : sheet[s] < STAT_BASE ? 'down' : ''}">${s[0].toUpperCase()}${s.slice(1)} ${sheet[s]}</span>`)}</div>
+          ${row('menuBefore', ['dock', 'clerk', 'ferry', 'none'], say('question.before'), before, id => (id !== 'none' && !papersTrades(newSheet(home, post), id) ? say('trade.none') : ''))}
+          ${row('menuKnown', ['shipper', 'patrol', 'shipmate', 'none'], say('question.known'), known, null)}`;
     },
     load() {
       return `<h2>Saved games</h2><p class="hint">The game saves itself every time you dock.</p>
@@ -425,8 +441,11 @@ Mods.register({
     act('menuBackground', id => { keepForm(); Menu.form.background = id; });
     act('menuMode', id => { keepForm(); Menu.form.mode = id; });
     act('menuPost', id => { keepForm(); Menu.form.post = id; });
+    act('menuHome', id => { keepForm(); Menu.form.home = id; });
+    act('menuBefore', id => { keepForm(); Menu.form.before = id; });
+    act('menuKnown', id => { keepForm(); Menu.form.known = id; });
     act('menuSlotPick', n => { keepForm(); Menu.form.slot = Number(n); });
-    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial }); Menu.form = { background: 'earth', tutorial: true }; });
+    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial, origin: { home: f.home || 'earth', before: f.before || 'none', known: f.known || 'none' } }); Menu.form = { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' }; });
     act('menuSlotLoad', n => loadSlot(Number(n)));
     act('menuSlotDelete', arg => {
       const [n, yes] = String(arg).split(':');

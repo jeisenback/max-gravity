@@ -335,3 +335,18 @@ test('customs meets the ship once a landing: a crewmate the port\'s owner wants 
   assert.deepEqual(r.first, { n: 1, t: 'The Customs Officer' });
   assert.deepEqual(r.second, { n: 1, t: 'The Inspector' });
 });
+
+// The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): the affiliation follows the home on the papers.
+test('the affiliation is the papers\' home\'s, the start\'s when a hand has no papers, and the start\'s for an owner', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', origin: { home: 'belt', before: 'none', known: 'none' } }); while (G.dialog) finishEvent();
+    const out = { belt: youTies().aff, background: G.state.background };
+    hired().origin.home = 'mars'; out.mars = youTies().aff;
+    delete hired().origin; out.none = youTies().aff;
+    const h = G.state.hired; G.state.hired = null; out.owner = youTies().aff; G.state.hired = h;
+    return out;
+  });
+  assert.deepEqual(r, { belt: 'Guild Federation', background: 'earth', mars: 'Dome Pact', none: 'Arcology Pact', owner: 'Arcology Pact' });
+  await done();
+});

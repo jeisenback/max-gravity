@@ -5,6 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
+const fs = require('fs'), path = require('path');
 
 after(closeBrowser);
 
@@ -150,4 +151,77 @@ test('the name field asks a hired hand for the name on their papers, and an owne
   await owner.page.click('[data-action=menuMode][data-arg=hired]');
   assert.equal(await owner.page.getAttribute('#ngCaptain', 'placeholder'), 'The name on your papers', 'and a hand there is asked as a hand');
   await owner.done();
+});
+
+// The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): the new-game form is the papers, with the sheet as four words and two questions.
+test('the new-game form is the hand\'s papers: the home, the post, the sheet as four words that follow the choices, and two questions that reach startGame', async () => {
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  const count = sel => hand.page.$$eval(sel, b => b.length), line = () => hand.page.$$eval('.menu-sheet span', s => s.map(x => x.textContent.trim()).join(' '));
+  assert.deepEqual([await count('[data-action=menuHome]'), await count('[data-action=menuPost]'), await count('[data-action=menuBefore]'), await count('[data-action=menuKnown]')], [3, 0, 4, 4], 'the shipped build has one post, the guns');
+  assert.equal(await line(), 'Hands 3 Eye 4 Nerve 3 Wit 4', 'Earth, a gunner');
+  await hand.page.click('[data-action=menuBefore][data-arg=clerk]');
+  assert.equal(await line(), 'Hands 3 Eye 4 Nerve 2 Wit 5', 'a clerk: wit up, nerve down');
+  await hand.page.click('[data-action=menuHome][data-arg=belt]');
+  assert.equal(await line(), 'Hands 4 Eye 4 Nerve 2 Wit 4', 'the Warren: hands up');
+  await hand.page.click('[data-action=menuHome][data-arg=earth]');
+  const all = await hand.ev(() => {
+    const out = [];
+    for (const home of Object.keys(BACKGROUNDS)) for (const post of ['gunner']) for (const before of ['none', 'dock', 'clerk', 'ferry']) {
+      Object.assign(Menu.form, { home, post, before }); Menu.render();
+      const shown = [...document.querySelectorAll('.menu-sheet span')].map(x => x.textContent.trim()).join(' ');
+      const want = papersSheet(newSheet(home, post), before), words = STATS.map(st => `${st[0].toUpperCase()}${st.slice(1)} ${want[st]}`).join(' ');
+      if (shown !== words) out.push(`${home} ${post} ${before}: ${shown} / ${words}`);
+    }
+    Object.assign(Menu.form, { home: 'earth', post: 'gunner', before: 'clerk' }); Menu.render();
+    return out;
+  });
+  assert.deepEqual(all, [], 'the form and the game agree on every home, post and trade');
+  await hand.page.click('[data-action=menuKnown][data-arg=shipper]');
+  await hand.page.fill('#ngCaptain', 'Rin Adeyemi');
+  const got = await hand.ev(() => { const real = window.startGame; window.startGame = o => { window.startGame = real; window.__papers = o.origin; return real(o); }; return true; });
+  assert.ok(got);
+  await hand.page.click('[data-action=menuStart]');
+  assert.deepEqual(await hand.ev(() => window.__papers), { home: 'earth', before: 'clerk', known: 'shipper' });
+  await hand.done();
+  const owner = await open({ title: true, scope: 'full' });
+  await owner.page.click('[data-action=menuView][data-arg=new]');
+  assert.deepEqual([await owner.page.$$eval('[data-action=menuBefore]', b => b.length), await owner.page.$$eval('[data-action=menuKnown]', b => b.length), await owner.page.$$eval('[data-action=menuBackground]', b => b.length)], [0, 0, 3], 'an owner has no questions and keeps the three starts');
+  await owner.page.click('[data-action=menuMode][data-arg=hired]');
+  assert.equal(await owner.page.$$eval('[data-action=menuPost]', b => b.length), 4, 'the full build offers the four posts');
+  await owner.page.click('[data-action=menuPost][data-arg=comms]'); await owner.page.click('[data-action=menuBefore][data-arg=clerk]');
+  assert.equal(await owner.page.$$eval('.menu-sheet span', s => s.map(x => x.textContent.trim()).join(' ')), 'Hands 3 Eye 3 Nerve 3 Wit 5', 'Earth comms with the clerk: wit is at the cap, so the trade changes nothing');
+  assert.ok(await owner.page.$eval('[data-action=menuBefore][data-arg=clerk]', b => /no change/.test(b.textContent)), 'and the answer says so');
+  const full = await owner.ev(() => {
+    const out = [];
+    for (const home of Object.keys(BACKGROUNDS)) for (const post of HIRED_POSTS) for (const before of ['none', 'dock', 'clerk', 'ferry']) {
+      Object.assign(Menu.form, { home, post, before }); Menu.render();
+      const shown = [...document.querySelectorAll('.menu-sheet span')].map(x => x.textContent.trim()).join(' ');
+      const want = papersSheet(newSheet(home, post), before), words = STATS.map(st => `${st[0].toUpperCase()}${st.slice(1)} ${want[st]}`).join(' ');
+      if (shown !== words) out.push(`${home} ${post} ${before}: ${shown} / ${words}`);
+    }
+    return out;
+  });
+  assert.deepEqual(full, [], 'the form and the game agree on every home, post and trade in the full build');
+  await owner.done();
+});
+
+// The sheet line reads as the sheet: its own heading, four words laid out apart with the moved points toned (#1251 review); the form is built on the view helpers (views.js) and kept to its golden.
+test('the papers\' sheet line has a heading and four words apart, the moved points toned, and the form is on the view helpers against its golden', async () => {
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  await hand.page.click('[data-action=menuBefore][data-arg=clerk]');
+  const r = await hand.ev(() => {
+    const line = document.querySelector('.menu-sheet'), spans = [...line.querySelectorAll('span')], color = el => getComputedStyle(el).color;
+    const plain = spans.find(x => !x.className), up = line.querySelector('.up'), down = line.querySelector('.down');
+    const out = Menu.views.papersForm({ home: 'belt', before: 'dock', known: 'patrol' });
+    return { display: getComputedStyle(line).display, text: line.innerText, heading: line.previousElementSibling.tagName + ' ' + line.previousElementSibling.textContent, toned: [color(up) !== color(plain), color(down) !== color(plain), color(up) !== color(down)], raw: !!out.isRaw, html: String(out) };
+  });
+  assert.equal(r.display, 'flex'); assert.doesNotMatch(r.text, /\d[A-Z]/, 'the words do not run together'); assert.equal(r.heading, 'H3 The sheet');
+  assert.deepEqual(r.toned, [true, true, true], 'the point moved up and the one moved down are toned apart from the rest');
+  assert.ok(r.raw, 'the form is built on the view helpers (h)');
+  const file = path.join(__dirname, 'fixtures', 'papers-form.html');
+  if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, r.html + '\n');
+  assert.equal(r.html + '\n', fs.readFileSync(file, 'utf8'), `papers form: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await hand.done();
 });

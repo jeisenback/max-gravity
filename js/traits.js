@@ -47,5 +47,7 @@ const RECORD_WORDS = {
   barWon: ['One bar fight won', '{n} bar fights won'], barLost: ['One bar fight lost', '{n} bar fights lost'], rocksFound: ['One rock found', '{n} rocks found'],
   wrecksCut: ['One wreck cut', '{n} wrecks cut'], salvageDone: ['One salvage job delivered', '{n} salvage jobs delivered'], rocksSurveyed: ['One rock surveyed', '{n} rocks surveyed'],
 };
+// The papers at the sign-on in words (spec 2026-11-14, h.origin): the two answers given, through the caller's words (`say(key)`), so the module stays pure.
+const papersWord = (origin, say) => ['before', 'known'].map(k => (origin && origin[k] && origin[k] !== 'none' ? say(`papers.${k}.${origin[k]}`) : '')).filter(Boolean).join(' ');
 const capital = s => s.charAt(0).toUpperCase() + s.slice(1);
 const recordWords = record => RECORD_KEYS.filter(k => count(record, k) > 0).map(k => { const n = count(record, k); return `${n === 1 ? RECORD_WORDS[k][0] : capital(RECORD_WORDS[k][1].replace('{n}', numberWord(n)))}.`; }).join(' ');

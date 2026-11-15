@@ -76,6 +76,7 @@ function startOver(carried) {
     captain: captain().name,
     mode: 'hired',
     post: h.post,
+    origin: h.origin,  // the papers are permanent (spec 2026-11-14)
     captainKey: scopeOff('captains') ? 'hester' : drawn,
     carried,
   });
@@ -103,6 +104,7 @@ function putAshore(lost) {
     captain: keep.name,
     mode: 'hired',
     post: keep.post,
+    origin: h.origin,  // the papers are permanent (spec 2026-11-14); who knows the name lands again on the fresh record and standing
     captainKey: others.length ? pick(others) : undefined,
     credits: keep.credits,
     debt: keep.debt,

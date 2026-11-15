@@ -27,6 +27,20 @@ function newSheet(background, post) {
   return sheet;
 }
 
+// The papers' trade (docs/superpowers/specs/2026-11-14-papers-design.md): what the hand was before the ship moves a point up and a point down. All or nothing: when the
+// point up would pass STAT_MAX the answer changes nothing (papersTrades says so, for the form's note); a stat never goes below PAPERS_FLOOR, a rule the base and the
+// points added cannot reach. Pure, and shared by the new-game form (menu.js) and the sign-on (hired.js), so the sheet the form shows is the sheet the hand gets.
+const PAPERS_BEFORE = { dock: { up: 'hands', down: 'wit' }, clerk: { up: 'wit', down: 'nerve' }, ferry: { up: 'nerve', down: 'hands' } };
+const PAPERS_FLOOR = 2;
+const papersTrades = (sheet, before) => { const t = PAPERS_BEFORE[before]; return !!t && sheet[t.up] < STAT_MAX; };
+function papersSheet(sheet, before) {
+  const out = { ...sheet };
+  if (!papersTrades(sheet, before)) return out;
+  const t = PAPERS_BEFORE[before];
+  out[t.up] += 1; out[t.down] = Math.max(PAPERS_FLOOR, out[t.down] - 1);
+  return out;
+}
+
 const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.min(CHECK_MAX, 0.5 + STAT_STEP * (stat - STAT_BASE) + SKILL_STEP * skill - difficulty + edge));
 
 // The kit (#683): things the hand carries, each adding to a kind of check (the keys of DIFFICULTY). They come from arcs and scenes (arcs.js), never from a shop; the
@@ -38,9 +52,9 @@ const KIT_ITEMS = {
 };
 // The cover the kit gives a section of the ship in a lock fight (handtohand.js): the sum over the items, by the section's place (0 to 2).
 const kitCover = (kit, pos) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).cover || [])[pos] || 0), 0);
-// What the hand takes with them when the chapter ends and the ship is bought (#685): the sheet, the kit and the shippers' regard (the post they work and what they have learned at each, and the day they signed on and the captain's id, for the board's dice), as the record the next chapter reads. It has the hand's own
+// What the hand takes with them when the chapter ends and the ship is bought (#685): the sheet, the papers (the Record card reads them, character.js), the kit and the shippers' regard (the post they work and what they have learned at each, and the day they signed on and the captain's id, for the board's dice), as the record the next chapter reads. It has the hand's own
 // field names, so what reads a hand's sheet, kit or standing reads this the same (hired.js career()). An old save with no sheet has none, which is every stat at the base.
-const careerOf = h => ({ sheet: h.sheet ? { ...h.sheet } : null, kit: [...(h.kit || [])], standing: { ...(h.standing || {}) }, post: h.post, skill: { ...(h.skill || {}) }, since: h.since, captain: h.captain, moves: [...(h.moves || [])], picks: [...(h.picks || [])], station: [...(h.station || [])] });  // moves: the gunner's, kept (fightui.js knownMoves); since and captain only seed the day's board, so it is not the same in every game (contracts.js)
+const careerOf = h => ({ sheet: h.sheet ? { ...h.sheet } : null, origin: h.origin ? { ...h.origin } : undefined, kit: [...(h.kit || [])], standing: { ...(h.standing || {}) }, post: h.post, skill: { ...(h.skill || {}) }, since: h.since, captain: h.captain, moves: [...(h.moves || [])], picks: [...(h.picks || [])], station: [...(h.station || [])] });  // moves: the gunner's, kept (fightui.js knownMoves); since and captain only seed the day's board, so it is not the same in every game (contracts.js)
 // Whether an item in the kit is read by a shipper (the carrier license by the Arcology Pact Freight Office): its board is drawn for the ship as for one it trusts (contracts.js boardStanding).
 const kitBoards = (kit, shipper) => (kit || []).some(id => (KIT_ITEMS[id] || {}).board === shipper);
 const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);

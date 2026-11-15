@@ -198,6 +198,7 @@ const SCENE_LINES = {
     'cause.good': 'The junior counts {tons}t of {good} against the manifest and reads the next line off the slate. "Import licence for that?" There isn\'t one on file. The duty is {duty} cr.',
     'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
+    known: '{official} reads the name off the slate before the junior has the manifest up. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14)
     'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
     'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)
@@ -566,6 +567,9 @@ const SCENE_LINES = {
     'runner.reason': 'Three fights not fought.',
     'jonah.reason': 'Two shipmates lost.',
     empty: 'Nothing on the record yet.',
+    // the papers at the sign-on (h.origin), the Record card's first line
+    'papers.before.dock': 'Dock labour before the ship.', 'papers.before.clerk': 'A shipper\'s office before the ship.', 'papers.before.ferry': 'A short-haul ferry before the ship.',
+    'papers.known.shipper': 'The freight office at home knows the ship.', 'papers.known.patrol': 'A patrol has your name.', 'papers.known.shipmate': 'A shipmate from before is aboard.',
     // the doors: a marked choice only the trait opens (engage.js, icerun.js, bartopics.js)
     'door.cool-head.label': 'Hail her and hold the guns',
     'door.cool-head.win': 'You give her the ship\'s name and the guns\' bearing on the open band, and nothing else. There is a long pause with her plume steady in it, and then the plume swings away.',
@@ -1251,6 +1255,25 @@ const SCENE_LINES = {
   },
   'scene:sign-on': {  // a captain's own introduction (their entry's `intro`), and the line on the dock a put-ashore hand carries, are not here
     title: 'Signing On',
+    // the papers (menu.js papersForm, spec 2026-11-14): where you are from, the two questions and their answers, the note on a trade that changes nothing
+    'home.earth': 'An arcology on Earth. Everyone you know is still in it, and the service charge went up in March.',
+    'home.mars': 'The domes at Tharsis. Your mother still pays the Pact for the air, and asks when you are coming back.',
+    'home.belt': 'The Ceres Warren. A water share was the first thing you owned, and the first thing you sold.',
+    sheet: 'The sheet', 'question.before': 'What you were before the ship', 'question.known': 'Who knows your name',
+    'before.dock.label': 'Dock labour', 'before.clerk.label': 'A clerk at a shipper\'s office', 'before.ferry.label': 'A rating on a short-haul ferry', 'before.none.label': 'Nothing worth a line',
+    'known.shipper.label': 'A shipper at home', 'known.patrol.label': 'A patrol', 'known.shipmate.label': 'A shipmate', 'known.none.label': 'Nobody worth a line',
+    'trade.none': 'no change on your sheet',
+    'known.shipmate.memory': 'We shipped together before, on a short-haul boat.',
+    // the sign-on reads the papers (signon.js): how a hand from Mars or the Belt came to Earth, and the two answers read back
+    'came.mars': 'You came down from Tharsis on a Pact freighter, in a berth that cost two months of a wage you had not earned yet.',
+    'came.belt': 'You came in from Ceres on a Federation ore boat, working the passage for the berth. Earth\'s gravity is still in your knees.',
+    'before.dock': 'Before the ship you worked the docks: loading, three shifts in four, and the hands to show for it.',
+    'before.clerk': 'Before the ship you kept a shipper\'s office: the manifests, the day book, and who owed what to whom.',
+    'before.ferry': 'Before the ship you stood watches on a short-haul ferry, where a rating does what the master says and learns to say it back.',
+    'known.shipper': 'The freight office at home knows your name, and gives the ship its board the way it gives it to one it trusts.',
+    'known.patrol': 'A patrol has your name too, from a stop that ended in a fine. The navy keeps its files.',
+    'known.shipmate': '{first} knows you from before: a short-haul boat, a season of watches, and no quarrel.',
+    'known.shipmate.someone': 'Someone aboard',
     'text.earth': 'The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency\'s list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, {ship}, an ice hauler out of {sys}, took you for what you could do.{who}',
     'text.mars': 'You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact\'s navy didn\'t want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. {ship}, an ice hauler out of {sys}, is yours to work.{who}',
     'text.belt': 'You were born in the Ceres Warren, and you know what water is worth. A hand\'s share in a freighter that crosses to the inner system and back isn\'t much, but it\'s a berth, and a berth is the one thing in the Belt that\'s truly yours. The Federation\'s dock office stamped the papers and wished you luck, in the tone of people who\'ve wished a great many people luck. {ship}, an ice hauler out of {sys}, sails.{who}',

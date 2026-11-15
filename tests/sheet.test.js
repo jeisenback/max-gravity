@@ -7,8 +7,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows', 'careerOf', 'kitBoards']);
-const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, check, KIT_ITEMS, kitEdge, sheetRows } = api;
+const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'PAPERS_BEFORE', 'papersSheet', 'papersTrades', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows', 'careerOf', 'kitBoards']);
+const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, PAPERS_BEFORE, papersSheet, papersTrades, check, KIT_ITEMS, kitEdge, sheetRows } = api;
 const near = (a, b) => Math.abs(a - b) < 1e-9, sheet = (bg, post) => ({ ...newSheet(bg, post) });  // spread: the vm context has its own Object
 
 test('the sheet: four stats at the base, one up for the post and one for the background, never above five', () => {
@@ -57,17 +57,34 @@ test('the sheet as rows: each stat with the posts on it, and the kit with what e
 
 test('the career a hand takes into the next chapter is a copy of their sheet, kit and shippers\' regard, and an old save with none gives none', () => {
   const h = { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the Federation Freight Hall': 2 }, post: 'gunner', skill: { gunner: 40 }, fund: 900, since: 3, captain: 'p7', moves: ['vent'] };
+  h.origin = { home: 'belt', before: 'dock', known: 'none' };
   const c = api.careerOf(h);
+  assert.deepEqual({ ...c.origin }, h.origin, 'the papers go on into the next chapter (the Record card reads them)');
   assert.deepEqual({ ...c.sheet }, h.sheet); assert.deepEqual([...c.kit], ['valve-keys']); assert.deepEqual({ ...c.standing }, h.standing);
-  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'moves', 'picks', 'post', 'sheet', 'since', 'skill', 'standing', 'station'], 'only the sheet, the kit, the regard, the moves, the picks and the station parts (#1135) go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain, c.post], [3, 'p7', 'gunner']); assert.deepEqual({ ...c.skill }, { gunner: 40 }); assert.deepEqual([...c.moves], ['vent']);
+  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'moves', 'origin', 'picks', 'post', 'sheet', 'since', 'skill', 'standing', 'station'], 'only the sheet, the kit, the regard, the moves, the picks and the station parts (#1135) go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain, c.post], [3, 'p7', 'gunner']); assert.deepEqual({ ...c.skill }, { gunner: 40 }); assert.deepEqual([...c.moves], ['vent']);
   c.kit.push('audit-seal'); c.standing['the Federation Freight Hall'] = 3; c.sheet.hands = 5; c.skill.gunner = 99; c.moves.push('lead');
   assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the Federation Freight Hall'], 2); assert.equal(h.sheet.hands, 4); assert.equal(h.skill.gunner, 40); assert.deepEqual([...h.moves], ['vent']);
   const old = api.careerOf({});
-  assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {}); assert.deepEqual([...old.moves], []); assert.deepEqual([...old.picks], []);
+  assert.equal(old.sheet, null); assert.equal(old.origin, undefined); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {}); assert.deepEqual([...old.moves], []); assert.deepEqual([...old.picks], []);
 });
 
 test('an item in the kit can be read by a shipper: the carrier license by the Arcology Pact Freight Office, and no other item or shipper', () => {
   const office = 'the Arcology Pact Freight Office';
   assert.equal(api.kitBoards(['carrier-license'], office), true); assert.equal(api.kitBoards(['carrier-license'], 'the Federation Freight Hall'), false);
   assert.equal(api.kitBoards(['valve-keys', 'audit-seal'], office), false); assert.equal(api.kitBoards([], office), false); assert.equal(api.kitBoards(undefined, office), false);
+});
+
+// The papers' trade (docs/superpowers/specs/2026-11-14-papers-design.md): what the hand was before the ship moves a point up and a point down, all or nothing.
+test('the papers\' trade moves a point up and a point down, is all or nothing at the cap, never goes below 2, and copies the sheet', () => {
+  const base = { hands: 3, eye: 3, nerve: 3, wit: 3 };
+  assert.deepEqual([...Object.keys(PAPERS_BEFORE)], ['dock', 'clerk', 'ferry']);
+  assert.deepEqual({ ...papersSheet(base, 'dock') }, { hands: 4, eye: 3, nerve: 3, wit: 2 });
+  assert.deepEqual({ ...papersSheet(base, 'clerk') }, { hands: 3, eye: 3, nerve: 2, wit: 4 });
+  assert.deepEqual({ ...papersSheet(base, 'ferry') }, { hands: 2, eye: 3, nerve: 4, wit: 3 });
+  for (const none of ['none', undefined, 'nonsense']) { const s = papersSheet(base, none); assert.deepEqual({ ...s }, base); assert.notEqual(s, base, 'a copy'); }
+  const sharp = { ...base, wit: 5 };
+  assert.deepEqual({ ...papersSheet(sharp, 'clerk') }, sharp, 'the point up would pass the cap: nothing changes'); assert.equal(papersTrades(sharp, 'clerk'), false);
+  assert.deepEqual({ ...papersSheet({ ...base, wit: 2 }, 'dock') }, { hands: 4, eye: 3, nerve: 3, wit: 2 }, 'the floor');
+  assert.equal(papersTrades(base, 'dock'), true); assert.equal(papersTrades(base, 'none'), false);
+  assert.deepEqual({ ...papersSheet(newSheet('mars', 'gunner'), 'ferry') }, { hands: 2, eye: 4, nerve: 5, wit: 3 }, 'Mars gunner off a ferry');
 });

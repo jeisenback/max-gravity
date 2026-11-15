@@ -39,7 +39,8 @@ const regardWord = n => (n >= 2 ? 'loyal' : n === 1 ? 'warm' : n === 0 ? 'neutra
 
 // You: your background's faction, a member, with your standing as the factions' regard for you (factions.js).
 function youTies() {
-  const st = G.state, aff = CULTURE_FACTION[(BACKGROUNDS[st.background] || {}).culture || st.background] || 'Arcology Pact';
+  const st = G.state, h = hired(), home = h && h.origin && h.origin.home;  // a hired hand's affiliation follows the home on their papers at the sign-on (h.origin) (spec 2026-11-14); a save with none, and an owner, the start's
+  const aff = CULTURE_FACTION[home || (BACKGROUNDS[st.background] || {}).culture || st.background] || 'Arcology Pact';
   return { aff, status: { [aff]: 'member' }, standing: Object.fromEntries(FACTIONS.map(f => [f, standingWord(repOf(f))])) };
 }
 
