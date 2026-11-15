@@ -834,7 +834,10 @@ Mods.register({
       const pace = (dt || 0) * (G.speed === undefined ? 1 : G.speed);  // at the speed chosen, as a burn's (burnspeed.js): paused, nothing moves but a scene's people
       if (!G.dialog) {
         G.portHour += pace * 24 / SHIP_DAY;
-        if (G.portHour >= 24) { const h = G.portHour - 24; portMidnight(); G.portHour = h; }  // the night runs on, and the day turns at midnight (the owner, 2026-11-15, #1275)
+        if (G.portHour >= 24) {  // the night runs on, and the day turns at midnight (the owner, 2026-11-15, #1275)
+          if (G.portMidnight !== st.day) { G.portHour = 24; G.portMidnight = st.day; setBurnSpeed(0); }  // it pauses there first, since a day costs the contract: play turns it
+          else if (pace > 0) { const h = G.portHour - 24; portMidnight(); G.portHour = h; }
+        }
       }
       if (!layout) return;
       const cast = portCast(layout, G.portHour, patrons, crew, st.day);

@@ -103,8 +103,10 @@ test('the Ring\'s clock: a landing comes in at an hour of its own, runs while th
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const out = { arrived: G.portHour };
     G.portHour = 10; Mods.emit('frame', 8); out.ran = +(G.portHour - 10).toFixed(3);
-    { const st = G.state, day = st.day; G.portHour = 23.9; Mods.emit('frame', 1); while (G.dialog) finishEvent(); out.midnight = { hour: +G.portHour.toFixed(2), days: st.day - day }; }  // 0.3 hours on, past midnight
-    { const h = hired(); delete h.stay; beginStay(h, 2, 'yard'); G.portHour = 23.9; Mods.emit('frame', 1); while (G.dialog) finishEvent(); out.stayed = (h.stay || {}).left; delete h.stay; }  // with a stay on, midnight is a night of it
+    { const st = G.state, day = st.day; G.portHour = 23.9; Mods.emit('frame', 1); out.atMidnight = { hour: G.portHour, speed: G.speed, days: st.day - day };  // it pauses at midnight first
+      Mods.emit('frame', 1); out.stillHeld = G.portHour;  // paused, it waits
+      setBurnSpeed(1); Mods.emit('frame', 1); while (G.dialog) finishEvent(); out.midnight = { hour: +G.portHour.toFixed(2), days: st.day - day }; }  // play: the day turns, and the clock runs on
+    { const h = hired(); delete h.stay; beginStay(h, 2, 'yard'); G.portHour = 23.9; Mods.emit('frame', 1); setBurnSpeed(1); Mods.emit('frame', 1); while (G.dialog) finishEvent(); out.stayed = (h.stay || {}).left; delete h.stay; }  // with a stay on, midnight is a night of it
     openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); G.portHour = 12; Mods.emit('frame', 8); out.held = G.portHour; G.dialog = null;
     Mods.emit('newDay', G.state.day + 1); out.morning = G.portHour;
     const planet = currentPlanet(), lay = portLayout(planet), a = portFolkPerson(planet, lay.folk[0]), b = portFolkPerson(planet, lay.folk[0]);
@@ -115,7 +117,8 @@ test('the Ring\'s clock: a landing comes in at an hour of its own, runs while th
   });
   await done();
   assert.ok(r.arrived >= 8 && r.arrived < 20, `a landing at ${r.arrived}`);
-  assert.equal(r.ran, 2.4, 'eight seconds at the burn view\'s pace is 2.4 hours'); assert.deepEqual(r.midnight, { hour: 0.2, days: 1 }, 'it runs on past midnight, and the day turns'); assert.equal(r.stayed, 1, 'a stay\'s night'); assert.equal(r.held, 12, 'and under a scene');
+  assert.equal(r.ran, 2.4, 'eight seconds at the burn view\'s pace is 2.4 hours'); assert.deepEqual(r.atMidnight, { hour: 24, speed: 0, days: 0 }, 'it pauses at midnight, before the day turns'); assert.equal(r.stillHeld, 24, 'and waits there');
+  assert.deepEqual(r.midnight, { hour: 0.3, days: 1 }, 'play: the day turns, and it runs on'); assert.equal(r.stayed, 1, 'a stay\'s night'); assert.equal(r.held, 12, 'and under a scene');
   assert.equal(r.morning, 7); assert.deepEqual(r.ngozi, ['Ngozi', 'Achebe', true, 'Earth']); assert.equal(r.onStools, false); assert.equal(r.mars, null, 'a port with no view has no clock');
 });
 
