@@ -138,6 +138,19 @@ test('the day down\'s tags: the crayfish is a choice in the market\'s day; Tomas
   if (r.parcel) { assert.equal(r.parcel[0], true); assert.match(r.parcel[1], /bag for his parents/); assert.equal(r.notPaid, 5000, 'not taken, nothing paid'); assert.equal(r.paid, 4100, 'taken, the fare'); }
 });
 
+test('the view asks for its tags every frame without drawing a die or changing the game', async () => {
+  const r = await run(() => {
+    const st = hand(), h = hired(), planet = currentPlanet();
+    delete h.stay; beginStay(h, 9, 'market'); st.credits = 5000; Mods.emit('landed', planet); G.dialog = null; G.nextEvent = null;
+    portViewNow(planet, portLayout(planet, st));  // the view is drawn first, as the game draws it: its own people are made then
+    const before = JSON.stringify(st), real = Math.random; let rolls = 0;
+    Math.random = () => { rolls++; return real(); };
+    try { for (let i = 0; i < 20; i++) { ashoreOffers(st, planet); downOffers(st, planet); portOffersNow(planet, portLayout(planet, st), []); } } finally { Math.random = real; }
+    return { rolls, same: JSON.stringify(st) === before };
+  });
+  assert.deepEqual(r, { rolls: 0, same: true });
+});
+
 test('a port with no view plays its landing as before: nothing waits', async () => {
   const r = await run(() => {
     const st = hand(); st.systemId = 'mars'; st.planet = 'Mars';
