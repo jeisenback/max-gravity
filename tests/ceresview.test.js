@@ -47,3 +47,28 @@ test('at Ceres the view is drawn: Ceres time on its clock, the crater floor flat
   assert.equal(r.flat, true, 'the crater floor\'s rooms sit level'); assert.equal(r.curved, true, 'a ring\'s rooms follow its curve');
   assert.equal(r.tag, 'yard', 'business at the yard gate: the co-op\'s office is Ceres\'s `yard` (ports.md, Its scenes\' places)');
 });
+
+test('Ceres\'s own people each have three words for the day; Mei Tan sells a bowl, Yusuf\'s word opens the co-op\'s board, and the nurse sees to a hurt (#1265)', async () => {
+  const { ev, errors, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.systemId = 'ceres'; st.planet = 'Ceres Station'; UI.planet = currentPlanet(); G.mode = 'landed'; st.credits = 5000;
+    const planet = currentPlanet(), lay = portLayout(planet), folk = k => lay.folk.find(f => f.key === k), word = k => portWordEvent(folk(k), portFolkPerson(planet, folk(k)), st);
+    const out = { words: lay.folk.map(f => [f.key, (PORT_WORDS[f.key] || []).length]), texts: {} };
+    for (const f of lay.folk) out.texts[f.key] = [0, 1, 2].map(d => { st.day = d; return word(f.key).text; });
+    st.day = 5;
+    const mei = word('c-noodles'), buy = mei.choices.findIndex(c => /^Buy a bowl/.test(c.label)), c0 = st.credits;
+    out.bowl = buy >= 0 && { said: mei.choices[buy].run(), paid: c0 - st.credits, again: !!word('c-noodles').choices[buy].can && !word('c-noodles').choices[buy].can() };
+    out.clerk = word('c-clerk').choices.map(c => c.label);
+    out.nurseWell = word('c-nurse').choices.map(c => c.label);
+    career().hurtUntil = st.day + 10; out.nurseHurt = word('c-nurse').choices.map(c => c.label);
+    return out;
+  });
+  await done();
+  assert.deepEqual(errors, []);
+  for (const [k, n] of r.words) assert.equal(n, 3, `${k}: three words`);
+  for (const [k, t] of Object.entries(r.texts)) { assert.equal(new Set(t).size, 3, `${k}: a different word each day`); for (const x of t) assert.doesNotMatch(x, /[{}]/, k); }
+  assert.ok(r.bowl, 'Mei Tan sells a bowl'); assert.match(r.bowl.said, /Mei Tan/); assert.equal(r.bowl.paid, 120); assert.equal(r.bowl.again, true, 'one a day');
+  assert.ok(r.clerk.includes('Ask about work'), `the co-op's board (${r.clerk})`);
+  assert.ok(!r.nurseWell.some(l => /seen to/.test(l)), 'no care offered to the well'); assert.ok(r.nurseHurt.some(l => /seen to/.test(l)), 'care while hurt');
+});

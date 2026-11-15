@@ -75,12 +75,12 @@ const PORT_LAYOUTS = {
     // clerk, the lock's warden, Kaur's chief buyer (powers-people.md), the Guild's desk, the clinic's nurse and a stallholder in the market.
     folk: [
       { key: 'c-keeper', job: 'keeper of the Warren', room: 'bar', x: 600, name: 'stand', view: 'front', hours: [10, 27] },
-      { key: 'c-noodles', first: 'Mei', last: 'Tan', job: 'noodle stall', room: 'yard', x: 150, name: 'work', view: 'back', hours: [6, 21] },
-      { key: 'c-clerk', first: 'Yusuf', last: 'Okonkwo-Reyes', job: 'the co-op\'s clerk', room: 'yard', x: 280, name: 'stand', view: 'front', hours: [7, 19] },
+      { key: 'c-noodles', first: 'Mei', last: 'Tan', job: 'noodle stall', room: 'yard', x: 150, name: 'work', view: 'back', hours: [6, 21], offer: 'bowl' },
+      { key: 'c-clerk', first: 'Yusuf', last: 'Okonkwo-Reyes', job: 'the co-op\'s clerk', room: 'yard', x: 280, name: 'stand', view: 'front', hours: [7, 19], offer: 'work' },
       { key: 'c-warden', job: 'warden at the lock', room: 'lock', x: 400, name: 'stand', view: 'front', hours: [0, 24] },
       { key: 'c-buyer', first: 'Saoirse', last: 'Brennan', job: 'Kaur\'s chief buyer', room: 'kaur', x: 430, name: 'stand', view: 'front', hours: [7, 20] },
       { key: 'c-guild', job: 'the Guild\'s desk', room: 'guild', x: 650, name: 'work-sit', view: 'side', face: -1, hours: [7, 22] },
-      { key: 'c-nurse', names: 'women', job: 'clinic nurse', room: 'clinic', x: 750, name: 'stand', view: 'front', hours: [8, 20] },
+      { key: 'c-nurse', names: 'women', job: 'clinic nurse', room: 'clinic', x: 750, name: 'stand', view: 'front', hours: [8, 20], offer: 'care' },
       { key: 'parts', job: 'parts stall', room: 'market', x: 170, name: 'work', view: 'back', hours: [8, 18] },
     ],
     shifts: [6, 14, 22],
@@ -187,8 +187,9 @@ function portRoomAt(layout, c) {
   return (on.find(r => c.x >= r.x0 && c.x < r.x1) || on[on.length - 1]).id;
 }
 
-// The Ring's own people's word for the day (#1103, ports.md Scenes from people; docs/bible/voice.md, lagos.md, people/tomas.md for Ngozi): three each, by
-// the layout's folk key, taken in turn by the day and not by a draw. {first} is their own first name. Read through the editor's words (lines:port-folk).
+// The ports' own people's word for the day (#1103, ports.md Scenes from people; docs/bible/voice.md): three each, by the layout's folk key, taken in
+// turn by the day and not by a draw. {first} is their own first name. Read through the editor's words (lines:port-folk). The Ring's from lagos.md and
+// people/tomas.md for Ngozi; Ceres's (the `c-` keys and the parts stall, #1265) from ceres.md, regulars.md and powers-people.md.
 const PORT_WORDS = {
   ngozi: [
     '"You\'re off Tomas\'s ship." Ngozi puts a plate of rice and stew on the counter before you\'ve asked for one. "He sends money and he doesn\'t send messages. Tell him Chidi made the football team at school. He\'ll pretend he isn\'t pleased."',
@@ -220,6 +221,46 @@ const PORT_WORDS = {
     '{first} is counting dressing packs into a drawer. "We\'ve got the clinic contract till the end of the year," {first} says. "After that it goes out to tender again. Last time it went to a firm on the mainland, and nobody came up for a month."',
     '"Ear infections this week, mostly from the top bunkrooms," {first} says. "It\'s the filters up there. Maintenance has the ticket." {first} goes back to the screen.',
   ],
+  'c-keeper': [
+    '{first} pours from the tap and marks it on the slate under the water ration. "Renters pay at the end of the week, members pay now," {first} says. "Which are you?"',
+    '"Second shift\'s off in twenty minutes," {first} says, setting glasses out along the bar. "They\'ll come down the long stair. The lift\'s always slow at the change."',
+    '{first} wipes the bar where the ring\'s curve sends the glasses sliding. "Put it down on the high side," {first} says. "Everyone learns."',
+  ],
+  'c-noodles': [
+    '"Pork or the mushroom. The mushroom\'s grown here. The pork came in frozen, and it costs like it." Mei Tan ladles broth into a bowl before you answer.',
+    'Mei Tan is writing the prices up on the board again. "Water went up," she says. "Broth\'s mostly water."',
+    'Mei Tan has the council\'s letter about the lease under the cash tin. "Renewal\'s in June," she says. "Yusuf says he\'ll read it before I sign. He reads everything twice."',
+  ],
+  'c-clerk': [
+    '"If you\'re after a berth on one of ours, the board\'s behind you," Yusuf says. "The hulls in chalk are full. The ones in pencil, ask me."',
+    'Yusuf has two quarters\' books open side by side and a third on the screen. "The lender\'s officer comes Thursday," he says, and goes back to the column.',
+    '"Kettle wants the meeting moved to first shift," Yusuf says, writing it down. "Half the members are on first shift. He says that\'s the point."',
+  ],
+  'c-warden': [
+    '{first} checks your papers against the screen and hands them back. "Weapons stay on the ship. That\'s the knife on your belt too, if it\'s longer than your hand."',
+    '{first} runs a finger down the manifest. "Any machine parts in that? You\'ll want the licence, or it\'s duty at the counter." {first} stamps it before you answer.',
+    '{first} is eating a bowl of Mei Tan\'s noodles at the lock desk, one eye on the feed from the pads. "Two co-op boats in tonight," {first} says. "They always come in together."',
+  ],
+  'c-buyer': [
+    '"Posted price, delivered to the Vesta depot\'s tanks, less the assay," Saoirse Brennan says. "If you\'re carrying ice, that\'s the number. If you\'re not, I\'m busy."',
+    'Saoirse Brennan is reading the haulers\' assays off a screen, one load at a time. "Too much dust in that one," she says, and marks it down a tenth.',
+    '"Arjun\'s gone back to Vesta for the month," Saoirse Brennan says. "His father wants him at the depot." She signs a purchase order and puts it on the pile.',
+  ],
+  'c-guild': [
+    '{first} slides a form across the desk. "Membership\'s by the year, off your wage once you\'re on a hauler. Until then it\'s cash." {first} taps the line for the signature.',
+    '"Mirela\'s in with the council," {first} says. "Berth rates. It\'s always the berth rates."',
+    '{first} is pinning the week\'s hauls on the board: which hull, which rock, what the ice assayed at. "Kaur took the lot at the posted price," {first} says. "Again."',
+  ],
+  'c-nurse': [
+    '"Members are on the Guild\'s cover," {first} says. "Renters pay at the desk first." She hands you a form on a board.',
+    '{first} is changing the sheets on the cots. "Frostbite this week," she says. "A suit heater went on the ice house\'s second shift. He\'ll keep the fingers."',
+    '"Ilka\'s on nights again," {first} says, signing a chart. "Fourth week. Nights pay a third more."',
+  ],
+  parts: [
+    '{first} turns a pump housing over in both hands. "Off a hauler they broke up last month," {first} says. "Nobody\'ll rate it, but it\'s got years in it."',
+    '"Rated parts are at the outfitter," {first} says. "Same part, three times the price, and a sticker." {first} goes back to the bench.',
+    '{first} is sorting valve seals into jars by size. "The council wants the stall fee in advance from next quarter," {first} says. "So the seals are up."',
+  ],
 };
 // What they offer the hand (the owner, 2026-11-13), the first two from the hand's own savings: a plate at Ngozi's, once a day, which Tomas likes once a visit;
 // while the hand is hurt, the nurse's care, which takes days off it as a medic aboard does (MEDIC_DAYS), more of them; and the clerk's word on work, which
@@ -232,6 +273,14 @@ const PORT_OFFERS = {
       'Ngozi gives you more rice than the last person got, and takes your money without counting it. "Eat it here," she says. "The plates don\'t come back otherwise."',
       'Ngozi spoons stew over the rice and puts two puff-puff on the side of the plate. "Those are from this morning," she says. "Don\'t tell anyone they were free."',
       'Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in.',
+    ],
+  },
+  bowl: {  // Mei Tan's, at Ceres (#1265)
+    label: 'Buy a bowl ({cost} cr)', eaten: 'You\'ve eaten here today.',
+    result: [
+      'Mei Tan puts the bowl on the ledge of the stall with the chopsticks across it. "Bowl comes back to me," she says. "I\'m not paying the deposit on another fifty."',
+      'Mei Tan gives you the mushroom, and a spoon of chilli oil you didn\'t ask for. A rigger off the yard\'s first shift eats standing next to you, out of the same pot.',
+      'Mei Tan fills the bowl to the rim. "Last of the pot," she says. "Second shift will want a new one." She puts the water on.',
     ],
   },
   work: { label: 'Ask about work' },
@@ -247,17 +296,18 @@ const PORT_OFFERS = {
 // One of the offers' lines, through the editor's words (lines:port-offers): `key` is a line of it, or 'result' for the day's one; {first} is the seller's name, {cost} the price.
 function portOfferSay(kind, key, p, day) {
   const o = linedText('lines:port-offers', PORT_OFFERS)[kind], line = key === 'result' ? o.result[day % o.result.length] : o[key];
-  return line.replace(/\{first\}/g, p.first).replace(/\{cost\}/g, fmt(kind === 'plate' ? PORT_PLATE : PORT_CARE));
+  return line.replace(/\{first\}/g, p.first).replace(/\{cost\}/g, fmt(kind === 'care' ? PORT_CARE : PORT_PLATE));  // a bowl is a plate's price
 }
 // The scene a click on one of them opens: their word for the day, where they work, with them in it (portStage gathers them there), what they sell if
 // they sell anything now, and leaving them to it. `st` is the save: the day, the hand's savings, and when they last ate here and arrived.
 function portWordEvent(f, p, st) {
   const words = linedText('lines:port-folk', PORT_WORDS)[f.key], day = st.day, choices = [];
-  if (f.offer === 'plate') choices.push({ label: portOfferSay('plate', 'label', p, day), ...gated(needCr(PORT_PLATE), notYet(() => st.portAte === day, portOfferSay('plate', 'eaten', p, day))), run() {
+  const food = f.offer === 'plate' || f.offer === 'bowl' ? f.offer : null;  // Ngozi's plate, or Mei Tan's bowl at Ceres (#1265), each a meal a day
+  if (food) choices.push({ label: portOfferSay(food, 'label', p, day), ...gated(needCr(PORT_PLATE), notYet(() => st.portAte === day, portOfferSay(food, 'eaten', p, day))), run() {
     st.credits -= PORT_PLATE; st.portAte = day;
-    const t = tomasAboard();
+    const t = food === 'plate' && tomasAboard();
     if (t && st.portTomas !== st.portArrived) { st.portTomas = st.portArrived; like(t, 1, portOfferSay('plate', 'memory', p, day)); }  // once a visit
-    return portOfferSay('plate', 'result', p, day);
+    return portOfferSay(food, 'result', p, day);
   } });
   if (f.offer === 'care' && handHurt()) choices.push({ label: portOfferSay('care', 'label', p, day), ...gated(needCr(PORT_CARE)), run() {
     st.credits -= PORT_CARE; career().hurtUntil -= PORT_CARE_DAYS;
@@ -265,7 +315,7 @@ function portWordEvent(f, p, st) {
   } });
   const board = RAIL.find(e => e.tab === 'missions');  // the clerk's word on work: the Missions page, when its entry on the rail is open here
   if (f.offer === 'work' && board.ready(currentPlanet()) === true) choices.push({ label: portOfferSay('work', 'label', p, day), keep: true, run() { UI.tab = 'missions'; UI.pageOpen = true; return null; } });  // the scene closes onto it
-  if (f.offer === 'work' && st.metSeller && st.sellerAt === undefined) choices.push({ label: lagosSay('seller.mention'), run() { st.sellerAt = day; return lagosSay('seller.clerk', { first: p.first }); } });  // the woman from Surulere (daydown.js, #1164), once
+  if (f.key === 'clerk' && st.metSeller && st.sellerAt === undefined) choices.push({ label: lagosSay('seller.mention'), run() { st.sellerAt = day; return lagosSay('seller.clerk', { first: p.first }); } });  // the woman from Surulere (daydown.js, #1164), once
   choices.push({ label: 'Leave them to it', keep: true, run: () => null });
   // A word that is for something the day down led to (daydown.js, #1164), once, which they have whatever you do next: the crayfish brought up from
   // Surulere for Ngozi, the seller's first word in her bay, and what the hand saw of the repairer's or the keeper's life below. Otherwise the day's word.
@@ -764,7 +814,7 @@ Mods.register({
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
     const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
-    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f && PORT_WORDS[f.key] ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // one with no words yet (Ceres's, #1256) opens nothing  // nothing hit, nothing read (the title screen has no game)
+    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f && PORT_WORDS[f.key] ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // one with no words opens nothing  // nothing hit, nothing read (the title screen has no game)
     const tag = (boxes, x, y) => (boxes || []).find(b => b.offer && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;  // an offer's tag (#1192)
     document.addEventListener('click', e => { const t = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)); if (t) return portOfferTake(t.offer); const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
     document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)) || point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
