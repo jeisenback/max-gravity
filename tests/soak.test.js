@@ -25,6 +25,14 @@ test('the soak sails the captain\'s runs and reports them', async () => {
   assert.match(barReport([r]), /^bar, a chapter's mean over 1 seeds: \d+ choices at a table and \d+ scenes with a main character; the talks moved -?\d+ cr, \d+ points at the post, -?\d+ of opinion over everyone known, \d+ rumors heard; by topic: /);
 });
 
+test('the attentive player takes one of downtime\'s offers each slot of a burn, the hurried none (#1185, #1187)', async () => {
+  const titles = ['Downtime', 'At Breakfast', 'On Shift', 'At the Meal', 'At Supper'], down = r => titles.reduce((n, t) => n + (r.scenes[t] || 0), 0);
+  const [a, h] = [await soak({ seed: 1, legs: 4 }), await soak({ seed: 1, legs: 4, profile: 'hurried' })];
+  assert.deepEqual([a.errors, h.errors], [[], []]);
+  assert.ok(down(a) >= 2 * a.runs, `at least two slots a burn: ${down(a)} over ${a.runs} runs`);
+  assert.equal(down(h), 0);
+});
+
 test('with --jobs the soak works the station jobs and puts the jobs elsewhere to the captain, and reports what they paid', async () => {
   const r = await soak({ seed: 1, legs: 10, jobs: true }), w = r.work;
   assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
