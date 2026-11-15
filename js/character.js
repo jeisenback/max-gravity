@@ -58,9 +58,9 @@ function ladderCard() {
 function recordCard() {
   const c = hired();
   if (!c) return '';
-  const traits = handTraits(c).map(id => HAND_TRAITS.find(t => t.id === id)), words = recordWords(c.record || {});
-  if (!traits.length && !words) return conCard('Record', String(h`<div class="hint">${traitSay('empty')}</div>`));
-  return conCard('Record', traits.map(t => String(h`<div class="con-part record-trait"><b>${t.name}</b><span class="hint">${traitSay(`${t.id}.reason`)}</span></div>`)).join('') + (words ? String(h`<div class="hint record-words">${words}</div>`) : ''));
+  const traits = handTraits(c).map(id => HAND_TRAITS.find(t => t.id === id)), words = recordWords(c.record || {}), before = papersWord(c.origin, key => traitSay(key));  // before: the papers at the sign-on, first
+  if (!traits.length && !words && !before) return conCard('Record', String(h`<div class="hint">${traitSay('empty')}</div>`));
+  return conCard('Record', (before ? String(h`<div class="hint record-papers">${before}</div>`) : '') + traits.map(t => String(h`<div class="con-part record-trait"><b>${t.name}</b><span class="hint">${traitSay(`${t.id}.reason`)}</span></div>`)).join('') + (words ? String(h`<div class="hint record-words">${words}</div>`) : ''));
 }
 
 // The watch bill (shiplife.js, #1034): tonight and the next three nights of the burn, who has the bridge and who the engine room, the hand's

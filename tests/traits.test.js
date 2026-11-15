@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { HAND_TRAITS, RECORD_KEYS, recordAdd, handTraits, hasTrait, recordWords } = load(['js/traits.js'], {}, ['HAND_TRAITS', 'RECORD_KEYS', 'recordAdd', 'handTraits', 'hasTrait', 'recordWords']);
+const { HAND_TRAITS, RECORD_KEYS, recordAdd, handTraits, hasTrait, recordWords, papersWord } = load(['js/traits.js'], {}, ['HAND_TRAITS', 'RECORD_KEYS', 'recordAdd', 'handTraits', 'hasTrait', 'recordWords', 'papersWord']);
 const IDS = ['cool-head', 'salvager', 'marked', 'reliable', 'scarred', 'hard-case', 'runner', 'jonah'];
 const hand = record => ({ record });
 
@@ -258,4 +258,10 @@ test('a hurt that kills the hand says no moment, the search\'s fine is on the re
   assert.equal(r.arrived, 1, 'the arrival counts the rock');
   assert.deepEqual(r.death, { told: [], died: true }, 'a dead hand gets no moment');
   await done();
+});
+
+test('the papers in words (spec 2026-11-14): the two answers through the caller\'s words, nothing for none or no papers', () => {
+  assert.equal(papersWord({ before: 'dock', known: 'patrol' }, k => k), 'papers.before.dock papers.known.patrol');
+  assert.equal(papersWord({ before: 'none', known: 'shipper' }, k => k), 'papers.known.shipper');
+  assert.equal(papersWord({ before: 'none', known: 'none' }, k => k), ''); assert.equal(papersWord(undefined, k => k), '');
 });

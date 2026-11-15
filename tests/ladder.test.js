@@ -104,3 +104,22 @@ test('the Ladder for a taught pick whose teacher is gone, and for a hurt hand; t
   assert.match(r.note, /level 2 now/); assert.doesNotMatch(r.note, /A pick waits/, 'hurt: the Ladder has no pick for it, so the note says none');
   assert.match(r.noteWell, /A pick waits on your page/);
 });
+
+test('the Record card opens with what came before the ship, from the papers, and its golden', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    setup(); const out = {}, h = hired(), card = () => cardNamed('Record');
+    out.none = { line: !!card().querySelector('.record-papers'), empty: /Nothing on the record yet/.test(card().textContent) };
+    h.origin = { home: 'earth', before: 'dock', known: 'patrol' }; UI.render();
+    out.papers = { line: card().querySelector('.record-papers').textContent, empty: /Nothing on the record yet/.test(card().textContent), html: card().outerHTML };
+    delete h.origin; UI.render(); out.old = { line: !!card().querySelector('.record-papers'), empty: /Nothing on the record yet/.test(card().textContent) };
+    return out;
+  });
+  assert.deepEqual(r.none, { line: false, empty: true }); assert.deepEqual(r.old, { line: false, empty: true }, 'a save from before');
+  assert.equal(r.papers.line, 'Dock labour before the ship. A patrol has your name.'); assert.equal(r.papers.empty, false, 'the papers are something on the record');
+  const file = 'tests/fixtures/record-papers.html';
+  if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, r.papers.html + '\n');
+  assert.equal(r.papers.html + '\n', fs.readFileSync(file, 'utf8'), `record-papers: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await done();
+});

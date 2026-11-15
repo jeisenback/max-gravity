@@ -198,6 +198,7 @@ const SCENE_LINES = {
     'cause.good': 'The junior counts {tons}t of {good} against the manifest and reads the next line off the slate. "Import licence for that?" There isn\'t one on file. The duty is {duty} cr.',
     'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
+    known: '{official} reads the name off the slate before the junior has the manifest up. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14)
     'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
     'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)
@@ -566,6 +567,9 @@ const SCENE_LINES = {
     'runner.reason': 'Three fights not fought.',
     'jonah.reason': 'Two shipmates lost.',
     empty: 'Nothing on the record yet.',
+    // the papers at the sign-on (h.origin), the Record card's first line
+    'papers.before.dock': 'Dock labour before the ship.', 'papers.before.clerk': 'A shipper\'s office before the ship.', 'papers.before.ferry': 'A short-haul ferry before the ship.',
+    'papers.known.shipper': 'The freight office at home knows the ship.', 'papers.known.patrol': 'A patrol has your name.', 'papers.known.shipmate': 'A shipmate from before is aboard.',
     // the doors: a marked choice only the trait opens (engage.js, icerun.js, bartopics.js)
     'door.cool-head.label': 'Hail her and hold the guns',
     'door.cool-head.win': 'You give her the ship\'s name and the guns\' bearing on the open band, and nothing else. There is a long pause with her plume steady in it, and then the plume swings away.',

@@ -281,6 +281,8 @@ const playScenes = () => {
   for (const [home, before, known] of [['earth', 'dock', 'shipper'], ['mars', 'clerk', 'patrol'], ['belt', 'ferry', 'shipmate']]) {
     run(`papers:${home}:${before}:${known}`, {}, () => signOnEvent(), { prep() { const h = hired(); h.origin = { home, before, known }; h.standing = {}; h.record = {}; applyPapers(G.state, h); } });
   }
+  run('papers:record', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => ['dock', 'clerk', 'ferry'].map(k => traitSay(`papers.before.${k}`)).concat(['shipper', 'patrol', 'shipmate'].map(k => traitSay(`papers.known.${k}`))).join(' ') }] }));  // the Record card's first line (character.js)
+  run('papers:inspector', {}, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()), { prep() { const h = hired(); h.origin = { home: 'earth', before: 'none', known: 'patrol' }; h.record = { fines: 1 }; } });  // the inspector who had the name
   run('trait:inbox', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => `${traitSay('inbox.reliable')} ${traitSay('empty')}` }] }));
   // the doors a trait opens (engage.js, icerun.js, bartopics.js): each chosen, where it rolls on a win and a loss
   run('trait:door:cool-head', {}, () => { const ev = contactEvent({ kind: 'pirate' }); return { ...ev, choices: ev.choices.filter(c => /^\[Cool Head\]/.test(c.label)) }; }, { rolls: [0, 0.99], prep() { hired().record = { repelsHeld: 2 }; } });

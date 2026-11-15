@@ -11192,6 +11192,55 @@
   ]
  },
  {
+  "id": "papers:record",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Dock labour before the ship. A shipper's office before the ship. A short-haul ferry before the ship. The freight office at home knows the ship. A patrol has your name. A shipmate from before is aboard.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "papers:inspector",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn't changed. The ship pays 6,000 cr. Captain Vance signs for it and doesn't look at you.",
+    "mem": [
+     "9 Jul 2214: You argued with the inspector at Earth, and the ship paid the full sum anyway."
+    ],
+    "fx": {
+     "fund": -6000,
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You stay out of it. The ship pays 6,000 cr, the junior seals the hold, and the clamps come off.",
+    "fx": {
+     "fund": -6000
+    },
+    "next": null
+   }
+  ],
+  "title": "The Inspector",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Officer Ferreira reads the name off the slate before the junior has the manifest up. \"We had your name already,\" Officer Ferreira says, and does not say from where. Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "labels": [
+   "Speak up for the ship [50%; if it fails: the full sum, and the captain hears about it]",
+   "Keep out of it (the ship pays 6,000 cr)"
+  ]
+ },
+ {
   "id": "trait:inbox",
   "plays": [
    {
