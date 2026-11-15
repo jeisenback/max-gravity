@@ -41,9 +41,10 @@ const helpers = () => {
 };
 const run = async fn => { const t = await open(); await t.ev(helpers); const r = await t.ev(fn); await t.done(); return r; };
 
-test('each landing offers one day ashore: the Port page has the button, taking an entry shuts it until the next landing, Not now spends nothing, and it takes no game day', async () => {
+test('each landing offers one day ashore: at a port with no view the Port page has the button, taking an entry shuts it until the next landing, Not now spends nothing, and it takes no game day', async () => {
   const r = await run(() => {
     const st = landed(), out = {};
+    st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); Mods.emit('landed', currentPlanet()); G.dialog = null; G.nextEvent = null;  // the Ring has its entries as tags (portoffers.test.js)
     UI.tab = 'port'; UI.render(); const btn = () => document.querySelector('button[data-action="dayAshore"]');
     out.open = !!btn() && !btn().disabled; out.hint = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
     let ev = dayAshoreEvent(); out.title = ev.title; out.n = ev.choices.length; out.last = String(ev.choices[ev.choices.length - 1].label);

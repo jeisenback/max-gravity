@@ -23316,6 +23316,38 @@
   "labels": []
  },
  {
+  "id": "scene:day-down:tags",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": null
+   }
+  ],
+  "title": "A Day Down",
+  "text": "Down to the tiers (900 cr) Down to the mainland market (900 cr) Down to the departure hall (900 cr) Down to look for work (900 cr) Down to see Ada (900 cr) Tomas has a bag for his parents",
+  "labels": [
+   "Back up the spoke"
+  ]
+ },
+ {
+  "id": "scene:day-ashore:tags",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": null,
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The regulars' table A walk round Earth Ines has an errand Your room On at the bar: the match",
+  "labels": [
+   "Go on"
+  ]
+ },
+ {
   "id": "scene:day-down:parcel",
   "plays": [
    {
