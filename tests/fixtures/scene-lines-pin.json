@@ -11234,7 +11234,7 @@
    }
   ],
   "title": "The Inspector",
-  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Officer Ferreira reads the name off the slate before the junior has the manifest up. \"We had your name already,\" Officer Ferreira says, and does not say from where. Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. Officer Ferreira reads the name off the slate before the junior has the manifest up. \"We had your name already,\" Officer Ferreira says, and does not say from where. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
   "labels": [
    "Speak up for the ship [50%; if it fails: the full sum, and the captain hears about it]",
    "Keep out of it (the ship pays 6,000 cr)"

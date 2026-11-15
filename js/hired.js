@@ -185,10 +185,12 @@ function setupHired(o) {
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 
-// Who knows the hand's name (the second answer on the papers at the sign-on, h.origin), applied once at the sign-on: the home's freight office trusts the ship (contracts.js), a patrol has a fine
-// on the record already (traits.js), or one of the generated crew shipped with the hand before and starts warm. Nothing for 'none', and nothing when no generated crew is aboard.
+// Who knows the hand's name (the second answer on the papers at the sign-on, h.origin), applied once at each sign-on (a hand put ashore carries the papers, stakes.js): the home's freight office
+// trusts the ship (contracts.js), a patrol has a fine on the record already (traits.js), or one of the generated crew shipped with the hand before and starts warm. Nothing for 'none', and nothing
+// when no generated crew is aboard. What came of the papers on the last berth is cleared first: `told`, whether the inspector has said they had the name (inspection.js, #1258).
 function applyPapers(st, h) {
   const known = (h.origin || {}).known;
+  if (h.origin) delete h.origin.told;
   if (known === 'shipper') h.standing[SHIPPERS.gov[CULTURE_FACTION[h.origin.home]]] = STANDING_GOOD;
   else if (known === 'patrol') recordAdd(h, 'fines');
   else if (known === 'shipmate') { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) like(pick(mates), 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); }

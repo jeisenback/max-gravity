@@ -194,11 +194,11 @@ const SCENE_LINES = {
   },
   'scene:inspection': {  // a port's inspector on arrival (inspection.js, #993): the cause or causes, one sum, the hand's one move; `clean` is the note a clean ship gets
     title: 'The Inspector',
-    text: '{official} comes up the ramp at {planet} with a slate and a junior carrying the seal gun. {causes} "{sum} credits," {official} says. "Before the clamps come off."',
+    text: '{official} comes up the ramp at {planet} with a slate and a junior carrying the seal gun. {known}{causes} "{sum} credits," {official} says. "Before the clamps come off."',  // known: the inspector who had the name (below), before the manifest is up, or ''
     'cause.good': 'The junior counts {tons}t of {good} against the manifest and reads the next line off the slate. "Import licence for that?" There isn\'t one on file. The duty is {duty} cr.',
     'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
-    known: '{official} reads the name off the slate before the junior has the manifest up. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14)
+    known: '{official} reads the name off the slate before the junior has the manifest up. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14), said once per berth (h.origin.told)
     'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
     'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)

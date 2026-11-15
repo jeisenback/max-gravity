@@ -976,6 +976,7 @@ test('the papers are kept on the hand and applied once: the sheet with the trade
     putAshore(false); while (G.dialog) finishEvent(); h = hired();
     out.ashore = { papers: { ...h.origin }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
     h = start({ home: 'earth', before: 'none', known: 'patrol' }); out.patrol = { fines: h.record.fines, told: [...h.traitsTold], marked: hasTrait(h, 'marked'), standing: Object.keys(h.standing).length };
+    h.origin.told = true; applyPapers(G.state, h); out.patrol.cleared = !('told' in h.origin); out.patrol.again = h.record.fines;
     h = start({ home: 'belt', before: 'dock', known: 'shipmate' });
     const liked = generated().filter(c => c.opinion === 1);
     out.mate = { liked: liked.length, others: generated().filter(c => c.opinion !== 1 && c.opinion !== 0).length, memory: liked.length ? liked[0].memories.length : 0, aff: youTies().aff, sheet: { ...h.sheet } };
@@ -987,7 +988,7 @@ test('the papers are kept on the hand and applied once: the sheet with the trade
   });
   assert.deepEqual(r.mars, { papers: { home: 'mars', before: 'ferry', known: 'shipper' }, sheet: { hands: 2, eye: 4, nerve: 5, wit: 3 }, standing: 2, aff: 'Dome Pact', background: 'earth' });
   assert.deepEqual(r.ashore, r.mars, 'a hand put ashore keeps the papers: the home, the sheet with the trade, and the office that knows the name on the fresh record');
-  assert.deepEqual(r.patrol, { fines: 1, told: [], marked: false, standing: 0 });
+  assert.deepEqual(r.patrol, { fines: 1, told: [], marked: false, standing: 0, cleared: true, again: 2 }, 'a second applyPapers (a new berth) clears told and lands the fine again');
   assert.deepEqual([r.mate.liked, r.mate.others, r.mate.memory, r.mate.aff], [1, 0, 1, 'Guild Federation']); assert.deepEqual(r.mate.sheet, { hands: 5, eye: 4, nerve: 3, wit: 2 }, 'the Warren and dock labour');
   assert.deepEqual(r.none, { standing: 0, fines: 0, liked: 0 });
   assert.deepEqual(r.absent, { home: 'earth', before: 'none', known: 'none' });

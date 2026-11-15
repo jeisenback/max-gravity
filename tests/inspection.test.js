@@ -266,19 +266,24 @@ test('an empty purse pays nothing, and nothing is written on the record (#993)',
 });
 
 // The papers (spec 2026-11-14): a hand who said a patrol knows their name has one fine on the record, and the first inspector has the name from before.
-test('the first inspector knows a hand whose papers say a patrol has their name: the line shows once, the fine makes them Marked, and nobody else gets the line', async () => {
+test('the inspector knows a hand whose papers say a patrol has their name: the line before the manifest is up, once per berth whether or not the fine is paid or another came first (#1258)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const out = {}, known = () => !!G.dialog && /name from before|had your name|knows the name/i.test(G.dialog.event.text), stop = () => { inspectAtLanding(currentPlanet()); const k = known(); chooseEvent(G.dialog.choices.length - 1); G.dialog = null; G.nextEvent = null; return k; };
-    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); const h = hired(); h.origin = { home: 'earth', before: 'none', known: 'patrol' }; h.record = { fines: 1 };
-    out.first = stop(); out.after = { fines: finesOf(), marked: hasTrait(h, 'marked') };
-    G.state.cargo = { water: 50 }; out.second = stop();
-    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); out.plain = stop();
-    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); delete hired().origin; let threw = null; try { out.old = stop(); } catch (e) { threw = String(e); } out.threw = threw;
+    const out = {}, text = () => (G.dialog ? G.dialog.event.text : ''), known = t => /had your name/.test(t), stop = () => { inspectAtLanding(currentPlanet()); const t = text(); chooseEvent(G.dialog.choices.length - 1); G.dialog = null; G.nextEvent = null; return t; };
+    const at = (fund, record) => { handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund }); const h = hired(); h.origin = { home: 'earth', before: 'none', known: 'patrol' }; h.record = record; return h; };
+    let h = at(0, {}); let t = stop(); out.unpaid = { line: known(t), before: t.indexOf('had your name') < t.indexOf('counts'), told: h.origin.told, fines: finesOf() };
+    G.state.cargo = { water: 50 }; out.unpaidSecond = known(stop());
+    h = at(100000, { fines: 3 }); out.earlierFines = { first: known(stop()) }; G.state.cargo = { water: 50 }; out.earlierFines.second = known(stop());
+    h = at(100000, { fines: 1 }); stop(); out.after = { fines: finesOf(), marked: hasTrait(h, 'marked') };
+    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); out.plain = known(stop());
+    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); delete hired().origin; let threw = null; try { out.old = known(stop()); } catch (e) { threw = String(e); } out.threw = threw;
     return out;
   });
-  assert.equal(r.first, true, 'the officer has the name'); assert.deepEqual(r.after, { fines: 2, marked: true });
-  assert.equal(r.second, false, 'said once'); assert.equal(r.plain, false); assert.deepEqual([r.old, r.threw], [false, null]);
+  assert.deepEqual([r.unpaid.line, r.unpaid.before, r.unpaid.told, r.unpaid.fines], [true, true, true, 0], 'the line, before the manifest, and told; an empty fund pays no fine');
+  assert.equal(r.unpaidSecond, false, 'once, though no fine was paid');
+  assert.deepEqual([r.earlierFines.first, r.earlierFines.second], [true, false], 'a fine from elsewhere first does not hide it');
+  assert.deepEqual(r.after, { fines: 2, marked: true });
+  assert.deepEqual([r.plain, r.old, r.threw], [false, false, null]);
   await done();
 });
