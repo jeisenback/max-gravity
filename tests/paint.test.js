@@ -155,12 +155,12 @@ test('a scene is glass lit from the sun\'s side, and its markup is unchanged', a
 test('resizing the window does not grow the sprite cache: the vista and the title each keep one large Earth', async () => {
   const landed = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
   await landed.ev(() => { const st = G.state, at = [st.systemId, st.planet]; st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); UI.tab = 'bar'; UI.render(); [st.systemId, st.planet] = at; });  // the painted strip, as a port with no view has it (#1132)
-  for (const width of [900, 700, 600, 500]) { await landed.page.setViewportSize({ width, height: 800 }); await frames(landed.page); }
+  for (const width of [1440, 1200, 1100, 1000]) { await landed.page.setViewportSize({ width, height: 800 }); await frames(landed.page); }  // desktop widths: under 1000 the screen gives way to a notice, and the canvas has no size (#937)
   const vista = await landed.ev(() => { drawViewscreen(0); return Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)); });
   assert.deepEqual(vista, ['Earth@360~'], 'one vista sprite at the cap radius, drawn scaled');
   await landed.done();
   const title = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 }, title: true });
-  for (const width of [900, 800, 700, 600]) { await title.page.setViewportSize({ width, height: 800 }); await frames(title.page); }
+  for (const width of [1440, 1200, 1100, 1000]) { await title.page.setViewportSize({ width, height: 800 }); await frames(title.page); }
   const keys = await title.ev(() => Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)));
   assert.deepEqual(keys, ['Earth@720~'], 'one title sprite at the cap radius, drawn scaled');
   await title.done();
