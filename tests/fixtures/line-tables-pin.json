@@ -1,11 +1,11 @@
 [
  {
   "key": "drink:talkative:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A big contract on Ironheart has swallowed the whole local supply of Medical Supplies, and the bidding has gone wild.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A big contract on Ironheart has swallowed the whole local supply of Medical Supplies, and the bidding has gone wild.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:talkative:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A strike ended on Boneyard, and every dock in town is suddenly flooded with Food.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A strike ended on Boneyard, and every dock in town is suddenly flooded with Food.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:talkative:3",
@@ -41,7 +41,7 @@
  },
  {
   "key": "quiet:talkative:3",
-  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all. Sam talks over the answer and goes back to the story about the tug.|"
+  "text": "You sit with Sam and neither of you says anything. After a while Sam pushes the bowl along the bar toward you. Sam talks over the answer and goes back to the story about the tug.|"
  },
  {
   "key": "quiet:talkative:4",
@@ -49,11 +49,11 @@
  },
  {
   "key": "place:talkative:1",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:talkative:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:talkative:3",
@@ -61,23 +61,23 @@
  },
  {
   "key": "place:talkative:4",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you're in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:nervous:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Water at Ironheart has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A new tax on Water at Ironheart has, for reasons no one can explain, made it more valuable, not less.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:nervous:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A disease scare on The Hollows has everyone hoarding Water.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A disease scare on The Hollows has everyone hoarding Water.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:nervous:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A rumor that Machine Parts on Europa is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A rumor that Machine Parts on Europa is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:nervous:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A shipping delay has stranded a convoy of Water on the way to The Rook, and buyers are getting anxious.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A shipping delay has stranded a convoy of Water on the way to The Rook, and buyers are getting anxious.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:nervous:1",
@@ -113,35 +113,35 @@
  },
  {
   "key": "place:nervous:1",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:nervous:2",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:nervous:3",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:nervous:4",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:generous:1",
-  "text": "Sam won't hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam won't hear of it. They push the credits back and get the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:2",
-  "text": "Sam won't hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam won't hear of it. They push the credits back and get the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:3",
-  "text": "Sam won't hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam won't hear of it. They push the credits back and get the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:4",
-  "text": "Sam won't hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam won't hear of it. They push the credits back and get the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:generous:1",
@@ -169,7 +169,7 @@
  },
  {
   "key": "quiet:generous:3",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:generous:4",
@@ -177,11 +177,11 @@
  },
  {
   "key": "place:generous:1",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:generous:2",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:generous:3",
@@ -189,11 +189,11 @@
  },
  {
   "key": "place:generous:4",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:greedy:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Mars seized a shipment of Luxury Goods. Buyers there are desperate.\" Then they sit back and finish their drink. Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Customs on Mars seized a shipment of Luxury Goods. Buyers there are desperate.\" Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:2",
@@ -201,11 +201,11 @@
  },
  {
   "key": "drink:greedy:3",
-  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. The bar laughs at the end of it, twice. Nothing in it is a job, a price or a name. Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam shows you the deductions on their last pay slip: agency, berth, air, kit hire. \"Kit hire,\" they say. \"It's a pair of boots.\" Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Water on Ring Nine has the markets swamped.\" Then they sit back and finish their drink. Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A bumper output of Water on Ring Nine has the markets swamped.\" Sam counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:greedy:1",
@@ -229,11 +229,11 @@
  },
  {
   "key": "quiet:greedy:2",
-  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "You share the table. Sam reads something on their terminal, and you watch the room. Twenty minutes go by.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:greedy:3",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:greedy:4",
@@ -241,11 +241,11 @@
  },
  {
   "key": "place:greedy:1",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:greedy:2",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:greedy:3",
@@ -253,11 +253,11 @@
  },
  {
   "key": "place:greedy:4",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:pious:1",
-  "text": "Sam complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every figure is exact. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
+  "text": "\"Last ship paid us two weeks late,\" Sam says, \"and took berth off us for the two weeks.\" Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:2",
@@ -265,11 +265,11 @@
  },
  {
   "key": "drink:pious:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Luxury Goods at Ganymede has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A new tax on Luxury Goods at Ganymede has, for reasons no one can explain, made it more valuable, not less.\" Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ship carrying Food to Mars was hijacked two weeks ago, and the shelves are getting bare.\" Then they sit back and finish their drink. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A ship carrying Food to Mars was hijacked two weeks ago, and the shelves are getting bare.\" Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "cards:pious:1",
@@ -289,7 +289,7 @@
  },
  {
   "key": "quiet:pious:1",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:pious:2",
@@ -309,23 +309,23 @@
  },
  {
   "key": "place:pious:2",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:pious:3",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:pious:4",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:rude:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Warehouses on Triton Outpost are overflowing with Water. Sellers are dumping it cheap.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Warehouses on Triton Outpost are overflowing with Water. Sellers are dumping it cheap.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:rude:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ceremonial feast on Boneyard has drained every last ounce of Food, and the cooks are frantic.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A ceremonial feast on Boneyard has drained every last ounce of Food, and the cooks are frantic.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:rude:3",
@@ -365,19 +365,19 @@
  },
  {
   "key": "quiet:rude:4",
-  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "You sit with Sam and neither of you says anything. After a while Sam pushes the bowl along the bar toward you.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "place:rude:1",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:rude:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:rude:3",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:rude:4",
@@ -385,11 +385,11 @@
  },
  {
   "key": "drink:curious:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A big contract on Mars has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A big contract on Mars has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:curious:2",
-  "text": "Sam talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. They tell it from start to end, and there is no tip in it.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you about a captain they had who paid for the crew's relay slot on birthdays. \"Only one I've had who did.\"|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:curious:3",
@@ -397,7 +397,7 @@
  },
  {
   "key": "drink:curious:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A shipping delay has stranded a convoy of Luxury Goods on the way to Ironheart, and buyers are getting anxious.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A shipping delay has stranded a convoy of Luxury Goods on the way to Ironheart, and buyers are getting anxious.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:curious:1",
@@ -433,19 +433,19 @@
  },
  {
   "key": "place:curious:1",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:2",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:3",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:4",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:drunk:1",
@@ -453,11 +453,11 @@
  },
  {
   "key": "drink:drunk:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the grab rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Sam hugs you, a long hug, and holds the grab rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the grab rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Sam hugs you, a long hug, and holds the grab rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:4",
@@ -481,7 +481,7 @@
  },
  {
   "key": "quiet:drunk:1",
-  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word. Sam agrees at once, and orders another round for the whole watch.|"
+  "text": "You share the table. Sam reads something on their terminal, and you watch the room. Twenty minutes go by. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "quiet:drunk:2",
@@ -493,7 +493,7 @@
  },
  {
   "key": "quiet:drunk:4",
-  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word. Sam agrees at once, and orders another round for the whole watch.|"
+  "text": "You share the table. Sam reads something on their terminal, and you watch the room. Twenty minutes go by. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "place:drunk:1",
@@ -501,11 +501,11 @@
  },
  {
   "key": "place:drunk:2",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:drunk:3",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:drunk:4",
@@ -513,15 +513,15 @@
  },
  {
   "key": "drink:secretive:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Ganymede seized a shipment of Electronics. Buyers there are desperate.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Customs on Ganymede seized a shipment of Electronics. Buyers there are desperate.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:secretive:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Three haulers just unloaded Electronics on Eros Old Town. Prices there are collapsing.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Three haulers just unloaded Electronics on Eros Old Town. Prices there are collapsing.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:secretive:3",
-  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "\"Mars's all right,\" Sam says. \"My dad's still in the same flat. The agency had my first eleven months before I saw a credit, so that's where the first year went.\" They order another.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:secretive:4",
@@ -553,7 +553,7 @@
  },
  {
   "key": "quiet:secretive:3",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:secretive:4",
@@ -561,11 +561,11 @@
  },
  {
   "key": "place:secretive:1",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:secretive:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:secretive:3",
@@ -573,19 +573,19 @@
  },
  {
   "key": "place:secretive:4",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:kind:1",
-  "text": "Sam complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every figure is exact. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "\"Last ship paid us two weeks late,\" Sam says, \"and took berth off us for the two weeks.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on Titan have gone on strike. Medical Supplies is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Dockworkers on Titan have gone on strike. Medical Supplies is suddenly scarce there.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A trade fair on The Rook has brought in a great many merchants, and Food is going for a song.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A trade fair on The Rook has brought in a great many merchants, and Food is going for a song.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:4",
@@ -609,7 +609,7 @@
  },
  {
   "key": "quiet:kind:1",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:kind:2",
@@ -629,19 +629,19 @@
  },
  {
   "key": "place:kind:2",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:kind:3",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:kind:4",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:brave:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ceremonial feast on Titan has drained every last ounce of Machine Parts, and the cooks are frantic.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A ceremonial feast on Titan has drained every last ounce of Machine Parts, and the cooks are frantic.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:brave:2",
@@ -677,19 +677,19 @@
  },
  {
   "key": "quiet:brave:2",
-  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "You sit with Sam and neither of you says anything. After a while Sam pushes the bowl along the bar toward you.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:brave:3",
-  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "You sit with Sam and neither of you says anything. After a while Sam pushes the bowl along the bar toward you.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:brave:4",
-  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "You sit with Sam and neither of you says anything. After a while Sam pushes the bowl along the bar toward you.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "place:brave:1",
-  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\"|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The Gravity Well's been here longer than the owners,\" Sam says. \"They're the third lot. It's the same bartender.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:brave:2",
@@ -701,15 +701,15 @@
  },
  {
   "key": "place:brave:4",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They put the prices up when a big ship's in,\" Sam says. \"There's a board. Look, they've changed it since you sat down.\"|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:homesick:1",
-  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "\"Mars's all right,\" Sam says. \"My dad's still in the same flat. The agency had my first eleven months before I saw a credit, so that's where the first year went.\" They order another.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:homesick:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A fire in a warehouse on Boneyard took most of the local stock of Medical Supplies, and nobody's saying how it started.\" Then they sit back and finish their drink. |9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A fire in a warehouse on Boneyard took most of the local stock of Medical Supplies, and nobody's saying how it started.\" |9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:homesick:3",
@@ -717,7 +717,7 @@
  },
  {
   "key": "drink:homesick:4",
-  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "\"Mars's all right,\" Sam says. \"My dad's still in the same flat. The agency had my first eleven months before I saw a credit, so that's where the first year went.\" They order another.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:homesick:1",
@@ -737,7 +737,7 @@
  },
  {
   "key": "quiet:homesick:1",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "quiet:homesick:2",
@@ -749,7 +749,7 @@
  },
  {
   "key": "quiet:homesick:4",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and didn't make me talk."
+  "text": "Neither of you has anywhere to be. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and didn't make me talk."
  },
  {
   "key": "place:homesick:1",
@@ -757,11 +757,11 @@
  },
  {
   "key": "place:homesick:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"Don't have the fish,\" Sam says. \"The bartender says it's from a tank. Ask which tank.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:homesick:3",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table where the agency man sits on Fridays, when he does the sign-ons. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:homesick:4",
@@ -769,7 +769,7 @@
  },
  {
   "key": "home:talkative:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:talkative:1",
@@ -777,7 +777,7 @@
  },
  {
   "key": "home:talkative:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:talkative:2",
@@ -785,7 +785,7 @@
  },
  {
   "key": "home:nervous:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:nervous:1",
@@ -793,7 +793,7 @@
  },
  {
   "key": "home:nervous:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:nervous:2",
@@ -801,7 +801,7 @@
  },
  {
   "key": "home:generous:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:generous:1",
@@ -809,7 +809,7 @@
  },
  {
   "key": "home:generous:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:generous:2",
@@ -817,7 +817,7 @@
  },
  {
   "key": "home:greedy:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:greedy:1",
@@ -825,7 +825,7 @@
  },
  {
   "key": "home:greedy:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:greedy:2",
@@ -833,7 +833,7 @@
  },
  {
   "key": "home:pious:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:pious:1",
@@ -841,7 +841,7 @@
  },
  {
   "key": "home:pious:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:pious:2",
@@ -849,7 +849,7 @@
  },
  {
   "key": "home:rude:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:rude:1",
@@ -857,7 +857,7 @@
  },
  {
   "key": "home:rude:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:rude:2",
@@ -865,7 +865,7 @@
  },
  {
   "key": "home:curious:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:curious:1",
@@ -873,7 +873,7 @@
  },
  {
   "key": "home:curious:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:curious:2",
@@ -881,7 +881,7 @@
  },
  {
   "key": "home:drunk:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:drunk:1",
@@ -889,7 +889,7 @@
  },
  {
   "key": "home:drunk:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:drunk:2",
@@ -897,7 +897,7 @@
  },
  {
   "key": "home:secretive:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:secretive:1",
@@ -905,7 +905,7 @@
  },
  {
   "key": "home:secretive:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:secretive:2",
@@ -913,7 +913,7 @@
  },
  {
   "key": "home:kind:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:kind:1",
@@ -921,7 +921,7 @@
  },
  {
   "key": "home:kind:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:kind:2",
@@ -929,7 +929,7 @@
  },
  {
   "key": "home:brave:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:brave:1",
@@ -937,7 +937,7 @@
  },
  {
   "key": "home:brave:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:brave:2",
@@ -945,7 +945,7 @@
  },
  {
   "key": "home:homesick:1",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:homesick:1",
@@ -953,7 +953,7 @@
  },
  {
   "key": "home:homesick:2",
-  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\"|9 Jul 2214: The captain let me talk about Mars."
+  "text": "Sam plays you a message from Mars: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"|9 Jul 2214: The captain let me talk about Mars."
  },
  {
   "key": "bless:homesick:2",
@@ -961,115 +961,115 @@
  },
  {
   "key": "heard:home:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
+  "text": "Sam thinks about it. \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" \"And,\" Sam says, before you can answer, \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
  },
  {
   "key": "heard:home:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" \"And,\" Sam says, before you can answer, \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard:family:1",
-  "text": "Sam is going to see family, and has brought the wrong present, and knows it. \"What do you give a niece?\" they ask. Sam thinks about it, then says: \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
  },
  {
   "key": "heard:family:2",
-  "text": "Sam is going to see family, and has brought the wrong present, and knows it. \"What do you give a niece?\" they ask. Sam thinks about it, then says: \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" Sam adds, before you can answer: \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" \"And,\" Sam says, before you can answer, \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard:job:1",
-  "text": "Sam has an interview, and is rehearsing it under their breath, and stops when they see you looking. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
+  "text": "Sam thinks about it. \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" \"And,\" Sam says, before you can answer, \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
  },
  {
   "key": "heard:job:2",
-  "text": "Sam has an interview, and is rehearsing it under their breath, and stops when they see you looking. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" \"And,\" Sam says, before you can answer, \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard:fresh:1",
-  "text": "Sam says, flatly, that they are starting again, and that they would rather not say from what. Sam thinks about it, then says: \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
  },
  {
   "key": "heard:fresh:2",
-  "text": "Sam says, flatly, that they are starting again, and that they would rather not say from what. Sam thinks about it, then says: \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" Sam adds, before you can answer: \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" \"And,\" Sam says, before you can answer, \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard:research:1",
-  "text": "Sam has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
+  "text": "Sam thinks about it. \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" \"And,\" Sam says, before you can answer, \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
  },
  {
   "key": "heard:research:2",
-  "text": "Sam has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" \"And,\" Sam says, before you can answer, \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard:pilgrim:1",
-  "text": "Sam touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy. Sam thinks about it, then says: \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
  },
  {
   "key": "heard:pilgrim:2",
-  "text": "Sam touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy. Sam thinks about it, then says: \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" Sam adds, before you can answer: \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" \"And,\" Sam says, before you can answer, \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard:medical:1",
-  "text": "Sam presses a hand to their side and asks, quietly, whether your ship carries a medic. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
+  "text": "Sam thinks about it. \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" \"And,\" Sam says, before you can answer, \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\"|"
  },
  {
   "key": "heard:medical:2",
-  "text": "Sam presses a hand to their side and asks, quietly, whether your ship carries a medic. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" \"And,\" Sam says, before you can answer, \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard:vague:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A rumor that Food on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"A bumper output of Medical Supplies on Ganymede has the markets swamped.\"|"
  },
  {
   "key": "heard:vague:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" Sam adds, before you can answer: \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A big contract on Pallas Refinery has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\" \"And,\" Sam says, before you can answer, \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "work:dockhand:1",
-  "text": "\"Fourteen years,\" Sam says, \"and I can tell the weather on the other side of a hull by the way it hums.\" They say it as a joke. Then Sam tells you what they're hearing on the docks: \"Warehouses on Boneyard are overflowing with Food. Sellers are dumping it cheap.\"|"
+  "text": "Sam shows you a hand with two fingers that don't close all the way. \"Clamp,\" they say. \"Supervisor signed it off as checked.\" They don't say his name. \"Word on the dock,\" Sam says: \"Warehouses on Boneyard are overflowing with Food. Sellers are dumping it cheap.\"|"
  },
  {
   "key": "work:dockhand:2",
-  "text": "Sam shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give the supervisor's name. Then Sam tells you what they're hearing on the docks: \"A warehouse on Ring Nine has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\"|"
+  "text": "\"There's a union on the next dock over,\" Sam says. \"Not on ours. Ours pays a bit more, so there won't be.\" \"Word on the dock,\" Sam says: \"A warehouse on Ring Nine has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\"|"
  },
  {
   "key": "work:dockhand:3",
-  "text": "Sam shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give the supervisor's name. Then Sam tells you what they're hearing on the docks: \"A trade fair on The Rook has brought in a great many merchants, and Luxury Goods is going for a song.\"|"
+  "text": "\"There's a union on the next dock over,\" Sam says. \"Not on ours. Ours pays a bit more, so there won't be.\" \"Word on the dock,\" Sam says: \"A trade fair on The Rook has brought in a great many merchants, and Luxury Goods is going for a song.\"|"
  },
  {
   "key": "work:welder:1",
-  "text": "\"Nobody thanks you when it works,\" Sam says. \"They thank you when it breaks and then you fix it.\" They drink to that.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "Sam puts a pump seal on the bar. \"Rated for two years. That came out at eight months.\" They put it back in their pocket.|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:welder:2",
-  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "\"Half the job's the log,\" Sam says. \"If it isn't in the log you didn't do it. If it is, you did it wrong.\"|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:welder:3",
-  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "\"Half the job's the log,\" Sam says. \"If it isn't in the log you didn't do it. If it is, you did it wrong.\"|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:navy pilot:1",
-  "text": "\"They taught me to count exits,\" Sam says. \"I still do it. There are three.\" They glance at each one, in order, without moving their head. You come away knowing something new about the gunner. (Experience gained.)|"
+  "text": "\"Guard contract. Ninety days, renewable,\" Sam says. \"It's been renewed four times. Every time it's ninety days.\" You come away knowing something new about the gunner. (Experience gained.)|"
  },
  {
   "key": "work:navy pilot:2",
-  "text": "Sam will not tell you where they served. They will tell you what the food was like, and that is a long story. You come away knowing something new about the gunner. (Experience gained.)|"
+  "text": "\"They keep your record,\" Sam says. \"Every posting, every mark. I've got one mark, from my second year. It's still the first thing anyone reads.\" You come away knowing something new about the gunner. (Experience gained.)|"
  },
  {
   "key": "work:navy pilot:3",
-  "text": "Sam will not tell you where they served. They will tell you what the food was like, and that is a long story. You come away knowing something new about the gunner. (Experience gained.)|"
+  "text": "\"They keep your record,\" Sam says. \"Every posting, every mark. I've got one mark, from my second year. It's still the first thing anyone reads.\" You come away knowing something new about the gunner. (Experience gained.)|"
  },
  {
   "key": "work:clerk:1",
-  "text": "\"It is not what I thought I would do,\" Sam says. \"But I am better at it than I thought I would be.\"|9 Jul 2214: The captain asked about my work and listened."
+  "text": "\"I wasn't going to do this for long,\" Sam says. \"That was nine years ago.\"|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:clerk:2",
-  "text": "Sam tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone's surprise, accepting.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "Sam tells you about a shipment logged to the wrong bay, and who got the mark for it, which was them. \"It was the system's mistake,\" they say. \"The system doesn't have a record.\"|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:clerk:3",
-  "text": "Sam tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone's surprise, accepting.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "Sam tells you about a shipment logged to the wrong bay, and who got the mark for it, which was them. \"It was the system's mistake,\" they say. \"The system doesn't have a record.\"|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "leave:talkative:1",
@@ -1077,11 +1077,11 @@
  },
  {
   "key": "leave:talkative:2",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+  "text": "\"Safe burn,\" Sam says, to your back."
  },
  {
   "key": "leave:talkative:3",
-  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+  "text": "\"Wait, one more thing,\" Sam says, and then three more things about the lock timings, and you are at the door before the last of them."
  },
  {
   "key": "leave:nervous:1",
@@ -1089,31 +1089,31 @@
  },
  {
   "key": "leave:nervous:2",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
- },
- {
-  "key": "leave:nervous:3",
   "text": "Sam half rises when you stand, and sits again, and says goodbye to the table. They have counted the exits twice."
  },
  {
+  "key": "leave:nervous:3",
+  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+ },
+ {
   "key": "leave:generous:1",
-  "text": "Sam slips two ration bars into your coat pocket at the door and says the galley will not miss them."
+  "text": "You nod, and Sam nods."
  },
  {
   "key": "leave:generous:2",
-  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+  "text": "Sam slips two ration bars into your coat pocket at the door and says the galley will not miss them."
  },
  {
   "key": "leave:generous:3",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+  "text": "\"Safe burn,\" Sam says, to your back."
  },
  {
   "key": "leave:greedy:1",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+  "text": "\"Next time, bring a bigger hold,\" Sam says, \"and a bigger purse.\""
  },
  {
   "key": "leave:greedy:2",
-  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+  "text": "You finish what's in your glass. Sam has already turned back to the bar."
  },
  {
   "key": "leave:greedy:3",
@@ -1121,31 +1121,31 @@
  },
  {
   "key": "leave:pious:1",
-  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+  "text": "You nod, and Sam nods."
  },
  {
   "key": "leave:pious:2",
-  "text": "\"Fair winds and a soft landing,\" Sam says, and touches the lock frame."
+  "text": "You leave Sam to their drink."
  },
  {
   "key": "leave:pious:3",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+  "text": "\"Fair winds and a soft landing,\" Sam says, and touches the lock frame."
  },
  {
   "key": "leave:rude:1",
-  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+  "text": "You finish what's in your glass. Sam has already turned back to the bar."
  },
  {
   "key": "leave:rude:2",
-  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
  },
  {
   "key": "leave:rude:3",
-  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+  "text": "\"Safe burn,\" Sam says, to your back."
  },
  {
   "key": "leave:curious:1",
-  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+  "text": "\"Which lane next?\" Sam asks, at the door, and writes it on their hand."
  },
  {
   "key": "leave:curious:2",
@@ -1157,7 +1157,7 @@
  },
  {
   "key": "leave:drunk:1",
-  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+  "text": "Sam waves, to the left of where you are, and says something warm that is not quite \"safe burn.\""
  },
  {
   "key": "leave:drunk:2",
@@ -1165,11 +1165,11 @@
  },
  {
   "key": "leave:drunk:3",
-  "text": "\"Safe burn,\" Sam says, to your back. You do not turn round, but you lift a hand."
+  "text": "You leave Sam to their drink."
  },
  {
   "key": "leave:secretive:1",
-  "text": "\"I never saw you, and you were never at this dock,\" Sam says, without a smile."
+  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
  },
  {
   "key": "leave:secretive:2",
@@ -1181,7 +1181,7 @@
  },
  {
   "key": "leave:kind:1",
-  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+  "text": "\"Any time,\" Sam says, \"any lane.\" It is an offer."
  },
  {
   "key": "leave:kind:2",
@@ -1189,15 +1189,15 @@
  },
  {
   "key": "leave:kind:3",
-  "text": "\"Any time,\" Sam says, \"any lane.\" It is an offer."
+  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
  },
  {
   "key": "leave:brave:1",
-  "text": "\"Any time,\" Sam says, \"any lane.\" It is an offer."
+  "text": "\"Safe burn,\" Sam says, to your back."
  },
  {
   "key": "leave:brave:2",
-  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
  },
  {
   "key": "leave:brave:3",
@@ -1205,15 +1205,15 @@
  },
  {
   "key": "leave:homesick:1",
-  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+  "text": "Sam looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
  },
  {
   "key": "leave:homesick:2",
-  "text": "\"Look after yourself,\" Sam says, and walks you down the dock to your lock, and waits until the seal light goes green."
+  "text": "You finish what's in your glass. Sam has already turned back to the bar."
  },
  {
   "key": "leave:homesick:3",
-  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+  "text": "Sam looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
  },
  {
   "key": "chatter:talkative:1",
@@ -1361,195 +1361,195 @@
  },
  {
   "key": "opener:talkative:Vale",
-  "text": "Sam Vale: a talkative, kind software auditor from Mars, going home. They start talking before you have finished sitting. They do not stop for breath."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. \"You're off a ship? Which?\" They don't wait. \"I did six years on a bulk carrier. Don't, ever.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:talkative:Okafor",
-  "text": "Sam Okafor: a talkative, kind software auditor from Mars, going home. They start talking before you have finished sitting. They do not stop for breath."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. \"You're off a ship? Which?\" They don't wait. \"I did six years on a bulk carrier. Don't, ever.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:talkative:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, talkative and kind, and going home. They are already halfway through a story when you sit down."
+  "text": "Sam Lind, a software auditor from Mars. \"You're off a ship? Which?\" They don't wait. \"I did six years on a bulk carrier. Don't, ever.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:talkative:Marsh",
-  "text": "They start talking before you have finished sitting. They do not stop for breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. \"You're off a ship? Which?\" They don't wait. \"I did six years on a bulk carrier. Don't, ever.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:nervous:Vale",
-  "text": "Sam Vale: a nervous, kind software auditor from Mars, going home. They jump when you sit down, laugh, and apologize."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They move their bag off the stool for you, and then hold it on their lap. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:nervous:Okafor",
-  "text": "Sam Okafor: a nervous, kind software auditor from Mars, going home. They jump when you sit down, laugh, and apologize."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They move their bag off the stool for you, and then hold it on their lap. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:nervous:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, nervous and kind, and going home. They keep one eye on the door."
+  "text": "Sam Lind, a software auditor from Mars. They move their bag off the stool for you, and then hold it on their lap. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:nervous:Marsh",
-  "text": "They jump when you sit down, laugh, and apologize. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They move their bag off the stool for you, and then hold it on their lap. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:generous:Vale",
-  "text": "Sam Vale: a generous, kind software auditor from Mars, going home. They have already ordered you a drink, and say the barman got it wrong."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. \"I ordered two by mistake,\" they say, and slide one over. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:generous:Okafor",
-  "text": "Sam Okafor: a generous, kind software auditor from Mars, going home. They have already ordered you a drink, and say the barman got it wrong."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. \"I ordered two by mistake,\" they say, and slide one over. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:generous:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, generous and kind, and going home. They push a bowl of salted beans toward you."
+  "text": "Sam Lind, a software auditor from Mars. \"I ordered two by mistake,\" they say, and slide one over. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:generous:Marsh",
-  "text": "They have already ordered you a drink, and say the barman got it wrong. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. \"I ordered two by mistake,\" they say, and slide one over. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:greedy:Vale",
-  "text": "Sam Vale: a money-minded, kind software auditor from Mars, going home. They are doing sums on a napkin. When they see you looking, they keep going."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. \"What's the day rate on your ship?\" they ask, before your name. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:greedy:Okafor",
-  "text": "Sam Okafor: a money-minded, kind software auditor from Mars, going home. They are doing sums on a napkin. When they see you looking, they keep going."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. \"What's the day rate on your ship?\" they ask, before your name. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:greedy:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, money-minded and kind, and going home. They ask what a ship like yours clears in a month before they ask your name."
+  "text": "Sam Lind, a software auditor from Mars. \"What's the day rate on your ship?\" they ask, before your name. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:greedy:Marsh",
-  "text": "They are doing sums on a napkin. When they see you looking, they keep going. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. \"What's the day rate on your ship?\" they ask, before your name. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:pious:Vale",
-  "text": "Sam Vale: a devout, kind software auditor from Mars, going home. They murmur a short blessing over their cup before they drink. They see you watching and say sorry."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They say a few words over the glass before they drink. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:pious:Okafor",
-  "text": "Sam Okafor: a devout, kind software auditor from Mars, going home. They murmur a short blessing over their cup before they drink. They see you watching and say sorry."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They say a few words over the glass before they drink. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:pious:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, devout and kind, and going home. There is a prayer cord around their wrist, worn smooth."
+  "text": "Sam Lind, a software auditor from Mars. They say a few words over the glass before they drink. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:pious:Marsh",
-  "text": "They murmur a short blessing over their cup before they drink. They see you watching and say sorry. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They say a few words over the glass before they drink. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:rude:Vale",
-  "text": "Sam Vale: a abrasive, kind software auditor from Mars, going home. \"Do you mind? I was here first, and I was enjoying the silence.\""
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They look at you, and then at the empty stools further down. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:rude:Okafor",
-  "text": "Sam Okafor: a abrasive, kind software auditor from Mars, going home. \"Do you mind? I was here first, and I was enjoying the silence.\""
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They look at you, and then at the empty stools further down. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:rude:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, abrasive and kind, and going home. \"You're in my light.\""
+  "text": "Sam Lind, a software auditor from Mars. They look at you, and then at the empty stools further down. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:rude:Marsh",
-  "text": "\"Do you mind? I was here first, and I was enjoying the silence.\" It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They look at you, and then at the empty stools further down. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:curious:Vale",
-  "text": "Sam Vale: a curious, kind software auditor from Mars, going home. They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They want to know where you came in from, how long it took, and what the dock charged. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:curious:Okafor",
-  "text": "Sam Okafor: a curious, kind software auditor from Mars, going home. They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They want to know where you came in from, how long it took, and what the dock charged. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:curious:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, curious and kind, and going home. They want to know everything about your ship."
+  "text": "Sam Lind, a software auditor from Mars. They want to know where you came in from, how long it took, and what the dock charged. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:curious:Marsh",
-  "text": "They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They want to know where you came in from, how long it took, and what the dock charged. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:drunk:Vale",
-  "text": "Sam Vale: a hard-drinking, kind software auditor from Mars, going home. They greet you like a cousin and lose their train of thought in the same breath."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They call you by someone else's name, and then decide that's fine. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:drunk:Okafor",
-  "text": "Sam Okafor: a hard-drinking, kind software auditor from Mars, going home. They greet you like a cousin and lose their train of thought in the same breath."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They call you by someone else's name, and then decide that's fine. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:drunk:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, hard-drinking and kind, and going home. They are several drinks ahead of you."
+  "text": "Sam Lind, a software auditor from Mars. They call you by someone else's name, and then decide that's fine. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:drunk:Marsh",
-  "text": "They greet you like a cousin and lose their train of thought in the same breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They call you by someone else's name, and then decide that's fine. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:secretive:Vale",
-  "text": "Sam Vale: a guarded, kind software auditor from Mars, going home. They look at you one second longer than is comfortable, and smile."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They ask where you're in from, and when you ask back, they say \"Around.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:secretive:Okafor",
-  "text": "Sam Okafor: a guarded, kind software auditor from Mars, going home. They look at you one second longer than is comfortable, and smile."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They ask where you're in from, and when you ask back, they say \"Around.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:secretive:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, guarded and kind, and going home. They angle their terminal away from you."
+  "text": "Sam Lind, a software auditor from Mars. They ask where you're in from, and when you ask back, they say \"Around.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:secretive:Marsh",
-  "text": "They look at you one second longer than is comfortable, and smile. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They ask where you're in from, and when you ask back, they say \"Around.\" Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:kind:Vale",
-  "text": "Sam Vale: a kind, steady software auditor from Mars, going home. They push a glass of water toward you before they say anything."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They pour you a glass of water from their jug before they say anything. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:kind:Okafor",
-  "text": "Sam Okafor: a kind, steady software auditor from Mars, going home. They push a glass of water toward you before they say anything."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They pour you a glass of water from their jug before they say anything. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:kind:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, kind and steady, and going home. They ask if you have eaten."
+  "text": "Sam Lind, a software auditor from Mars. They pour you a glass of water from their jug before they say anything. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:kind:Marsh",
-  "text": "They push a glass of water toward you before they say anything. It is Sam Marsh, going home: a software auditor from Mars, and steady, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They pour you a glass of water from their jug before they say anything. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:brave:Vale",
-  "text": "Sam Vale: a steady, kind software auditor from Mars, going home. They sit with their back to the door."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They did an outside job on a hull this morning and are still in the undersuit. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:brave:Okafor",
-  "text": "Sam Okafor: a steady, kind software auditor from Mars, going home. They sit with their back to the door."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They did an outside job on a hull this morning and are still in the undersuit. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:brave:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, steady and kind, and going home. They have a fresh scar and a story about it."
+  "text": "Sam Lind, a software auditor from Mars. They did an outside job on a hull this morning and are still in the undersuit. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:brave:Marsh",
-  "text": "They sit with their back to the door. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They did an outside job on a hull this morning and are still in the undersuit. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:homesick:Vale",
-  "text": "Sam Vale: a homesick, kind software auditor from Mars, going home. They hold a creased photograph in both hands and set it down on the table as you sit."
+  "text": "Somebody has taken the stool next to yours: Sam Vale, a software auditor from Mars. They have a photo taped inside the lid of their lunch tin, and the lid is open. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:homesick:Okafor",
-  "text": "Sam Okafor: a homesick, kind software auditor from Mars, going home. They hold a creased photograph in both hands and set it down on the table as you sit."
+  "text": "Somebody has taken the stool next to yours: Sam Okafor, a software auditor from Mars. They have a photo taped inside the lid of their lunch tin, and the lid is open. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:homesick:Lind",
-  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, homesick and kind, and going home. They are showing the bartender pictures of home."
+  "text": "Sam Lind, a software auditor from Mars. They have a photo taped inside the lid of their lunch tin, and the lid is open. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "opener:homesick:Marsh",
-  "text": "They hold a creased photograph in both hands and set it down on the table as you sit. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+  "text": "Sam Marsh, a software auditor from Mars. They have a photo taped inside the lid of their lunch tin, and the lid is open. Sam has the route home written on the back of a ticket: three more ports, maybe four."
  },
  {
   "key": "secret:contraband:1",
@@ -2053,387 +2053,387 @@
  },
  {
   "key": "heard2:talkative:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction.\" Sam adds, before you can answer: \"A ship carrying Water to Eros Old Town was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction.\" \"And,\" Sam says, before you can answer, \"A ship carrying Water to Eros Old Town was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard3:talkative:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Medical Supplies on Boneyard. Prices there are collapsing.\" Sam adds, before you can answer: \"A disease scare on The Hollows has everyone hoarding Food.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Medical Supplies on Boneyard. Prices there are collapsing.\" \"And,\" Sam says, before you can answer, \"A disease scare on The Hollows has everyone hoarding Food.\"|"
  },
  {
   "key": "heard2:talkative:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody's saying how it started.\" Sam adds, before you can answer: \"Dockworkers on Earth have gone on strike. Water is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody's saying how it started.\" \"And,\" Sam says, before you can answer, \"Dockworkers on Earth have gone on strike. Water is suddenly scarce there.\"|"
  },
  {
   "key": "heard3:talkative:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A ceremonial feast on Titan has drained every last ounce of Luxury Goods, and the cooks are frantic.\" Sam adds, before you can answer: \"A new tax on Electronics at Eros Old Town has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A ceremonial feast on Titan has drained every last ounce of Luxury Goods, and the cooks are frantic.\" \"And,\" Sam says, before you can answer, \"A new tax on Electronics at Eros Old Town has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard2:talkative:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Juno Commons has everyone hoarding Medical Supplies.\" Sam adds, before you can answer: \"A big contract on Ironheart has swallowed the whole local supply of Food, and the bidding has gone wild.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Juno Commons has everyone hoarding Medical Supplies.\" \"And,\" Sam says, before you can answer, \"A big contract on Ironheart has swallowed the whole local supply of Food, and the bidding has gone wild.\"|"
  },
  {
   "key": "heard3:talkative:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on Ironheart took most of the local stock of Machine Parts, and nobody's saying how it started.\" Sam adds, before you can answer: \"A warehouse on Mars has been cleared out in a hurry, and the Refined Metals is going, quite literally, for whatever anyone will pay.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on Ironheart took most of the local stock of Machine Parts, and nobody's saying how it started.\" \"And,\" Sam says, before you can answer, \"A warehouse on Mars has been cleared out in a hurry, and the Refined Metals is going, quite literally, for whatever anyone will pay.\"|"
  },
  {
   "key": "heard2:talkative:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ceremonial feast on Ironheart has drained every last ounce of Refined Metals, and the cooks are frantic.\" Sam adds, before you can answer: \"A trade fair on Mars has brought in a great many merchants, and Electronics is going for a song.\"|"
+  "text": "Sam thinks about it. \"A ceremonial feast on Ironheart has drained every last ounce of Refined Metals, and the cooks are frantic.\" \"And,\" Sam says, before you can answer, \"A trade fair on Mars has brought in a great many merchants, and Electronics is going for a song.\"|"
  },
  {
   "key": "heard3:talkative:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on The Rook, and every dock in town is suddenly flooded with Electronics.\" Sam adds, before you can answer: \"Dockworkers on Europa have gone on strike. Water is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"A strike ended on The Rook, and every dock in town is suddenly flooded with Electronics.\" \"And,\" Sam says, before you can answer, \"Dockworkers on Europa have gone on strike. Water is suddenly scarce there.\"|"
  },
  {
   "key": "heard2:nervous:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Warehouses on Juno Commons are overflowing with Electronics. Sellers are dumping it cheap.\"|"
+  "text": "Sam thinks about it. \"Warehouses on Juno Commons are overflowing with Electronics. Sellers are dumping it cheap.\"|"
  },
  {
   "key": "heard3:nervous:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Electronics on Triton Outpost has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A bumper output of Electronics on Triton Outpost has the markets swamped.\"|"
  },
  {
   "key": "heard2:nervous:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard3:nervous:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate.\"|"
+  "text": "Sam thinks about it. \"Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate.\"|"
  },
  {
   "key": "heard2:nervous:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Water at Ring Nine has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A new tax on Water at Ring Nine has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:nervous:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Medical Supplies on Juno Commons. Prices there are collapsing.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Medical Supplies on Juno Commons. Prices there are collapsing.\"|"
  },
  {
   "key": "heard2:nervous:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A trade fair on Earth has brought in a great many merchants, and Food is going for a song.\"|"
+  "text": "Sam thinks about it. \"A trade fair on Earth has brought in a great many merchants, and Food is going for a song.\"|"
  },
  {
   "key": "heard3:nervous:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on Eros Old Town, and every dock in town is suddenly flooded with Refined Metals.\"|"
+  "text": "Sam thinks about it. \"A strike ended on Eros Old Town, and every dock in town is suddenly flooded with Refined Metals.\"|"
  },
  {
   "key": "heard2:generous:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A corporate buying spree on Titan has cleared the shelves of Electronics.\"|"
+  "text": "Sam thinks about it. \"A corporate buying spree on Titan has cleared the shelves of Electronics.\"|"
  },
  {
   "key": "heard3:generous:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Warehouses on Ironheart are overflowing with Food. Sellers are dumping it cheap.\"|"
+  "text": "Sam thinks about it. \"Warehouses on Ironheart are overflowing with Food. Sellers are dumping it cheap.\"|"
  },
  {
   "key": "heard2:generous:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction.\"|"
+  "text": "Sam thinks about it. \"A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction.\"|"
  },
  {
   "key": "heard3:generous:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Mars has everyone hoarding Water.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Mars has everyone hoarding Water.\"|"
  },
  {
   "key": "heard2:generous:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A big contract on Europa has swallowed the whole local supply of Water, and the bidding has gone wild.\"|"
+  "text": "Sam thinks about it. \"A big contract on Europa has swallowed the whole local supply of Water, and the bidding has gone wild.\"|"
  },
  {
   "key": "heard3:generous:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\"|"
+  "text": "Sam thinks about it. \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\"|"
  },
  {
   "key": "heard2:generous:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Machine Parts at Ironheart has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A new tax on Machine Parts at Ironheart has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:generous:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A rumor that Water on The Hollows is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\"|"
+  "text": "Sam thinks about it. \"A rumor that Water on The Hollows is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\"|"
  },
  {
   "key": "heard2:greedy:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A bumper output of Water on The Hollows has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A bumper output of Water on The Hollows has the markets swamped.\"|"
  },
  {
   "key": "heard3:greedy:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Enceladus seized a shipment of Water. Buyers there are desperate.\"|"
+  "text": "Sam thinks about it. \"Customs on Enceladus seized a shipment of Water. Buyers there are desperate.\"|"
  },
  {
   "key": "heard2:greedy:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Medical Supplies on the way to Ironheart, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A shipping delay has stranded a convoy of Medical Supplies on the way to Ironheart, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard3:greedy:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on The Hollows has everyone hoarding Water.\"|"
+  "text": "Sam thinks about it. \"A disease scare on The Hollows has everyone hoarding Water.\"|"
  },
  {
   "key": "heard2:greedy:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A strike ended on Titan, and every dock in town is suddenly flooded with Luxury Goods.\"|"
+  "text": "Sam thinks about it. \"A strike ended on Titan, and every dock in town is suddenly flooded with Luxury Goods.\"|"
  },
  {
   "key": "heard3:greedy:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song.\"|"
+  "text": "Sam thinks about it. \"A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song.\"|"
  },
  {
   "key": "heard2:greedy:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Eros Old Town has made Electronics the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Eros Old Town has made Electronics the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard3:greedy:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on The Hollows took most of the local stock of Water, and nobody's saying how it started.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on The Hollows took most of the local stock of Water, and nobody's saying how it started.\"|"
  },
  {
   "key": "heard2:pious:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Three haulers just unloaded Water on Europa. Prices there are collapsing.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Water on Europa. Prices there are collapsing.\"|"
  },
  {
   "key": "heard3:pious:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Dockworkers on The Rook have gone on strike. Luxury Goods is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"Dockworkers on The Rook have gone on strike. Luxury Goods is suddenly scarce there.\"|"
  },
  {
   "key": "heard2:pious:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Word is that the governor of Boneyard is stockpiling Food for a party, and will pay well over the odds.\"|"
+  "text": "Sam thinks about it. \"Word is that the governor of Boneyard is stockpiling Food for a party, and will pay well over the odds.\"|"
  },
  {
   "key": "heard3:pious:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Medical Supplies on the way to Juno Commons, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A shipping delay has stranded a convoy of Medical Supplies on the way to Juno Commons, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard2:pious:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Machine Parts at Europa has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A new tax on Machine Parts at Europa has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:pious:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Warehouses on Enceladus are overflowing with Food. Sellers are dumping it cheap.\"|"
+  "text": "Sam thinks about it. \"Warehouses on Enceladus are overflowing with Food. Sellers are dumping it cheap.\"|"
  },
  {
   "key": "heard2:pious:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Triton Outpost has everyone hoarding Water.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Triton Outpost has everyone hoarding Water.\"|"
  },
  {
   "key": "heard3:pious:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on The Hollows, and every dock in town is suddenly flooded with Food.\"|"
+  "text": "Sam thinks about it. \"A strike ended on The Hollows, and every dock in town is suddenly flooded with Food.\"|"
  },
  {
   "key": "heard2:rude:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Ceres Station has made Refined Metals the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Ceres Station has made Refined Metals the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard3:rude:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Ring Nine has cleared the shelves of Water.\"|"
+  "text": "Sam thinks about it. \"A corporate buying spree on Ring Nine has cleared the shelves of Water.\"|"
  },
  {
   "key": "heard2:rude:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A rumor that Luxury Goods on Ironheart is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\"|"
+  "text": "Sam thinks about it. \"A rumor that Luxury Goods on Ironheart is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\"|"
  },
  {
   "key": "heard3:rude:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A ship carrying Refined Metals to Eros Old Town was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A ship carrying Refined Metals to Eros Old Town was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard2:rude:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Customs on Ganymede seized a shipment of Medical Supplies. Buyers there are desperate.\"|"
+  "text": "Sam thinks about it. \"Customs on Ganymede seized a shipment of Medical Supplies. Buyers there are desperate.\"|"
  },
  {
   "key": "heard3:rude:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Luxury Goods on Hermes Foundry. Prices there are collapsing.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Luxury Goods on Hermes Foundry. Prices there are collapsing.\"|"
  },
  {
   "key": "heard2:rude:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A trade fair on Eros Old Town has brought in a great many merchants, and Luxury Goods is going for a song.\"|"
+  "text": "Sam thinks about it. \"A trade fair on Eros Old Town has brought in a great many merchants, and Luxury Goods is going for a song.\"|"
  },
  {
   "key": "heard3:rude:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on Ceres Station took most of the local stock of Food, and nobody's saying how it started.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on Ceres Station took most of the local stock of Food, and nobody's saying how it started.\"|"
  },
  {
   "key": "heard2:curious:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Eros Old Town has everyone hoarding Water.\" Sam adds, before you can answer: \"A big contract on Mars has swallowed the whole local supply of Water, and the bidding has gone wild.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Eros Old Town has everyone hoarding Water.\" \"And,\" Sam says, before you can answer, \"A big contract on Mars has swallowed the whole local supply of Water, and the bidding has gone wild.\"|"
  },
  {
   "key": "heard3:curious:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Mars has made Food the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Refined Metals on the way to Hermes Foundry, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Mars has made Food the only thing anyone wants to talk about.\" \"And,\" Sam says, before you can answer, \"A shipping delay has stranded a convoy of Refined Metals on the way to Hermes Foundry, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard2:curious:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A strike ended on Boneyard, and every dock in town is suddenly flooded with Medical Supplies.\" Sam adds, before you can answer: \"A ship carrying Food to Triton Outpost was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A strike ended on Boneyard, and every dock in town is suddenly flooded with Medical Supplies.\" \"And,\" Sam says, before you can answer, \"A ship carrying Food to Triton Outpost was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard3:curious:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Word is that the governor of Enceladus is stockpiling Refined Metals for a party, and will pay well over the odds.\" Sam adds, before you can answer: \"A cold snap on Triton Outpost has made Electronics the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"Word is that the governor of Enceladus is stockpiling Refined Metals for a party, and will pay well over the odds.\" \"And,\" Sam says, before you can answer, \"A cold snap on Triton Outpost has made Electronics the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard2:curious:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A warehouse on Ring Nine has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\" Sam adds, before you can answer: \"A corporate buying spree on Triton Outpost has cleared the shelves of Water.\"|"
+  "text": "Sam thinks about it. \"A warehouse on Ring Nine has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\" \"And,\" Sam says, before you can answer, \"A corporate buying spree on Triton Outpost has cleared the shelves of Water.\"|"
  },
  {
   "key": "heard3:curious:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A big contract on Mars has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" Sam adds, before you can answer: \"A bumper output of Electronics on Eros Old Town has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A big contract on Mars has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" \"And,\" Sam says, before you can answer, \"A bumper output of Electronics on Eros Old Town has the markets swamped.\"|"
  },
  {
   "key": "heard2:curious:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on The Rook took most of the local stock of Food, and nobody's saying how it started.\" Sam adds, before you can answer: \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on The Rook took most of the local stock of Food, and nobody's saying how it started.\" \"And,\" Sam says, before you can answer, \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:curious:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Warehouses on Ceres Station are overflowing with Electronics. Sellers are dumping it cheap.\" Sam adds, before you can answer: \"A corporate buying spree on Mars has cleared the shelves of Electronics.\"|"
+  "text": "Sam thinks about it. \"Warehouses on Ceres Station are overflowing with Electronics. Sellers are dumping it cheap.\" \"And,\" Sam says, before you can answer, \"A corporate buying spree on Mars has cleared the shelves of Electronics.\"|"
  },
  {
   "key": "heard2:drunk:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A rumor that Food on Boneyard is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"A trade fair on Pallas Refinery has brought in a great many merchants, and Electronics is going for a song.\"|"
+  "text": "Sam thinks about it. \"A rumor that Food on Boneyard is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"A trade fair on Pallas Refinery has brought in a great many merchants, and Electronics is going for a song.\"|"
  },
  {
   "key": "heard3:drunk:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Electronics on Hermes Foundry has the markets swamped.\" Sam adds, before you can answer: \"A strike ended on Earth, and every dock in town is suddenly flooded with Water.\"|"
+  "text": "Sam thinks about it. \"A bumper output of Electronics on Hermes Foundry has the markets swamped.\" \"And,\" Sam says, before you can answer, \"A strike ended on Earth, and every dock in town is suddenly flooded with Water.\"|"
  },
  {
   "key": "heard2:drunk:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Three haulers just unloaded Refined Metals on Earth. Prices there are collapsing.\" Sam adds, before you can answer: \"A company on Juno Commons has folded, and its whole stock of Food is being sold off at auction.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Refined Metals on Earth. Prices there are collapsing.\" \"And,\" Sam says, before you can answer, \"A company on Juno Commons has folded, and its whole stock of Food is being sold off at auction.\"|"
  },
  {
   "key": "heard3:drunk:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A rumor that Medical Supplies on Titan is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam adds, before you can answer: \"Dockworkers on Hermes Foundry have gone on strike. Electronics is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"A rumor that Medical Supplies on Titan is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Sam says, before you can answer, \"Dockworkers on Hermes Foundry have gone on strike. Electronics is suddenly scarce there.\"|"
  },
  {
   "key": "heard2:drunk:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ceremonial feast on Boneyard has drained every last ounce of Medical Supplies, and the cooks are frantic.\" Sam adds, before you can answer: \"Word is that the governor of Earth is stockpiling Luxury Goods for a party, and will pay well over the odds.\"|"
+  "text": "Sam thinks about it. \"A ceremonial feast on Boneyard has drained every last ounce of Medical Supplies, and the cooks are frantic.\" \"And,\" Sam says, before you can answer, \"Word is that the governor of Earth is stockpiling Luxury Goods for a party, and will pay well over the odds.\"|"
  },
  {
   "key": "heard3:drunk:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Ring Nine has cleared the shelves of Water.\" Sam adds, before you can answer: \"A warehouse on Mars has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay.\"|"
+  "text": "Sam thinks about it. \"A corporate buying spree on Ring Nine has cleared the shelves of Water.\" \"And,\" Sam says, before you can answer, \"A warehouse on Mars has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay.\"|"
  },
  {
   "key": "heard2:drunk:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\" Sam adds, before you can answer: \"A bumper output of Luxury Goods on Eros Old Town has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\" \"And,\" Sam says, before you can answer, \"A bumper output of Luxury Goods on Eros Old Town has the markets swamped.\"|"
  },
  {
   "key": "heard3:drunk:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Medical Supplies on the way to Ganymede, and buyers are getting anxious.\" Sam adds, before you can answer: \"A ship carrying Medical Supplies to Earth was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A shipping delay has stranded a convoy of Medical Supplies on the way to Ganymede, and buyers are getting anxious.\" \"And,\" Sam says, before you can answer, \"A ship carrying Medical Supplies to Earth was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard2:secretive:1",
-  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\"|"
+  "text": "\"Nothing worth repeating,\" Sam says. \"How long have you been on your ship?\"|"
  },
  {
   "key": "heard3:secretive:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Enceladus has made Food the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Enceladus has made Food the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard2:secretive:2",
-  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\"|"
+  "text": "\"Nothing worth repeating,\" Sam says. \"How long have you been on your ship?\"|"
  },
  {
   "key": "heard3:secretive:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Boneyard seized a shipment of Food. Buyers there are desperate.\"|"
+  "text": "Sam thinks about it. \"Customs on Boneyard seized a shipment of Food. Buyers there are desperate.\"|"
  },
  {
   "key": "heard2:secretive:3",
-  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\"|"
+  "text": "\"Nothing worth repeating,\" Sam says. \"How long have you been on your ship?\"|"
  },
  {
   "key": "heard3:secretive:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A company on Earth has folded, and its whole stock of Refined Metals is being sold off at auction.\"|"
+  "text": "Sam thinks about it. \"A company on Earth has folded, and its whole stock of Refined Metals is being sold off at auction.\"|"
  },
  {
   "key": "heard2:secretive:4",
-  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\"|"
+  "text": "\"Nothing worth repeating,\" Sam says. \"How long have you been on your ship?\"|"
  },
  {
   "key": "heard3:secretive:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Ceres Station has everyone hoarding Water.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Ceres Station has everyone hoarding Water.\"|"
  },
  {
   "key": "heard2:kind:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Refined Metals at Ironheart has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A new tax on Refined Metals at Ironheart has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:kind:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on Hermes Foundry took most of the local stock of Food, and nobody's saying how it started.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on Hermes Foundry took most of the local stock of Food, and nobody's saying how it started.\"|"
  },
  {
   "key": "heard2:kind:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Word is that the governor of Enceladus is stockpiling Refined Metals for a party, and will pay well over the odds.\"|"
+  "text": "Sam thinks about it. \"Word is that the governor of Enceladus is stockpiling Refined Metals for a party, and will pay well over the odds.\"|"
  },
  {
   "key": "heard3:kind:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Europa has made Water the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Europa has made Water the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard2:kind:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Dockworkers on Triton Outpost have gone on strike. Luxury Goods is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"Dockworkers on Triton Outpost have gone on strike. Luxury Goods is suddenly scarce there.\"|"
  },
  {
   "key": "heard3:kind:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Food on the way to Boneyard, and buyers are getting anxious.\"|"
+  "text": "Sam thinks about it. \"A shipping delay has stranded a convoy of Food on the way to Boneyard, and buyers are getting anxious.\"|"
  },
  {
   "key": "heard2:kind:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ship carrying Food to Triton Outpost was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A ship carrying Food to Triton Outpost was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard3:kind:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Water on Ring Nine. Prices there are collapsing.\"|"
+  "text": "Sam thinks about it. \"Three haulers just unloaded Water on Ring Nine. Prices there are collapsing.\"|"
  },
  {
   "key": "heard2:brave:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody's saying how it started.\"|"
+  "text": "Sam thinks about it. \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody's saying how it started.\"|"
  },
  {
   "key": "heard3:brave:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Titan seized a shipment of Luxury Goods. Buyers there are desperate.\"|"
+  "text": "Sam thinks about it. \"Customs on Titan seized a shipment of Luxury Goods. Buyers there are desperate.\"|"
  },
  {
   "key": "heard2:brave:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Dockworkers on Juno Commons have gone on strike. Medical Supplies is suddenly scarce there.\"|"
+  "text": "Sam thinks about it. \"Dockworkers on Juno Commons have gone on strike. Medical Supplies is suddenly scarce there.\"|"
  },
  {
   "key": "heard3:brave:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A ship carrying Machine Parts to Ironheart was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A ship carrying Machine Parts to Ironheart was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard2:brave:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ceremonial feast on Ironheart has drained every last ounce of Refined Metals, and the cooks are frantic.\"|"
+  "text": "Sam thinks about it. \"A ceremonial feast on Ironheart has drained every last ounce of Refined Metals, and the cooks are frantic.\"|"
  },
  {
   "key": "heard3:brave:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A trade fair on The Rook has brought in a great many merchants, and Electronics is going for a song.\"|"
+  "text": "Sam thinks about it. \"A trade fair on The Rook has brought in a great many merchants, and Electronics is going for a song.\"|"
  },
  {
   "key": "heard2:brave:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
+  "text": "Sam thinks about it. \"A new tax on Water at The Hollows has, for reasons no one can explain, made it more valuable, not less.\"|"
  },
  {
   "key": "heard3:brave:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on Earth, and every dock in town is suddenly flooded with Food.\"|"
+  "text": "Sam thinks about it. \"A strike ended on Earth, and every dock in town is suddenly flooded with Food.\"|"
  },
  {
   "key": "heard2:homesick:1",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\"|"
+  "text": "Sam thinks about it. \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\"|"
  },
  {
   "key": "heard3:homesick:1",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\"|"
+  "text": "Sam thinks about it. \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\"|"
  },
  {
   "key": "heard2:homesick:2",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ship carrying Water to Ring Nine was hijacked two weeks ago, and the shelves are getting bare.\"|"
+  "text": "Sam thinks about it. \"A ship carrying Water to Ring Nine was hijacked two weeks ago, and the shelves are getting bare.\"|"
  },
  {
   "key": "heard3:homesick:2",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Warehouses on Juno Commons are overflowing with Medical Supplies. Sellers are dumping it cheap.\"|"
+  "text": "Sam thinks about it. \"Warehouses on Juno Commons are overflowing with Medical Supplies. Sellers are dumping it cheap.\"|"
  },
  {
   "key": "heard2:homesick:3",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A bumper output of Food on Earth has the markets swamped.\"|"
+  "text": "Sam thinks about it. \"A bumper output of Food on Earth has the markets swamped.\"|"
  },
  {
   "key": "heard3:homesick:3",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A trade fair on Eros Old Town has brought in a great many merchants, and Refined Metals is going for a song.\"|"
+  "text": "Sam thinks about it. \"A trade fair on Eros Old Town has brought in a great many merchants, and Refined Metals is going for a song.\"|"
  },
  {
   "key": "heard2:homesick:4",
-  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A corporate buying spree on The Rook has cleared the shelves of Water.\"|"
+  "text": "Sam thinks about it. \"A corporate buying spree on The Rook has cleared the shelves of Water.\"|"
  },
  {
   "key": "heard3:homesick:4",
-  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A big contract on Mars has swallowed the whole local supply of Electronics, and the bidding has gone wild.\"|"
+  "text": "Sam thinks about it. \"A big contract on Mars has swallowed the whole local supply of Electronics, and the bidding has gone wild.\"|"
  },
  {
   "key": "passage:1",
@@ -2465,7 +2465,7 @@
  },
  {
   "key": "drink2:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A company on Earth has folded, and its whole stock of Machine Parts is being sold off at auction.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A company on Earth has folded, and its whole stock of Machine Parts is being sold off at auction.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:1",
@@ -2477,7 +2477,7 @@
  },
  {
   "key": "drink2:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Electronics at The Rook has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A new tax on Electronics at The Rook has, for reasons no one can explain, made it more valuable, not less.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:2",
@@ -2489,7 +2489,7 @@
  },
  {
   "key": "drink2:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:3",
@@ -2501,7 +2501,7 @@
  },
  {
   "key": "drink2:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on The Rook have gone on strike. Food is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Dockworkers on The Rook have gone on strike. Food is suddenly scarce there.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:4",
@@ -2513,7 +2513,7 @@
  },
  {
   "key": "drink2:5",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Warehouses on Ironheart are overflowing with Water. Sellers are dumping it cheap.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"Warehouses on Ironheart are overflowing with Water. Sellers are dumping it cheap.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:5",
@@ -2525,7 +2525,7 @@
  },
  {
   "key": "drink2:6",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A rumor that Refined Metals on Enceladus is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A rumor that Refined Metals on Enceladus is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:6",
@@ -2549,7 +2549,7 @@
  },
  {
   "key": "drink2:8",
-  "text": "Sam asks about you, and listens. They offer no tip and no advice, and the drink is gone before the hour is. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks which agency you came through, and makes a face. \"They held my pay for three ports once. Said the ship hadn't paid them yet.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:8",
@@ -2573,7 +2573,7 @@
  },
  {
   "key": "drink2:10",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A corporate buying spree on Enceladus has cleared the shelves of Food.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A corporate buying spree on Enceladus has cleared the shelves of Food.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:10",
@@ -2597,7 +2597,7 @@
  },
  {
   "key": "drink2:12",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Food on Boneyard has the markets swamped.\" Then they sit back and finish their drink. Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam leans in. \"Here's one for you,\" they say: \"A bumper output of Food on Boneyard has the markets swamped.\" Sam takes your hand for a moment and doesn't say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:12",

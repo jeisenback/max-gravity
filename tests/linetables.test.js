@@ -101,7 +101,7 @@ test('an override is escaped in a bar line and left plain in the chatter, and a 
   assert.equal(r.warned.length, 1, 'one warning for the file');
   for (const w of ['parts.0 has {nothing}', 'parts has no "9"', 'parts.2 is not text', 'has no "title"', 'has no choice 0', 'unknown scene "lines:nope"']) assert.ok(r.warned[0].includes(w), `${w} in: ${r.warned[0]}`);
   assert.equal(r.bar, 'A &lt;b&gt;wave&lt;/b&gt; &amp; {n} goes.', 'a bar line is text');
-  assert.equal(r.bar2, 'You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'the other lines are as shipped');
+  assert.equal(r.bar2, 'You leave {n} to their drink.', 'the other lines are as shipped');
   assert.equal(r.chatter, '<b>{first}</b> & talks.', 'the chatter is drawn as plain text');
 });
 
