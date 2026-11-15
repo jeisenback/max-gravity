@@ -964,3 +964,30 @@ test('a perk counts only at the post of its pick: a pilot\'s trim stops at the g
   assert.deepEqual(r, { pilot: true, gunner: false, back: true, none: false });
   await done();
 });
+
+// The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): kept on the hand, applied once at the sign-on.
+test('the papers are kept on the hand and applied once: the sheet with the trade, the home\'s office at standing 2, a fine on the record, a shipmate\'s opinion, and the affiliation', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const start = papers => { startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', papers }); while (G.dialog) finishEvent(); return hired(); };
+    const out = {}, generated = () => G.state.crew.map(person).filter(c => c && !c.cast);
+    let h = start({ home: 'mars', before: 'ferry', known: 'shipper' });
+    out.mars = { papers: { ...h.papers }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
+    h = start({ home: 'earth', before: 'none', known: 'patrol' }); out.patrol = { fines: h.record.fines, told: [...h.traitsTold], marked: hasTrait(h, 'marked'), standing: Object.keys(h.standing).length };
+    h = start({ home: 'belt', before: 'dock', known: 'shipmate' });
+    const liked = generated().filter(c => c.opinion === 1);
+    out.mate = { liked: liked.length, others: generated().filter(c => c.opinion !== 1 && c.opinion !== 0).length, memory: liked.length ? liked[0].memories.length : 0, aff: youTies().aff, sheet: { ...h.sheet } };
+    h = start({ home: 'earth', before: 'none', known: 'none' }); out.none = { standing: Object.keys(h.standing).length, fines: h.record.fines || 0, liked: generated().filter(c => c.opinion !== 0).length };
+    h = start(undefined); out.absent = { ...h.papers };
+    const st = G.state; h.papers = { home: 'earth', before: 'none', known: 'shipmate' }; st.crew = st.crew.filter(id => person(id).cast);
+    let threw = null; try { applyPapers(st, h); } catch (e) { threw = String(e); } out.noCrew = { threw, liked: st.crew.map(person).filter(c => c.opinion === 1).length };
+    return out;
+  });
+  assert.deepEqual(r.mars, { papers: { home: 'mars', before: 'ferry', known: 'shipper' }, sheet: { hands: 2, eye: 4, nerve: 5, wit: 3 }, standing: 2, aff: 'Dome Pact', background: 'earth' });
+  assert.deepEqual(r.patrol, { fines: 1, told: [], marked: false, standing: 0 });
+  assert.deepEqual([r.mate.liked, r.mate.others, r.mate.memory, r.mate.aff], [1, 0, 1, 'Guild Federation']); assert.deepEqual(r.mate.sheet, { hands: 5, eye: 4, nerve: 3, wit: 2 }, 'the Warren and dock labour');
+  assert.deepEqual(r.none, { standing: 0, fines: 0, liked: 0 });
+  assert.deepEqual(r.absent, { home: 'earth', before: 'none', known: 'none' });
+  assert.deepEqual(r.noCrew, { threw: null, liked: 0 }, 'no generated crew: the shipmate answer applies to nobody');
+  await done();
+});
