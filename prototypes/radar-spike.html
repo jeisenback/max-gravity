@@ -86,7 +86,7 @@ kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px;
       <span><b style="color:#ff6a4a">dashed ring</b> where she can be at turn end</span>
       <span><b style="color:#ffd27f">ring</b> where your slug can land</span>
       <span><b style="color:#4aa3ff">wedge</b> PDC arc</span>
-      <span><b style="color:#7fb4ff">CPA</b> closest approach</span><span>tracks run 4 turns, a dot and an error band each turn</span><span>1 turn = 20 s, rings 10 km</span>
+      <span><b style="color:#7fb4ff">CPA</b> closest approach</span><span>tracks run 4 turns, a dot and an error band each turn</span><span>1 turn = 20 s; rings at fifths of the radar's reach</span>
     </div>
   </section>
   <aside class="side" id="side"></aside>
@@ -98,6 +98,8 @@ kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px;
 const TAU = Math.PI * 2, DEG = Math.PI / 180;
 const K = { REACH: 50, TURN_S: 20, SUB: 24, ME_ACC: 3, FOE_ACC: 3.2, BEAR: 30 * DEG, PDC_R: 9, TORP_ACC: 6.5, TORP_MAX: 15, TORP_HIT: 1.0, TORP_DMG: 22, TORP_LIFE: 4,
   GUN_DMG: [0, 12, 18, 24, 28], GUN_HEAT: [0, 1, 2, 3, 4], DRIVE: [0.45, 0.75, 1, 1.2, 1.35], PDC_RATE: [0, 0.55, 1, 1.4, 1.7], CREW_LVL: 2, TURN: 90 * DEG, GATE: 30 * DEG, HEAT_CAP: 5, FOE_GUN: 8, TURNS: 16, ESCAPE: 60, DETECT: 12, KEEP: 20, FOE_KEEP: 15, VENT_EVERY: 5, HIT: 0.7 };
+// The opening: long (she is met at 250 km, torpedoes are fast and long-legged) or short (the 40 km fight, as before).
+const OPENING = { long: { TORP_ACC: 10, TORP_MAX: 40, TORP_LIFE: 10, TURNS: 50, ESCAPE: 400, FOE_CLOSE: 12 }, short: { TORP_ACC: 6.5, TORP_MAX: 15, TORP_LIFE: 4, TURNS: 16, ESCAPE: 60, FOE_CLOSE: 4 } };
 const falloff = r => r > 30 ? 0.5 : r > 20 ? 0.75 : 1;   // a slug's damage at long range
 const POSTS = ['gunner', 'pilot', 'engineer', 'comms'];
 const NAME = { gunner: 'Gunner', pilot: 'Pilot', engineer: 'Engineer', comms: 'Comms', all: 'All posts', ship: 'Ship', captain: 'Captain' };
@@ -116,14 +118,15 @@ function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Ma
 function move(b, a, dt) { b.p = V(b.p.x + b.v.x * dt + 0.5 * a.x * dt * dt, b.p.y + b.v.y * dt + 0.5 * a.y * dt * dt); b.v = V(b.v.x + a.x * dt, b.v.y + a.y * dt); }
 function segDist(a, b) { const d = sub(b, a), l2 = d.x * d.x + d.y * d.y; const t = l2 ? clamp(-(a.x * d.x + a.y * d.y) / l2, 0, 1) : 0; return len(add(a, mul(d, t))); }
 
-const UI = { time: 'turns', speed: 2, setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
+const UI = { opening: 'long', zoom: 'auto', time: 'real', speed: 16, setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
 let S;
 
 function newGame(seed) {
+  Object.assign(K, OPENING[UI.opening]);
   const r = mulberry(seed);
   const s = { seed, r, r2: mulberry(seed * 31 + 5), turn: 0, phase: 'plan', comms: 'watch', nextId: 1,
     me: { p: V(0, 0), v: V(0, -1), hull: 100, heat: 0, locked: false, nose: -Math.PI / 2, lastVent: -99 },
-    foe: { p: V(24, -30), v: V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
+    foe: { p: UI.opening === 'long' ? V(160.7, -191.5) : V(24, -30), v: UI.opening === 'long' ? V(-6.4, 7.7) : V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
     torps: [], tracers: [], fx: [], slug: null, paused: false, pauseWhy: '', nearSaid: new Set(), lastIntent: 'hold', hull0: 100, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
     ui: { face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
       b: { pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
@@ -162,7 +165,8 @@ function seenFoe(s, comms) { const g = sigmaOf(comms); return { ...s.foe, p: add
 // ---------- her ----------
 function foeAcc(s, rnd) {
   const me = s.me, f = s.foe, rel = sub(me.p, f.p), r = len(rel), los = norm(rel);
-  let a = sub(add(me.v, mul(los, clamp((r - K.FOE_KEEP) * 0.3, -4, 4))), f.v);
+  let a = sub(add(me.v, mul(los, clamp((r - K.FOE_KEEP) * 0.3, -4, K.FOE_CLOSE))), f.v);
+  if (r > 60) return len(a) > K.FOE_ACC ? mul(norm(a), K.FOE_ACC) : a;   // far out she comes straight in: jinking is for when a gun can reach her
   if (len(a) > K.FOE_ACC * 0.6) a = mul(norm(a), K.FOE_ACC * 0.6);
   const side = rnd() < 0.75 ? f.bias : -f.bias;                    // she has a habit: three times in four she jinks to the same side
   a = add(a, mul(V(-los.y, los.x), side * K.FOE_ACC * (0.55 + 0.45 * rnd())));
@@ -173,7 +177,7 @@ function foeAcc(s, rnd) {
 function aiPilot(s) { const a = asked(s, 'pilot'); return a && allows(s, a) ? a : orderOf(s).intent; }
 function aiGunner(s, bears) {
   const af = asked(s, 'gunner.fire'), ap = asked(s, 'gunner.pdc');
-  const fire = af !== undefined ? af : bears && !(s.me.heat >= K.HEAT_CAP - 1 && s.foe.hull > 20);
+  const fire = af !== undefined ? af : bears && range(s) < 60 && !(s.me.heat >= K.HEAT_CAP - 1 && s.foe.hull > 20);
   return { fire, pdc: ap || (known(s).length ? 'threat' : 'forward') };
 }
 const aiEngineer = s => asked(s, 'engineer') || ORDER[orderOf(s).intent].power;
@@ -241,7 +245,7 @@ function pilotGeo(s, intent, acc) {
   if (intent === 'coast') return { dir: me.nose, thr: 0, face: 'hold' };
   if (intent === 'evade') { const t = nearestOf(s, known(s).length ? known(s) : inbound(s)); const from = t ? norm(sub(t.p, me.p)) : los; return { dir: ang(V(-from.y, from.x)), thr: 1, face: 'burn' }; }
   const keep = intent === 'engage' ? 12 : K.KEEP;
-  const want = clamp(intent === 'close' ? 4 : intent === 'open' ? -4 : intent === 'break' ? -8 : (r - keep) * 0.3, -8, 4);
+  const want = clamp(intent === 'close' ? 4 : intent === 'open' ? -4 : intent === 'break' ? -8 : (r - keep) * 0.3, -8, K.FOE_CLOSE);   // far out, close as fast as she does
   const a = sub(add(foe.v, mul(los, want)), me.v), al = len(a);
   let thr = Math.min(1, al / acc), dir = al > 0.01 ? ang(a) : me.nose;
   if (intent === 'nose') { dir = ang(los); thr = Math.min(thr, 0.25); }
@@ -292,7 +296,7 @@ function project(s, o, turns = 4, n = 12, bend = true) {
     move(me, k <= n ? burnAt(s.me.nose, o.want, o.thrust, o.acc, k / n).a : V(0, 0), dt); move(foe, fa, dt);
     for (const t of torps) {
       if (t.hit) continue; const before = sub(t.p, prev); let a = V(0, 0);
-      if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, 0.3)), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
+      if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, Math.min(3, len(sub(me.p, t.p)) / Math.max(8, len(t.v))))), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
       move(t, a, dt); t.age += dt; t.path.push({ ...t.p });
       const dd = segDist(before, sub(t.p, me.p)); t.min = Math.min(t.min === undefined ? 1e9 : t.min, dd);
       if (dd < K.TORP_HIT) t.hit = { p: { ...me.p }, t: k / n };
@@ -425,7 +429,7 @@ function commit() {
   const f = s.foe;
   if (f.armed && f.torps > 0) {
     const los = norm(sub(s.me.p, f.p)), perp = V(-los.y, los.x);
-    for (const side of [-1, 1]) s.torps.push({ id: s.nextId++, p: { ...f.p }, v: add(add(f.v, mul(los, 3)), mul(perp, 6 * side)), age: 0, trail: [] });
+    for (const side of [-1, 1]) s.torps.push({ id: s.nextId++, p: { ...f.p }, v: add(add(f.v, mul(los, UI.opening === 'long' ? 6 : 3)), mul(perp, (UI.opening === 'long' ? 10 : 6) * side)), age: 0, trail: [] });
     f.torps -= 2; f.armed = false; s.turnLines.push('She launches two torpedoes.');
     if (UI.time === 'real') { s.paused = true; s.pauseWhy = 'She launches two torpedoes.'; }
   }
@@ -475,11 +479,11 @@ function substep(s) {
   const cap = K.TORP_ACC * (o.comms === 'spoof' ? 0.45 : 1);
   for (const t of s.torps) {
     const before = sub(t.p, mePrev); let a = V(0, 0);
-    if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, 0.3)), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
+    if (t.age < K.TORP_LIFE) { a = sub(mul(norm(sub(add(me.p, mul(me.v, Math.min(3, len(sub(me.p, t.p)) / Math.max(8, len(t.v))))), t.p)), K.TORP_MAX), t.v); if (len(a) > cap) a = mul(norm(a), cap); }
     move(t, a, dt); t.age += dt; t.trail.push({ ...t.p }); if (t.trail.length > 16) t.trail.shift();
     const after = sub(t.p, me.p);
     if (segDist(before, after) < K.TORP_HIT) { t.dead = true; me.hull = Math.max(0, me.hull - K.TORP_DMG); s.fx.push({ p: { ...me.p }, t0: now, kind: 'hit' }); s.turnLines.push(`Torpedo hit. ${K.TORP_DMG} off our hull.`); continue; }
-    if (o.power.pdc > 0 && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 0.05 * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW)) {
+    if (o.power.pdc > 0 && len(after) < K.PDC_R && adiff(ang(after), o.pdcDir) <= o.pdcW * DEG / 2 && s.r2() < 1 - Math.exp(-0.14 * len(sub(t.v, me.v)) / K.SUB * K.PDC_RATE[o.power.pdc] * (60 / o.pdcW))) {
       t.dead = true; s.fx.push({ p: { ...t.p }, t0: now, kind: 'pop' }); s.turnLines.push('The PDC kills a torpedo.');
     }
   }
@@ -499,36 +503,37 @@ function resolveEnd(s) {
   if (r < 35 && f.hull > 0 && s.r() < clamp(0.55 - 0.01 * r - 0.2 * o.thrust.thr - (o.comms === 'spoof' ? 0.25 : 0), 0.05, 0.9)) { me.hull = Math.max(0, me.hull - K.FOE_GUN); s.turnLines.push(`Her gun hits us. ${K.FOE_GUN} off our hull.`); }
   me.heat = Math.max(0, me.heat - (me.locked ? 2 : 1)); me.locked = me.heat >= K.HEAT_CAP;
   if (me.locked) s.turnLines.push('Gun heat over the cap: locked next turn.');
-  if (f.torps > 0 && s.turn % 3 === 0) f.armed = true;
+  if (f.torps > 0 && !f.armed && (UI.opening === 'long' ? range(s) < 170 && s.turn - (f.lastArm === undefined ? -99 : f.lastArm) >= 4 : s.turn % 3 === 0)) { f.armed = true; f.lastArm = s.turn; }
   s.turnLines.forEach(l => logCall(s, 'ship', null, l, 'event'));
   s.turn++; s.slug = null; s.used = {}; s.phase = 'plan'; s.exec = null;
   s.ui.aim = null; s.ui.vent = false; s.ov = {}; s.errU = { p: unitDisk(s.r2), v: unitDisk(s.r2) };
   const r2 = range(s);
   if (f.hull <= 0) s.over = { win: true, text: 'Her hull is gone. She is dead in space.' };
   else if (me.hull <= 0) s.over = { win: false, text: 'Our hull is gone.' };
-  else if (r2 > K.ESCAPE) s.over = { win: false, text: 'Out past 60 km. Contact broken.' };
-  else if (s.turn >= K.TURNS) s.over = { win: f.hull / f.max < me.hull / 100, text: f.hull / f.max < me.hull / 100 ? 'She breaks off, the worse hurt.' : 'The captain breaks off. We were the worse hurt.' };
+  else if (r2 > K.ESCAPE) s.over = { win: false, text: `Out past ${K.ESCAPE} km. Contact broken.` };
+  else if (s.turn >= K.TURNS) { const hers = f.hull / f.max, ours = me.hull / 100; s.over = { win: hers < ours, text: hers < ours ? 'She breaks off, the worse hurt.' : hers > ours ? 'The captain breaks off. We were the worse hurt.' : 'Both ships break off, neither the worse.' }; }
   if (s.over) logCall(s, 'ship', null, s.over.text, 'event'); else aiCalls(s);
 }
 
 // ---------- the radar ----------
 const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
 let geo = { cx: 0, cy: 0, sc: 1, W: 0 };
+function reachOf(s) { if (UI.zoom !== 'auto') return +UI.zoom; const far = Math.max(range(s), ...inbound(s).map(t => len(sub(t.p, s.me.p)))); return [50, 150, 400].find(z => z >= far * 1.12) || 400; }
 function draw() {
   const W = cv.clientWidth, dpr = window.devicePixelRatio || 1;
   if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(W * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const s = S, cx = W / 2, cy = W / 2, sc = (W / 2 - 54) / K.REACH; geo = { cx, cy, sc, W };
+  const s = S, cx = W / 2, cy = W / 2, REACH = reachOf(S), sc = (W / 2 - 54) / REACH; geo = { cx, cy, sc, W };
   const me = s.me.p, P = w => [cx + (w.x - me.x) * sc, cy + (w.y - me.y) * sc], now = performance.now();
   const o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, plan = (s.phase === 'plan' || UI.time === 'real') && !s.over;
   ctx.fillStyle = '#050a11'; ctx.fillRect(0, 0, W, W);
   ctx.lineWidth = 1; ctx.font = '11px "IBM Plex Mono", monospace';
-  for (let k = 10; k <= K.REACH; k += 10) { ctx.strokeStyle = k % 20 ? '#13233a' : '#1d3350'; ctx.beginPath(); ctx.arc(cx, cy, k * sc, 0, TAU); ctx.stroke(); ctx.fillStyle = '#3e5674'; ctx.fillText(String(k), cx + 3, cy - k * sc + 12); }
-  for (let b = 0; b < 360; b += 30) { const a = (b - 90) * DEG; ctx.strokeStyle = '#1d3350'; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (K.REACH * sc - 6), cy + Math.sin(a) * (K.REACH * sc - 6)); ctx.lineTo(cx + Math.cos(a) * K.REACH * sc, cy + Math.sin(a) * K.REACH * sc); ctx.stroke();
-    if (b % 90 === 0) { ctx.fillStyle = '#3e5674'; ctx.fillText(pad3(b), cx + Math.cos(a) * (K.REACH * sc + 2) - 11, cy + Math.sin(a) * (K.REACH * sc + 2) + 4); } }
+  for (let i = 1; i <= 5; i++) { const k = REACH * i / 5; ctx.strokeStyle = i % 2 ? '#13233a' : '#1d3350'; ctx.beginPath(); ctx.arc(cx, cy, k * sc, 0, TAU); ctx.stroke(); ctx.fillStyle = '#3e5674'; ctx.fillText(String(k), cx + 3, cy - k * sc + 12); }
+  for (let b = 0; b < 360; b += 30) { const a = (b - 90) * DEG; ctx.strokeStyle = '#1d3350'; ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * (REACH * sc - 6), cy + Math.sin(a) * (REACH * sc - 6)); ctx.lineTo(cx + Math.cos(a) * REACH * sc, cy + Math.sin(a) * REACH * sc); ctx.stroke();
+    if (b % 90 === 0) { ctx.fillStyle = '#3e5674'; ctx.fillText(pad3(b), cx + Math.cos(a) * (REACH * sc + 2) - 11, cy + Math.sin(a) * (REACH * sc + 2) + 4); } }
   // the gun's bearing: the spinal gun bears only within 30 degrees of the nose
   ctx.fillStyle = o.bears ? 'rgba(123,213,157,0.06)' : 'rgba(122,142,166,0.05)';
-  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, K.REACH * sc, o.nose - K.BEAR, o.nose + K.BEAR); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, REACH * sc, o.nose - K.BEAR, o.nose + K.BEAR); ctx.closePath(); ctx.fill();
   // PDC arc
   if (o.power.pdc > 0) { const r = K.PDC_R * sc, h = o.pdcW * DEG / 2, dens = clamp(60 / o.pdcW, 0.35, 1.4);
     ctx.fillStyle = `rgba(74,163,255,${0.06 + 0.1 * dens})`; ctx.strokeStyle = 'rgba(74,163,255,0.6)';
@@ -546,7 +551,9 @@ function draw() {
     if (UI.post === 'pilot' && UI.mode === 'A' && o.ordered.thr >= 0.1) { ctx.fillStyle = 'rgba(255,210,127,0.1)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, 70, o.ordered.dir - 45 * DEG, o.ordered.dir + 45 * DEG); ctx.closePath(); ctx.fill(); }
     if (o.thrust.thr > 0.02) { const e = scatterDeg(UI.post === 'pilot' && UI.mode === 'B' && s.ui.b.pilot === 'steady') * DEG * 2; ctx.strokeStyle = 'rgba(207,227,255,0.6)';
       for (const sg of [-1, 1]) { const q = P(add(add(me, s.me.v), mul(dirv(o.thrust.dir + sg * e, o.thrust.thr * o.acc), 0.5))); ctx.beginPath(); ctx.arc(...q, 2.5, 0, TAU); ctx.stroke(); } }
-    { const q = P(pr.mine[pr.n]); ctx.save(); ctx.translate(...q); ctx.rotate(o.nose + Math.PI / 2); ctx.strokeStyle = '#cfe3ff'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(6, 6); ctx.lineTo(0, 3); ctx.lineTo(-6, 6); ctx.closePath(); ctx.stroke(); ctx.restore(); }   // the ship at the end of the turn, as she will face
+    { const q = P(pr.mine[pr.n]);   // the ship at the end of the turn: a ghost where it is clear of her, else a dashed nose line on the ship itself
+      if (Math.hypot(q[0] - cx, q[1] - cy) < 22) { const u = dirv(o.nose); ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(cx + u.x * 10, cy + u.y * 10); ctx.lineTo(cx + u.x * 30, cy + u.y * 30); ctx.stroke(); ctx.setLineDash([]); }
+      else { ctx.save(); ctx.translate(...q); ctx.rotate(o.nose + Math.PI / 2); ctx.strokeStyle = '#cfe3ff'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(0, -8); ctx.lineTo(6, 6); ctx.lineTo(0, 3); ctx.lineTo(-6, 6); ctx.closePath(); ctx.stroke(); ctx.restore(); } }
     const c = pr.cpa, mq = P(c.m), hq = P(c.h);
     if (c.i > 0) { ctx.strokeStyle = 'rgba(127,180,255,0.9)'; ctx.setLineDash([1, 3]); ctx.beginPath(); ctx.moveTo(...mq); ctx.lineTo(...hq); ctx.stroke(); ctx.setLineDash([]);
       ctx.beginPath(); ctx.arc(...mq, 4, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.arc(...hq, 4, 0, TAU); ctx.stroke(); }
@@ -702,10 +709,12 @@ function render() {
     <div class="row"><span class="lab">Post</span>${seg('post', POSTS.map(p => [p, NAME[p]]), P)}</div>
     <div class="row"><span class="lab">Time</span>${seg('time', [['turns', 'Turns'], ['real', 'Real time with pause']], UI.time)}</div>
     ${UI.time === 'real' ? `<div class="row"><span class="lab">Speed</span>${seg('speed', [[1, '1x'], [2, '2x'], [16, '16x']], UI.speed)}</div>` : ''}
+    <div class="row"><span class="lab">Zoom</span>${seg('zoom', [['auto', 'Auto'], ['50', '50 km'], ['150', '150 km'], ['400', '400 km']], UI.zoom)}</div>
     <details id="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup: trust, captain, your level, fire control, sensors, seed</summary><div>
     <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How much the crew trusts you"><span class="read" id="trustv">${Math.round(UI.trust * 100)}%</span></div>
     <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="The captain's nerve"><span class="read" id="nervev">${nerveWord()}</span></div>
     <div class="row"><span class="lab">Your level</span>${seg('level', [0, 1, 2, 3, 4, 5].map(n => [n, String(n)]), UI.level)}<span class="note">the crew are 2</span></div>
+    <div class="row"><span class="lab">Opening</span>${seg('opening', [['long', 'Long: met at 250 km'], ['short', 'Short: met at 40 km']], UI.opening)}</div>
     <div class="row"><span class="lab">Accuracy</span>${seg('acc', [[false, 'Stock'], [true, 'Upgraded']], UI.accurate)}</div>
     <div class="row"><span class="lab">Resilience</span>${seg('hard', [[false, 'Stock'], [true, 'Hardened']], UI.hardened)}</div>
     <div class="row"><span class="lab">Sensors</span><input id="sens" type="range" min="20" max="100" step="5" value="${UI.sensors}" aria-label="Sensor condition"><span class="read" id="sensv">${UI.sensors}%</span></div>
@@ -739,6 +748,8 @@ side.addEventListener('click', e => {
   else if (act === 'pause') return playPause();
   else if (act === 'time') { UI.time = v; S.paused = false; S.pauseWhy = ''; }
   else if (act === 'speed') UI.speed = +v;
+  else if (act === 'zoom') UI.zoom = v;
+  else if (act === 'opening') { UI.opening = v; S = newGame(UI.seed); aiCalls(S); }
   else if (act === 'restart') { S = newGame(UI.seed); aiCalls(S); }
   else if (act === 'newseed') { UI.seed = 1 + Math.floor(Math.random() * 9999); S = newGame(UI.seed); aiCalls(S); }
   else if (act === 'flip') { UI.mode = UI.mode === 'A' ? 'B' : 'A'; S = newGame(UI.seed); aiCalls(S); }
