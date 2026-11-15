@@ -396,6 +396,15 @@
   ]
  },
  {
+  "id": "scene:chapter-two-start:drawn",
+  "plays": [],
+  "title": "The Bridge",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Yelena is under the turret blister, turning it by hand to see how far it goes. Ruben is reading the registry plate by the lock, and copying it into his slate.</p><p>Nobody came up from the Iron Anvil with you. Yelena and Ruben look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry the Iron Anvil sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
+  "labels": [
+   "Take the bridge"
+  ]
+ },
+ {
   "id": "scene:hand-death:hurt:own",
   "plays": [],
   "title": "The Last Run",
@@ -13214,15 +13223,13 @@
     "roll": 0.5,
     "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. The 2,500 comes out of your savings. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console. It is the same registry's, and good on this hull now.",
     "fx": {
-     "credits": -2500,
-     "c:bexa": 0,
-     "c:pax": 0
+     "credits": -2500
     },
     "next": null
    }
   ],
   "title": "The Bridge",
-  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman and Ines Ferreira came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman and Ines Ferreira came up from the Iron Anvil with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry the Iron Anvil sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
   "labels": [
    "Take the bridge"
   ]
@@ -13234,15 +13241,11 @@
     "i": 0,
     "roll": 0.5,
     "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. Your savings do not cover the 2,500, and the clerk adds it to what you owe on the share, 95,500 now. The pilot's seat is empty. Somebody will have to fly her.",
-    "fx": {
-     "c:bexa": 0,
-     "c:pax": 0
-    },
     "next": null
    }
   ],
   "title": "The Bridge",
-  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Nobody came up from Hester's ship with you. Bexa and Pax look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Nobody came up from the Iron Anvil with you. Bexa and Pax look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry the Iron Anvil sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
   "labels": [
    "Take the bridge"
   ]
@@ -13253,16 +13256,12 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. The registry waives its fee on Hester's word, and the lender, reading a vouched captain, takes a twentieth off what you owe on the share. It is 88,350 now. The pilot's seat is empty. Somebody will have to fly her.",
-    "fx": {
-     "c:bexa": 0,
-     "c:pax": 0
-    },
+    "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. The registry waives its fee on 's word, and the lender, reading a vouched captain, takes a twentieth off what you owe on the share. It is 88,350 now. The pilot's seat is empty. Somebody will have to fly her.",
     "next": null
    }
   ],
   "title": "The Bridge",
-  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>There is a second letter under the first, from Hester Vance. She has written to the registry that you have stood a watch on her ship and she would put you on any bridge she knew of.",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman came up from the Iron Anvil with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry the Iron Anvil sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>There is a second letter under the first, from Hester Vance. She has written to the registry that you have stood a watch on the Iron Anvil, and she would put you on any bridge she knew of.",
   "labels": [
    "Take the bridge"
   ]
