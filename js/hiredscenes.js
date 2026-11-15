@@ -52,7 +52,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:pirates', fn: 'pickHappening', file: 'js/transit.js', title: 'Pirates Matching Course', where: 'transit', when: 'An event on a burn: a dark ship matches course and asks for cargo or credits. Pay, dump cargo, fight, spoof a pirate transponder, or burn hard to outrun her (the fight and the burn are duels).' },
   { id: 'scene:derelict', fn: 'pickHappening', file: 'js/transit.js', title: 'Derelict Ship', where: 'transit', when: 'An event on a burn: a dead ore hauler drifts by. Strip it for salvage (her reactor may still be live), or log it and keep burning.' },
   { id: 'scene:coolant-leak', fn: 'pickHappening', file: 'js/transit.js', title: 'Coolant Leak', where: 'transit', when: 'An event on a burn, the engineer\'s call: the coolant loop springs a leak. The engineer handles it, you patch it in a suit, or you throttle back and burn mass to cool it.' },
-  { id: 'scene:trouble', fn: 'breakdownEvent', file: 'js/wear.js', title: 'Part Trouble', where: 'transit', when: 'On a burn, now and then, when a system (the drive, fire control, the shields, life support or the sensors) has fallen under 40 percent: the engineer fixes it properly, you jury-rig it, or you nurse it along. Titled by the system, as Drive Trouble.' },
+  { id: 'scene:trouble', fn: 'breakdownEvent', file: 'js/wear.js', title: 'Part Trouble', where: 'transit', when: 'On a burn, now and then, when a system (the drive, fire control, point defence, life support or the sensors) has fallen under 40 percent: the engineer fixes it properly, you jury-rig it, or you nurse it along. Titled by the system, as Drive Trouble.' },
   { id: 'scene:cato-round', fn: 'walkPending', file: 'js/captains/cato.js', title: 'The Round', where: 'transit', when: 'Once, an hour into the first burn, before anything else: Cato walks the new hand round the ship and names the crew (captains.js walkPending plays it). Walk it with him, or another time.' },
   { id: 'scene:mourn', fn: 'mournScene', file: 'js/losses.js', title: 'After the Loss', where: 'port', when: 'At the first port after a crew member is killed: how you mark it (a service and a meal, a letter home with money, a few words aboard, or nothing), and how the crew take it.' },
   { id: 'scene:parts', fn: 'partsEvent', file: 'js/parts.js', title: 'Part Repair', where: 'port', when: 'At a port with an outfitter, once a stay, when a system has worn under 75 and the hull needs no yard: the engineer lays out a new part, a used one with its history and a printed one, the captain picks, and you may argue for another. Titled by the system, as Drive Repair.' },
@@ -635,6 +635,9 @@ const SCENE_LINES = {
   'scene:day-down': {  // a day down in Lagos from the Ring (daydown.js, #1162; docs/bible/ports.md, lagos.md): the button, its shut line, the opening, and each lane's three lines by the day
     title: 'A Day Down',
     button: 'Go down to Lagos ({fare} cr)', shut: 'You\'ve been down today.',
+    // the day's lanes as tags on the spoke lift (#1193), each the day down on its own, and the line that brings the hand back up
+    'tag.tiers': 'Down to the tiers ({fare} cr)', 'tag.market': 'Down to the mainland market ({fare} cr)', 'tag.hall': 'Down to the departure hall ({fare} cr)', 'tag.work': 'Down to look for work ({fare} cr)',
+    'tag.below': 'Down to see {first} ({fare} cr)', 'tag.parcel': '{first} has a bag for his parents', 'up.label': 'Back up the spoke',
     text: 'The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.',
     'tiers.label': 'Walk the arcology\'s tiers',
     'tiers.0': 'The lower tiers are by the wall, and the lifts there take a long time. A notice in the lobby says the service charge goes up in March. Two floors up a man is mending a fan in a shop doorway, with the parts laid out on a towel, and he tells you the rent on the shop before you\'ve asked.',
@@ -692,6 +695,8 @@ const SCENE_LINES = {
     title: 'A Day Ashore',
     text: 'The ship will keep. {port} is out there, and the hour is yours.',
     button: 'Spend a day ashore', 'hint.open': 'One hour of your own at each landing.', 'hint.spent': 'You have had your hour here.',
+    // its entries as tags on a port's view (#1193), each taken in place of the menu, and the line that closes one that ends in a line
+    'tag.table': 'The regulars\' table', 'tag.walk': 'A walk round {port}', 'tag.errand': '{n} has an errand', 'tag.room': 'Your room', 'tag.now': 'On at the bar: {what}', 'done.label': 'Go on',
     'none.label': 'Not now', 'none.result': 'You stay by the ramp and watch the dock go by.',
     'table.label': 'Sit at the regulars\' table at {bar}',
     'walk.label': 'Walk through {port}',
@@ -913,7 +918,7 @@ const SCENE_LINES = {
     text: '{fault} It is at {pct} percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.',
     'fault.drive': 'The drive has started to cough: a stutter in the thrust, and a rattle in the plume pipes that was not there before.',
     'fault.fire': 'The fire control is drifting. The mounts keep slewing a hair off the solution, and the targeting cache has started serving stale tracks.',
-    'fault.shields': 'The shield emitters are flickering, and every few minutes one of the projectors drops out for a second and comes back.',
+    'fault.pd': 'The point-defence turret is hunting. Every few minutes it slews off its arc, and the tracking radar drops out for a second and comes back.',
     'fault.life': 'The air has gone stale. The scrubbers are running flat out, the recycler is groaning, and somebody has started a pool on which one gives up first.',
     'fault.sensors': 'The sensor mast is throwing ghosts: contacts that are not there, and, worse, a long scan that keeps missing the ones that are.',
     'fix.label': '[{crew}] Fix it properly',
@@ -961,7 +966,7 @@ const SCENE_LINES = {
     'eff.wear.good': 'it should last longer than most', 'eff.wear.bad': 'it will wear out sooner',
     'eff.perf.good': 'it runs a little better than new', 'eff.perf.bad': 'it never quite runs at full',
     'eff.dmgMult.good': 'the guns hit a little harder with it', 'eff.dmgMult.bad': 'the guns hit a little softer with it',
-    'eff.shields.good': 'the shields hold a little more', 'eff.shields.bad': 'the shields hold a little less',
+    'eff.armor.good': 'the point defence tracks a little better', 'eff.armor.bad': 'the point defence tracks a little worse',  // a fight's armor factor is the point defence's (#1208)
     'eff.edge.good': 'it is easier to work with',  // no quirk has a check's edge as its minus yet
     'pick.yard': 'the new one', 'pick.used': 'the used one', 'pick.printed': 'the printed one',
     'quiet.label': 'Let the captain decide',

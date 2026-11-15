@@ -456,7 +456,7 @@ const CAST = {
       pivot: {
         days: 60, title: 'Over the Hull',
         get text() {
-          const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
+          const medic = roleHolder('medic'), low = hullLeftOf(G.state.armor, ship().armor) <= 0.6;
           return 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she\'s not answering. Yelena is already at the hatch with her helmet under one arm. "I go first," she says. "I\'ve always gone first. That\'s what a striker is for."'
             + (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
             + (medic ? ` ${medic.first} has the med kit open at the airlock.` : ' There\'s nobody aboard who can do more than a field dressing, and she knows it.')
@@ -1067,7 +1067,7 @@ function castBackupCost(key) {
 }
 // Yelena's pivot (fate.js decides who lives): a point each for a medic who is not hurt, a hull above 60 percent, her gunner
 // skill at 3 or more, and a second person with her. Three or more she lives, two she is marked, fewer she dies.
-const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0)
+const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (hullLeftOf(G.state.armor, ship().armor) > 0.6 ? 1 : 0)
   + (person('c:yelena').skills.gunner >= 3 ? 1 : 0) + (backup ? 1 : 0);
 function overTheHull(backup) {
   const points = castHullPoints(backup), promised = castRec('yelena').flags.promised;
@@ -1091,11 +1091,11 @@ function overTheHull(backup) {
 
 // The hull and the medic, as the pivot scenes state them (Yelena's, Ines's, Tomas's), so the player sees what will count.
 function castRiskLines() {
-  const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
+  const medic = roleHolder('medic'), low = hullLeftOf(G.state.armor, ship().armor) <= 0.6;
   return (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
     + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.');
 }
-const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0);
+const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (hullLeftOf(G.state.armor, ship().armor) > 0.6 ? 1 : 0);
 const castPoints = n => (n >= 3 ? 'live' : n === 2 ? 'mark' : 'die');
 
 // Ines's pivot: a point each for a medic, a hull above 60 percent, the hand-flown approach practiced with you, and a second hand on the abort.

@@ -119,16 +119,17 @@ const cargoFree = () => ship().cargo - cargoUsed();
 // this, and migrate() (menu.js) gives any field a loaded or imported save lacks, or holds as the wrong kind of thing, the same value, so
 // a field added here reaches old saves too. Fields that belong to one feature (the memorial, the outpost, the hired chapter and so on) are
 // not here: the module that owns one creates it on first use (`st.x = st.x || ...`), and every reader tolerates it being absent. Put a
-// field here when most games have it from the start; leave it lazy when only a feature needs it. There is no save version: no value has
-// needed rewriting yet, and the day one does, add a version then. A fresh object each call. `shipId` is the save's own ship, so a save without a full tank gets that ship's. A save
+// field here when most games have it from the start; leave it lazy when only a feature needs it. `version` is SAVE_VERSION: a save without
+// one is from before the shields were retired (#1208), and migrate (menu.js retireShields) rewrites it once. A fresh object each call. `shipId` is the save's own ship, so a save without a full tank gets that ship's. A save
 // without a `tutorial` has none (null); a new game starts it.
+const SAVE_VERSION = 2;  // 2: shields retired (#1208)
 function stateDefaults(shipId) {
   const ship = SHIPS[shipId] || SHIPS.shuttle;
   return {
     credits: 120000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: ship.fuel, armor: ship.armor,
     cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
-    crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
+    version: SAVE_VERSION, crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
     story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: null, tips: null, carried: null,
     recentLines: [],  // the last lines drawn from the pools the player meets often (pickFresh)
   };
@@ -200,7 +201,7 @@ function shipStats(shipId) {
 
 function makeShip(shipId, x, y, angle) {
   const s = SHIPS[shipId];
-  return { shipId, x, y, vx: 0, vy: 0, angle, shields: s.shields, armor: s.armor, maxArmor: s.armor, cooldown: 0, thrusting: false };
+  return { shipId, x, y, vx: 0, vy: 0, angle, armor: s.armor, maxArmor: s.armor, cooldown: 0, thrusting: false };
 }
 
 function turnToward(o, desired, dt) {
@@ -219,7 +220,6 @@ function physics(o, dt) {
   if (sp > s.maxSpeed) { o.vx *= s.maxSpeed / sp; o.vy *= s.maxSpeed / sp; }
   o.x += o.vx * dt;
   o.y += o.vy * dt;
-  o.shields = Math.min(s.shields, o.shields + s.shields * 0.03 * dt);
   o.cooldown -= dt;
 }
 
@@ -253,14 +253,12 @@ function burst(x, y, count, colors, speed) {
   }
 }
 
+// A hit goes to the armour: there is no deflector field (docs/bible/technology.md; shields retired, #1208).
 function damage(o, d, byPlayer = false) {
-  const absorbed = Math.min(o.shields, d);
-  o.shields -= absorbed;
-  o.armor -= d - absorbed;
-  if (absorbed) o.shieldFlash = G.time;
-  Mods.emit('damage', o, absorbed > 0, byPlayer, d - absorbed);
-  burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
-  if (o === G.player && d > absorbed) shake(3);
+  o.armor -= d;
+  Mods.emit('damage', o, byPlayer, d);
+  burst(o.x, o.y, 6, ['#fc6', '#f80', '#fff'], 180);
+  if (o === G.player && d > 0) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
 }
 
@@ -564,7 +562,7 @@ function takeOff() {
   const a = rand(0, Math.PI * 2);
   G.player = makeShip(G.state.shipId, pl.x + Math.cos(a) * pl.r * 0.5, pl.y + Math.sin(a) * pl.r * 0.5, a);
   const s = ship();
-  Object.assign(G.player, { armor: G.state.armor, maxArmor: s.armor, shields: s.shields });
+  Object.assign(G.player, { armor: G.state.armor, maxArmor: s.armor });
   G.mode = 'flight';
   G.navPlanet = null;
   populateSystem();
@@ -746,7 +744,6 @@ function updateShots(dt) {
     sh.x += sh.vx * dt; sh.y += sh.vy * dt; sh.life -= dt;
     if (sh.hits === 'player') {
       if (p && !p.dead && dist(sh, p) < SHIPS[p.shipId].size + 2) {
-        p.hitAngle = Math.atan2(sh.y - p.y, sh.x - p.x);
         damage(p, sh.dmg);
         sh.life = 0;
       }
@@ -763,7 +760,6 @@ function updateShots(dt) {
           else if (n.kind === 'trader') changeRep(localGov(), -3);
         }
       }
-      n.hitAngle = Math.atan2(sh.y - n.y, sh.x - n.x);
       damage(n, sh.dmg, sh.byPlayer);
       sh.life = 0;
       break;
@@ -984,7 +980,7 @@ function drawHudCompact(W) {
   ctx.textAlign = 'right';
   ctx.fillText(`${dateOf(inTransit ? transitNow(G.transit) : st.day)}  ${fmt(st.credits)} cr`, x + w, 17);  // in a burn, the burn's today, as the burn bar prints it (#946)
   ctx.textAlign = 'left';
-  const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
+  const bars = [['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
   bars.forEach(([label, v, max, color], i) => {
     const y = 26 + i * 12;
     hudLabel(label, x, y + 7);
@@ -1038,9 +1034,8 @@ function drawHud(W, H) {
 
   y += 26;
   if (p) {
-    const [sh, shMax, ar, arMax] = hudHull(p, G.dialog, s.shields);
-    drawBar(x, y, w, 'Shields', sh, shMax, '#4aa3ff');
-    drawBar(x, y += 30, w, 'Armor', ar, arMax, '#ff9a3c');
+    const [ar, arMax] = hudHull(p, G.dialog);
+    drawBar(x, y, w, 'Armor', ar, arMax, '#ff9a3c');
   }
   drawBar(x, y += 30, w, 'Reaction mass', st.fuel, s.fuel, '#5fd35f');
 
@@ -1089,9 +1084,8 @@ function drawHud(W, H) {
       for (const l of wrapText(`${SHIPS[t.shipId].name}${t.captain ? `, Capt. ${t.captain}` : ''}`, w)) ctx.fillText(l, x, y += 16);
       ctx.fillText(`Dist ${Math.round(dist(t, p))}`, x, y += 16);
       y += 14;
-      ctx.fillStyle = '#1a2533'; ctx.fillRect(x, y, w, 5); ctx.fillRect(x, y + 8, w, 5);
-      ctx.fillStyle = '#4aa3ff'; ctx.fillRect(x, y, w * Math.max(0, t.shields / SHIPS[t.shipId].shields), 5);
-      ctx.fillStyle = '#ff9a3c'; ctx.fillRect(x, y + 8, w * Math.max(0, t.armor / t.maxArmor), 5);
+      ctx.fillStyle = '#1a2533'; ctx.fillRect(x, y, w, 5);
+      ctx.fillStyle = '#ff9a3c'; ctx.fillRect(x, y, w * Math.max(0, t.armor / t.maxArmor), 5);
     } else {
       ctx.fillStyle = '#cfe3ff';
       ctx.fillText('none (Tab)', x, y += 16);
@@ -1261,10 +1255,10 @@ function drawMap(W, H) {
   lines.forEach((l, i) => ctx.fillText(l, 16, H - 20 - (lines.length - 1 - i) * 16));
 }
 
-// The sidebar's shields and armor: the ship's, or while a ship fight is up the fight's own (fightui.js), the numbers its panel shows (the owner, 2026-11-07).
-function hudHull(p, dialog, maxShields) {
+// The sidebar's armor: the ship's, or while a ship fight is up the fight's own (fightui.js), the numbers its panel shows (the owner, 2026-11-07).
+function hudHull(p, dialog) {
   const me = dialog && dialog.event && dialog.event.fight && dialog.event.fight.state && dialog.event.fight.state.me;
-  return me && me.maxArmor !== undefined ? [me.shields, me.maxShields, me.armor, me.maxArmor] : [p.shields, maxShields, p.armor, p.maxArmor];
+  return me && me.maxArmor !== undefined ? [me.armor, me.maxArmor] : [p.armor, p.maxArmor];
 }
 
 function render() {

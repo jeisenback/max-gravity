@@ -1,24 +1,24 @@
 'use strict';
 
-// The engineer's post: where the reactor's output goes (drive, weapons, shields), and
+// The engineer's post: where the reactor's output goes (drive, weapons, point defence), and
 // the heat the drive builds during a burn. A manual engineer moves the sliders and
 // watches the heat: past 100 the reactor scrams, the drive drops to a crawl, and the hull
 // takes a knock. A crewed engineer keeps the heat down on their own (a better one lets it
-// run hotter first) and takes orders: favor the drive, the guns, or the shields.
+// run hotter first) and takes orders: favor the drive, the guns, or the point defence.
 // Drive power also sets the burn's speed, its reaction mass use, and how easily pirates spot
 // you. In a console fight (duel.js) weapons power adds gun runs to the deck, drive power adds
-// evasive burns, and shields of 40% or more give a deflector that soaks the first half hit.
+// evasive burns, and point defence of 40% or more stops the first half hit (the deflector it replaces is retired, #1208).
 // Loaded before game.js; only calls into it at runtime.
 
 const POWER_MIN = 10, POWER_MAX = 80;
 const POWER_PRESETS = {
-  'favor-drive': { name: 'Favor the drive', label: 'the drive', to: { drive: 60, weapons: 20, shields: 20 } },
-  'favor-guns': { name: 'Favor the guns', label: 'the guns', to: { drive: 25, weapons: 50, shields: 25 } },
-  'favor-shields': { name: 'Favor the shields', label: 'the shields', to: { drive: 25, weapons: 25, shields: 50 } },
-  balance: { name: 'Balance the load', label: 'an even load', to: { drive: 40, weapons: 30, shields: 30 } },
+  'favor-drive': { name: 'Favor the drive', label: 'the drive', to: { drive: 60, weapons: 20, pd: 20 } },
+  'favor-guns': { name: 'Favor the guns', label: 'the guns', to: { drive: 25, weapons: 50, pd: 25 } },
+  'favor-pd': { name: 'Favor the point defence', label: 'the point defence', to: { drive: 25, weapons: 25, pd: 50 } },
+  balance: { name: 'Balance the load', label: 'an even load', to: { drive: 40, weapons: 30, pd: 30 } },
 };
 
-const power = () => { const st = G.state; return st.power = st.power || { drive: 40, weapons: 30, shields: 30 }; };
+const power = () => { const st = G.state; return st.power = st.power || { drive: 40, weapons: 30, pd: 30 }; };
 
 // Set one share; the others give up or take the difference in proportion. Always 100 in all.
 function setPower(key, value) {
@@ -59,7 +59,7 @@ function overload() {
   const st = G.state, p = power();
   st.heat = 50;
   setPower('drive', POWER_MIN);
-  st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
+  st.armor = Math.max(1, st.armor - Math.round(hullPast(ship().armor) * 0.05));  // of the armor past the skin (HULL_SKIN, #1208)
   const text = sceneSay('scene:systems-notes', 'reactor.scram', { drive: p.drive });
   comm(`[Engineering] ${text}`);
   msg(text);
@@ -91,7 +91,7 @@ function engineeringTick(dt) {
 
 // The Engineering station, as a console: the plant schematic on the display, heat and condition beside it,
 // and the power channels and the post's orders along the bottom.
-const POWER_NAMES = { drive: 'Drive', weapons: 'Weapons', shields: 'Shields' };
+const POWER_NAMES = { drive: 'Drive', weapons: 'Weapons', pd: 'Point defence' };
 
 // A side view of the ship. Each conduit's width is that power share; each system takes the color of its condition.
 function plantSvg() {
@@ -101,15 +101,14 @@ function plantSvg() {
   <text class="lbl" x="235" y="154" fill="#7f95ab" font-size="11" text-anchor="middle" letter-spacing="2">REACTOR</text>
   <path d="M150 140 L96 140" stroke="${col('drive')}" stroke-width="${w(p.drive)}" opacity="${a(p.drive)}" stroke-linecap="round"/>
   <path d="M320 138 L380 120 L430 120" stroke="${col('fire')}" stroke-width="${w(p.weapons)}" opacity="${a(p.weapons)}" fill="none" stroke-linecap="round"/>
-  <path d="M320 164 L380 180 L440 180" stroke="${col('shields')}" stroke-width="${w(p.shields)}" opacity="${a(p.shields)}" fill="none" stroke-linecap="round"/>
+  <path d="M320 164 L380 180 L440 180" stroke="${col('pd')}" stroke-width="${w(p.pd)}" opacity="${a(p.pd)}" fill="none" stroke-linecap="round"/>
   <path d="M70 150 L34 128 L34 172 Z" fill="#0a1320" stroke="${col('drive')}" stroke-width="2"/>
   <path d="M30 150 L${Math.max(6, 30 - p.drive * 0.3).toFixed(0)} 150" stroke="#6fb0ff" stroke-width="${(w(p.drive) + 2).toFixed(1)}" opacity="${a(p.drive).toFixed(2)}" stroke-linecap="round"/>
   <rect x="400" y="100" width="44" height="22" rx="3" fill="#0a1320" stroke="${col('fire')}" stroke-width="2"/><line x1="444" y1="111" x2="486" y2="111" stroke="${col('fire')}" stroke-width="3"/>
-  <circle cx="440" cy="180" r="9" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/><circle cx="300" cy="190" r="6" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/><circle cx="200" cy="112" r="6" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/>
-  <ellipse cx="330" cy="150" rx="${(200 * (0.5 + p.shields / 160)).toFixed(0)}" ry="${(90 * (0.5 + p.shields / 160)).toFixed(0)}" fill="none" stroke="${col('shields')}" stroke-dasharray="4 7" opacity="${(a(p.shields) * 0.6).toFixed(2)}"/>
+  <circle cx="440" cy="180" r="9" fill="#0a1320" stroke="${col('pd')}" stroke-width="2"/><circle cx="300" cy="190" r="6" fill="#0a1320" stroke="${col('pd')}" stroke-width="2"/><circle cx="200" cy="112" r="6" fill="#0a1320" stroke="${col('pd')}" stroke-width="2"/>
   <circle cx="500" cy="150" r="22" fill="#0a1320" stroke="${col('life')}" stroke-width="2"/><circle cx="500" cy="150" r="10" fill="none" stroke="${col('life')}" stroke-dasharray="3 3"/>
   <line x1="580" y1="140" x2="612" y2="108" stroke="${col('sensors')}" stroke-width="3"/><circle cx="614" cy="106" r="6" fill="#0a1320" stroke="${col('sensors')}" stroke-width="2"/>
-  <g class="lbl" font-size="11" fill="#7f95ab" letter-spacing="1"><text x="26" y="206">DRIVE</text><text x="420" y="92">FIRE CTRL</text><text x="410" y="214">SHIELDS</text><text x="476" y="190">LIFE</text><text x="520" y="70">SENSORS</text></g>
+  <g class="lbl" font-size="11" fill="#7f95ab" letter-spacing="1"><text x="26" y="206">DRIVE</text><text x="420" y="92">FIRE CTRL</text><text x="400" y="214">POINT DEF</text><text x="476" y="190">LIFE</text><text x="520" y="70">SENSORS</text></g>
   <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">PLANT SCHEMATIC</text>
   <text class="lbl" x="14" y="282" fill="#4b617a" font-size="11">Conduit width is the power share. Color is the system's condition.</text>`;
 }
@@ -135,8 +134,8 @@ function engineerPanel() {
     screen: `<svg class="con-plant" data-plant data-sig="${plantSig()}" viewBox="0 0 640 300" role="img" aria-label="Ship systems diagram">${plantSvg()}</svg>`,
     side: conCard('Reactor heat', `${gaugeSvg('heat', Math.round(Math.min(100, heat())), heatLimit())}${effectRows()}`)
       + conCard('Systems', wearHtml()),
-    controls: `<div class="con-chans">${['drive', 'weapons', 'shields'].map(channel).join('')}</div>${postHtml('engineer')}${projectsHtml('engineer')}`,
-    note: `<p class="con-note">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. In a console fight, weapons power adds gun runs, drive power adds evasive burns, and shields of 40% or more soak the first half hit.</p>`,
+    controls: `<div class="con-chans">${['drive', 'weapons', 'pd'].map(channel).join('')}</div>${postHtml('engineer')}${projectsHtml('engineer')}`,
+    note: `<p class="con-note">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. In a console fight, weapons power adds gun runs, drive power adds evasive burns, and point defence at 40% or more stops the first half hit.</p>`,
   });
 }
 

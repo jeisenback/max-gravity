@@ -4,7 +4,7 @@
 // GRADE_HULL and GRADE_PUNCH, which the fight engine reads), and on dangerous lanes raiders hunt in pairs. And who comes over the side when she
 // boards (boarders.js). Loaded after engagements.js; only called into at runtime.
 
-const GRADE_HULL = 0.3, GRADE_PUNCH = 0.15;
+const GRADE_HULL = 0.14, GRADE_PUNCH = 0.15;  // GRADE_HULL: 0.3 of her armor until her shields went into it (#1208); 0.14 of the folded armor adds about what that did
 
 const laneDanger = () => { const st = G.state; return G.transit ? Math.max(danger(G.transit.to), danger(st.systemId)) : danger(st.systemId); };
 

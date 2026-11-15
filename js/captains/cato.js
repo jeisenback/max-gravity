@@ -8,7 +8,7 @@
 // The hold: a point each for a medic other than him who is not hurt, a hull above 60 percent, a deckhand (the icehand key) aboard,
 // and a second person with him. Three or more he lives, two he is marked, fewer he dies.
 const iceHands = () => G.state.crew.map(person).filter(c => c && c.role === 'icehand').length;
-const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 1 ? 1 : 0) + (backup ? 1 : 0);
+const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (hullLeftOf(G.state.armor, ship().armor) > 0.6 ? 1 : 0) + (iceHands() >= 1 ? 1 : 0) + (backup ? 1 : 0);
 function inTheIceHold(backup) {
   const points = catoHoldPoints(backup), told = castRec('cato').flags.told, cap = hiredCaptain();
   const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the hold near ${system().name}.`, 'Left hand doesn\'t close properly.', 'xo');
@@ -169,7 +169,7 @@ CAST.cato = {
     pivot: {
       days: 70, title: 'In the Hold',
       get text() {
-        const medic = (m => (m && m.cast !== 'cato' ? m : null))(roleHolder('medic')), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
+        const medic = (m => (m && m.cast !== 'cato' ? m : null))(roleHolder('medic')), low = hullLeftOf(G.state.armor, ship().armor) <= 0.6, hands = iceHands();
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two cargo pod with a lashing gone and the load moving ' +
             'under thrust. Cato is already at the hatch with a strap over one shoulder. "I know where it goes," he says. "It\'s my hold. Give me ten ' +
             'minutes." At a fraction of a g a pod that size doesn\'t move quickly, but it doesn\'t stop, either, and the bulkhead it\'s leaning on isn\'t rated for it.')

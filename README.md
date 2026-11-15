@@ -42,7 +42,7 @@ A grounded political plot about who controls the Belt's water. Act 1 starts in t
 
 The Arcology Compact is a set of arcology cities that trade and license and answer to no world government; Dome Concord is a set of dome councils that share a fleet, paid for by an air levy, and little else; the Charter League is a set of stations held by chartered guilds that vote on water and berth rights. You have a standing (-100 to 100) with the Arcology Compact, Dome Concord, Charter League, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Port page). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
 
-Outfitters (on the Engine page at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
+Outfitters (on the Engine page at shipyards and The Rook) sell guns, heavy rounds, armor, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
 
 The Torpedo launcher fires homing torpedoes at your target: slow off the rail, then faster than any ship, for heavy damage. Buy torpedoes (up to 6) at any outfitter. Each Close-defense turret is also an automatic turret that shoots down incoming torpedoes (one stops about three in five), and heavier ships carry point defense of their own. Corsairs, cutters, and destroyers fire torpedoes back; gunfire can hit torpedoes too.
 
@@ -114,7 +114,7 @@ On a keyboard:
 - `js/hail.js` - hailing ships in flight
 - `js/story.js` - the Cold Water plot's machinery: story state, the recovery ship, the blockade, the endings and epilogue
 - `js/mapbuttons.js` - the System map, Close map and zoom buttons over the burn view and the map
-- `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
+- `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, explosions, smoke, and the HUD gauges and labels
 - `js/mods.js` - the mod API (see Modding below)
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, markets that use and make goods, and NPC haulers whose voyages move them (`st.haul`)
@@ -152,9 +152,9 @@ On a keyboard:
 - `js/stations.js` - posts (pilot, gunner, engineer, comms): crewed or manual, taking the controls, and orders
 - `js/autopilot.js` - the crewed pilot: departs, brings the ship in and lands; any flight key takes the controls
 - `js/duel.js` - the crewed gunner: a contact is settled on the console in exchanges of threat and answer, with decks built from your fit (see `COMBAT.md`); with no crewed gunner, you fight it
-- `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
+- `js/engineering.js` - the engineer's post: power shares (drive, weapons, point defence), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
 - `js/comms.js` - the comms station: how each happening reaches the ship, the inbox, listening for market tips, and a crewed officer who takes routine hails
-- `js/wear.js` - ship condition: slow wear on the drive, fire control, shields, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)
+- `js/wear.js` - ship condition: slow wear on the drive, fire control, point defence, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)
 - `js/projects.js` - repairs, tuning and refits that run across the days of a burn, using machine parts from the hold
 - `js/programs.js` - standing rules for crewed stations, written by a slicer over a burn (a fixed list of conditions and orders)
 - `js/console.js` - the shared look of a station's page, a view from a workstation: a bezel with a display drawn from real ship stats, side cards, and the controls along the bottom (all six stations use it)
@@ -274,8 +274,8 @@ Mods.register({
 | Call | Required fields | Notes |
 | --- | --- | --- |
 | `M.addSystem(id, def)` | `name, au, angle, gov, planets` | Each planet needs `name, x, y, r, color, services`. Services: `trade`, `missions`, `shipyard`, `outfitter`, `refuel`. `prices` maps commodity ids to `'L'`, `'M'`, or `'H'`; goods without a level are not traded there. `au` and `angle` place it on the map. A new `gov` name gets a gray color unless you pass `govColor`. |
-| `M.addShip(id, def)` | `name, price, cargo, fuel, shields, armor, accel, maxSpeed, turn, guns, size` | For sale in shipyards unless `forSale: false`. `req` sets the standing needed. Unknown hulls are drawn with the Dust Skiff's art. |
-| `M.addOutfit(id, def)` | `name, price, space, max, desc, mod` | `mod(s)` changes the ship's stats (`guns, shields, armor, fuel, cargo, berths, accel, maxSpeed, dmgMult`). |
+| `M.addShip(id, def)` | `name, price, cargo, fuel, armor, accel, maxSpeed, turn, guns, size` | For sale in shipyards unless `forSale: false`. `req` sets the standing needed. Unknown hulls are drawn with the Dust Skiff's art. |
+| `M.addOutfit(id, def)` | `name, price, space, max, desc, mod` | `mod(s)` changes the ship's stats (`guns, armor, fuel, cargo, berths, accel, maxSpeed, dmgMult`). |
 | `M.addCommodity(def)` | `id, name, base` | `base` is the medium price. Add it to planets' `prices` (including built-in ones, as the example does) so it can be traded. |
 | `M.addEvent(def)` | `title, text, choices` | A transit event. Each choice has a `label` and a `run()` that returns the result text; an optional `can()` disables it when false. |
 
@@ -289,7 +289,7 @@ Mods.register({
 | `key` | `code` (e.g. `'KeyN'`) |
 | `uiClick` | `action, arg` of a port-screen button |
 | `fire` | `ship` (`ship === G.player` for the player) |
-| `damage` | `ship, shieldHit, byPlayer, hullDamage` |
+| `damage` | `ship, byPlayer, hullDamage` |
 | `destroyed` | `ship, byPlayer` |
 | `enterSystem` | `systemId`, after local space is populated |
 | `landed` | `planet` |

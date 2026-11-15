@@ -117,16 +117,16 @@ const foePlay = () => pickPlay('foe');
 function startDuel(spec, flee) {
   if (lockPost() && (spec.kind === 'pirate' || spec.kind === 'patrol')) return startShipFight(spec, flee);  // a hand, or an owner who kept a post, fights a raid or a navy stop turn by turn (fightui.js)
   const st = G.state, foe = makeEnemy(spec);
-  const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 30)));
-  // Shields: with a healthy 40% or more of the reactor behind them, the first half hit does nothing.
+  const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 60)));  // her armor with her shields folded in (#1208): about twice what it was, so the same hits
+  // Point defence: with a healthy 40% or more of the reactor behind it, the first half hit does nothing.
   // Worn sensors blur what you can tell of her cards, by a card either way.
   G.duel = { spec, foe, foeHp, foeMax: foeHp, round: 0, init: 'foe', me: makeSide(playerCounts()), them: makeSide(foeCounts(foe)),
-    deflector: power().shields >= 40 && perf('shields') >= 0.9,
+    pd: power().pd >= 40 && perf('pd') >= 0.9,
     blur: Object.fromEntries(Object.keys(DUEL_CARDS).map(t => [t, perf('sensors') < 0.8 ? randInt(-1, 1) : 0])) };
   let text = `Battle stations. ${duelGunner() ? `${roleName('gunner')} takes the guns.` : 'You take the guns yourself.'} ${theShip(foe)} made the intercept, and she has the initiative.`;
   if (flee) {
     if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) { G.duel = null; return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.`; }
-    st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
+    st.armor = Math.max(1, st.armor - Math.round(hullPast(ship().armor) * 0.08));  // eight percent of the armor past the skin (#1208)
     text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
   }
   G.nextEvent = duelEvent();
@@ -207,24 +207,24 @@ function duelExchange(mine, theirs) {
   if (boarded) pts = 0;
   const before = st.armor;
   let soaked = false;
-  if (attacker === 'foe' && out === 'half' && d.deflector) { pts = 0; d.deflector = false; soaked = true; }  // the capacitor takes it
+  if (attacker === 'foe' && out === 'half' && d.pd) { pts = 0; d.pd = false; soaked = true; }  // the point defence stops it
   playCard(d.me, mine); playCard(d.them, theirs);
   if (mine === 'torp') st.torpedoes = Math.max(0, (st.torpedoes || 0) - 1);
   if (attacker === 'me') d.foeHp = Math.max(0, d.foeHp - pts);
-  else st.armor = Math.max(1, st.armor - Math.round(max * ARMOR_PER_POINT * pts));
+  else st.armor = Math.max(1, st.armor - Math.round(hullPast(max) * ARMOR_PER_POINT * pts));  // of the armor past the skin (HULL_SKIN, #1208): what it took before
   if (out === 'stop') d.init = attacker === 'me' ? 'foe' : 'me';
   d.round++;
   if (mine === 'gun' || mine === 'torp') wear('fire', mine === 'gun' ? 1.5 : 0.5);  // wear, from use (wear.js)
-  if (attacker === 'foe' && pts) wear('shields', 1.5);
+  if (attacker === 'foe' && pts) wear('pd', 1.5);
   let text = DUEL_LINES[attacker][threat][['stop', 'half', 'full'].indexOf(out)].replace(/\{pilot\}/g, helmName())
     + ` She played ${DUEL_CARDS[theirs].low}.${attacker === 'me' && pts ? ` ${foe} takes ${pts >= 4 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`
-    + (soaked ? ' The deflector capacitor soaks it.' : '') + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
+    + (soaked ? ' The point defence stops it.' : '') + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
   if (d.foeHp <= 0 && canBeDisabled(d.foe)) {
     text += ` ${foe} is dead in space, drifting.`;
     G.nextEvent = duelDisabledEvent(d.foe);
   } else if (d.foeHp <= 0) {
     text += ` ${foe} is finished.${duelFinish(d.foe)}`;
-  } else if (st.armor <= max * 0.25) {
+  } else if (hullLeftOf(st.armor, max) <= 0.25) {  // past the skin (HULL_SKIN, #1208)
     const c = Math.min(st.credits, Math.max(2000, Math.round(st.credits * 0.1)));
     st.credits -= c;
     text += ` The hull cannot take another round. ${helmName()} calls it, and you yield${c ? `, paying ${fmt(c)} cr to be let go` : ''}.`;

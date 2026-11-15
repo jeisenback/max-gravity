@@ -14,7 +14,7 @@ const DISABLE_AT = 0.2, BOARD_RANGE = 200, BOARD_SPEED = 90, CLINIC_FEE = 10000;
 const canBeDisabled = n => !n.bountyId && !n.story && !n.blockade && !n.enemy && !['escort', 'agent', 'ally'].includes(n.kind);
 const injured = () => (G.state.injured = G.state.injured || {});
 
-function onDamage(o, shieldHit, byPlayer, hull) {
+function onDamage(o, byPlayer, hull) {
   // Disabled, not destroyed, when your fire takes the hull low.
   if (byPlayer && o !== G.player && !o.disabled && canBeDisabled(o) && o.armor > 0 && o.armor < o.maxArmor * DISABLE_AT) {
     o.disabled = true;
@@ -76,7 +76,7 @@ function consequences(n, taking) {
 function boardingFight(n) {
   if (n.kind === 'trader') return null;  // freighter crews don't die for the company's cargo
   if (Math.random() < boardOdds()) return null;
-  G.player.armor = Math.max(1, G.player.armor - G.player.maxArmor * 0.15);
+  G.player.armor = Math.max(1, G.player.armor - hullPast(G.player.maxArmor) * 0.15);  // of the armor past the skin (HULL_SKIN, #1208)
   G.state.armor = Math.round(G.player.armor);
   const c = hurtCrew();
   return `They were waiting in the airlock. You fight your way back to your own ship${c ? `, and ${c.first} is hurt` : ''}. The ${n.name} is still drifting.`;

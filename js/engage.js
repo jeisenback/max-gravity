@@ -106,7 +106,7 @@ function contactEvent(spec) {
   if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${contactSay(`move.${post}.label`)}${costNote({ hull: hand.hull, range: 'opens the range' }, postOdds(post))}`, role: POSTS[post].role, run() {
     const won = Math.random() < postOdds(post);
     if (won) return startShipFight(spec, false, { edge: 2, shift: hand.range[0], text: contactSay(`move.${post}.win`) });
-    const pts = hand.hull ? Math.round(ship().armor * 0.08) : 0;
+    const pts = hand.hull ? Math.round(hullPast(ship().armor) * 0.08) : 0;  // eight percent of the armor past the skin, the hull she had before her shields went into it (#1208)
     st.armor = Math.max(1, st.armor - pts);
     return startShipFight(spec, false, { edge: -1, shift: hand.range[1], text: `${contactSay(`move.${post}.lose`)}${pts ? ` Armor -${pts}.` : ''}` });
   } });

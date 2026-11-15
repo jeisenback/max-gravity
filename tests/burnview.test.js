@@ -118,7 +118,7 @@ test('the burn view draws for every ship and every turn of the hull without an e
   const r = await ev(() => {
     const out = { drawn: 0, errors: [] }, W = innerWidth, H = innerHeight;
     for (const shipId of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) {
-      burn(shipId); const t = G.transit; G.state.armor = Math.round(ship().armor * 0.4);  // scarred, too
+      burn(shipId); const t = G.transit; G.state.armor = Math.round(hullAt(0.4, ship().armor));  // scarred, too
       for (const [frac, angle, flipped] of [[0.05, -Math.PI / 2, false], [0.4, -Math.PI / 2, false], [0.5, 0, false], [0.6, Math.PI / 2, true], [0.95, Math.PI / 2, true]]) {
         t.left = t.total * (1 - frac); t.angle = angle; t.flipped = flipped;
         try { drawTransit(W, H); out.drawn++; } catch (e) { out.errors.push(`${shipId}:${frac}:${e.message}`); }
@@ -849,7 +849,7 @@ test('a whole burn of ship life draws none of the game\'s dice', async () => {
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
     const t = stageBurn(0), real = Math.random, start = shipPeople().map(p => p.x); let draws = 0, moved = 0;
-    G.state.armor = Math.round(ship().armor / 2); (G.state.injured = G.state.injured || {})[G.state.crew[0]] = true; person(G.state.crew[1]).mood = { kind: 'low', until: G.state.day + 10, text: '' };  // damage, a patient and someone low aboard
+    G.state.armor = Math.round(hullAt(0.5, ship().armor)); (G.state.injured = G.state.injured || {})[G.state.crew[0]] = true; person(G.state.crew[1]).mood = { kind: 'low', until: G.state.day + 10, text: '' };  // damage, a patient and someone low aboard
     Math.random = () => { draws++; return real(); };
     try { for (let el = 0; t.left > 0; el += 1 / 30) { t.left -= 1 / 30; t.elapsed = el; lifeTick(1 / 30); shipPeople().forEach((p, i) => { if (Math.abs(p.x - start[i]) > 0.05) moved++; }); } } finally { Math.random = real; }
     return { draws, moved };
@@ -1133,7 +1133,7 @@ test('with damage the engineer works at a marked room in a shift, keeps the driv
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(), eng = shipPeople().find(p => p.role === 'engineer'), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
-    G.state.armor = Math.round(ship().armor * 0.6);  // 0.4 lost: two marks
+    G.state.armor = Math.round(hullAt(0.6, ship().armor));  // 0.4 lost past the skin (#1208): two marks
     t.elapsed = dayAt(0.15); tickFor(30); out.marks = [...(t.marks || [])]; out.shift = [out.marks.includes(eng.room) && eng.tx === null, pose(eng)];
     t.elapsed = dayAt(0.7); tickFor(30); out.night = inRoom(eng, 'engine');
     t.elapsed = dayAt(0.15); tickFor(30); G.state.armor = ship().armor;
@@ -1223,7 +1223,7 @@ test('a patient stays on the medbay cot through the hard burn and the flip, and 
 test('a burn with half its armor draws its two marked rooms without an error', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
-  const r = await ev(() => { const t = stageBurn(); G.state.armor = Math.round(ship().armor / 2); tickFor(1); drawTransit(innerWidth, innerHeight); return t.marks.length; });
+  const r = await ev(() => { const t = stageBurn(); G.state.armor = Math.round(hullAt(0.5, ship().armor)); tickFor(1); drawTransit(innerWidth, innerHeight); return t.marks.length; });
   await done();
   assert.equal(r, 2);
 });
@@ -1595,7 +1595,7 @@ test('a burn wears the ship, runs a project and burns the drive\'s fuel as much 
   await ev(helpers);
   const r = await ev(() => {
     const run = (speed, dt) => {
-      burn(); const t = G.transit, st = G.state; t.interceptPlanned = true; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', 60);
+      burn(); const t = G.transit, st = G.state; t.interceptPlanned = true; Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', 60);
       condition().life = 100; st.projects = { x: { id: 'x', left: 1e6 } }; t.fuelOwed = 0; const fuel0 = st.fuel; G.speed = speed;
       for (let n = 0; 1 - t.left / t.total < 0.98 && n < 20000; n++) { t.times = []; t.event = null; G.dialog = null; st.heat = 0; update(dt); Mods.emit('frame', dt); }
       const got = { life: 100 - condition().life, project: 1e6 - st.projects.x.left, fuel: fuel0 - st.fuel + t.fuelOwed };

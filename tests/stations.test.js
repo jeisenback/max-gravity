@@ -69,7 +69,7 @@ test('orders: a skilled crew member does better than the captain, once a day, wi
   const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state, max = ship().armor, cap = Math.floor(max * 0.75);
+    const st = G.state, max = ship().armor, cap = Math.floor(hullAt(0.75, max));  // three quarters of the armor past the skin (#1208)
     st.crew = []; st.armor = 1;
     const solo = orderOdds('engineer');
     hire('engineer', 3);
@@ -307,8 +307,8 @@ test('engineer: power always adds to 100, within limits', async () => {
   const bad = await ev(() => {
     const out = [];
     for (let i = 0; i < 300; i++) {
-      const k = pick(['drive', 'weapons', 'shields']); setPower(k, rand(-20, 120));
-      const p = power(), sum = p.drive + p.weapons + p.shields;
+      const k = pick(['drive', 'weapons', 'pd']); setPower(k, rand(-20, 120));
+      const p = power(), sum = p.drive + p.weapons + p.pd;
       if (sum !== 100 || Object.values(p).some(v => v < POWER_MIN || v > POWER_MAX)) out.push(JSON.stringify(p));
     }
     return out.slice(0, 3);
@@ -323,7 +323,7 @@ test('engineer: a manual engineer can scram the reactor; a crewed one keeps it c
   const r = await ev(() => {
     const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); } };  // seconds of today's burn (#992)
     st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
-    const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', 80); G.transit.comms = []; };
+    const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', 80); G.transit.comms = []; };
     go(); run(30); const warm = st.heat;
     run(40); const scrammed = { drive: power().drive, heat: st.heat, armor: st.armor < ship().armor, comm: G.transit.comms.some(c => /Reactor scram/.test(c)) };
     const cool = (skill) => { go(); st.crew = []; hire('engineer', skill); let peak = 0; for (let i = 0; i < 200; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); peak = Math.max(peak, st.heat); } return { peak, drive: power().drive, armor: st.armor === ship().armor, comm: G.transit.comms.some(c => /eases the drive/.test(c)) }; };
@@ -346,26 +346,26 @@ test('engineer: power orders, and power changes the console fight', async () => 
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; st.tutorial = null;
-    const a = giveOrder('engineer', 'favor-shields'), again = giveOrder('engineer', 'favor-shields');
-    const shields = power().shields;
+    const a = giveOrder('engineer', 'favor-pd'), again = giveOrder('engineer', 'favor-pd');
+    const pdShare = power().pd;
     hire('engineer', 2); giveOrder('engineer', 'balance');
     const sure = postState('engineer').busy === false;  // power orders are commands, they do not use up the day
     const deck = () => playerCounts();
     const gunsLow = (setPower('weapons', 10), deck().gun), gunsHigh = (setPower('weapons', 80), deck().gun);
     const burnLow = (setPower('drive', 10), deck().burn), burnHigh = (setPower('drive', 80), deck().burn);
-    // Shields of 40% or more give a deflector that soaks the first half hit.
-    const wall = sh => { Object.assign(power(), { drive: 10, weapons: 10, shields: 10 }); setPower('shields', sh); G.duel = null; startDuel({ kind: 'pirate' }, false); const d = G.duel.deflector; G.duel = null; G.nextEvent = null; return d; };
+    // Point defence of 40% or more stops the first half hit (#1208).
+    const wall = sh => { Object.assign(power(), { drive: 10, weapons: 10, pd: 10 }); setPower('pd', sh); G.duel = null; startDuel({ kind: 'pirate' }, false); const d = G.duel.pd; G.duel = null; G.nextEvent = null; return d; };
     const soaks = { high: wall(60), low: wall(20) };
-    // The deflector is used up on the first half hit: a half-hit answer, a foe threat.
-    setPower('shields', 60); startDuel({ kind: 'pirate' }, false); const d = G.duel; d.init = 'foe'; d.me.answer.hand = ['pdc', 'pdc', 'pdc']; d.them.threat.hand = ['gun', 'gun', 'gun'];
-    const before = st.armor; duelExchange('pdc', 'gun'); const soakedOnce = st.armor === before && G.duel && G.duel.deflector === false;
+    // The point defence's stop is used up on the first half hit: a half-hit answer, a foe threat.
+    setPower('pd', 60); startDuel({ kind: 'pirate' }, false); const d = G.duel; d.init = 'foe'; d.me.answer.hand = ['pdc', 'pdc', 'pdc']; d.them.threat.hand = ['gun', 'gun', 'gun'];
+    const before = st.armor; duelExchange('pdc', 'gun'); const soakedOnce = st.armor === before && G.duel && G.duel.pd === false;
     G.duel = null; G.nextEvent = null;
-    return { a, again, shields, sure, gunsLow, gunsHigh, burnLow, burnHigh, soaks, soakedOnce };
+    return { a, again, pdShare, sure, gunsLow, gunsHigh, burnLow, burnHigh, soaks, soakedOnce };
   });
-  assert.match(r.a, /behind the shields/); assert.equal(r.again, null, 'already there');
-  assert.equal(r.shields, 50); assert.ok(r.sure);
+  assert.match(r.a, /behind the point defence/); assert.equal(r.again, null, 'already there');
+  assert.equal(r.pdShare, 50); assert.ok(r.sure);
   assert.ok(r.gunsHigh > r.gunsLow && r.burnHigh > r.burnLow, 'weapons power adds gun runs, drive power adds evasive burns');
-  assert.deepEqual(r.soaks, { high: true, low: false }, 'shields of 40% or more give a deflector');
+  assert.deepEqual(r.soaks, { high: true, low: false }, 'point defence of 40% or more stops the first half hit');
   assert.ok(r.soakedOnce, 'and it soaks the first half hit only');
   await done();
 });
@@ -398,7 +398,7 @@ test('engineer: sliders for a manual engineer, bars for a crewed one, and a shee
 test('the engineering console shows wear in its colors, and fits without scrolling sideways', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, pd: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
   const colors = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
   assert.deepEqual(colors, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
@@ -410,7 +410,7 @@ test('the engineering console shows wear in its colors, and fits without scrolli
 test('the weapons console shows the armament and the fire deck from the ship, at port and in a burn', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.outfits = { pdc: 2, launcher: 1 }; st.torpedoes = 4; st.condition = { drive: 100, fire: 20, shields: 100, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.outfits = { pdc: 2, launcher: 1 }; st.torpedoes = 4; st.condition = { drive: 100, fire: 20, pd: 100, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'weapons');
   const want = await ev(() => ({ guns: Math.min(6, ship().guns), deck: playerCounts() }));
   assert.equal(await page.$$eval('#panel .con-plant rect[width="22"]', n => n.length), want.guns, 'a mount for each gun');
@@ -575,7 +575,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
     const burn = drive => {
       uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; t.interceptPlanned = true;
-      Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
+      Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', drive);
       st.fuel = Math.round(ship().fuel * 0.6); const fuel0 = st.fuel, day0 = st.day, cost = t.fuelCost;
       let frames = 0; G.speed = 16;  // the whole burn at the top speed (#992)
       while (G.mode === 'transit' && frames++ < 600) { t.event = null; G.dialog = null; st.heat = 0; update(1); if (G.mode === 'transit') Mods.emit('frame', 1); }
@@ -585,7 +585,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
     // A pirate is planned for this burn; it only finds you if it can see you.
     const spot = drive => {
       uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = [];
-      Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
+      Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', drive);
       t.interceptPlanned = true; t.intercept = { spec: { kind: 'pirate' }, at: 0 };
       const real = Math.random; Math.random = () => 0.6;  // in the middle: a cool drive is missed, a hot one is seen
       G.dialog = null; t.event = null; t.comms = [];
@@ -685,15 +685,15 @@ test('wear: systems wear slowly with use, at the setting you choose, and old sav
     const fresh = Object.values(condition()).every(v => v === 100);
     const run = (setting, drive) => {
       Settings.wear = setting; st.condition = undefined; condition();
-      uatBurn('Ceres Station', 'pallas'); G.transit.times = []; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive); st.fuel = ship().fuel; st.heat = 0;
+      uatBurn('Ceres Station', 'pallas'); G.transit.times = []; Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', drive); st.fuel = ship().fuel; st.heat = 0;
       wearBurn();
       return { ...condition() };
     };
     const off = run('off', 40), slow = run('slow', 40), normal = run('normal', 40), hot = run('slow', 80);
-    // Fights and hits wear the fire control and shields.
+    // Fights and hits wear the fire control and point defence.
     Settings.wear = 'slow'; st.condition = undefined; condition();
     for (let i = 0; i < 100; i++) Mods.emit('fire', G.player);
-    for (let i = 0; i < 20; i++) Mods.emit('damage', G.player, true, false, 0);
+    for (let i = 0; i < 20; i++) Mods.emit('damage', G.player, false, 0);
     const fight = { ...condition() };
     Settings.wear = 'slow';
     return { fresh, off, slow, normal, hot, fight };
@@ -703,7 +703,7 @@ test('wear: systems wear slowly with use, at the setting you choose, and old sav
   assert.ok(r.slow.drive < 100 && r.slow.drive > 95, `a burn costs a few percent (${r.slow.drive})`);
   assert.ok(100 - r.normal.drive > 2 * (100 - r.slow.drive), 'normal wears faster than slow');
   assert.ok(r.hot.drive < r.slow.drive, 'a hot drive wears faster');
-  assert.ok(r.fight.fire < 100 && r.fight.shields < 100 && r.fight.drive === 100, 'shots and hits wear the gear that took them');
+  assert.ok(r.fight.fire < 100 && r.fight.pd < 100 && r.fight.drive === 100, 'shots and hits wear the gear that took them');
   await done();
 });
 
@@ -723,13 +723,13 @@ test('wear: a worn system costs performance, and breakdowns come as a scene', as
     st.condition = undefined; condition(); const calm = new Set();
     for (let i = 0; i < 120; i++) { G.transit.event = null; G.dialog = null; const e = pickHappening('transit'); if (e) calm.add(e.title); }
     // The scene: fix it properly (needs an engineer), jury-rig it, or nurse it along.
-    condition().shields = 30;
-    const ev1 = breakdownEvent('shields'), labels = ev1.choices.map(c => c.label);
+    condition().pd = 30;
+    const ev1 = breakdownEvent('pd'), labels = ev1.choices.map(c => c.label);
     openEvent(ev1); const visible = G.dialog.choices.map(c => c.label);
-    const nurse = ev1.choices[2].run(); const after = condition().shields;
-    hire('engineer', 2); condition().shields = 30; const left0 = G.transit.left;
-    openEvent(breakdownEvent('shields')); const crewed = G.dialog.choices.map(c => c.label);
-    chooseEvent(0); const fixed = condition().shields;
+    const nurse = ev1.choices[2].run(); const after = condition().pd;
+    hire('engineer', 2); condition().pd = 30; const left0 = G.transit.left;
+    openEvent(breakdownEvent('pd')); const crewed = G.dialog.choices.map(c => c.label);
+    chooseEvent(0); const fixed = condition().pd;
     return { good, worn, broke: [...titles].filter(t => /Trouble$/.test(t)), calm: [...calm].filter(t => /Trouble$/.test(t)), labels, visible, crewed, nurse, after, fixed };
   });
   assert.ok(r.worn.speed < r.good.speed && r.worn.guns < r.good.guns && r.worn.blur > r.good.blur && r.good.blur === 0, 'worn drive, fire control and sensors each cost something');
@@ -744,7 +744,7 @@ test('wear: a worn system costs performance, and breakdowns come as a scene', as
 test('wear: port overhaul, servicing in flight, and the setting in the menu', async () => {
   const { page, ev, done } = await open({});
   await ev(helpers);
-  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 100000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, shields: 80 }); UI.render(); });
+  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 100000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, pd: 80 }); UI.render(); });
   await goTo(page, 'shipyard');
   assert.match(await page.innerText('#panel'), /Condition/i);
   const cost = await ev(() => overhaulCost('drive'));
@@ -755,12 +755,12 @@ test('wear: port overhaul, servicing in flight, and the setting in the menu', as
   // Servicing in flight: the worst system, once a day, better with a skilled engineer.
   const svc = await ev(() => {
     const st = G.state; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    Object.assign(condition(), { drive: 100, shields: 20, fire: 90 });
+    Object.assign(condition(), { drive: 100, pd: 20, fire: 90 });
     hire('engineer', 3); const note = giveOrder('engineer', 'service'); const again = giveOrder('engineer', 'service');
-    return { note, again, shields: condition().shields, asked: postOrders('engineer').some(o => o.id === 'service') };
+    return { note, again, pd: condition().pd, asked: postOrders('engineer').some(o => o.id === 'service') };
   });
   assert.ok(svc.asked); assert.equal(svc.again, null);
-  assert.ok(svc.shields === 20 || svc.shields === 45, `a service helps or fails (${svc.shields})`);
+  assert.ok(svc.pd === 20 || svc.pd === 45, `a service helps or fails (${svc.pd})`);
   await done();
   // The setting.
   const m = await open({ title: true });
@@ -776,13 +776,13 @@ test('projects: they take parts, run only on a burn, and finish with a result', 
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
-    st.cargo = {}; st.paid = {}; st.condition = undefined; condition().shields = 30;
+    st.cargo = {}; st.paid = {}; st.condition = undefined; condition().pd = 30;
     const none = startProject('patch');  // no parts in the hold
     st.cargo.industrial = 4; st.paid.industrial = 800;
     const started = startProject('patch'), again = startProject('patch'), tune = startProject('tune');  // one job per post
     const out = { none, started, again, tune, parts: st.cargo.industrial, paid: st.paid.industrial, secs: projectsOf().patch.total };
     Mods.emit('frame', 5); out.idleAtPort = projectsOf().patch.left;  // nothing moves at port (not in transit)
-    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.condition = undefined; condition().shields = 30;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.condition = undefined; condition().pd = 30;
     return out;
   });
   assert.equal(r.none, false); assert.equal(r.started, true); assert.equal(r.again, false); assert.equal(r.tune, false);
@@ -797,7 +797,7 @@ test('projects: a crewed engineer does better; patch, tune and refit each have t
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
-    const tries = (id, n) => { let ok = 0; for (let i = 0; i < n; i++) { st.condition = undefined; condition().shields = 30; delete projectsOf()[id]; st.cargo.industrial = 9; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.cargo.industrial = 9; startProject(id); burnFrames(80); if (condition().shields > 30) ok++; } return ok; };
+    const tries = (id, n) => { let ok = 0; for (let i = 0; i < n; i++) { st.condition = undefined; condition().pd = 30; delete projectsOf()[id]; st.cargo.industrial = 9; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.cargo.industrial = 9; startProject(id); burnFrames(80); if (condition().pd > 30) ok++; } return ok; };
     const solo = tries('patch', 40);
     hire('engineer', 3); const crew = tries('patch', 40);
     // Tune: faster until you next dock.
@@ -847,16 +847,16 @@ test('programs: a slicer writes a rule over a burn, slots are limited, and a ful
     const out = {};
     hire('engineer', 2); hire('slicer', 3);
     out.bad = [writeProgram('nonsense', 'engineer', 'balance'), writeProgram('heat', 'engineer', 'no-such-order')];
-    out.started = writeProgram('heat', 'engineer', 'balance'); out.secondWhileWriting = writeProgram('armor', 'engineer', 'favor-shields');
+    out.started = writeProgram('heat', 'engineer', 'balance'); out.secondWhileWriting = writeProgram('armor', 'engineer', 'favor-pd');
     const total = programs().writing.total;
     Mods.emit('frame', 5); out.idleAtPort = programs().writing.left === total;  // nothing moves at port
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const real = Math.random; Math.random = () => 0;  // a sure success
     burnFrames(70); Math.random = real;
     out.rules = programs().rules.map(r => `${r.cond}:${r.post}.${r.order}`);
-    out.full = writeProgram('armor', 'engineer', 'favor-shields');  // the one slot is taken
+    out.full = writeProgram('armor', 'engineer', 'favor-pd');  // the one slot is taken
     out.slot = extendPrograms(); Math.random = () => 0; burnFrames(100); Math.random = real;
-    out.slots = programs().slots; out.second = writeProgram('armor', 'engineer', 'favor-shields');
+    out.slots = programs().slots; out.second = writeProgram('armor', 'engineer', 'favor-pd');
     Math.random = () => 0; burnFrames(70); Math.random = real;
     out.two = programs().rules.length;
     removeProgram(0); out.removed = programs().rules.length;
@@ -880,8 +880,8 @@ test('programs: a rule runs a crewed post on the rising edge of its condition, a
     const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const t = G.transit;
     programs().slots = 3;
-    programs().rules.push({ cond: 'heat', post: 'engineer', order: 'balance', on: false }, { cond: 'armor', post: 'engineer', order: 'favor-shields', on: false }, { cond: 'contact', post: 'engineer', order: 'favor-guns', on: false }, { cond: 'wear', post: 'comms', order: 'listen', on: false });
-    const power0 = () => Object.assign(power(), { drive: 70, weapons: 15, shields: 15 });
+    programs().rules.push({ cond: 'heat', post: 'engineer', order: 'balance', on: false }, { cond: 'armor', post: 'engineer', order: 'favor-pd', on: false }, { cond: 'contact', post: 'engineer', order: 'favor-guns', on: false }, { cond: 'wear', post: 'comms', order: 'listen', on: false });
+    const power0 = () => Object.assign(power(), { drive: 70, weapons: 15, pd: 15 });
     const progs = () => t.comms.filter(c => /\[Program\]/.test(c)).length;
     // Nobody crewed: nothing fires.
     power0(); st.heat = 80; burnFrames(2); const solo = { progs: progs(), drive: power().drive };
@@ -890,11 +890,11 @@ test('programs: a rule runs a crewed post on the rising edge of its condition, a
     const fired = { drive: power().drive, progs: progs() };
     power0(); st.heat = 78; burnFrames(1); const again = progs();  // still true: no second firing
     st.heat = 10; burnFrames(1); power0(); st.heat = 78; burnFrames(1); const edge = progs();  // false then true again: fires again
-    // Hull below half: favor the shields.
-    Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); st.armor = Math.floor(ship().armor * 0.4); burnFrames(1);
-    const hull = power().shields;
+    // Hull below half: favor the point defence.
+    Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); st.armor = Math.floor(ship().armor * 0.4); burnFrames(1);
+    const hull = power().pd;
     // A contact appearing: favor the guns.
-    Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); openEvent(contactEvent({ kind: 'pirate' }));
+    Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); openEvent(contactEvent({ kind: 'pirate' }));
     const contact = power().weapons;
     return { solo, fired, again, edge, hull, contact };
   });
@@ -902,7 +902,7 @@ test('programs: a rule runs a crewed post on the rising edge of its condition, a
   assert.equal(r.fired.drive, 40); assert.equal(r.fired.progs, 1);
   assert.equal(r.again, 1, 'it fires on the rising edge only');
   assert.equal(r.edge, 2, 'and again when the condition comes back');
-  assert.equal(r.hull, 50, 'hull below half: shields first');
+  assert.equal(r.hull, 50, 'hull below half: point defence first');
   assert.equal(r.contact, 50, 'a contact: guns first');
   await done();
 });

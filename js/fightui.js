@@ -27,7 +27,7 @@ function startShipFight(spec, flee, o = {}) {
     const away = Math.random() < fleeOdds() + (o.flee || 0);  // o.flee: Runner's door adds to the odds (engage.js)
     recordHand('fled'); if (spec.kind === 'patrol') recordHand('ranFromNavy');  // the record (traits.js): a run, got away or not, counted after the roll so a moment is said of what happened
     if (away) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
-    st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
+    st.armor = Math.max(1, st.armor - Math.round(hullPast(ship().armor) * 0.08));  // eight percent of the armor past the skin (#1208)
     s.edge = -1;
     text = fightSay('flee.caught', { helm: helmName(), ship: theShip(foe).replace(/^The/, 'the') });
   }
@@ -37,10 +37,11 @@ function startShipFight(spec, flee, o = {}) {
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0, breakAt: hasTrait(hired(), 'hard-case') ? FIGHT.BREAK + 0.1 : undefined });  // Hard Case (traits.js): she breaks off a tenth sooner
   const fit = partFight(st), own = stationFight(hired());  // the fitted parts' and the hand's station's fight numbers (parts.js, #1135)
-  const mine = shipSide({ ...me, dmgMult: me.dmgMult * perf('fire') * fit.dmgMult * own.dmgMult, shields: me.shields * perf('shields') * fit.shields * own.shields }, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
+  const guard = perf('pd') * fit.armor * own.armor;  // the point defence's condition and parts scale what the hull can take (#1208)
+  const mine = shipSide({ ...me, dmgMult: me.dmgMult * perf('fire') * fit.dmgMult * own.dmgMult, armor: me.armor * guard }, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
   mine.pdcHold = heldCut();
-  mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
-  s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
+  mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL * guard)));  // at least 1: a ship at its last armor still fights
+  s.armor0 = { real: st.armor, fight: mine.armor, scale: FIGHT.POOL * guard };  // what fightTook measures the real loss from, and at what scale
   s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
   if (s.edge) {
@@ -83,18 +84,18 @@ const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
 const fightHit = e => (e.move ? fightSay(e.landed === false ? 'move.failed.parley' : `move.used.${e.move}`) : fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg }));  // a used move has no part or damage; a hit on a part already gone does nothing; a hit on her consort names it
 const fightHits = events => (events.length ? events.map(fightHit).join(', ') : fightSay('log.none'));
 
-// What the turn cost: the ship keeps its armor (the fight's armor lost since the start, divided by FIGHT.POOL, off the real armor it started with; never up, never under 1) and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your real maximum armor, shields and armor, R23)
+// What the turn cost: the ship keeps its armor (the fight's armor lost since the start, divided by its scale (FIGHT.POOL, and the point defence's, s.armor0.scale), off the real armor it started with; never up, never under 1) and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your real maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
-const FIGHT_WEAR = { salvo: 0.4, hit: 0.9 };  // what a salvo takes off fire control and a hit off the shields, in the hand's fight
+const FIGHT_WEAR = { salvo: 0.4, hit: 0.9 };  // what a salvo takes off fire control and a hit off the point defence, in the hand's fight
 function fightTook(s, events) {
   const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe' && e.part === 'hull').reduce((n, e) => n + e.dmg, 0), out = [];
-  // Each salvo wears fire control and each hit the shields, scaled so a fight costs about what one costs the owner (duel.js: 0.05 a shot over about
+  // Each salvo wears fire control and each hit the point defence, scaled so a fight costs about what one costs the owner (duel.js: 0.05 a shot over about
   // a hundred shots, 0.3 a hit over about fifteen), from a hand's fight of about six turns of two salvos and five hits (#1135).
   wear('fire', FIGHT_WEAR.salvo * events.filter(e => e.who === 'me').length);
-  wear('shields', FIGHT_WEAR.hit * events.filter(e => e.who === 'foe' && e.part === 'hull').length);
-  st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor) / FIGHT.POOL)));
+  wear('pd', FIGHT_WEAR.hit * events.filter(e => e.who === 'foe' && e.part === 'hull').length);
+  st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor - HULL_SKIN * me.maxArmor) / (s.armor0.scale || FIGHT.POOL))));  // what got past the skin stays on the ship (HULL_SKIN, #1208)
   if (me.launcher) st.torpedoes = me.torps;
-  if (dealt > FIGHT.HEAVY_HIT * me.maxArmor / FIGHT.POOL) {  // judged at the real scale: the foe's damage is not pooled, so a heavy turn takes what it did before #814
+  if (dealt > FIGHT.HEAVY_HIT * hullPast(me.maxArmor) / FIGHT.POOL) {  // judged at the real scale: the foe's damage is not pooled, so a heavy turn takes what it did before #814
     const hits = s.hits || 0;  // the hand's hurts so far (hurtHand): a casualty that fell on the hand is the turn's hurt, and the hand's own roll is not made
     if (Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out.push(repelCasualty(s));
     if (!s.handDied && (s.hits || 0) === hits && Math.random() < FIGHT.HAND_HURT) out.push(hurtHand(s));
@@ -102,7 +103,7 @@ function fightTook(s, events) {
   if (out.length) s.state.log[s.state.log.length - 1] += ` ${out.join(' ')}`;
 }
 
-// The bars of both sides as a picture under the board: shields, armor and each part, and your heat, each with its value. A part is drawn by how much of it is left
+// The bars of both sides as a picture under the board: armor and each part, and your heat, each with its value. A part is drawn by how much of it is left
 // (green, then amber, then red), so a part at full does not read as damage (#846); the labels are about 12px on a phone. With `prev` (the state before the last
 // turn) what each bar lost that turn is drawn in red at its end and named in the label, so a hit shows where it landed.
 const FIGHT_BAR = { row: 18, W: 175, label: 12, bar: [66, 66] };  // the row's height, a side's width, the label's size, the bar's x and width (in a 360-wide picture)
@@ -110,8 +111,8 @@ const partTone = frac => (frac > 0.6 ? '#7fd8a0' : frac > 0.3 ? '#ffcf7f' : '#ff
 function fightBars(st, prev = null) {
   const { row, W, label, bar: [bx, bw] } = FIGHT_BAR;
   const bars = (side, name, x, y0, was = null) => {
-    const before = k => (!was ? null : k === 'shields' ? was.shields : k === 'armor' ? was.armor : k === 'heat' ? null : was.parts[k] ? was.parts[k].hp : null);
-    const list = [['shields', side.shields, side.maxShields, () => '#4aa3ff'], ['armor', side.armor, side.maxArmor, () => '#cfe3ff'],
+    const before = k => (!was ? null : k === 'armor' ? was.armor : k === 'heat' ? null : was.parts[k] ? was.parts[k].hp : null);
+    const list = [['armor', side.armor, side.maxArmor, () => '#cfe3ff'],
       ...['weapons', 'drive', 'lock', ...(side !== st.me && side.parts.launcher ? ['launcher'] : [])].map(k => [k, side.parts[k].hp, side.parts[k].max, partTone]), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, () => '#ffcf7f']] : [])];
     const svg = list.map(([k, v, max, tone], i) => {
       const y = y0 + 18 + i * row, frac = Math.max(0, Math.min(1, v / Math.max(1, max))), w = Math.round(bw * frac), b = before(k);
@@ -217,7 +218,7 @@ function moveChoices(f, orders, known, redo) {
       out.push({ label: on(id, fightSay('move.split', { lo, hi })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
     } else {  // the rest are plain toggles
       if (!canUse(f, orders, id, known)) { out.push(shut(id)); continue; }
-      out.push({ label: on(id, fightSay(`move.${id}`, { n: Math.round(f.me.maxArmor * FIGHT.PATCH) })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
+      out.push({ label: on(id, fightSay(`move.${id}`, { n: Math.round(hullPast(f.me.maxArmor) * FIGHT.PATCH) })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
     }
   }
   return out;

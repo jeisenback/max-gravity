@@ -573,16 +573,22 @@ function portOfferWhere(o, ids, castIds, castable, rooms) {
   const on = ids.find(id => castIds.includes(id));
   if (on) return { id: on };
   if (ids.some(id => castable.includes(id))) return null;
-  const room = [o.ev.place, PORT_OFFER_ROOM[o.kind], 'market'].find(r => r && rooms.includes(r));
+  const room = [o.room, o.ev && o.ev.place, PORT_OFFER_ROOM[o.kind], 'market'].find(r => r && rooms.includes(r));
   return room ? { room } : null;
 }
-// The offers that show (pure): the first PORT_OFFERS_SHOWN, in the order made, of those that can show; `whoOf` gives an offer's people's ids.
+// The offers that show (pure): the first PORT_OFFERS_SHOWN, in the order made, of those that can show; `whoOf` gives an offer's people's ids. The day
+// down's lanes on the spoke lift (`lift`) count as one between them, as one place to go down from (#1193).
 function portOffersShown(offers, whoOf, castIds, castable, rooms) {
   const out = [];
+  let n = 0, lift = false;
   for (const o of offers || []) {
-    if (out.length >= PORT_OFFERS_SHOWN) break;
     const at = portOfferWhere(o, whoOf(o), castIds, castable, rooms);
-    if (at) out.push({ offer: o, label: o.label, ...at });
+    if (!at) continue;
+    const counts = !o.lift || !lift;
+    if (counts && n >= PORT_OFFERS_SHOWN) continue;
+    if (counts) n++;
+    if (o.lift) lift = true;
+    out.push({ offer: o, label: o.label, ...at });
   }
   return out;
 }
@@ -590,10 +596,12 @@ function portOffersShown(offers, whoOf, castIds, castable, rooms) {
 function portOffersNow(planet, layout, cast) {
   const st = G.state, castIds = cast.map(c => c.who);
   const castable = [...layout.folk.map(f => f.key), ...st.crew, ...(G.patrons || []).filter(x => !x.cast).map(x => `patron:${x.p.id || x.p.first}`)];
-  return portOffersShown(G.portOffers, o => portSceneWho(planet, scenePeople(o.ev)), castIds, castable, layout.rooms.map(r => r.id));
+  const standing = [...ashoreOffers(st, planet), ...downOffers(st, planet)];  // the day ashore's and the day down's, after the landing's (#1193)
+  return portOffersShown([...(G.portOffers || []), ...standing], o => (o.ev ? portSceneWho(planet, scenePeople(o.ev)) : o.who ? [o.who] : []), castIds, castable, layout.rooms.map(r => r.id));
 }
 // A click on an offer's tag takes it: it leaves the queue and its scene opens, its people walked to it (#1103).
 function portOfferTake(o) {
+  if (o.take) return o.take();  // the day ashore's and the day down's, which say what taking them does (#1193)
   G.portOffers = (G.portOffers || []).filter(x => x !== o);
   if (o.ev) openEvent(o.ev);
 }

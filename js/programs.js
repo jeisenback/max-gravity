@@ -12,7 +12,7 @@ const PROGRAM_SECS = 60, SLOT_SECS = 90, SLOTS_MAX = 3;
 // When a rule fires. `test` is checked each second of a burn; 'contact' fires when a contact opens.
 const PROGRAM_CONDITIONS = {
   heat: { name: 'the reactor runs hot', test: () => heat() >= 75 },
-  armor: { name: 'the hull is below half', test: () => G.state.armor < ship().armor * 0.5 },
+  armor: { name: 'the hull is below half', test: () => hullLeftOf(G.state.armor, ship().armor) < 0.5 },
   fuel: { name: 'reaction mass is low', test: () => G.state.fuel < ship().fuel * 0.25 },
   wear: { name: 'a system is failing', test: () => condition()[worstPart()] < 50 },
   contact: { name: 'a contact appears', test: null },
