@@ -38,6 +38,27 @@ test('a hand who came alone starts with Bexa and Pax, and can take off with no p
   assert.equal(r.pilot, false); assert.equal(r.err, null); assert.equal(r.mode, 'flight');
 });
 
+test('the ramp names who the draw leaves unmet, Bexa and Pax first, and the captain\'s ship and pronouns, never Hester\'s by default (#1240)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    toShare(); out.plain = goOnToBridge().text;  // the usual narrow pair, Ines and Tomas: Bexa and Pax at the ramp
+    toShare(); G.state.castPair = ['bexa', 'pax']; const t = goOnToBridge().text; out.drawn = { text: t, crew: G.state.crew.map(person).filter(p => p.cast && p.cast !== 'cato').map(p => p.cast).sort() };
+    toShare({ alone: true }); G.state.castPair = ['ines', 'bexa']; out.alone = goOnToBridge().text;  // Bexa met: Pax, then Yelena
+    toShare(); hired().vouched = true; out.ship = shipTitle(); out.vouched = goOnToBridge().text;
+    return out;
+  });
+  await done();
+  assert.match(r.plain, /Bexa has her hand flat on the hull\. Pax is reading the maintenance tags/);
+  assert.match(r.drawn.text, /Yelena is under the turret blister.*Ruben is reading the registry plate/, 'Bexa and Pax met in chapter one: the next two not met');
+  assert.doesNotMatch(r.drawn.text, /Bexa has her hand|Pax is reading/);
+  assert.deepEqual(r.drawn.crew, ['ruben', 'yelena'], 'and they are the crew');
+  assert.match(r.alone, /Pax and Yelena look at you/, 'alone: the two at the ramp, by name');
+  assert.ok(r.vouched.includes(r.ship) && !/Hester's ship/.test(r.vouched), 'the captain\'s ship by name');
+  assert.match(r.vouched, /from Hester Vance\. She has written to the registry/, 'the captain\'s own pronouns');
+});
+
 test('a chapter-two save reloads as chapter two, the hand on the bridge and nothing open', async () => {
   const { ev, done } = await open();
   await ev(helpers);

@@ -617,11 +617,16 @@ function chapterTwoShip(st) {
 
 // Who is aboard: who came, with their posts; Bexa on the deck and Pax at the gun beside the hand. A berth left by someone who did not come stays
 // empty until the members vote on who joins. The hand is the captain (#1045). Returns the crew's ids.
+// Who stands at the Ore Runner's ramp as chapter two's new members (the owner, 2026-11-15, #1240): Bexa and Pax, the Ceres two, when chapter one did not meet
+// them (castPair, cast.js); a gap filled from the rest not met, in this order (chapter one's pair is two, so the first four always fill it). Bexa takes the ice and
+// Pax the guns, as before; the others their own posts.
+const RAMP_ORDER = ['bexa', 'pax', 'yelena', 'ruben'], RAMP_ROLE = { bexa: 'icehand', pax: 'gunner' };
+const rampPair = () => RAMP_ORDER.filter(k => CAST[k] && !castPair().includes(k)).slice(0, 2);
 function chapterTwoCrew(st, h) {
   const ids = (h.came || []).filter(id => st.people[id] && !st.people[id].dead);
-  for (const [key, role] of [['bexa', 'icehand'], ['pax', 'gunner']]) {
-    const p = castPerson(key);
-    Object.assign(p, { role, skill: role === 'icehand' ? 1 : (p.skills.gunner || 1), location: null });
+  for (const key of rampPair()) {
+    const p = castPerson(key), role = RAMP_ROLE[key] || p.role;
+    Object.assign(p, { role, skill: role === 'icehand' ? 1 : (p.skills[role] || 1), location: null });
     if (!ids.includes(p.id)) ids.push(p.id);
   }
   return ids;
@@ -635,10 +640,11 @@ const ENDORSEMENT_FEE = 2500, VOUCH_OFF = 0.05;
 const twoSay = (key, vars) => sceneSay('scene:chapter-two-start', key, vars);
 function chapterTwoStartScene() {
   const h = G.state.hired, came = (h.came || []).map(id => G.state.people[id]).filter(p => p && !p.dead), names = came.map(p => p.first);
-  const members = names.length ? twoSay('members', { names: namesOf(came) }) : twoSay('members.alone');
+  const cap = hiredCaptain(), ramp = rampPair(), v = { ship: shipTitle(), captain: cap ? `${cap.first} ${cap.last}` : '', last: cap ? cap.last : '', pair: ramp.map(k => castPerson(k).first).join(' and '), ...pronounWords(cap) };  // the captain's ship and name, and who is at the ramp (#1240)
+  const members = names.length ? twoSay('members', { names: namesOf(came), ...v }) : twoSay('members.alone', v);
   return {
     title: twoSay('title'), personal: true,
-    text: [twoSay('ramp'), members, twoSay('letter'), twoSay(h.vouched ? 'vouched' : 'fee', { fee: fmt(ENDORSEMENT_FEE) })].join('</p><p>'),
+    text: [[twoSay('ramp'), ...ramp.map(k => twoSay(`ramp.${k}`))].join(' '), members, twoSay('letter', v), twoSay(h.vouched ? 'vouched' : 'fee', { fee: fmt(ENDORSEMENT_FEE), ...v })].join('</p><p>'),
     choices: [{ label: twoSay('label'), run() { return takeBridge(G.state); } }],
   };
 }
@@ -648,7 +654,7 @@ function takeBridge(st) {
   delete h.captainKey; delete h.captain;
   h.bridge = true;
   let paid = '';
-  if (h.vouched) { h.papers = ['endorsement:vouched']; share.owed = Math.round(share.owed * (1 - VOUCH_OFF)); paid = twoSay('vouched.result', { owed: fmt(share.owed) }); }
+  if (h.vouched) { h.papers = ['endorsement:vouched']; share.owed = Math.round(share.owed * (1 - VOUCH_OFF)); paid = twoSay('vouched.result', { owed: fmt(share.owed), last: (hiredCaptain() || {}).last || '' }); }
   else {
     h.papers = ['endorsement'];
     if (st.credits >= ENDORSEMENT_FEE) { st.credits -= ENDORSEMENT_FEE; paid = twoSay('fee.paid', { fee: fmt(ENDORSEMENT_FEE) }); }

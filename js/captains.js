@@ -18,7 +18,7 @@ const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS)); return s
 function captainPerson(key) {
   const d = captainDef(key);
   return registerPerson({
-    captainKey: key, first: d.first, last: d.last, culture: d.culture, home: d.home, job: 'captain', role: 'captain', age: d.age, bio: d.bio,
+    captainKey: key, first: d.first, last: d.last, pronouns: d.pronouns, culture: d.culture, home: d.home, job: 'captain', role: 'captain', age: d.age, bio: d.bio,
     traits: [...d.traits], goal: 'job', wealth: 2, secret: null, opinion: 0, memories: [], location: null, mood: null, captain: { ...d.captain },
   });
 }
