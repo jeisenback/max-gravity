@@ -151,3 +151,56 @@ test('the name field asks a hired hand for the name on their papers, and an owne
   assert.equal(await owner.page.getAttribute('#ngCaptain', 'placeholder'), 'The name on your papers', 'and a hand there is asked as a hand');
   await owner.done();
 });
+
+// The hand's papers (docs/superpowers/specs/2026-11-14-papers-design.md): the new-game form is the papers, with the sheet as four words and two questions.
+test('the new-game form is the hand\'s papers: the home, the post, the sheet as four words that follow the choices, and two questions that reach startGame', async () => {
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  const count = sel => hand.page.$$eval(sel, b => b.length), line = () => hand.page.$$eval('.menu-sheet span', s => s.map(x => x.textContent.trim()).join(' '));
+  assert.deepEqual([await count('[data-action=menuHome]'), await count('[data-action=menuPost]'), await count('[data-action=menuBefore]'), await count('[data-action=menuKnown]')], [3, 0, 4, 4], 'the shipped build has one post, the guns');
+  assert.equal(await line(), 'Hands 3 Eye 4 Nerve 3 Wit 4', 'Earth, a gunner');
+  await hand.page.click('[data-action=menuBefore][data-arg=clerk]');
+  assert.equal(await line(), 'Hands 3 Eye 4 Nerve 2 Wit 5', 'a clerk: wit up, nerve down');
+  await hand.page.click('[data-action=menuHome][data-arg=belt]');
+  assert.equal(await line(), 'Hands 4 Eye 4 Nerve 2 Wit 4', 'the Warren: hands up');
+  await hand.page.click('[data-action=menuHome][data-arg=earth]');
+  const all = await hand.ev(() => {
+    const out = [];
+    for (const home of Object.keys(BACKGROUNDS)) for (const post of ['gunner']) for (const before of ['none', 'dock', 'clerk', 'ferry']) {
+      Object.assign(Menu.form, { home, post, before }); Menu.render();
+      const shown = [...document.querySelectorAll('.menu-sheet span')].map(x => x.textContent.trim()).join(' ');
+      const want = papersSheet(newSheet(home, post), before), words = STATS.map(st => `${st[0].toUpperCase()}${st.slice(1)} ${want[st]}`).join(' ');
+      if (shown !== words) out.push(`${home} ${post} ${before}: ${shown} / ${words}`);
+    }
+    Object.assign(Menu.form, { home: 'earth', post: 'gunner', before: 'clerk' }); Menu.render();
+    return out;
+  });
+  assert.deepEqual(all, [], 'the form and the game agree on every home, post and trade');
+  await hand.page.click('[data-action=menuKnown][data-arg=shipper]');
+  await hand.page.fill('#ngCaptain', 'Rin Adeyemi');
+  const got = await hand.ev(() => { const real = window.startGame; window.startGame = o => { window.startGame = real; window.__papers = o.papers; return real(o); }; return true; });
+  assert.ok(got);
+  await hand.page.click('[data-action=menuStart]');
+  assert.deepEqual(await hand.ev(() => window.__papers), { home: 'earth', before: 'clerk', known: 'shipper' });
+  await hand.done();
+  const owner = await open({ title: true, scope: 'full' });
+  await owner.page.click('[data-action=menuView][data-arg=new]');
+  assert.deepEqual([await owner.page.$$eval('[data-action=menuBefore]', b => b.length), await owner.page.$$eval('[data-action=menuKnown]', b => b.length), await owner.page.$$eval('[data-action=menuBackground]', b => b.length)], [0, 0, 3], 'an owner has no questions and keeps the three starts');
+  await owner.page.click('[data-action=menuMode][data-arg=hired]');
+  assert.equal(await owner.page.$$eval('[data-action=menuPost]', b => b.length), 4, 'the full build offers the four posts');
+  await owner.page.click('[data-action=menuPost][data-arg=comms]'); await owner.page.click('[data-action=menuBefore][data-arg=clerk]');
+  assert.equal(await owner.page.$$eval('.menu-sheet span', s => s.map(x => x.textContent.trim()).join(' ')), 'Hands 3 Eye 3 Nerve 3 Wit 5', 'Earth comms with the clerk: wit is at the cap, so the trade changes nothing');
+  assert.ok(await owner.page.$eval('[data-action=menuBefore][data-arg=clerk]', b => /no change/.test(b.textContent)), 'and the answer says so');
+  const full = await owner.ev(() => {
+    const out = [];
+    for (const home of Object.keys(BACKGROUNDS)) for (const post of HIRED_POSTS) for (const before of ['none', 'dock', 'clerk', 'ferry']) {
+      Object.assign(Menu.form, { home, post, before }); Menu.render();
+      const shown = [...document.querySelectorAll('.menu-sheet span')].map(x => x.textContent.trim()).join(' ');
+      const want = papersSheet(newSheet(home, post), before), words = STATS.map(st => `${st[0].toUpperCase()}${st.slice(1)} ${want[st]}`).join(' ');
+      if (shown !== words) out.push(`${home} ${post} ${before}: ${shown} / ${words}`);
+    }
+    return out;
+  });
+  assert.deepEqual(full, [], 'the form and the game agree on every home, post and trade in the full build');
+  await owner.done();
+});

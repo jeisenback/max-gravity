@@ -1246,6 +1246,14 @@ const SCENE_LINES = {
   },
   'scene:sign-on': {  // a captain's own introduction (their entry's `intro`), and the line on the dock a put-ashore hand carries, are not here
     title: 'Signing On',
+    // the papers (menu.js papersForm, spec 2026-11-14): where you are from, the two questions and their answers, the note on a trade that changes nothing
+    'home.earth': 'An arcology on Earth. Everyone you know is still in it, and the service charge went up in March.',
+    'home.mars': 'The domes at Tharsis. Your mother still pays the Pact for the air, and asks when you are coming back.',
+    'home.belt': 'The Ceres Warren. A water share was the first thing you owned, and the first thing you sold.',
+    'question.before': 'What you were before the ship', 'question.known': 'Who knows your name',
+    'before.dock.label': 'Dock labour', 'before.clerk.label': 'A clerk at a shipper\'s office', 'before.ferry.label': 'A rating on a short-haul ferry', 'before.none.label': 'Nothing worth a line',
+    'known.shipper.label': 'A shipper at home', 'known.patrol.label': 'A patrol', 'known.shipmate.label': 'A shipmate', 'known.none.label': 'Nobody worth a line',
+    'trade.none': 'no change on your sheet',
     'text.earth': 'The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency\'s list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, {ship}, an ice hauler out of {sys}, took you for what you could do.{who}',
     'text.mars': 'You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact\'s navy didn\'t want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. {ship}, an ice hauler out of {sys}, is yours to work.{who}',
     'text.belt': 'You were born in the Ceres Warren, and you know what water is worth. A hand\'s share in a freighter that crosses to the inner system and back isn\'t much, but it\'s a berth, and a berth is the one thing in the Belt that\'s truly yours. The Federation\'s dock office stamped the papers and wished you luck, in the tone of people who\'ve wished a great many people luck. {ship}, an ice hauler out of {sys}, sails.{who}',
