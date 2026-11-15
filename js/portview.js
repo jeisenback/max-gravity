@@ -51,6 +51,47 @@ const PORT_LAYOUTS = {
       clinic: [{ room: 'clinic', x: 690, name: 'sit' }, { room: 'clinic', x: 760, name: 'sit' }],
     },
   },
+  // Ceres Station (docs/bible/ports.md, Ceres: the station; the reference frame docs/bible/ceres-target.png, #1256): a cut through the crater wall. The crater
+  // floor on top, at a thirtieth of a g, flat, with the co-op's office and the lock in their rooms and the pad outside; the shaft down the left; an upper
+  // ring and the lower ring below it, each a turning drum, their floors curved. Its people are named from the Belt (CERES_NAMES).
+  'Ceres Station': {
+    place: 'Ceres Station', section: 'Crater wall, shaft 3', berth: 'Pad 11, crater floor', clock: 'CERES TIME', backdrop: 'crater', names: 'belt',
+    width: 860, radius: 6000, curve: 1, curves: [1.4, 1.4, 0], pace: [1, 1, 0.55],
+    levels: [430, 270, 92],
+    well: { car: 36, stair: [118, 72] },
+    rooms: [
+      { id: 'well', label: 'Shaft', level: 0, to: 2, x0: 0, x1: 120, kind: 'well', stage: 60 },
+      { id: 'bunks', label: 'Renters\' rooms', level: 0, x0: 120, x1: 330, kind: 'bunks', stage: 220 },
+      { id: 'bar', label: 'The Warren', level: 0, x0: 330, x1: 860, kind: 'warren', page: 'bar', stage: 560 },
+      { id: 'market', label: 'Market', level: 1, x0: 120, x1: 360, kind: 'stalls', page: 'port', stage: 240, bays: ['parts', 'water', 'grain'] },
+      { id: 'kaur', label: 'Kaur Enrichment', level: 1, x0: 360, x1: 520, kind: 'kaur', stage: 440 },
+      { id: 'guild', label: 'Ice Haulers\' Guild', level: 1, x0: 520, x1: 700, kind: 'guild', stage: 600 },
+      { id: 'clinic', label: 'Clinic', level: 1, x0: 700, x1: 860, kind: 'infirmary', stage: 780 },
+      { id: 'yard', label: 'The co-op\'s office', level: 2, x0: 120, x1: 340, kind: 'coop', page: 'missions', stage: 260 },
+      { id: 'lock', label: 'Lock', level: 2, x0: 340, x1: 540, kind: 'lockroom', stage: 440 },
+      { id: 'pad', label: 'Pad 11', level: 2, x0: 540, x1: 860, kind: 'pad', outside: true },
+    ],
+    // The port's own people (ports.md, Ceres, Its people): the Warren's keeper, Mei Tan at the noodle stall under the co-op's stair (regulars.md), the co-op's
+    // clerk, the lock's warden, Kaur's chief buyer (powers-people.md), the Guild's desk, the clinic's nurse and a stallholder in the market.
+    folk: [
+      { key: 'c-keeper', job: 'keeper of the Warren', room: 'bar', x: 600, name: 'stand', view: 'front', hours: [10, 27] },
+      { key: 'c-noodles', first: 'Mei', last: 'Tan', job: 'noodle stall', room: 'yard', x: 150, name: 'work', view: 'back', hours: [6, 21] },
+      { key: 'c-clerk', first: 'Yusuf', last: 'Okonkwo-Reyes', job: 'the co-op\'s clerk', room: 'yard', x: 280, name: 'stand', view: 'front', hours: [7, 19] },
+      { key: 'c-warden', job: 'warden at the lock', room: 'lock', x: 400, name: 'stand', view: 'front', hours: [0, 24] },
+      { key: 'c-buyer', first: 'Saoirse', last: 'Brennan', job: 'Kaur\'s chief buyer', room: 'kaur', x: 430, name: 'stand', view: 'front', hours: [7, 20] },
+      { key: 'c-guild', job: 'the Guild\'s desk', room: 'guild', x: 650, name: 'work-sit', view: 'side', face: -1, hours: [7, 22] },
+      { key: 'c-nurse', names: 'women', job: 'clinic nurse', room: 'clinic', x: 750, name: 'stand', view: 'front', hours: [8, 20] },
+      { key: 'parts', job: 'parts stall', room: 'market', x: 170, name: 'work', view: 'back', hours: [8, 18] },
+    ],
+    shifts: [6, 14, 22],
+    spots: {
+      lobby: [{ room: 'well', level: 2, x: 30 }, { room: 'well', level: 0, x: 60 }, { room: 'well', level: 1, x: 80 }],
+      boards: [{ room: 'guild', x: 560, view: 'back' }, { room: 'guild', x: 600, view: 'back' }],
+      stools: [{ room: 'bar', x: 510, name: 'sit', view: 'side', face: 1 }, { room: 'bar', x: 560, name: 'sit', view: 'side', face: -1 }, { room: 'bar', x: 610, name: 'sit', view: 'side', face: 1 }, { room: 'bar', x: 660, name: 'sit', view: 'side', face: -1 }, { room: 'bar', x: 420 }, { room: 'bar', x: 720 }],
+      market: [{ room: 'market', x: 220 }, { room: 'market', x: 300 }, { room: 'yard', x: 230, name: 'sit', view: 'side', face: 1 }],
+      clinic: [{ room: 'clinic', x: 820, name: 'sit' }],
+    },
+  },
 };
 const PORT_NIGHT = 22, PORT_MORNING = 7;  // the view's clock stops at night (ports.md, The port's clock), and a night passed in port wakes at seven
 const portOpen = (hours, hour) => { const [a, b] = hours, h = b > 24 && hour < a ? hour + 24 : hour; return h >= a && h < b; };
@@ -89,7 +130,7 @@ const portFloor = (layout, lv) => { const L = layout.levels, i = Math.max(0, Mat
 // Where the stair is at lv, a storey's flight running from one end to the other and the next back again; at a level, the foot of the flight up and the head of the one down.
 const portStairX = (well, lv) => { const s = Math.floor(lv), [a, b] = s % 2 ? [well.stair[1], well.stair[0]] : well.stair; return a + (b - a) * (lv - s); };
 function portStep(w, to, layout, dt) {
-  const well = layout.well, spoke = layout.levels.length, n = { ...w, walked: w.walked || 0 }, reach = PORT_PACE * dt;
+  const well = layout.well, spoke = layout.levels.length, n = { ...w, walked: w.walked || 0 }, reach = PORT_PACE * dt * ((layout.pace || [])[Math.round(w.lv || 0)] || 1);  // `pace`: a level's walk against the Ring's, slower where there is little weight (Ceres's crater floor, #1256)
   const along = tx => { const d = tx - n.x; if (d) n.face = Math.sign(d); if (Math.abs(d) <= reach) { n.walked += Math.abs(d); n.x = tx; return true; } n.x += Math.sign(d) * reach; n.walked += reach; return false; };
   const walking = () => Object.assign(n, { name: 'walk', view: 'side' });
   if (n.lv !== to.lv) {
@@ -242,12 +283,21 @@ const LAGOS_NAMES = {
   women: ['Funmilayo', 'Yetunde', 'Folake', 'Adaeze', 'Chiamaka', 'Halima', 'Aisha', 'Blessing'],
   last: ['Adeyemi', 'Okonkwo', 'Balogun', 'Okafor', 'Bello', 'Eze', 'Adebayo', 'Nwosu', 'Ibrahim', 'Oyelaran', 'Danjuma', 'Okoro', 'Afolabi', 'Uzor', 'Abubakar'],
 };
-// No two on the Ring share a first name or a surname: each takes the next not yet taken by those before it in the layout.
+// Ceres's own people's names (#1256): the Belt's mix, none of them a name the bible gives someone at Ceres already (regulars.md, powers-people.md).
+const CERES_NAMES = {
+  first: ['Anneke', 'Ravi', 'Tomasz', 'Hedda', 'Agathe', 'Idris', 'Kenji', 'Oluwa', 'Marta', 'Soren', 'Priya', 'Hamid', 'Bettina', 'Caius'],
+  women: ['Anneke', 'Hedda', 'Agathe', 'Marta', 'Priya', 'Bettina'],
+  last: ['Vasquez', 'Solberg', 'Nakamura', 'Haddad', 'Kowal', 'Castellan', 'Ruiz-Abe', 'Tavares', 'Petrov', 'Amsel', 'Moreau', 'Ostrem'],
+};
+const PORT_NAMES = { belt: CERES_NAMES };
+// No two at a port share a first name or a surname: each takes the next not yet taken by those before it in the layout. Named from Lagos, or from the
+// layout's `names` (Ceres from the Belt, #1256).
 function lagosName(planet, f) {
   const roll = seededRandom(Math.abs(hash(`${planet.name} names`))), used = { first: [], last: [] };
   const from = (key, list) => { let x; do x = list[Math.floor(roll() * list.length)]; while (used[key].includes(x)); used[key].push(x); return x; };
+  const list = PORT_NAMES[PORT_LAYOUTS[planet.name].names] || LAGOS_NAMES;
   for (const g of PORT_LAYOUTS[planet.name].folk) {
-    const n = g.first ? { first: g.first, last: g.last } : { first: from('first', LAGOS_NAMES[g.names || 'first']), last: from('last', LAGOS_NAMES.last) };
+    const n = g.first ? { first: g.first, last: g.last } : { first: from('first', list[g.names || 'first']), last: from('last', list.last) };
     if (g.first) { used.first.push(g.first); used.last.push(g.last); }
     if (g.key === f.key) return n;
   }
@@ -308,6 +358,9 @@ function portBay(ctx, x0, w, F, shut) {
   if (shut) { for (let y = F - 82; y < F - 2; y += 4) roomFlat(ctx, x0, y, w, 3, '#46505a'); roomFlat(ctx, x0 + w / 2 - 3, F - 6, 6, 3, '#2a3036'); return; }
   roomPart(ctx, roomRound(x0 - 2, F - 32, w + 4, 32, 1), '#3a4652', { top: 1.2, under: 1, solid: 0.35 });
 }
+// A lettered sign or board at Ceres (#1256): a plate with its words, and words on a board. At the view's size they are 12 px or more (#265).
+const portBoardText = (ctx, x, y, text, col) => { ctx.save(); ctx.fillStyle = col; ctx.font = '700 9px monospace'; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y); ctx.restore(); };
+function portSign(ctx, x, y, w, text, col) { roomPart(ctx, roomRound(x, y, w, 12, 0.6), col, { top: 0.5 }); portBoardText(ctx, x + 4, y + 6.5, text, '#1a1612'); }
 // The spoke lift's car at a landing or on its way through the well (#1124): its box, lit inside, its doors open to the landing.
 function portCar(ctx, x, y) {
   roomPart(ctx, roomRound(x - 25, y - 92, 50, 92, 1), '#2e3a46', { top: 1, side: 2 });
@@ -321,6 +374,35 @@ function portEarth(ctx, cx, cy, r, turn) {
   ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r * 1.04, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = 'rgba(240,244,248,0.18)';
   for (const [dx, dy, rx] of [[-0.25, -0.86, 0.14], [0.12, -0.9, 0.09], [0.4, -0.82, 0.18]]) { ctx.beginPath(); ctx.ellipse(cx + (dx + turn * 0.6 - 0.3) * r, cy + dy * r, rx * r, r * 0.016, -0.15, 0, Math.PI * 2); ctx.fill(); }
+}
+// Ceres's crater (#1256, ceres-target.png): rock below the crater floor; above it, outside, the floodlight masts and their light, the pad, and a ship's lower
+// hull standing on it, her legs and bell, cut off by the frame's top, with the pressurised walkway to the lock. `X` maps world x to the canvas, `oy` and
+// `zoom` the world's y. Pure drawing.
+function portCrater(g, w, h, layout, X, oy, zoom) {
+  const Y = y => oy + y * zoom, top = Math.min(...layout.levels), floor = Y(top + HULL.plate), pad = layout.rooms.find(r => r.outside);
+  const rock = g.createLinearGradient(0, floor, 0, h); rock.addColorStop(0, '#2a2622'); rock.addColorStop(1, '#151311');
+  g.fillStyle = rock; g.fillRect(0, floor, w, h - floor);
+  for (let k = 0; k < 300; k++) { const x = (Math.sin(k * 3.17) * 0.5 + 0.5) * w, y = floor + (Math.sin(k * 7.71) * 0.5 + 0.5) * (h - floor); g.fillStyle = `rgba(90,80,70,${0.25 + (k % 4) * 0.1})`; g.fillRect(x, y, 2 + (k % 3), 1.5); }
+  g.fillStyle = '#4a4238'; g.fillRect(0, floor - 3, w, 4);
+  if (!pad) return;
+  for (const mx of [X(pad.x0 + 60), X(pad.x1 - 20)]) {  // the floodlights
+    g.fillStyle = '#3a4048'; g.fillRect(mx - 2, Y(top - 112), 4, floor - Y(top - 112)); g.fillStyle = '#e8e0c0'; g.fillRect(mx - 9, Y(top - 116), 18, 5);
+    const lg = g.createLinearGradient(0, Y(top - 112), 0, floor); lg.addColorStop(0, 'rgba(255,236,190,0.18)'); lg.addColorStop(1, 'rgba(255,236,190,0.04)');
+    g.fillStyle = lg; g.beginPath(); g.moveTo(mx - 8, Y(top - 111)); g.lineTo(mx - 110 * zoom, floor); g.lineTo(mx + 110 * zoom, floor); g.fill();
+  }
+  const px = X((pad.x0 + pad.x1) / 2 + 20), pw = 240 * zoom, base = floor - 3, hw = 150 * zoom, legY = base - 70 * zoom, hullBot = base - 80 * zoom, hullTop = Y(top - 132);
+  g.fillStyle = '#5a5248'; g.fillRect(px - pw / 2, base - 4, pw, 6);
+  for (let k = -3; k <= 3; k++) { g.fillStyle = k % 2 ? '#c8a040' : '#2a2a2a'; g.fillRect(px + k * pw / 7 - pw / 16, base - 4, pw / 8, 2); }
+  g.strokeStyle = '#6a727c'; g.lineWidth = 4;
+  for (const sd of [-1, 1]) { g.beginPath(); g.moveTo(px + sd * hw * 0.42, hullBot); g.lineTo(px + sd * hw * 0.62, base - 4); g.stroke(); g.fillStyle = '#4a525c'; g.fillRect(px + sd * hw * 0.62 - 10, base - 8, 20, 5); }
+  g.fillStyle = '#2a2e34'; g.beginPath(); g.moveTo(px - 26 * zoom, hullBot); g.lineTo(px + 26 * zoom, hullBot); g.lineTo(px + 40 * zoom, legY + 30 * zoom); g.lineTo(px - 40 * zoom, legY + 30 * zoom); g.fill();  // the bell
+  g.fillStyle = 'rgba(255,140,60,0.15)'; g.fillRect(px - 30 * zoom, legY + 26 * zoom, 60 * zoom, 4);
+  const hg = g.createLinearGradient(px - hw / 2, 0, px + hw / 2, 0); hg.addColorStop(0, '#3a424c'); hg.addColorStop(0.5, '#6a727c'); hg.addColorStop(1, '#30363e');
+  g.fillStyle = hg; g.fillRect(px - hw / 2, hullTop, hw, hullBot - hullTop);
+  g.strokeStyle = 'rgba(20,24,30,0.6)'; g.lineWidth = 1; for (let y = hullTop + 10 * zoom; y < hullBot; y += 18 * zoom) { g.beginPath(); g.moveTo(px - hw / 2, y); g.lineTo(px + hw / 2, y); g.stroke(); }
+  g.fillStyle = '#c8a040'; g.fillRect(px - hw / 2, hullBot - 12 * zoom, hw, 3);
+  const wy = Y(top - 56); g.fillStyle = '#3a4250'; g.fillRect(X(pad.x0), wy, px - hw / 2 - X(pad.x0), 22 * zoom);  // the walkway to the lock
+  g.fillStyle = 'rgba(200,220,240,0.18)'; for (let k = 0; k < 6; k++) g.fillRect(X(pad.x0 + 10) + k * 18 * zoom, wy + 6 * zoom, 10 * zoom, 8 * zoom);
 }
 
 // ---------- the rooms, by kind: each draws inside its box (r, its floor F), its words its own ----------
@@ -397,6 +479,68 @@ const PORT_ROOMS = {
     for (const k of [0, 4, 10]) { const b = berthBunk(r, 18, k); for (let q = 0; q < 3; q++) roomFlat(ctx, b.x + 10 + q * 7, b.y - 20, 5, 6, ['#a09a8c', '#8a9a7a', '#9a8a7a'][q]); portLamp(ctx, b.x + 8, b.y - 24, 18, 0.35); }
     roomPart(ctx, roomRound(470, F - 14, 22, 14, 3), '#4a5a3a', { top: 1 }); portScuff(ctx, 430, F, 60);
   },
+  // ---------- Ceres Station's rooms (ports.md, Ceres: the station; ceres-target.png, #1256), drawn from their own box, so they sit anywhere on a level ----------
+  coop(ctx, r, F) {  // the co-op's office: the noodle stall under the stair up from the yard floor, the counter, the board of hulls and where each is, the back room's door
+    const x = r.x0;
+    portLamp(ctx, x + 40, F - 98, 40, 0.3); portLamp(ctx, x + 170, F - 98, 60, 0.2);
+    roomPart(ctx, roomRound(x + 12, F - 34, 56, 34, 1), '#5a3a2a', { top: 1, solid: 0.4 }); roomPart(ctx, roomRound(x + 20, F - 46, 16, 12, 3), '#8a8a8a', { top: 1 }); roomDot(ctx, x + 28, F - 52, 5, 'rgba(230,230,230,0.25)');
+    portSign(ctx, x + 14, F - 70, 52, 'NOODLES', '#b0503a');
+    ctx.strokeStyle = '#4a5a6a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x + 70, F); ctx.lineTo(x + 110, F - 100); ctx.stroke();
+    roomPart(ctx, roomRound(x + 120, F - 38, 70, 38, 1), '#3a4a5a', { top: 1, solid: 0.35 });
+    roomOnWall(ctx, x + 160, F - 60, () => { roomPart(ctx, roomRound(x + 120, F - 90, 70, 44, 0.5), '#2a2e26', { top: 0 }); for (let l = 0; l < 5; l++) { roomFlat(ctx, x + 124, F - 84 + l * 8, 40, 4, '#c8c0a0'); roomFlat(ctx, x + 168, F - 84 + l * 8, 16, 4, ['#6a9a5a', '#c89a3a', '#6a9a5a', '#9a5a4a', '#6a9a5a'][l]); } });
+    roomPart(ctx, roomRound(r.x1 - 34, F - 80, 26, 80, 1), '#2a3442', { top: 0, side: 2 }); roomDot(ctx, r.x1 - 14, F - 40, 1.6, '#c8a050');
+    roomBench(ctx, x + 70, x + 110, F, true);
+  },
+  lockroom(ctx, r, F) {  // the council's lock: the warden's window, the hatch with the Guild Federation's mark, the queue rail
+    const x = r.x0;
+    portLamp(ctx, x + 80, F - 98, 60, 0.2);
+    roomPart(ctx, roomRound(x + 20, F - 42, 90, 42, 1), '#2a3a48', { top: 1, solid: 0.3 }); roomPart(ctx, roomRound(x + 20, F - 86, 90, 36, 1), 'rgba(140,190,220,0.15)', {});
+    roomPart(ctx, roomRound(r.x1 - 60, F - 88, 48, 88, 3), '#3a4652', { top: 1, side: 2 }); roomDot(ctx, r.x1 - 36, F - 60, 9, '#2a5a8a'); roomDot(ctx, r.x1 - 36, F - 60, 5, '#c8b070');
+    roomFlat(ctx, x + 120, F - 34, r.x1 - x - 190, 2, '#6a7a8a');
+  },
+  stalls(ctx, r, F, time, open = {}) {  // the trade floor's stalls, shut outside their keepers' hours, and the ration notice
+    const x = r.x0, w = (r.x1 - x - 40) / 3;
+    portLamp(ctx, x + 60, F - 98, 50, 0.25); portLamp(ctx, x + 180, F - 98, 50, 0.25);
+    (r.bays || []).forEach((k, i) => portBay(ctx, x + 14 + i * (w + 6), w - 6, F, !open[k]));
+    roomOnWall(ctx, x + 60, F - 60, () => { roomPart(ctx, roomRound(r.x1 - 60, F - 96, 50, 20, 0.4), '#d8d0b8', { top: 0 }); for (let l = 0; l < 2; l++) roomFlat(ctx, r.x1 - 56, F - 92 + l * 7, 42, 2, '#3a3a3a'); });
+  },
+  kaur(ctx, r, F) {  // Kaur Enrichment's buying office: a counter, and the price board for ice
+    const x = r.x0;
+    portLamp(ctx, x + 70, F - 98, 50, 0.2);
+    roomPart(ctx, roomRound(x + 30, F - 40, 100, 40, 1), '#3a3026', { top: 1, solid: 0.4 });
+    roomOnWall(ctx, x + 80, F - 70, () => { roomPart(ctx, roomRound(x + 40, F - 84, 100, 32, 0.4), '#101820', { top: 0 }); portBoardText(ctx, x + 46, F - 71, 'ICE /T  412', '#e0a040'); portBoardText(ctx, x + 46, F - 59, 'D2O /L  ---', '#e0a040'); });
+    portSign(ctx, x + 40, F - 48, 80, 'KAUR ENRICHMENT', '#7a8a6a');
+  },
+  guild(ctx, r, F) {  // the Ice Haulers' Guild: the board of names, the banner, the desk
+    const x = r.x0;
+    portLamp(ctx, x + 90, F - 98, 60, 0.2);
+    roomPinboard(ctx, x + 14, F, 80);
+    roomPart(ctx, roomRound(x + 104, F - 92, 64, 26, 0.4), '#7a2a24', { top: 0 }); portBoardText(ctx, x + 108, F - 81, 'ICE HAULERS', '#e8d8b8'); portBoardText(ctx, x + 122, F - 71, 'GUILD', '#e8d8b8');
+    roomPart(ctx, roomRound(x + 110, F - 30, 60, 30, 1), '#2e3e50', { top: 1, solid: 0.4 }); portMug(ctx, x + 160, F - 30);
+  },
+  infirmary(ctx, r, F) {  // the council's clinic: the counter and its window, the bench to wait on
+    const x = r.x0;
+    portLamp(ctx, x + 70, F - 98, 60, 0.15);
+    roomPart(ctx, roomRound(x + 10, F - 40, 80, 40, 1), '#2a3a48', { top: 1, solid: 0.3 }); roomPart(ctx, roomRound(x + 10, F - 84, 80, 34, 1), 'rgba(140,190,220,0.15)', {});
+    roomBench(ctx, x + 100, r.x1 - 8, F, true);
+  },
+  warren(ctx, r, F) {  // the Warren: the long counter, the water ration over the taps, the stools, the posters, the shrine for the people the ice took at the far end
+    const x = r.x0, cx = x + 160;
+    for (const lx of [x + 100, x + 240, x + 380]) portLamp(ctx, lx, F - 98, 60, 0.28);
+    roomOnWall(ctx, x + 200, F - 60, () => {
+      for (const [px, c] of [[x + 20, '#a0503a'], [x + 60, '#3a6a8a']]) roomPart(ctx, roomRound(px, F - 86, 30, 40, 0.5), c, { top: 0, side: 1.5 });
+      roomPart(ctx, roomRound(cx + 20, F - 96, 90, 24, 0.4), '#e8e0c8', { top: 0 }); portBoardText(ctx, cx + 26, F - 86, 'WATER RATION', '#2a2a2a'); portBoardText(ctx, cx + 26, F - 77, '2.4 L  18:00', '#2a2a2a');
+      for (let k = 0; k < 8; k++) roomPart(ctx, roomRound(cx + 20 + k * 11, F - 68, 6, 16, 2), ['#6a8a9a', '#8a6a4a', '#c8c0a0'][k % 3], { top: 0.5 });
+    });
+    roomPart(ctx, roomRound(cx, F - 40, 200, 40, 1.5), '#3a4048', { top: 0, solid: 0.45 }); roomPart(ctx, roomRound(cx - 4, F - 44, 208, 6, 1), '#8a9098', { top: 1.5, under: 1, solid: 0.5, shadow: false });
+    for (const mx of [cx + 20, cx + 70, cx + 150]) portMug(ctx, mx, F - 44);
+    for (const sx of [cx + 20, cx + 70, cx + 120, cx + 170]) roomStool(ctx, sx, F, 0);
+    const sh = r.x1 - 80;
+    roomPart(ctx, roomRound(sh, F - 92, 62, 70, 4), '#1a1410', { top: 0 }); for (let l = 0; l < 6; l++) roomFlat(ctx, sh + 8, F - 84 + l * 7, 46, 3, '#b8a888');
+    for (let k = 0; k < 5; k++) { roomDot(ctx, sh + 10 + k * 10, F - 26, 2, '#e8b050'); portLamp(ctx, sh + 10 + k * 10, F - 28, 10, 0.4); }
+    portScuff(ctx, cx + 60, F, 80);
+  },
+  pad() {},  // outside: the crater floor and the ship are the backdrop's (portCrater)
 };
 
 // What moves in a room, drawn over its still picture each frame (portRoomImage): the market's menu screen and the port in its floor with Earth going
@@ -440,29 +584,34 @@ const PORT_BAR = 30;
 function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => ({})) {
   const top = Math.min(...layout.levels) - 100, bottom = Math.max(...layout.levels) + HULL.plate, R = layout.radius, cx0 = layout.width / 2;
   const zoom = Math.min(w / layout.width, (h - PORT_BAR - 40) / (bottom - top + 40)), ox = (w - layout.width * zoom) / 2, oy = PORT_BAR + 30 * zoom - top * zoom;
-  const sag = x => layout.curve * (x - cx0) * (x - cx0) / (2 * R), X = x => ox + x * zoom, turn = Settings.reduceMotion ? 0.5 : (time / 40000) % 1;
+  const curveAt = lv => (layout.curves ? layout.curves[Math.max(0, Math.min(layout.curves.length - 1, Math.round(lv)))] : layout.curve);  // `curves`: each level's own, a ring's against a flat floor (#1256)
+  const sag = (x, lv = 0) => curveAt(lv) * (x - cx0) * (x - cx0) / (2 * R), X = x => ox + x * zoom, turn = Settings.reduceMotion ? 0.5 : (time / 40000) % 1;
   g.fillStyle = '#02050b'; g.fillRect(0, 0, w, h);
   for (let k = 0; k < 90; k++) { const x = (Math.sin(k * 12.9898) * 0.5 + 0.5) * w, y = PORT_BAR + (Math.sin(k * 78.233) * 0.5 + 0.5) * (h - PORT_BAR); g.fillStyle = `rgba(220,230,240,${0.25 + (k % 3) * 0.2})`; g.fillRect(x, y, 1.4, 1.4); }
-  const hull = oy + bottom * zoom;  // the outer hull's line at the slice's middle
-  portEarth(g, w * (0.45 + turn * 0.3), hull + w * 0.62, w * 0.6, turn);
-  // the outer hull under the floor, following the rim's curve
-  g.fillStyle = '#0b1420'; g.beginPath();
-  for (let x = 0; x <= w; x += 16) { const wx = (x - ox) / zoom; g[x ? 'lineTo' : 'moveTo'](x, hull + (4 - sag(wx)) * zoom); }
-  for (let x = w; x >= 0; x -= 16) { const wx = (x - ox) / zoom; g.lineTo(x, hull - (14 + sag(wx)) * zoom); }
-  g.closePath(); g.fill();
-  g.strokeStyle = '#34506e'; g.lineWidth = 2; g.beginPath();
-  for (let x = 0; x <= w; x += 16) { const wx = (x - ox) / zoom; g[x ? 'lineTo' : 'moveTo'](x, hull + (4 - sag(wx)) * zoom); }
-  g.stroke();
-  // the spoke's tube rising from the lift toward the hub, its rail inside
-  const sx = X(layout.well.car), sTop = oy + (top - sag(layout.well.car)) * zoom;
-  g.fillStyle = '#0b1420'; g.fillRect(sx - 28 * zoom, PORT_BAR, 56 * zoom, sTop - PORT_BAR); g.strokeStyle = '#34506e'; g.lineWidth = 2; g.strokeRect(sx - 28 * zoom, PORT_BAR, 56 * zoom, sTop - PORT_BAR);
-  g.fillStyle = '#4a6a8c'; g.fillRect(sx - 2, PORT_BAR, 4, sTop - PORT_BAR);
+  if (layout.backdrop === 'crater') portCrater(g, w, h, layout, X, oy, zoom);  // the crater's rock, and the floor outside with the ship on her pad (#1256)
+  else {
+    const hull = oy + bottom * zoom;  // the outer hull's line at the slice's middle
+    portEarth(g, w * (0.45 + turn * 0.3), hull + w * 0.62, w * 0.6, turn);
+    // the outer hull under the floor, following the rim's curve
+    g.fillStyle = '#0b1420'; g.beginPath();
+    for (let x = 0; x <= w; x += 16) { const wx = (x - ox) / zoom; g[x ? 'lineTo' : 'moveTo'](x, hull + (4 - sag(wx)) * zoom); }
+    for (let x = w; x >= 0; x -= 16) { const wx = (x - ox) / zoom; g.lineTo(x, hull - (14 + sag(wx)) * zoom); }
+    g.closePath(); g.fill();
+    g.strokeStyle = '#34506e'; g.lineWidth = 2; g.beginPath();
+    for (let x = 0; x <= w; x += 16) { const wx = (x - ox) / zoom; g[x ? 'lineTo' : 'moveTo'](x, hull + (4 - sag(wx)) * zoom); }
+    g.stroke();
+    // the spoke's tube rising from the lift toward the hub, its rail inside
+    const sx = X(layout.well.car), sTop = oy + (top - sag(layout.well.car)) * zoom;
+    g.fillStyle = '#0b1420'; g.fillRect(sx - 28 * zoom, PORT_BAR, 56 * zoom, sTop - PORT_BAR); g.strokeStyle = '#34506e'; g.lineWidth = 2; g.strokeRect(sx - 28 * zoom, PORT_BAR, 56 * zoom, sTop - PORT_BAR);
+    g.fillStyle = '#4a6a8c'; g.fillRect(sx - 2, PORT_BAR, 4, sTop - PORT_BAR);
+  }
   // the rooms, each on the curve: dropped by the sag at its middle and turned by the slope there
   g.save(); g.translate(ox, oy); g.scale(zoom, zoom);
   for (const rm of layout.rooms) {
     // set on the curve by its chord, so the rooms of a level meet at their ends; the well, a shaft through the levels, stands upright at its edge's height
-    const F = layout.levels[rm.level], mid = (rm.x0 + rm.x1) / 2, up = rm.kind === 'well', a = up ? 0 : (sag(rm.x1) - sag(rm.x0)) / (rm.x1 - rm.x0), lift = up ? sag(rm.x1) : (sag(rm.x0) + sag(rm.x1)) / 2;
-    const r = { x0: rm.x0, x1: rm.x1, top: layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100, floor: F, levels: layout.levels, well: layout.well };  // the well is one box through the levels
+    if (rm.outside) continue;  // a place outside (Ceres's pad, #1256) is the backdrop's, not a box
+    const F = layout.levels[rm.level], mid = (rm.x0 + rm.x1) / 2, up = rm.kind === 'well', a = up ? 0 : (sag(rm.x1, rm.level) - sag(rm.x0, rm.level)) / (rm.x1 - rm.x0), lift = up ? sag(rm.x1, rm.level) : (sag(rm.x0, rm.level) + sag(rm.x1, rm.level)) / 2;
+    const r = { x0: rm.x0, x1: rm.x1, top: layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100, floor: F, levels: layout.levels, well: layout.well, bays: rm.bays };  // the well is one box through the levels
     g.save(); g.translate(mid, F - lift); g.rotate(-a); g.translate(-mid, -F);
     g.beginPath(); g.rect(r.x0, r.top, r.x1 - r.x0, F - r.top + HULL.plate); g.clip();  // a room's things stay in its box
     const open = Object.fromEntries(layout.folk.map(f => [f.key, portOpen(f.hours, hour)]));
@@ -490,21 +639,21 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
   g.restore();
   // where each room was drawn, its box on the curve near enough for a click
   const boxes = layout.rooms.map(rm => {
-    const lift = sag((rm.x0 + rm.x1) / 2), top = oy + (layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100 - lift) * zoom, floor = oy + (layout.levels[rm.level] - lift) * zoom;
+    const lift = sag((rm.x0 + rm.x1) / 2, rm.level), top = oy + (layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100 - lift) * zoom, floor = oy + (layout.levels[rm.level] - lift) * zoom;
     return { id: rm.id, page: rm.page || null, x: X(rm.x0), y: top, w: (rm.x1 - rm.x0) * zoom, h: floor - top };
   });
-  for (const c of cast) if (c.kind === 'folk') boxes.push({ who: c.who, x: X(c.x) - 14 * zoom, y: oy + (portFloor(layout, c.lv) - 88 - sag(c.x)) * zoom, w: 28 * zoom, h: 88 * zoom });  // and the port's own people, for a click on one
-  for (const c of cast) boxes.push({ head: { id: c.who, x: X(c.x), y: oy + (portFloor(layout, c.lv) - 92 - sag(c.x)) * zoom } });  // and where everyone's head is, for an offer's tag over them (#1192)
+  for (const c of cast) if (c.kind === 'folk') boxes.push({ who: c.who, x: X(c.x) - 14 * zoom, y: oy + (portFloor(layout, c.lv) - 88 - sag(c.x, c.lv)) * zoom, w: 28 * zoom, h: 88 * zoom });  // and the port's own people, for a click on one
+  for (const c of cast) boxes.push({ head: { id: c.who, x: X(c.x), y: oy + (portFloor(layout, c.lv) - 92 - sag(c.x, c.lv)) * zoom } });  // and where everyone's head is, for an offer's tag over them (#1192)
   // the room names on their plates, and the frame's bar, at screen size
   g.font = `600 12px ${roomFont}`; g.textBaseline = 'alphabetic';
   for (const rm of layout.rooms) {
-    const F = layout.levels[rm.to !== undefined ? rm.to : rm.level], x = X(rm.x0) + 6, y = oy + (F - 100 - sag((rm.x0 + rm.x1) / 2)) * zoom + 18, name = rm.label.toUpperCase(), tw = g.measureText(name).width;
+    const F = layout.levels[rm.to !== undefined ? rm.to : rm.level], x = X(rm.x0) + 6, y = oy + (F - 100 - sag((rm.x0 + rm.x1) / 2, rm.level)) * zoom + 18, name = rm.label.toUpperCase(), tw = g.measureText(name).width;
     g.fillStyle = 'rgba(6,13,22,0.85)'; g.fillRect(x - 4, y - 13, tw + 8, 17); g.fillStyle = '#7f97b0'; g.fillText(name, x, y);
   }
   g.fillStyle = 'rgba(8,14,22,0.92)'; g.fillRect(0, 0, w, PORT_BAR);
   g.font = `600 13px ${roomFont}`; g.fillStyle = '#7f95ab';
   // the place, the clock and the berth; in a narrow view (a page docked beside it, #1132) the section goes, then the berth, then the place, so none run together
-  const hh = Math.floor(hour) % 24, mm = Math.floor((hour % 1) * 6) * 10, clock = `LAGOS TIME ${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+  const hh = Math.floor(hour) % 24, mm = Math.floor((hour % 1) * 6) * 10, clock = `${layout.clock || 'LAGOS TIME'} ${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
   const fits = (l, r) => g.measureText(l).width + g.measureText(clock).width / 2 + 24 < w / 2 && g.measureText(r).width + g.measureText(clock).width / 2 + 24 < w / 2;
   const full = `${layout.place.toUpperCase()}  -  ${layout.section.toUpperCase()}`, berth = layout.berth.toUpperCase(), place = layout.place.toUpperCase();
   const [left, right] = fits(full, berth) ? [full, berth] : fits(place, berth) ? [place, berth] : fits(place, '') ? [place, ''] : ['', ''];
@@ -615,7 +764,7 @@ Mods.register({
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
     const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
-    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // nothing hit, nothing read (the title screen has no game)
+    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f && PORT_WORDS[f.key] ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // one with no words yet (Ceres's, #1256) opens nothing  // nothing hit, nothing read (the title screen has no game)
     const tag = (boxes, x, y) => (boxes || []).find(b => b.offer && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;  // an offer's tag (#1192)
     document.addEventListener('click', e => { const t = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)); if (t) return portOfferTake(t.offer); const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
     document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)) || point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
