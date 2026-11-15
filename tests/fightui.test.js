@@ -187,7 +187,7 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     // the raid kept nothing of its own in the save: what a raid in an old version left behind is its hull lost, its flag and a hurt hand
     const old = JSON.parse(saved); old.armor = 40; old.hired.flags = { ...(old.hired.flags || {}), raided: true }; old.hired.raidTold = true; old.hired.hurtUntil = old.day + 6;
     const refused = Saves.import(JSON.stringify(old), 2); Saves.use(2); loadGame();
-    const out = { refused, mode: G.mode, dialog: G.dialog && [G.dialog.event.title, !!G.dialog.event.fight], next: G.nextEvent && [G.nextEvent.title, !!G.nextEvent.fight], armor: G.state.armor };
+    const out = { refused, mode: G.mode, dialog: G.dialog && [G.dialog.event.title, !!G.dialog.event.fight], next: sceneQueue[0] && [sceneQueue[0].title, !!sceneQueue[0].fight], armor: G.state.armor };  // the landing's next scene waits its turn (#1096)
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
     return out;
@@ -400,7 +400,7 @@ test('a navy party\'s panel names the boarding party and its own turn cap, shows
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
-    fightGame('gunner'); const gov = 'Arcology Compact', foe = window.realMakeEnemy({ kind: 'patrol', gov, shipId: 'cutter' });
+    fightGame('gunner'); const gov = 'Arcology Pact', foe = window.realMakeEnemy({ kind: 'patrol', gov, shipId: 'cutter' });
     const s = repelStart({ foe, foeHp: 0, init: 'foe', grade: 1 }, 'half'); s.state.navyDown = 2;
     s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false };
     const e = deckFightEvent(s);
@@ -411,7 +411,7 @@ test('a navy party\'s panel names the boarding party and its own turn cap, shows
   assert.equal(r.party, 'navy');
   assert.match(r.read, /^Turn 1 of 5\. The boarding party: 2 pushing into the Corridor\.$/, r.read);  // an inspection party's own cap (DECK.NAVY_TURNS)
   assert.match(r.raiderRead, /^Turn 1 of 8\./, r.raiderRead);
-  assert.ok(r.text.includes(r.line), r.text); assert.match(r.line, /Arcology Compact\. 4 lost so far/);
+  assert.ok(r.text.includes(r.line), r.text); assert.match(r.line, /Arcology Pact\. 4 lost so far/);
   assert.equal(r.strip, false, 'a navy push is never feinted');
   assert.equal(r.hersFeint, true, 'but a navy hull\'s veteran crew, boarded, may feint');
   assert.ok(!r.raider.includes('costs standing'), 'a raider fight has no standing line'); assert.match(r.raiderRead, /Boarders: 2 pushing/);
@@ -423,7 +423,7 @@ test('a navy party holding our bridge closes the fight with a search that names 
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
     fightGame('gunner'); const h = hired(); h.fund = 40000; G.duel = null;
-    const s = repelStart({ foe: window.realMakeEnemy({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }), foeHp: 0, init: 'foe' }, 'half');
+    const s = repelStart({ foe: window.realMakeEnemy({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }), foeHp: 0, init: 'foe' }, 'half');
     s.state.sections.forEach(x => { x.theirs = 0; }); s.state.sections[2] = { mine: 0, theirs: 2, cover: 1 }; s.state.sections[0].mine = 1; s.state.hand = 0; s.state.wave = null;
     s.shown = { kind: 'hold', from: 2, to: 2, n: 0, feint: false };
     rolls([]); const e = deckFightEvent(s); const ret = e.choices[e.choices.length - 1].run();
@@ -612,7 +612,7 @@ test('when the captain runs, a third of the hold goes and the contract comes in 
   await ev(helpers);
   const r = await ev(() => {
     const st = fightGame('gunner'), h = hired(), here = currentPlanet();
-    h.run = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 30, from: 'X', planet: here.name, sid: st.systemId, pay: 90000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 90000 };
+    h.run = { contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 30, from: 'X', planet: here.name, sid: st.systemId, pay: 90000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 90000 };
     st.cargo = { water: 30 }; st.paid = {};  // a contract's load has no price paid
     const s = battle(); shipFightEnd(s, 'ran');
     const held = st.cargo.water, text = G.nextEvent.text;
@@ -629,7 +629,7 @@ test('a contract load that is not the fullest good stays whole and the delivery 
   await ev(helpers);
   const r = await ev(() => {
     const st = fightGame('gunner'), h = hired(), here = currentPlanet();
-    h.run = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 30000 };
+    h.run = { contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 30000 };
     st.cargo = { water: 10, metal: 30 }; st.paid = { metal: 300 };
     const s = battle(); shipFightEnd(s, 'ran');
     const left = { ...st.cargo }, paid = { ...st.paid }; settleRun(here);
@@ -1072,4 +1072,35 @@ test('the guns start aimed at her hull (the owner, 2026-11-07)', async () => {
   await done();
   assert.ok(r.length >= 1);
   for (const on of r) assert.equal(on, 'Hull');
+});
+
+test('with two moves known, ordering the second takes the order from the first: one move a turn (#1002)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); hired().moves = ['vent', 'split'];
+    const s = battle(); s.state.locked = [0]; s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
+    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'weapons' }, { foe: 0, part: 'weapons' }], torp: null, pdc: 'hold' }));
+    const at = re => G.dialog.choices.findIndex(c => re.test(c.label)), label = re => G.dialog.choices[at(re)].label;
+    openEvent(chooseEvent(at(/^Vent the guns/))); const one = [label(/^Vent the guns/), label(/^Split the turret/)];
+    openEvent(chooseEvent(at(/^Split the turret/))); const two = [label(/^Vent the guns/), label(/^Split the turret/)];
+    return { one, two };
+  });
+  await done();
+  assert.match(r.one[0], /\(ordered\)$/); assert.doesNotMatch(r.one[1], /\(ordered\)$/);
+  assert.doesNotMatch(r.two[0], /\(ordered\)$/); assert.match(r.two[1], /\(ordered\)$/);
+});
+
+test('with pd-watch, the turret\'s cut is quoted at 50 percent where the fight applies 50: the read of her volley and the Gunnery card (#1002)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); const plain = Math.round(heldCut() * 100);
+    hired().picks = ['pd-watch']; const watch = Math.round(heldCut() * 100);
+    const text = fightCard().replace(/<[^>]+>/g, ' ');
+    return { plain, watch, cardAny: (text.match(/takes \d+% off her volley/) || [''])[0] };
+  });
+  await done();
+  assert.deepEqual([r.plain, r.watch], [40, 50]);
+  assert.equal(r.cardAny, 'takes 50% off her volley', r.cardAny);
 });

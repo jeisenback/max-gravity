@@ -21,6 +21,12 @@ const G = {
   npcs: [], shots: [], particles: [], messages: [],
   offers: [],         // mission offers at the current planet
   bar: [],            // procedural crew looking for work at the current planet
+  portHour: null,     // the port view's clock (portview.js, #1102): the local hour at a port drawn as a place, null elsewhere
+  portWalkers: null,  // the port view's people where they are now, walking to where the hour puts them (portview.js portWalk, #1124); null puts them in place
+  portRooms: null,    // where the port view drew its rooms, in the view's px, for a click on one to open its page (portview.js, #1132)
+  portOffers: [],     // a landing's scenes waiting on the port view as offers (portview.js, #1192): { kind, ev, planet, label }, in the order made
+  portLater: [],      // the people's offers that lapsed at a port, to come round again at a later landing there (portview.js portOffersBack, #1192)
+  portOfferBoxes: null,  // where the port view drew the offers' tags, in the view's px, for a click on one (portview.js, #1192)
   revenge: null,      // someone who hates you has hired a gun, see people.js
   mode: 'landed',     // title | landed | flight | departing | transit | hail | map | dead
   dialog: null,       // open choice dialog (transit event or hail), see transit.js
@@ -52,12 +58,13 @@ const G = {
   barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
-  cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
+  cutHits: [], cutRooms: [], cutOffers: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js; cutOffers: the offers' tags and edge markers, each { offer, x, y, w, h, mark? } (#1183)
   cutRack: null,     // the comms rack's screen box where the burn view drew it whole, or null; a tap on it opens Comms (#919, shiplife.js)
-  cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
-  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
+  camView: { follow: null, y: null, before: undefined },  // the burn camera's aim (shiplife.js camAim, #1182): `follow` the id of the one it follows (null: free), `y` where the player left it down the tower's run, `before` that aim kept while a scene has the camera
+  cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; with aim, zoom and span, what it aims at down the run, its scale and the view's height in world units, #1182; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
+  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, tutorial, comms lines, a downtime scene's tags, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
-  lifeY: null,        // the top of the row under the Comms ticker where the downtime buttons sit, see transit.js
+  dock: null,         // the port inspection played out in the cutaway at the dock while its scene is open ({ page: 'open' | 'result', t: seconds on the page, clock: seconds since it opened, choice, beat, clamps, sealed }), null otherwise, see dock.js
 };
 
 // ---------- helpers ----------
@@ -531,10 +538,11 @@ function land(planet) {
     else msg(flySay('walkoff', { name: fullName(c), planet: planet.name }));
   }
   landAt(planet, G.messages.slice(before).map(m => m.text));
-  for (const c of farewells) { const ev = walkOffScene(c, planet); if (G.dialog) G.nextEvent = G.nextEvent || ev; else openEvent(ev); }
+  for (const c of farewells) queueScene(walkOffScene(c, planet));
 }
 
 function landAt(planet, notes) {
+  Mods.emit('landing', planet);  // before the port is set up and before 'landed': the ship as it came in (inspection.js reads the hold before the run is sold)
   G.mode = 'landed';
   G.shots = [];
   G.flash = 0;
@@ -544,10 +552,14 @@ function landAt(planet, notes) {
   notes = notes.concat(meetContacts(planet));
   save();
   UI.openLanded(planet, notes);
-  Mods.emit('landed', planet);
+  landingScenesOpen();
+  try { Mods.emit('landed', planet); } finally { landingScenesPlay(); }  // the handlers offer their scenes; they play in rank order (#1096)
+  Mods.emit('arrived', planet);  // after every handler: their notes are all in (comms.js)
 }
 
 function takeOff() {
+  portOffersLapse();  // the port's offers go as the ship sails; a people scene's comes round at a later landing here (portview.js, #1192)
+  sceneQueue = [];  // a port's scenes stay at the port: none can be waiting in play, as the dock's buttons wait for them, but a scripted takeoff can leave some (#1096)
   const pl = currentPlanet();
   const a = rand(0, Math.PI * 2);
   G.player = makeShip(G.state.shipId, pl.x + Math.cos(a) * pl.r * 0.5, pl.y + Math.sin(a) * pl.r * 0.5, a);
@@ -583,7 +595,7 @@ function cycleTarget() {
 function tryBurn() {
   const st = G.state;
   if (!st.dest) return msg(flySay('burn.nodest'));
-  const need = burnFuel(st.systemId, st.dest);
+  const need = burnFuel(st.systemId, st.dest) + (isSite(st.dest) ? burnFuel(st.dest, st.systemId) : 0);  // there is no refuel at a site: the mass to come back too
   if (st.fuel < need) return msg(flySay('burn.fuel', { need }));
   if (Math.hypot(G.player.x, G.player.y) < BURN_DIST) return msg(flySay('burn.near'));
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
@@ -1016,10 +1028,11 @@ function drawHud(W, H) {
   let y = calm ? 40 : 228;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.font = `600 17px ${LABEL_FONT}`;
-  ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
+  const atDock = dockShown();  // the inspection at the dock: the port and the clamps (dock.js, #940)
+  ctx.fillText(inTransit ? 'In transit' : atDock ? st.planet : sys.name, x, y);
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : `${sys.gov}`, x, y += 16);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : atDock ? `At the dock, clamps ${G.dock.clamps ? 'on' : 'off'}` : `${sys.gov}`, x, y += 16);
   ctx.fillText(dateOf(inTransit ? transitNow(G.transit) : st.day), x, y += 16);  // the burn's today, not the departure (#946)
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
@@ -1262,6 +1275,7 @@ function render() {
   if (G.mode === 'map') drawMap(W, H);
   else {
     if (G.mode === 'transit') drawTransit(W, H);
+    else if (dockShown()) drawDockView(W, H);  // the inspection at the dock (dock.js, #940)
     else drawWorld(W, H);
     drawHud(W, H);
   }
@@ -1290,6 +1304,7 @@ window.addEventListener('keydown', e => {
     if (e.code === 'KeyM' && !G.transit.event) openMap();
     else if (e.code === 'Space' && !G.dialog) { e.preventDefault(); toggleBurnPause(); }  // the burn's speed (burnspeed.js, #992); under a scene Space presses its choice
     else if (BURN_KEYS[e.code] !== undefined && !G.dialog) setBurnSpeed(BURN_KEYS[e.code]);
+    else if (e.code === 'KeyH') camFollow(shipPeople()[0].id);  // the camera back on the hand, following them (shiplife.js, #1182)
   } else if (G.mode === 'hail') {
     if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {
@@ -1297,17 +1312,28 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Equal' || e.code === 'NumpadAdd') zoomMap(-1);
     else if (e.code === 'Minus' || e.code === 'NumpadSubtract') zoomMap(1);
   } else if (G.mode === 'landed') {
-    if (e.code === 'KeyT' && !G.dialog) { if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
+    if (e.code === 'KeyT' && !G.dialog) { if (atSite(G.state) && chapterOf(G.state) === 2) siteDockKey(); else if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });
 window.addEventListener('blur', () => { G.keys = {}; });
 
 canvas.addEventListener('wheel', e => {
+  if (G.mode === 'transit' && G.cam && !G.dialog) { e.preventDefault(); camPan(e.deltaY / (G.cam.zoom || 1), G.cam.aim); return; }  // the burn camera pans down the tower (shiplife.js, #1182)
   if (G.mode !== 'map') return;
   e.preventDefault();
   zoomMap(e.deltaY > 0 ? 1 : -1);
 }, { passive: false });
+
+// A drag on the burn view pans its camera (shiplife.js camPan, #1182); one that moved more than a few pixels is a drag, not a click.
+let camDrag = null;
+canvas.addEventListener('pointerdown', e => { camDrag = G.mode === 'transit' && G.cam && !G.dialog && e.button === 0 ? { y: e.clientY, aim: G.cam.aim, moved: false } : null; });  // every press starts afresh, so a drag that ended off the canvas swallows no later click
+canvas.addEventListener('pointermove', e => {
+  if (!camDrag || !(e.buttons & 1) || !G.cam) return;
+  if (Math.abs(e.clientY - camDrag.y) > 4) camDrag.moved = true;
+  if (camDrag.moved) { G.camView.y = null; G.camView.follow = null; camPan((camDrag.y - e.clientY) / (G.cam.zoom || 1), camDrag.aim); }
+});
+window.addEventListener('pointerup', () => { if (camDrag && !camDrag.moved) camDrag = null; });
 
 // How far a tap is from a person in the cutaway: from the line head to torso to foot (shiplife.js records them), or the torso alone.
 function tapToBody(px, py, h) {
@@ -1325,17 +1351,16 @@ canvas.addEventListener('click', e => {
     if (i >= 0) { G.navPlanet = i; msg(flySay('nav', { planet: system().planets[i].name })); }
     return;
   }
-  // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
+  // On a burn, tap or click someone in the cutaway to open their page and follow them, or a room (in view or in the outline) to open its console.
+  if (camDrag) { const dragged = camDrag.moved; camDrag = null; if (dragged) return; }  // the end of a drag is not a click
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
-    const tk = G.burnBoxes && G.burnBoxes.ticker;
-    if (tk && e.clientX >= tk.x && e.clientX <= tk.x + tk.w && e.clientY >= tk.y && e.clientY <= tk.y + tk.h) {  // the ticker opens Comms, as its key does
-      G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); return;
-    }
+    const offer = !G.dialog && (G.cutOffers || []).find(b => e.clientX >= b.x && e.clientX <= b.x + b.w && e.clientY >= b.y && e.clientY <= b.y + b.h);
+    if (offer) { Sfx.click(); offerClick(offer); return; }  // an offer's tag takes it; its marker pans to it (shiplife.js, #1183)
     const reach = 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
-    if (near) Mods.act('person', near.h.id);
-    else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack, as the ticker does
+    if (near) { camFollow(near.h.id); Mods.act('person', near.h.id); }
+    else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack opens Comms, as its key does
     else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
       const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);
       if (sheet) { G.bridgeOpen = G.bridgeOpen === sheet ? null : sheet; Sfx.click(); syncBridge(true); }
@@ -1343,7 +1368,7 @@ canvas.addEventListener('click', e => {
     return;
   }
   if (G.mode !== 'map' || !G.mapPos) return;
-  for (const id of Object.keys(SYSTEMS)) {
+  for (const id of [...Object.keys(SYSTEMS), ...foundSites(G.state)]) {  // a found site is a place to burn for too (sites.js, #965)
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
       if (!role().mayAct('plot')) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand
@@ -1370,7 +1395,7 @@ function frame(now) {
   last = now;
   if (!G.paused && ['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
-  const docked = G.mode === 'transit' && G.transit && G.transit.event && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock, out of it otherwise
+  const docked = ((G.mode === 'transit' && G.transit && G.transit.event) || dockShown()) && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock (or the dock's, dock.js), out of it otherwise
   if (dockEventPanel(UI.el, docked)) UI.moreCue();
   MapButtons.sync();
   if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still

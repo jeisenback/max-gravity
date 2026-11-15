@@ -109,6 +109,7 @@ function pitchOdds(arg, a) {
 // The run to the job's port: the one already planned, one of the runners-up, or a light run if nothing there pays.
 // `plan` is the stop's plan (hired.js currentPlan, which books it again when it is remade).
 function bookRun(a, plan = (currentPlan(), hired().plan)) {
+  if (!plan) return null;  // at a rock the run home is fixed (hired.js currentPlan): the job stays booked, and the next port's plan takes it
   const same = o => o && o.sid === a.sid && o.planet === a.planet;
   if (same(plan.run)) return plan.run;
   const alt = (plan.alts || []).find(same);
@@ -133,16 +134,16 @@ function pitchScene(a) {
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });
   const plan = currentPlan(), instead = !plan ? '' : plan.ballast ? say('instead.light', { planet: plan.planet }) : say('instead', { run: runWord(plan), days: plan.days });  // what the pitch would replace (#848)
-  return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}`, choices };
+  return { title: say('title'), personal: true, place: 'yard', text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}`, choices };  // place: at the yard office, on a port's view (portview.js, #1103)
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
 const bookedJob = h => (h.away || []).find(a => a.booked);  // one run agreed at a time: a second pitch waits until it is flown (#848)
 const atJob = a => a.planet === G.state.planet && a.sid === G.state.systemId;
-// The far end: the job's first scene, now or after the one that is open.
+// The far end: the job's first scene, in the landing's queue or now.
 function startAway(h, i) {
   const a = h.away.splice(i, 1)[0], ev = a.arc ? arcBeginning(a) : jobStage(awayJob(a), 0, a.ctx);  // an arc begins with its own first scene (arcs.js)
-  if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+  offerScene('business', ev);  // at a landing, in its turn (#1096); from the Missions page, at once
 }
 
 // ---------- the board and the far end ----------
@@ -179,12 +180,7 @@ Mods.register({
       h.away = (h.away || []).filter(a => { if (a.until >= st.day) return true; UI.notes.push(`The offer of work on ${a.planet} has lapsed.`); return false; });
       // the far end: a job for this port, wherever it was agreed
       const here = h.away.findIndex(a => a.planet === planet.name && a.sid === st.systemId);
-      if (here >= 0) {
-        const a = h.away[here];
-        if (G.dialog && G.nextEvent) { if (a.booked) UI.notes.push(`${a.ctx.who}'s work here is waiting for you on the Missions page.`); return; }  // nowhere to put it yet: a job flown here waits on the page (#848), and the offer keeps until its day
-        startAway(h, here);
-        return;
-      }
+      if (here >= 0) { startAway(h, here); return; }  // in the landing's turn for business (#1096)
       // a contact offers something, now and then, at a port with a board
       if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who's going to ${o.planet}. It's on the Missions page.`); } }
     });

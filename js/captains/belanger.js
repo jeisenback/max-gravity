@@ -9,7 +9,7 @@ MASTER_CAPTAINS.belanger = {
   bio: 'Eight years commanding convoys for Ballast Security. A convoy she commanded fired on a freehold\'s ship that would not stand off, and three of its crew died. The inquiry put a mark on her licence, and she pays toward their families each month.',
   wants: 'The mark lifted, and a bridge she does not have to apologise for.', fears: 'Having to fire again.',
   captain: { trade: 3, nerve: 4, thrift: 2 }, wage: 600, hears: 0, bonus: 1, talk: 0.6,
-  master: true, leans: 'ballast',
+  master: true, leans: 'ballast', at: 'ballast-convoy',  // at: where chapter two puts them (#1045)
 
   intro: () => ('Noor Belanger answers the question before anyone asks it. "Yes, I was the master. Yes, three died. Ask what you want to ask." Nobody does. ' +
       '"I\'m cheap because of the mark," she says. "You\'re getting a bargain. Don\'t make me prove it."'),

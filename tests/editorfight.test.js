@@ -172,10 +172,10 @@ test('the report shows what the fight changed since Play, the armor, the fund, t
     return { a: `${a.first} ${a.last}`, b: `${b.first} ${b.last}` };
   });
   let shown = await choose(f, 0);  // a gun's target: the panel is drawn again
-  for (const want of [/standing with Arcology Compact: \S+ to \S+ \(-8\)/, /armor: \d+ to \d+ \(-5\)/, /ship's fund: \S+ to \S+ \(\+100\)/, /torpedoes: \S+ to \S+ \(\+2\)/,
+  for (const want of [/standing with Arcology Pact: \S+ to \S+ \(-8\)/, /armor: \d+ to \d+ \(-5\)/, /ship's fund: \S+ to \S+ \(\+100\)/, /torpedoes: \S+ to \S+ \(\+2\)/,
     new RegExp(`${names.a}: fit to hurt`), new RegExp(`${names.b}: fit to dead`), /you: fit to hurt/, /experience at the gunner post: \S+ to \S+ \(\+2\)/]) assert.match(shown, want);
   shown = await choose(f, 0);  // another click: still everything since Play, not only what this one changed
-  assert.match(shown, /standing with Arcology Compact: \S+ to \S+ \(-8\)/);
+  assert.match(shown, /standing with Arcology Pact: \S+ to \S+ \(-8\)/);
   assert.match(shown, /armor: \d+ to \d+ \(-5\)/);
   assert.match(shown, /since Play/);
 });
@@ -306,7 +306,7 @@ test('a gunner move plays in the preview by the line typed: its teacher\'s butto
   for (const [id, who] of [['vent', 'Tomas'], ['lead', 'Ines'], ['split', 'Cato']]) {
     await page.fill(`textarea[data-path="part.${id}.text"]`, `Typed ${id}.text, {first}.`);
     const f = await play();
-    const i = await f.evaluate(w => G.dialog.choices.findIndex(c => c.label.includes(w) && (!c.can || c.can())), who);
+    const i = await f.evaluate(w => G.dialog.choices.findIndex(c => c.label.startsWith(`Let ${w} show you`) && (!c.can || c.can())), who);  // the move's button, not Sit with them (the downtime scene names one person)
     assert.ok(i >= 0, `${id}: ${who}'s button is on the menu`);
     await f.click(`[data-action="choose"][data-arg="${i}"]`);
     await f.waitForFunction(() => document.querySelector('#event-result') && document.querySelector('#event-result').textContent.length > 0);

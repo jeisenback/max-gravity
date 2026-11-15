@@ -107,7 +107,7 @@ test('a new scene with a problem is left out of the file and says so, and one th
   await page.fill(rule('c0.effects', 'rep'), 'Nobody=1');
   assert.deepEqual((await file()).scenes, []);
   assert.match(await problems(), /choice 1 effects: rep Nobody is not a government or faction/);
-  await page.fill(rule('c0.effects', 'rep'), 'Dome Concord=1');
+  await page.fill(rule('c0.effects', 'rep'), 'Dome Pact=1');
   assert.equal((await file()).scenes.length, 1);
 });
 
@@ -215,7 +215,7 @@ test('a scene can be discarded, and the scenes the file already holds are drafts
   assert.deepEqual((await file()).scenes, []);
   assert.equal(await page.evaluate(() => SceneIndex.newRows.length), 0);
   const def = { id: 'from-file', where: 'transit', title: 'From the File', text: 'Text.', via: 'message', chained: true, when: { day: 3, post: ['pilot', 'gunner'] },
-    choices: [{ label: 'A', result: 'R', when: { credits: 10 }, effects: { q: { x: 1 }, rep: { 'Dome Concord': 1 } }, next: 'port-mars-sky' }, { label: 'B' }] };
+    choices: [{ label: 'A', result: 'R', when: { credits: 10 }, effects: { q: { x: 1 }, rep: { 'Dome Pact': 1 } }, next: 'port-mars-sky' }, { label: 'B' }] };
   const back = await page.evaluate(d => { const struct = Object.create(null), r = SceneIndex.draftFromDef(d, struct); return { def: SceneIndex.newSceneDef(r, struct), problems: SceneIndex.newProblems(r, struct, []) }; }, def);
   assert.deepEqual(back.problems, []);
   assert.deepEqual(back.def, def);

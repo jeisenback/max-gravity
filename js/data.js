@@ -33,11 +33,16 @@ const SHIPS = {
   cutter:    { name: 'Patrol Cutter', price: 600000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
   corsair:   { name: 'Corsair', price: 550000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
+// Each hull's registry mark (#936), painted on her nose under her name and kept as marks on the bridge's certificate: the registry's letters
+// and her number. The Ice Hauler sails under a small Belt station registry (hiredscenes.js, the lender's letter), the co-op's Ore Runner
+// under Ceres's. Fixed per ship: the game keeps no registry of its own.
+const SHIP_REGISTRY = { shuttle: 'LR 3092', lightfreighter: 'CR 2208', courier: 'MR 5513', freighter: 'BR 4471', gunship: 'DP 0716', raider: 'XR 0193',
+  destroyer: 'DP 0042', cutter: 'AP 1180', corsair: 'XR 6627' };
 
 const GOV_COLORS = {
-  'Arcology Compact': '#5fa8ff',
-  'Dome Concord': '#ff8a4a',
-  'Charter League': '#e8d17a',
+  'Arcology Pact': '#5fa8ff',
+  'Dome Pact': '#ff8a4a',
+  'Guild Federation': '#e8d17a',
   'Independent': '#d0d0d0',
   'Pirate': '#d05fff',
 };
@@ -64,23 +69,24 @@ const SYSTEMS = {
     ],
   },
   earth: {
-    name: 'Earth', au: 1.0, angle: 100, gov: 'Arcology Compact', pirates: 0,
+    name: 'Earth', au: 1.0, angle: 100, gov: 'Arcology Pact', pirates: 0,
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
-        prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
-        desc: ('Arcology cities on every coast, each keeping its own sea wall by rota, and the orbital elevator ports never sleep. From the dock you can see the ' +
-            'ribbon of lit cable dropping into a cloud deck the color of old pearls, and the freight climbing it in an endless string. Down there are ' +
-            'oceans, and forests, and lines around the block for a job. Up here it is all customs queues, noodle stalls, and men in good suits looking ' +
-            'for someone to blame.') },
+        prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'M', equipment: 'L' },
+        // Earth's port is Lagos Ring, where a torch ship berths (docs/bible/ports.md, #1100)
+        desc: ('A torch ship at Earth docks at Lagos Ring: a wheel four hundred metres across in low orbit, owned by Lagos ' +
+            'Arcology. A tug brings the ship in to the hub and takes her out again, and the spaceplanes from the Lagos platform come and go at the far end of ' +
+            'it. Down the spokes the rim holds the market, the yard offices and the bunkrooms, at half a g, on Lagos time. Everything up here was lifted, ' +
+            'and the rent is in Lagos scrip.') },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: ('Compact shipyards and licensed drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
+        desc: ('Arcology Pact shipyards and licensed drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
             'everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move ' +
-            'through crowds of civilian riggers who resent them. Every yard here works under a Compact license, and every rigger can tell you what theirs cost.') },
+            'through crowds of civilian riggers who resent them. Every yard here works under an Arcology Pact license, and every rigger can tell you what theirs cost.') },
     ],
   },
   mars: {
-    name: 'Mars', au: 1.52, angle: 60, gov: 'Dome Concord', pirates: 0.05,
+    name: 'Mars', au: 1.52, angle: 60, gov: 'Dome Pact', pirates: 0.05,
     planets: [
       { name: 'Mars', x: 100, y: -120, r: 70, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
         prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
@@ -97,7 +103,7 @@ const SYSTEMS = {
     ],
   },
   ceres: {
-    name: 'Ceres', au: 2.77, angle: 130, gov: 'Charter League', pirates: 0.2,
+    name: 'Ceres', au: 2.77, angle: 130, gov: 'Guild Federation', pirates: 0.2,
     planets: [
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
@@ -114,7 +120,7 @@ const SYSTEMS = {
     ],
   },
   pallas: {
-    name: 'Pallas', au: 2.77, angle: 20, gov: 'Charter League', pirates: 0.3,
+    name: 'Pallas', au: 2.77, angle: 20, gov: 'Guild Federation', pirates: 0.3,
     planets: [
       { name: 'Pallas Refinery', x: 200, y: 150, r: 45, color: '#78909c', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'L', industrial: 'H', food: 'H', water: 'H', equipment: 'H' },
@@ -157,7 +163,7 @@ const SYSTEMS = {
     ],
   },
   juno: {
-    name: 'Juno', au: 2.67, angle: 75, gov: 'Charter League', pirates: 0.15,
+    name: 'Juno', au: 2.67, angle: 75, gov: 'Guild Federation', pirates: 0.15,
     planets: [
       { name: 'Juno Commons', x: -40, y: 50, r: 38, color: '#8f9c7a', services: ['trade', 'missions', 'refuel'],
         prices: { food: 'L', luxury: 'H', equipment: 'H', medical: 'H', water: 'M' },
@@ -196,7 +202,7 @@ const SYSTEMS = {
     ],
   },
   saturn: {
-    name: 'Saturn', au: 9.54, angle: 110, gov: 'Charter League', pirates: 0.35,
+    name: 'Saturn', au: 9.54, angle: 110, gov: 'Guild Federation', pirates: 0.35,
     planets: [
       { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { medical: 'L', luxury: 'M', equipment: 'H', industrial: 'H' },
@@ -225,8 +231,12 @@ const SYSTEMS = {
 };
 
 // Factions that track your standing. Independent ports do not.
-const FACTIONS = ['Arcology Compact', 'Dome Concord', 'Charter League', 'Pirate'];
-const PATROL_NAMES = { 'Arcology Compact': 'Compact cutter', 'Dome Concord': 'Concord frigate', 'Charter League': 'League militia' };
+const FACTIONS = ['Arcology Pact', 'Dome Pact', 'Guild Federation', 'Pirate'];
+// The names before the blocs (#1043, docs/bible/owners.md), old to new: the powers, and the freight offices whose names hold them. An older save is renamed by them (menu.js
+// renamePowers), and the dice that draw a person's ties from a power's name draw from the old one (ties.js tieSeed), so nobody's ties change with the names.
+const OLD_NAMES = [['Arcology Compact', 'Arcology Pact'], ['Dome Concord', 'Dome Pact'], ['Charter League', 'Guild Federation'],
+  ['the Compact Freight Office', 'the Arcology Pact Freight Office'], ['the Concord Freight Office', 'the Dome Pact Freight Office'], ['the League Freight Hall', 'the Federation Freight Hall']];
+const PATROL_NAMES = { 'Arcology Pact': 'Arcology Pact cutter', 'Dome Pact': 'Dome Pact frigate', 'Guild Federation': 'Federation militia' };
 
 // Outfits take cargo space (`space`, tons) and modify the ship's stats; `max` per ship.
 // `req` needs that much standing with the faction running the shop; `pirate` gear is

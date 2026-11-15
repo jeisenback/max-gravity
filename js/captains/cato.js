@@ -48,14 +48,18 @@ CAST.cato = {
       bad: ['{who} says the lift has been broken for a month', '{who} is ill, and the clinic on {home} has a waiting list', '{who} says the exchange is closing the flats for repairs'],
     },
   },
-  chatter: [
-    'Cato is walking the hold with a mug, checking lashings that are fine.',
-    'Cato has taken the cold watch again. Nobody asked him to.',
-    'Cato is teaching one of the hands to read a manifest, slowly, one line at a time.',
-    'Cato: "She\'s counting, that\'s all. Leave her to it."',
-    'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
-    'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
-  ],
+  chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+    any: [
+      'Cato has taken the cold watch again. Nobody asked him to.',
+      'Cato is teaching one of the hands to read a manifest, slowly, one line at a time.',
+      'Cato: "She\'s counting, that\'s all. Leave her to it."',
+      'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
+    ],
+    hold: [
+      'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
+      'Cato is walking the hold with a mug, checking lashings that are fine.',
+    ],
+  },
   // What he leaves behind when he walks off or dies (fate.js farewellFacts): a flag and its line, in priority order, two at most.
   farewell: {
     walk: 'Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.',
@@ -90,7 +94,7 @@ CAST.cato = {
       ],
     },
     mid1: {
-      days: 25, title: 'A Share of a Ship',
+      days: 25, title: 'A Share of a Ship', room: 'hold',  // on a cargo lashing; "a berth" put it in the berths (#1170)
       text: ('Cato is sitting on a cargo lashing with a pocket notebook. It isn\'t the captain\'s; it has no columns. "There\'s a co-op at Ceres that ' +
           'takes members," he says. "A share is a part of the hull, and a vote, and a berth for as long as you want it." He turns the notebook so you can ' +
           'see: the co-op\'s ships, one crossed out, one with a question mark, and what a share has cost each year since he started writing it down. ' +
@@ -192,6 +196,13 @@ castTalkScenes('cato');  // his own sittings and talk (family:cato-*), with the 
 // The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
 // names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own. The words are the lines of
 // 'scene:cato-round' (hiredscenes.js).
+// The words of the memory his "Ask for the middle watch" leaves (#914), as written and as the scene editor's file has them (sceneWords): the
+// galley's watch bill reads the hand's ask from it (shiplife.js askedMiddle).
+CAST.cato.middleAsk = () => {
+  const sc = CAST.cato.scenes.intro, mem = c => ((c && c.effects && c.effects.castLike) || {}).memory;
+  const shown = sceneWords(castSceneId('cato', sc, sc), { title: sc.title, text: sc.text, personal: true, choices: sc.choices }).choices[0];
+  return [...new Set([mem(sc.choices[0]), mem(shown)].filter(Boolean))];
+};
 CAST.cato.round = () => {
   const say = (key, vars) => sceneSay('scene:cato-round', key, vars);
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);

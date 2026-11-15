@@ -53,3 +53,10 @@ test('a stat pick moves the sheet, an edge adds to its kind, a perk is read by i
   assert.equal(takePick(c, 'trim'), null, 'the first rung is cool-hand\'s already'); assert.ok(takePick(c, 'long-legs')); assert.equal(hasPerk(c.picks, 'long-legs'), true); assert.equal(hasPerk(c.picks, 'trim'), false);
   assert.equal(c.sheet.nerve, STAT_MAX);
 });
+
+test('an old save with taught moves and no picks counts each known move as its rung\'s pick, so the rung is not offered again (#1002)', () => {
+  const old = { post: 'gunner', moves: ['vent', 'lead'] };
+  assert.deepEqual([...takenPicks(old)], ['vent', 'lead']);
+  assert.equal(pickDue(old, 3), 3, 'rungs 1 and 2 are taken by the moves known; rung 3 waits');
+  assert.deepEqual([...takenPicks({ post: 'gunner', moves: ['vent'], picks: ['steady-eye'] })], ['steady-eye'], 'a save with picks is read as it is');
+});

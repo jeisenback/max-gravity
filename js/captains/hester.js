@@ -9,6 +9,8 @@ CAPTAINS.hester = {
   bio: 'An agency rating on ore haulers for twenty years, and now eleven years into a fifteen-year hire-purchase charter on this ship, from a Rotterdam finance house. The house can read the ship\'s accounts, so she keeps her own in a notebook, and can tell you the cost of a watch to the credit.',
   wants: 'To make the last payment and own the ship.', fears: 'A third missed payment, and being a rating again.',
   captain: { trade: 4, nerve: 1, thrift: 5 }, wage: 500, hears: 1, bonus: 3, talk: 0.7,
+  notebook: true,  // she keeps the ship's figures in a paper notebook: the hand can check them with her, and she notes a run that comes in on her figure (#1059)
+  shortMonth: true,  // the charter falls due on the first: a short month, she asks the hand to wait for their pay (#1059)
   xo: 'cato', xoTitle: 'Bosun', xoPerk: 'Runs the ratings and the rota, and holds the first-aid rating.',  // Cato is the bosun (docs/bible/people/cato.md); the post stays the xo slot until #879
 
   // The sign-on paragraph's last lines, in place of "whom the crew describe as ...".
@@ -16,16 +18,24 @@ CAPTAINS.hester = {
       `notebook before she looks up. "${wage} a day, less your kit," she says. "That's the whole of it. I won't surprise ` +
       `you, and I'd like you not to surprise me."`),
 
-  chatter: [
-    'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
-    'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
-    'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
-    'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
-    'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
-    'Captain Vance has stopped by the {post} station and not said anything. She does that. It means the numbers are fine.',
-    'Captain Vance writes the fuel price from the last depot inside the notebook\'s cover, under the one before it.',
-    'A message comes in from the finance house. Captain Vance reads it in the passage, standing, and puts it in her breast pocket unanswered.',
-  ],
+  chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+    any: [
+      'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
+      'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
+      'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
+      'Captain Vance writes the fuel price from the last depot inside the notebook\'s cover, under the one before it.',
+      'A message comes in from the finance house. Captain Vance reads it in the passage, standing, and puts it in her breast pocket unanswered.',
+    ],
+    hold: [
+      'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
+    ],
+    galley: [
+      'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
+    ],
+    post: [  // in the hand's post room (hired.js captainChatter)
+      'Captain Vance has stopped by the {post} station and not said anything. She does that. It means the numbers are fine.',
+    ],
+  },
 
   // Her wording for the four shared events (hiredevents.js). What the choices do stays there; a part left out falls back to the
   // generic text.

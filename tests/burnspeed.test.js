@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const B = load(['js/burnspeed.js'], { Mods: { register() {} }, SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
-  ['BURN_SPEEDS', 'FLIP_REAL', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
+  ['BURN_SPEEDS', 'FLIP_REAL', 'STREAK_HUSH', 'streakHush', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} against ${b}`);
 const burnAt = (days, pr) => { const total = days * 80; return { days, total, left: total * (1 - pr) }; };
 
@@ -16,7 +16,7 @@ test('the stages are spans of ship time: six hours of couches, twenty minutes st
   const s = B.burnStages(11);
   near(s.couch, 6 / (24 * 11), 'couch'); near(s.float, 3 / (1440 * 11), 'float'); near(s.secure, 23 / (1440 * 11), 'secure');
   assert.deepEqual({ ...B.burnStages(0.05) }, { couch: 0.06, secure: 0.06, float: 0.03 }, 'clamped to the shares of today on a burn too short for them');
-  assert.deepEqual([...B.BURN_SPEEDS], [0, 1, 4, 16]);
+  assert.deepEqual([...B.BURN_SPEEDS], [0, 1, 2, 16, 256], 'and run ahead (#1186)');
 });
 
 test('stageAt reads the stage at a share of the burn', () => {
@@ -27,8 +27,8 @@ test('stageAt reads the stage at a share of the burn', () => {
 
 test('the burn runs at the chosen speed, stands still paused, and plays the flip at its own slow rate whatever the speed', () => {
   assert.equal(B.burnRate(burnAt(11, 0.3), 0, 1), 0);
-  for (const s of [1, 4, 16]) assert.equal(B.burnRate(burnAt(11, 0.3), s, 1), s);
-  const flip = [1, 4, 16].map(s => B.burnRate(burnAt(11, 0.5), s, 1));
+  for (const s of [1, 2, 16]) assert.equal(B.burnRate(burnAt(11, 0.3), s, 1), s);
+  const flip = [1, 2, 16].map(s => B.burnRate(burnAt(11, 0.5), s, 1));
   assert.ok(flip[0] > 0 && flip.every(r => r === flip[0]), `the same at every speed: ${flip}`);
   assert.equal(B.burnRate(burnAt(11, 0.5), 0, 1), 0, 'paused in the flip too');
 });
@@ -43,7 +43,7 @@ test('the flip lasts FLIP_REAL real seconds on any trip and with any drive', () 
 test('the clock counts the real time left at the chosen speed, the flip ahead at its slow rate', () => {
   const t = burnAt(11, 0), w = 2 * B.burnStages(11).secure * t.total;
   near(B.realLeft(t, 1, 1), t.total - w + 25, 'at 1x');
-  near(B.realLeft(t, 4, 1), (t.total - w) / 4 + 25, 'at 4x');
+  near(B.realLeft(t, 2, 1), (t.total - w) / 2 + 25, 'at 2x');
   near(B.realLeft(t, 0, 1), B.realLeft(t, 1, 1), 'paused, the time at 1x');
   const late = burnAt(11, 0.7); near(B.realLeft(late, 1, 1), late.left, 'the flip behind it');
 });
@@ -61,4 +61,12 @@ test('a fast step stops at the start of the flip, so none of it goes by at speed
   const edge = { days: 8, total: 640, left: 640 * (0.5 + B.burnStages(8).secure) };  // the flip's first instant, as a float lands on it
   assert.equal(B.burnRate(edge, 16, 1), B.burnRate(burnAt(8, 0.5), 16, 1), 'the first instant, give or take a float, is in the flip');
   const cruise = burnAt(11, 0.3); assert.equal(B.burnStep(cruise, 4, 1, 0.5), 2, 'elsewhere it is dt times the rate');
+});
+
+test('the star streaks settle at the flip: a third of their length and light while the crew are strapped and floating, easing back over as long again either side (#962)', () => {
+  const days = 5, sec = B.burnStages(days).secure;
+  near(B.STREAK_HUSH, 0.35, 'the hush');
+  near(B.streakHush(days, 0.5), 0.35, 'the midpoint'); near(B.streakHush(days, 0.5 + sec), 0.35, 'the edge of the strapping');
+  near(B.streakHush(days, 0.5 - sec * 1.5), 0.675, 'halfway back'); near(B.streakHush(days, 0.5 + sec * 2), 1, 'back to full');
+  near(B.streakHush(days, 0.2), 1, 'the run of the burn'); near(B.streakHush(days, 0), 1, 'the start');
 });

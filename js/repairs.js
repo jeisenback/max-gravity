@@ -32,7 +32,7 @@ function repairScene(planet) {
     if (plan.held) { st.cargo.metal -= plan.tons; if (st.cargo.metal <= 0) { delete st.cargo.metal; delete st.paid.metal; } }
     else if (plan.stocked) recordTrade(planet, 'metal', plan.tons, 1);
     h.fund = Math.max(0, h.fund - total); h.bill = (h.bill || 0) + total;
-    st.armor = ship().armor;
+    st.armor = ship().armor; mendHull(st, st.hullMarks || [], [], plan.yard);  // a yard's rated plating takes the patches with it; a field repair welds its own doublers on, patches like the rest (#935)
     beginStay(h, days, 'yard');  // the days pass as nights on the pad (stay.js)
     const pay = Math.round(h.wage * STANDBY_PAY * days); st.credits += pay;
     return say('done', { text, days: say(days === 1 ? 'days.one' : 'days.many', { n: days }), total: fmt(total), last: cap.last, pay: fmt(pay) });
@@ -61,9 +61,10 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const h = hired();
-      if (!h || chapterOf(G.state) > 1 || !planet.services.includes('refuel') || G.state.armor >= ship().armor * (1 - REPAIR_AT) || G.state.armor >= ship().armor) return;
-      const ev = repairScene(planet);
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      if (!h || chapterOf(G.state) > 1) return;
+      if (planet.services.includes('refuel') && G.state.armor < ship().armor * (1 - REPAIR_AT)) { offerScene('business', repairScene(planet)); return; }
+      const sys = partsRepairDue(G.state, h, planet, purse());  // else a worn system's part, one yard scene a landing (parts.js, #1135)
+      if (sys) { h.partsAt = G.state.day; offerScene('business', partsEvent(planet, sys)); }
     });
   },
 });

@@ -1,6 +1,6 @@
 # Crew structure to the bible (#879, scope A)
 
-Status: draft for the owner's review, 2026-11-01.
+Status: built (#879).
 
 ## Goal
 

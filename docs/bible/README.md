@@ -1,6 +1,6 @@
 # The world bible
 
-Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each a draft until approved. It replaced `docs/world/`, and `voice.md` replaced the old writing guides (#869).
+Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each marked approved on its own page. It replaced `docs/world/`, and `voice.md` replaced the old writing guides (#869).
 
 This is the world the game's writing comes from. It is built from the base up: who owns what and who works first, then the jurisdictions and private arrangements that keep that order, then work, technology and everyday life, and only then the people. Characters and dialogue come after it and answer to it.
 
@@ -16,7 +16,7 @@ This is the world the game's writing comes from. It is built from the base up: w
 8. **Money:** local currencies for wages and rent; one hard trade currency, issued by the largest finance houses, for freight and charters.
 9. **The crew:** officers and ratings. Hester (charter), Ines (pilot) and Tomas (engineer) are officers; Cato is the bosun; the hand and one or two deckhands are agency ratings. A finance-house supercargo rides along on high-value runs.
 10. **Hester's charter** is hire-purchase: she owns the ship after the last payment, and loses everything if she misses enough.
-11. **Freight:** bulk goes slow and cheap; Hester's ship carries what can't wait, for a premium.
+11. **Freight:** bulk goes slow and cheap; Hester's ship carries what can't wait, for a premium, and between contracts cuts ice at the outer Belt's rocks for ports short of water (2026-11-11).
 12. **Ines** flies on a cheap registry's endorsement, legal aboard and worthless in Lisbon.
 
 ## The voice
@@ -41,29 +41,41 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 14. `ganymede.md`, `europa.md`, `titan.md`, `enceladus.md`: the lease terraces, the Water Authority's ice, the biolab domes, and the queue at the plumes (#885).
 15. `voice.md`: how the game's writing sounds.
 16. `people/`: one sheet per character (`ines.md` first).
-17. `shape.md`: the shape of the game: a run is one life, the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891).
+17. `shape.md`: the shape of the game: a run is one life (and from chapter 4 the line after it), the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891).
 18. `chapter-2.md`: chapter two, the co-op's view: the player flies, trades and fights the Ore Runner under the members' vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891).
 19. `the-belt.md`: the Belt between the named places: the kinds of settlement, the three zones of law, what holds it together, the work on its boards, and the war landing there (#891).
 20. `the-fuel-war.md`: the owners' war over the Vesta depot (Kaur Enrichment against Tycho Yard Holdings, with Ballast Security's guns and Van Leeuwen & Co.'s money): rumbling in chapter two, breaking out in chapter three, ending differently each run (#891).
 21. `later-chapters.md`: a draft of chapters 4 to 7 (more hulls, a place, alliances, a threat), where fleets, outposts and the blocs arrive, and what chapter 2 should keep in mind for them.
 22. `progression.md`: how a hand grows over a run: the sheet, the skill lines, the picks, traits, papers and standing, each earned differently and all read by the one check rule; what each chapter adds.
+23. `look.md`: how the burn view looks: a clean frame around a worn, cramped ship, rooms as boxes in perspective, bunks that each belong to someone, warm light in a cold hull (approved 2026-11-11), with its reference frame `look-target.png`.
+24. `owners.md`: the powers, in two layers: the blocs that are the law of each region (the Arcology Pact, the Dome Pact, the Guild Federation) where the code's three powers sat, and the powers inside them in two tiers, major (Tycho, Kaur, Van Leeuwen, Ballast and five more to come) and minor (the places, co-ops, trades and havens), with how far the player can move them, chapter by chapter (draft, 2026-11-11).
+25. `chapter-1.md`: chapter one, the hand: who is aboard, the spine to the member's share, what the hand does and can lose, and the three places where the hand reaches the world (the water at Pallas, the air at Eros, the ice haulers' strike) (approved 2026-11-11).
+26. `ports.md`: what the port view is (a cutaway of the part of a port a crew uses, its people on the place's hours), and Earth's port first: Lagos Ring, where torch ships berth at the hub and the hand signs on (approved 2026-11-12, #1099); and drafts of the screen in port and how a port runs (its clock, its people, its scenes).
+27. `burn.md`: how a burn plays: what is going on aboard shows on the ship as offers the hand can take or let go, only urgent events stop the burn, a speed to run ahead, and a camera the player moves (approved 2026-11-14).
+28. `cast.md`: the people of the game as one thing: tiers by depth (main, recurring, regular, passing), a thread for each that comes in and out, pools drawn per run weighted by the run's facts, promotion, a director that keeps a few threads live, and the writing the pools need from the world (draft, 2026-11-14).
+29. `places.md`: every kind of place across the system (an arcology's ring, yards, dome towns, company works, guild and co-op stations, havens, rafts, homeships, sites, and the rest), the inner places each can have and whose they are, how they meet the port view and the cast's pools, and which chapter needs which (draft, 2026-11-14).
+30. `trade-goods.md`: the seven goods as built, who makes and owns each, the licences as built against the port law as written, fuel and reaction mass, how prices move, and what each chapter needs (draft, 2026-11-14).
+31. `chapter-3.md`: the war, in three outlines, one for each way chapter 2's last vote goes: the organiser's, the master's and outside; what each opens with, its long middle, and the decision that opens chapter 4 (outline, 2026-11-14).
+32. `regulars.md`: the pool rule for a place's regulars and the dock official, and the pools of chapter 1's ports: Ceres and the Warren, Pallas Refinery, the Hollows, Eros Old Town, Luna and Mars (draft, 2026-11-14).
+33. `powers-people.md`: the faces of the minor powers the hand meets in chapter 1 (the Ice Haulers' Guild, the Hollows, Pallas Smelting, the Eros Town Trust, Kaur's buying office, Gulf Atlantic Manning, the house), recurring and tagged to their power, so chapter 2 knows them (draft, 2026-11-14).
+34. `ceres.md`: Ceres Station, where chapter 1 ends and chapter 2 is based: the Ceres Guild Council that owns it, the yard and docks on a crater floor and the town in turning rings dug into its wall, its inner places and whose they are, the co-op's office, the hours and the people (draft, 2026-11-14).
 
 ## Where the game must change to fit
 
-The owner decided (2026-10-31) that where the bible and the game disagree, the game changes, in stages, each as its own project after the writing pilot. Known conflicts:
+The owner decided (2026-11-11) that where the bible and the code disagree, the code wins, and the bible is amended to fit. Before that (2026-10-31) the game changed to fit the bible, and the conflicts marked resolved below were settled that way. Known conflicts:
 
 1. **Crew size and posts.** The code crews Hester's ship with about ten (`CHAPTER_CREW` in `js/hired.js`: the hand's post, a first officer, a quartermaster, a medic, a cook, two ice hands). The bible has five to seven: three officers, a bosun and two or three ratings. Resolved (#879): seven aboard, the bosun, one deckhand and the comms rating with the hand; no quartermaster, medic or cook, and the bosun holds the first aid.
 2. **The hand's post and share.** The hand can sign on as pilot or engineer, licensed posts, and gets a 6 percent share (`HIRED_SHARE`) that the bible gives only to officers. Resolved for the pay (#879): the hand is a rating, on a day rate less a kit deduction, with no share. The posts a hand may sign on to stay as they are (the narrow build offers only the guns).
 3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun. Resolved (#879): he is shown as the bosun on Hester's ship and holds the first aid; the code's slot stays `xo`.
-4. **Ice runs, the ice hold and ice hands.** The bible's ship is a fast cargo hull, and bulk ice goes slow.
+4. **Ice runs, the ice hold and ice hands.** The bible's ship was a fast cargo hull, and bulk ice goes slow. Resolved (2026-11-11, the code wins): Hester's ship is the Ice Hauler, a tower of decks over her water tank (`LAYOUTS.freighter`, `js/layouts.js`), and the ice runs stand; `ship.md` is amended.
 5. **The chapter's goal.** The hand saved to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright. Resolved (#882): the goal is a member's share in the Ceres Crew Co-operative's Ore Runner (`ceres-coop.md`), a buy-in set by the members' vote with the rest owed, signed at Ceres; chapter one ends there, and chapter two on a co-op ship is still to come.
-6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice.
-7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier.
-8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand).
-9. **The three powers** (`FACTIONS`) and the faction economies and wars, to be replaced by major and minor owners.
+6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice. Resolved: the code has the charter in her bio and only `secretive` (`js/captains/hester.js`).
+7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier. Resolved: the code has the arrears and then a repair-shop lease (`js/cast.js`), as his sheet does.
+8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand). Resolved: the code's Lagos Ring is the ring of `lagos.md`, with its own crew origin (`js/peopletext.js`).
+9. **The three powers** (`FACTIONS`) and the faction economies and wars, to be replaced by major and minor owners. Kept the bible's way, since the owner decided (2026-11-11) that the game needs new powers: `owners.md` has them, and what the game changes to fit.
 
 ## Still to write
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
-- What replaces the faction economies and wars in the game (a code project).
+- What replaces the faction economies and wars in the game: drafted in `owners.md`, for review.
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.

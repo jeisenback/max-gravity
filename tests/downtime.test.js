@@ -18,8 +18,8 @@ test('five at a time, and Not now is always last', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => { setup(); const out = {}, labels = e => e.choices.map(c => c.label);
-    const every = downtimeEvent(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).length;
-    const menu = labels(downtimeEvent());
+    const every = downtimeScene(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).length;
+    const menu = labels(downtimeScene());
     out.every = every; out.menu = menu; return out; });
   assert.ok(r.every > 5, `there are more than five to choose from (${r.every})`);
   assert.equal(r.menu.length, 6, 'five and Not now'); assert.equal(r.menu[5], 'Not now'); assert.equal(new Set(r.menu).size, 6);
@@ -29,7 +29,7 @@ test('five at a time, and Not now is always last', async () => {
 test('the same five stay open for that half of the burn, and it turns for the next', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { setup(); const out = {}, five = () => downtimeEvent().choices.map(c => c.label).slice(0, 5);
+  const r = await ev(() => { setup(); const out = {}, five = () => downtimeScene().choices.map(c => c.label).slice(0, 5);
     const a = five(), again = five();
     G.transit.flipped = true; const b = five(), bAgain = five();
     out.same = JSON.stringify(a) === JSON.stringify(again) && JSON.stringify(b) === JSON.stringify(bAgain);
@@ -43,11 +43,17 @@ test('everything comes round, and each five is a mix of the three kinds', async 
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => { setup(); const out = {}, label = a => (typeof a.label === 'function' ? a.label() : a.label);
-    const all = downtimeEvent(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).map(c => c.label), seen = new Set(), kinds = [];
+    const all = downtimeScene(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).map(c => c.label), seen = new Set(), kinds = [];
     const lanes = [baseActivities().filter(a => !a.can || a.can()).map(label), handDowntime().filter(a => !a.can || a.can()).map(label), onNow().filter(a => !a.can || a.can()).map(label)];
+    // the rotation, not where people stand: each one a line puts in a place is there (a line about someone elsewhere is not offered, downtimeThere)
+    const people = shipPeople();
+    for (const a of [...baseActivities(), ...handDowntime(), ...onNow()]) {
+      if (!a.at || typeof a.where !== 'function' || (a.can && !a.can())) continue;
+      const p = people.find(q => q.id === a.where(people)); if (p) p.room = typeof a.at === 'function' ? a.at() : a.at;
+    }
     for (let i = 0; i < 14; i++) {
       G.transit.lifeShown = {};
-      const five = downtimeEvent().choices.map(c => c.label).slice(0, 5);
+      const five = downtimeScene().choices.map(c => c.label).slice(0, 5);
       five.forEach(l => seen.add(l));
       kinds.push(lanes.map(l => five.some(x => l.includes(x))));
     }
@@ -64,7 +70,7 @@ test('with five or fewer, all of them show', async () => {
   await ev(helpers);
   const r = await ev(() => { setup(); const keep = [window.onNow, window.handDowntime];
     window.onNow = () => []; window.handDowntime = () => [];
-    try { const few = baseActivities().filter(a => !a.can || a.can()).length, menu = downtimeEvent().choices.map(c => c.label); return { few, menu: menu.length }; }
+    try { const few = baseActivities().filter(a => !a.can || a.can()).length, menu = downtimeScene().choices.map(c => c.label); return { few, menu: menu.length }; }
     finally { [window.onNow, window.handDowntime] = keep; } });
   assert.ok(r.few <= 5, `the ship's own are ${r.few}`);
   assert.equal(r.menu, r.few + 1, 'every one, and Not now');
@@ -83,7 +89,7 @@ test('the ship has a night: the lights go down and whoever is off watch turns in
     lifeTick(0.5);
     const noted = t.comms.some(c => /lights go down/.test(c));  // the comms keep only the last ten lines
     for (let i = 0; i < 200; i++) lifeTick(0.5);
-    const off = shipPeople().filter(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).map(p => p.room);
+    const off = shipPeople().filter(p => p.role !== 'cat' && !onWatchTonight(p, nightState())).map(p => p.room);
     t.elapsed = 5;
     lifeTick(0.5);
     return { levels, off, noted, up: t.comms.some(c => /lights come up/.test(c)) };
@@ -121,7 +127,7 @@ test('a downtime pick posts one line to Comms, with what it taught, and the dial
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => { setup(); G.state.crew.push(castPerson('ines').id); castRec('ines').since = G.state.day;
-    const c = downtimeEvent(true).choices.find(x => x.label === 'Fly a sim with Ines'); G.transit.comms = [];
+    const c = downtimeScene(true).choices.find(x => x.label === 'Fly a sim with Ines'); G.transit.comms = [];
     const text = c.run(); return { text, comms: G.transit.comms.slice() }; });
   assert.ok(r.text.length > 300, 'the dialog has the scene');
   assert.deepEqual(r.comms, ['[Ship] Downtime: Fly a sim with Ines. (+3 experience at the pilot post.)']);

@@ -61,6 +61,11 @@ test('a chapter-two record gives the co-op\'s role: it flies and trades, and buy
   for (const id of ['drills', 'practise', 'repair']) assert.equal(coop.mayDowntime(id, {}, 'gunner'), ROLES.hand.mayDowntime(id, {}, 'gunner'), id);
 });
 
+test('who holds the bridge (#1045): the hand has a captain person, the co-op and the owner are the captain; the hand argues at the hatch in both chapters, an owner only pays', () => {
+  assert.deepEqual([hand.captain, roleOf({ post: 'gunner', chapter: 2 }).captain, owner.captain], ['npc', 'you', 'you']);
+  assert.deepEqual([hand.hatch, roleOf({ post: 'gunner', chapter: 2 }).hatch, owner.hatch], [true, true, false]);
+});
+
 test('the chapter is read from the hand\'s record', () => {
   assert.equal(chapterOf({ hired: null }), 1); assert.equal(chapterOf({ hired: { post: 'gunner' } }), 1); assert.equal(chapterOf({ hired: { chapter: 2 } }), 2);
 });

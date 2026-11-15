@@ -4,6 +4,8 @@
 // by the party that comes aboard (COMBAT.md). Many-seed checks, so they are in the soak (npm run soak, nightly on main) and not in npm test (#753, the owner's
 // choice, 2026-10-28): run them by hand when a change touches the fights, as CLAUDE.md says. The tool's quick check and the answer's own rules stay in
 // tests/fights.test.js.
+//
+// Profiles:  none: the fight tool (tools/fights.js) and chapter two's soak (tools/soaktwo.js) use no soak player (tools/soak.js SOAK_PROFILES, #1199).
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');

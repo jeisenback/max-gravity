@@ -303,8 +303,15 @@ function becomeLoyal(p, memory) {
   homeLog(fillLine(familyLines('ship').loyal, { first: p.first, last: p.last, ship: shipTitle() }));
 }
 
+// Who the hand could sit with: the crew (procedural) and the passengers with a person, in the picker's order.
+const sitAboard = () => [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
+// The one Sit with someone offers in the downtime scene (shiplife.js sitPerson): someone having a hard time or hurt first, else by the day and the slot.
+const sitWith = () => {
+  const named = namedInDowntime(), rest = sitAboard().filter(f => !named.includes(f.id)).map(f => ({ ...f, low: moodLow(f.p), hurt: !!(G.state.injured || {})[f.id] }));
+  return sitPerson(rest, G.state.day + slotIndex() + 3);  // not a main character with a choice of their own, nor tonight's watch or the medic; turning from slot to slot
+};
 function sitPicker() {
-  const say = familySay('picker'), aboard = [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
+  const say = familySay('picker'), aboard = sitAboard();
   return {
     title: say('title'), text: say(`text.${pick([0, 1, 2, 3, 4])}`),
     choices: aboard.map(f => ({
@@ -319,7 +326,7 @@ const asTalk = t => ({ title: t.title, text: t.open, choices: t.choices });
 const FAMILY_SCENES = {
   mood: p => { p.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' }; return asTalk(moodTopic(p)); },
   hurt: p => asTalk(hurtTopic(p)),
-  war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Compact')),
+  war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Pact')),
   rift: p => asTalk(riftTopic(p, { first: 'Ana' })),
   friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
   memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),
@@ -602,8 +609,10 @@ Mods.register({
   id: 'family', name: 'Found family', builtin: true,
   init(M) {
     ACTIVITIES.sit = {
-      label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
-      run() { G.nextEvent = sitPicker(); return null; },  // the picker opens at once
+      get label() { const w = sitWith(); return w ? familySay('picker')('with', { first: w.p.first }) : 'Sit with someone'; },  // the downtime scene names one person
+      can: () => !!sitWith(),  // someone no other choice of the scene names
+      on: () => familySay('picker')('on', { first: (sitWith() || { p: { first: '' } }).p.first }), where: () => (sitWith() || {}).id,
+      run() { const w = sitWith(); G.nextEvent = w ? sitBeat(w.p, !w.pax) : sitPicker(); return null; },  // the sitting opens at once
     };
     M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
       for (const id of [...G.state.crew, (hired() || {}).captain].filter(Boolean)) {
@@ -652,10 +661,9 @@ Mods.register({
       for (const n of letters(planet)) M.note(n);
       const st = G.state, p = visitDue(st, planet.name, st.favorKept);
       st.favorKept = null;
-      if (!p || (G.dialog && G.nextEvent)) return;  // nowhere to put a scene: it can come at the next landing here
+      if (!p) return;
       p.visitedAt = st.day;
-      const ev = visitEvent(p);
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      offerScene('people', visitEvent(p));
     });
     M.action('renameShip', () => {
       if (hired()) return;  // her name is the captain's

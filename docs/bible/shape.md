@@ -1,18 +1,18 @@
 # The shape of the game
 
-Status: approved by the owner on 2026-11-07 (#891).
+Status: approved by the owner on 2026-11-07 (#891); changed 2026-11-13 for the owner's review (genre and late game: succession, the endings, the legacy note; `docs/superpowers/specs/2026-11-13-genre-and-late-game-design.md`).
 
 ## What it is
 
-A run is one life. A hand signs on to someone else's ship, and the world opens around them chapter by chapter until it is a sandbox: places, people, work, owners and their rivalries, most of it generated from written parts and left to combine. The chapters tell the player where they stand. The world decides what happens next, and the player decides what to do about it.
+A run is one life, and from chapter 4 the line after it. A hand signs on to someone else's ship, and the world opens around them chapter by chapter until it is a sandbox: places, people, work, owners and their rivalries, most of it generated from written parts and left to combine. The chapters tell the player where they stand. The world decides what happens next, and the player decides what to do about it.
 
 There are many endings. A run ends when the life does, or when it gets somewhere: an arc seen through, or a goal reached. Then another run starts, with a different hand in a different world, and something of the last one left behind.
 
 ## A run
 
-- **One life.** A run follows one hand from the day they sign on to an ending. The ending can come early (dead in a boarding, ruined by a debt, walked away) or late.
+- **One life, then the line.** A run follows one hand from the day they sign on to an ending. The ending can come early (dead in a boarding, ruined by a debt, walked away) or late. Before chapter 4 a death ends the run: there is nothing to inherit. From chapter 4, when the hand dies or retires, someone from the ring goes on, at a cost: the holdings kept, the money and a lost ship gone, standing and regard cut (`later-chapters.md`, How the later chapters play).
 - **A different world each run.** The background, the ship's crew, the people met, the jobs on the boards and where the owners' rivalries break out are drawn fresh. Two runs from the same start do not play alike.
-- **A thin legacy.** An ending leaves a trace in the next run, earned and small: a new start that opens up, a person who remembers the last hand, a name on a memorial wall, a ship the next hand might see on an apron. It never makes the next run easier to win, only different. The game keeps the seed of this already (`js/legacy.js`).
+- **A thin legacy.** An ending leaves a trace in the next run, earned and small: a new start that opens up, a person who remembers the last hand, a name on a memorial wall, a ship the next hand might see on an apron. It never makes the next run easier to win, only different. It is the trace between runs, and waits for the starts to open up, since before then it has little to unlock. Other players' runs can leave it too, as words only (shared deeds, `README.md`). Succession within a run is another thing: `js/legacy.js` does it for the parked owner game, and the later chapters take it up.
 
 ## The chapters widen
 
@@ -22,16 +22,49 @@ Each chapter hands the player more of the world. The first is mostly spine: who 
 |---|---|---|
 | 1, the hand | a rating on Hester's ship | their post, their people, their savings |
 | 2, the co-op | a member of the Ceres co-op, and the view is the co-op's | the Ore Runner, flown, traded and fought by the player, and answerable to the members' vote |
-| 3 | set by chapter 2's last vote | more again, in the direction the player chose |
+| 3 | set by chapter 2's last vote (`chapter-3.md`) | more again, in the direction the player chose |
 | 4 to 7 | drafted in `later-chapters.md`: more hulls, a place, alliances, a threat | a second hull, an outpost, a bloc, and what they built put to the test |
 
-Chapter 2's last vote (on chapter 2's own page, to come; the co-op itself is `ceres-coop.md`) points chapter 3 one of three ways:
+Chapter 2's last vote (`chapter-2.md`; the co-op itself is `ceres-coop.md`) points chapter 3 one of three ways:
 
 - **Hold:** the co-op survives, at a price. Chapter 3 is the **organiser's**: more members, more hulls, a say across ships, standing up to lenders and owners together.
 - **Charter:** the Ore Runner works for a side in the owners' war. Chapter 3 is the **master's**: a licence and a bridge, on someone else's terms.
 - **Sell:** the members scatter. Chapter 3 is **outside**: a hull or a share of one where the owners' rules thin out, in the havens and squats (`the-hollows.md`, `boneyard.md`, `ring-nine.md`, `triton-outpost.md`).
 
 An owner of one's own hull is not the default rung. Only owners own (`README.md`, the owner's decisions), and a rating who becomes one is the rarest story in this world. It may come later, as a goal some runs reach, not as where the game leads.
+
+## How a chapter opens and closes
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1231). Chapter 1's close and chapter 2's start are built (`js/hired.js`); this sets the pattern they follow, so the later turns are written to it.
+
+Every turn between chapters has the same five parts, in order.
+
+**1. The decision, seen coming.** The chapter's last choice is in view from its middle, and the player knows what each answer sets. Some are the player's to time (chapter 1: sign for the share when the savings are there); some the world times (chapter 2: the lender's offer, at the height of the squeeze). Either way it is one scene, and it is not sprung.
+
+**2. The close.** One scene, in a place, that says where the hand now stands and who is with them: chapter 1's is at the foot of the new ship's ramp (A Member's Share, `chapterEnd`). It names who came, who did not, who died (the memorial) and what is owed. It closes the chapter, not the game.
+
+**3. The look back.** The chapter in the ledger (Looking Back, `chapterRecap`): the days and the work, who the hand got close to and what they were told, the marks left, the promises kept and broken. A line appears only if there is something to say. Each chapter's look back adds what that chapter kept: chapter 2's, the votes and who carried them.
+
+**4. What carries, and what is shown of it.** Everything the record keeps carries as it stands, and nothing resets (`chapter-2.md`, What carries over):
+
+- the people, with their opinion, their threads and their state (aboard, away, dead);
+- money: savings, a share, what is owed;
+- standing, kept by the name of whoever holds it;
+- the record and the memorial;
+- the hand's family and home;
+- the places, their regulars and the dock officials, as they were.
+
+What changes is the view: whose ship, what the player decides, what is theirs (The chapters widen, above). The close or the opening shows the player what they carry in a few lines: who is with them, what is owed, what the record says of them. Not a screen of numbers.
+
+**5. The opening.** One written scene, short, that says where the player now stands, who is with them, what is theirs, what is owed, and the first thing to do (chapter 2's: The Bridge, `chapterTwoStartScene`: the ramp at Ceres, the lender's letter, the vote that puts the hand on the bridge). Then the chapter's new system is taught on something small before it decides anything large: the meeting's first vote is on a run, not on the co-op's future. The opening is over by the first port; the teaching by the second or third run.
+
+**Saved at the turn.** The new chapter's start is saved, so a reload reopens in the new chapter, and the old chapter's end can be read again in the look back.
+
+**A run can end at a close.** A close is also a place the run can end: the hand dies, is ruined or walks away (Endings, below), and the endings read the record as it stands.
+
+**Chapter 1 to 2, against the pattern.** The decision is the share, timed by the player once the savings are there (`chapter-1.md`, the spine); the close is A Member's Share at the Ore Runner's ramp; the look back is Looking Back; the carry is as listed; the opening is The Bridge. Two gaps: the opening names the usual narrow run's new members, not the run's draw (#1240), and chapter 2's first, small vote is not built (the meeting, `chapter-2.md`, #1216).
+
+**Chapter 3's three openings** follow the same pattern (`chapter-3.md`): the organiser's opens at the meeting after the vote, with the price of the hold read out; the master's in the house's office, with the charter and the licence signed; outside on the yard's apron, with the hull sold and whoever walks away with the hand.
 
 ## Freedom
 
@@ -42,6 +75,8 @@ As the world opens, the player can take part in its big events, steer between th
 - **Go outside:** turn smuggler, or pirate, out where the patrols are thin, and live with what that costs.
 
 None of these is the right way. Each has its own people, risks and endings.
+
+How far the player can move the world widens with what they hold: a ring of powers a chapter, from their shipmates in chapter 1 to a bloc in chapter 6 (`owners.md`, How far the player reaches).
 
 ## Events in the world
 
@@ -54,7 +89,7 @@ There is no interstellar war and no great power. The torch drive is the one leap
 There are many, of two kinds, and a run can reach more than one kind on the way to its last:
 
 - **Plot endings:** an arc seen through. The co-op's last vote, the owners' war, a crew member's story, a pirate's career.
-- **Goal endings:** somewhere the player chose to get. Your share paid off; a master's licence; a fleet organised; retired rich and ignoring every thread; a life made on the edge; or dead young.
+- **Goal endings:** somewhere the player chose to get. Your share paid off; a master's licence; a fleet that moves the system's freight (most often a co-op's or a charter's; owning it outright is the hardest end of it); a place run, an outpost or a freehold or in the end a jurisdiction; the fuel war tipped by a bloc's standing; retired rich and ignoring every thread; a life made on the edge; or dead young. The later chapters add to the list; none of them is the only way a run ends.
 
 An ending reads the run's record: who lived and who died, what was promised and kept, whose side the hand took, what they owned and owed. The ending framework in #132 is a start on this list, not all of it. Getting rich and ignoring every thread stays a way to play, and it has its own ending.
 
@@ -68,7 +103,8 @@ Every run is seeded fresh, so the game's randomness is the player's. The tests h
 
 ## Assumptions to confirm
 
-- A run is one life, from signing on to an ending, and runs are meant to be replayed.
+- A turn between chapters has five parts: the decision seen coming, the close, the look back, what carries (everything, as it stands), and a short opening that teaches the new system on something small.
+- A run is one life, from signing on to an ending, and from chapter 4 the line after it; runs are long, and replayed now and then.
 - The legacy carried between runs is small and earned, and never makes winning easier.
 - Each chapter widens the player's freedom; the spine thins and the world takes over.
 - Chapter 2's last vote sets chapter 3 as the organiser's, the master's or outside; owning a hull is a goal some runs may reach, not the default.

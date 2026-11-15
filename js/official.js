@@ -8,7 +8,7 @@
 // Their title follows the port's government (OFFICIAL_TITLE). They keep off the bar's stools (bar.js). Loaded before storylets.js; only
 // calls into the game at runtime.
 
-const OFFICIAL_TITLE = { 'Arcology Compact': 'Officer', 'Dome Concord': 'Officer', 'Charter League': 'Dockmaster', Pirate: 'Collector', Independent: 'Dockmaster' };
+const OFFICIAL_TITLE = { 'Arcology Pact': 'Officer', 'Dome Pact': 'Officer', 'Guild Federation': 'Dockmaster', Pirate: 'Collector', Independent: 'Dockmaster' };
 const OFFICIAL_JOB = { Officer: 'customs officer', Dockmaster: 'dockmaster', Collector: 'tax collector' };
 
 // A small dice stream of its own (mulberry32), so making the official draws nothing from the game's.

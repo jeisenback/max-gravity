@@ -57,14 +57,16 @@ const playScenes = () => {
   run('scene:warning', {}, () => warningScene());
   // The freight agent at the far end (shippers.js): late, short and lost, each choice with the case held and not held; the shipper's regard is what the extra records.
   for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }], ['skim', { tons: 90, got: 90, late: 0, cut: 30000, owed: 200000 }]]) {
-    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
+    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Arcology Pact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
       { rolls: [0, 0.99], extra: () => ({ standing: hired().standing, fund: hired().fund }) });
   }
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });
-  run('scene:hand-death:first', {}, () => handDeathScene('first'), { skip: [0] });
   run('scene:hand-death:bridge', {}, () => handDeathScene('bridge'), { skip: [0] });
+  // the same on the hand's own bridge (#1045): no captain to say it
+  const ownBridge = () => { const h = hired(); Object.assign(h, { chapter: 2, bridge: true }); delete h.captain; delete h.captainKey; };
+  for (const how of ['hurt', 'bridge']) run(`scene:hand-death:${how}:own`, {}, () => { ownBridge(); return handDeathScene(how); }, { skip: [0] });
   run('scene:captain-lost', {}, () => captainLostScene(), { skip: [0] });
   run('scene:split', {}, () => {
     const st = G.state, crew = folk().filter(f => f.crew && !f.p.cast), [a, b] = crew;
@@ -134,6 +136,25 @@ const playScenes = () => {
       if (last) G.state.customs.met = { [gov]: { q: PATROL_LT[gov].asks[0], answer: last, day: 0 } };
     }, () => lieutenantScene(gov, currentPlanet()));
   }
+  // a contact at night on the hand's watch (engage.js, #1034): the burn's night that the bill gives the hand the bridge
+  // its range drawn at the middle, so the record repeats; its words only, since the choices are the contact's, played by its own case
+  run('scene:contact:onwatch', {}, () => { const r = Math.random; Math.random = () => 0.5; try { return contactEvent({ kind: 'pirate' }); } finally { Math.random = r; } }, { skip: [0, 1, 2, 3, 4, 5, 6, 7], prep() {
+    uatBurn('Earth', 'mars'); const t = G.transit; t.times = []; let d = 0; while ((G.state.day + d) % 4 !== 2) d++; t.elapsed = (d + 0.75) * SHIP_DAY - 6;
+  } });
+  G.transit = null; G.mode = 'landed';  // the burn ends with its case: the cases after play at a port, as before
+  // the watch bill (shiplife.js, #1034): the handover line, both watches, one, and the other, and the card's words
+  run('scene:watch-bill', {}, () => {
+    const names = { a: 'Mateo', b: 'Hana', you: 'you' }, w = k => sceneSay('scene:watch-bill', k, { n: 2 });
+    return { title: w('card.title'), text: [billLine({ bridge: 'a', engine: 'b' }, names), billLine({ bridge: 'you', engine: null }, names), billLine({ bridge: null, engine: 'b' }, names),
+      w('card.tonight'), w('card.night'), w('card.mine'), w('card.none'), sceneSay('scene:watch-bill', 'card.row', { bridge: 'Mateo', engine: 'Hana' })].join(' | '), choices: [] };
+  });
+  // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
+  for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {
+    run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Pact', rep, false), currentPlanet()), { rolls: [0, 0.999] });
+  }
+  run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
+  run('scene:inspection:own', { post: 'gunner' }, () => { ownBridge(); return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); }, { rolls: [0, 0.999] });  // the hand at the hatch of their own ship (#1045)
+  run('scene:inspection:nod', { post: 'gunner' }, () => { dockOfficial(currentPlanet()).opinion = 2; return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); }, { rolls: [0, 0.999] });  // the port's official knows the ship (#1097)
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
@@ -145,7 +166,9 @@ const playScenes = () => {
 
   // ---------- the downtime a hired hand can add, and what the crew make of what you do with a faction ----------
   const crewOf = n => { for (let i = 0; i < n; i++) { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first: `Mate${i}`, last: 'Vale', role: ['engineer', 'pilot', 'comms', 'slicer'][i % 4], opinion: 0 }); registerPerson(c); G.state.crew.push(c.id); } };
-  run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
+  const NEW4 = ['message', 'bench', 'medic', 'watch'].map(k => sceneSay('scene:downtime', `${k}.label`)), SIX = ['home', 'firstaid', 'lashings', 'suits', 'scrubbers', 'cook'].map(k => sceneSay('scene:downtime', `${k}.label`));
+  const older = () => HAND_DOWNTIME.filter(d => !NEW4.includes(d.label) && !SIX.includes(d.label));  // the four of #1073-#1081 are played below, where they can run
+  run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: older().map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
   // the other versions, taken by the day (#771, #775): two days on from the one above, so all three are played
   for (const shift of [1, 2]) run(`downtime:cast:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
   const GOVT = FACTIONS.find(f => f !== 'Pirate'), GOVT2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOVT);
@@ -159,9 +182,36 @@ const playScenes = () => {
       run(`shiplife:acts:${v}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['meal', 'drills', 'repair', 'visit'].map(id => ({ label: ACTIVITIES[id].label, run() { const keep = Math.random; Math.random = () => (v ? 0.99 : 0); try { return ACTIVITIES[id].run(); } finally { Math.random = keep; } } })) }), { prep: burn(v, { engineer }) });
     }
     for (const [name, opts, flipped] of [['hired', {}, false], ['hired-flipped', {}, true], ['owner', { mode: undefined }, false], ['owner-flipped', { mode: undefined }, true]]) {
-      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeEvent(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1).map(c => (c.label === ACTIVITIES.meal.label ? { ...c, run: () => `${c.run()} | ${G.transit.comms[G.transit.comms.length - 1]}` } : c)) }; }, { prep: burn(0, { flipped }) });  // the meal's line in Comms too (#767)
+      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeScene(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1).map(c => (c.label === ACTIVITIES.meal.label ? { ...c, run: () => `${c.run()} | ${G.transit.comms[G.transit.comms.length - 1]}` } : c)) }; }, { prep: burn(0, { flipped }) });  // the meal's line in Comms too (#767)
     }
   }
+  // ---------- the downtime scene (2026-11-12): its title by the time of day it opens at (and the plain one outside them), and each activity's "what's on" ----------
+  for (const block of ['breakfast', 'shift', 'meal', 'supper', 'handover']) {
+    run(`downtime:scene:${block}`, {}, () => { const ev = downtimeScene(true); return { ...ev, choices: ev.choices.slice(-1) }; }, {
+      prep() { uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.elapsed = 0; let d = 0; while (shipDay(t.elapsed).block !== block && d++ < 400) t.elapsed += 0.5; } });
+  }
+  run('downtime:on', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => [...older().map(d => d.on()), ACTIVITIES.teach.on()].join(' | ') }] }), { prep() { G.state.crew = []; crewOf(4); uatBurn('Ceres Station', 'pallas'); } });
+  // an offer's tag on the ship (#1184): a main character, the captain and a passenger, before the scene is made
+  run('offers:labels', {}, () => ({ title: 'Offers', text: [lifeSay('offer.cast', { first: 'Ines' }), lifeSay('offer.captain', { last: 'Vance' }), lifeSay('offer.passenger', { first: 'Ade' })].join(' | '), choices: [] }));
+  // the four of #1073, #1075, #1076 and #1081, set up so each can run: a burn, someone else's bridge night, the drive worn, the hand hurt and a medic aboard; each telling by the day
+  for (const shift of [0, 1, 2]) {
+    run(`downtime:four:${shift}`, {}, () => { const four = HAND_DOWNTIME.filter(d => NEW4.includes(d.label)); return { title: 'Downtime', text: four.map(d => d.on()).join(' | '), choices: four.map(d => ({ label: d.label, run: d.run })) }; }, {
+      prep() {
+        G.state.crew = []; crewOf(4); const m = makeCrewCandidate(G.state.systemId); Object.assign(m, { first: 'Medic', last: 'Vale', role: 'medic', skill: 2 }); registerPerson(m); G.state.crew.push(m.id);
+        G.state.day += shift; uatBurn('Ceres Station', 'pallas'); while (billOn(0).bridge === 'you' || G.state.day % 3 !== shift) G.state.day++;
+        career().hurtUntil = G.state.day + 12; condition().drive = 70; G.state.credits = 1000;
+      } });
+  }
+  // the other six (#1074-#1082), with a medic, a quartermaster, an ice hand and a cook aboard and the hand not hurt; each telling by the day
+  for (const shift of [0, 1, 2]) {
+    run(`downtime:six:${shift}`, {}, () => { const six = HAND_DOWNTIME.filter(d => SIX.includes(d.label)); return { title: 'Downtime', text: six.map(d => d.on()).join(' | '), choices: six.map(d => ({ label: d.label, run: d.run })) }; }, {
+      prep() {
+        G.state.crew = []; crewOf(6);
+        for (const role of ['medic', 'quartermaster', 'icehand', 'cook']) { const m = makeCrewCandidate(G.state.systemId); Object.assign(m, { first: `The${role}`, last: 'Vale', role, skill: 2 }); registerPerson(m); G.state.crew.push(m.id); }
+        uatBurn('Ceres Station', 'pallas'); while (G.state.day % 3 !== shift) G.state.day++;
+      } });
+  }
+  run('downtime:reply', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => ['earth', 'mars', 'belt'].flatMap(background => [0, 1, 2].map(day => homeReply({ background, day }))).join(' | ') }] }));
   // ---------- the round for the house at the bar, and a main character coming aboard ----------
   { // the button's words before and after, and what the room says and remembers
     const button = () => (barHtml().match(/<button data-action="barRound"[^>]*>([^<]*)<\/button>/) || [])[1];
@@ -203,6 +253,18 @@ const playScenes = () => {
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
+  // the captain's figures (#1059): an error found, a landing and a miss, and the row when they are not due
+  run('hand:figures', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.figures.label, run: () => String(ACTIVITIES.figures.run()) }] }), { rolls: [0.01, 0.2, 0.99], extra: () => ({ fund: hired().fund, at: hired().figuresAt }) });
+  run('hand:figures:none', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.figures.can()) }] }), { prep() { hired().figuresAt = G.state.day; } });
+  // a run in on her figure (#1059): the fourth on its day, whole and with the hull as it left
+  run('hand:on-figure', {}, () => ({ ...alone(), choices: [{ label: 'x', run() {
+    const st = G.state, h = hired(), pl = currentPlanet();
+    h.runsDone = 3; h.onFigure = 3; st.armor = ship().armor; st.cargo = { water: 10 };
+    h.run = { contract: true, shipper: 'a dock broker', good: 'water', tons: 10, sid: st.systemId, planet: pl.name, pay: 5000, due: st.day + 5, day: st.day - 5, cost: 0, profit: 5000, from: 'Mars' };
+    return settleRun(pl);
+  } }] }), { extra: () => hired().onFigure });
+  // the pay held a short month, paid back with its interest on landing (#1059)
+  run('hand:short-repaid', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => eventSay('cap-short', 'repaid', { sum: fmt(SHORT_PAY + SHORT_BACK) }) }] }));
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:torps-kept', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => fightCard().replace(/<[^>]+>/g, ' ') }] }));  // the Gunnery page's torpedo count on a captain's ship (#956)
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
@@ -219,9 +281,8 @@ const playScenes = () => {
   run('trait:door:cool-head', {}, () => { const ev = contactEvent({ kind: 'pirate' }); return { ...ev, choices: ev.choices.filter(c => /^\[Cool Head\]/.test(c.label)) }; }, { rolls: [0, 0.99], prep() { hired().record = { repelsHeld: 2 }; } });
   run('trait:door:runner', {}, () => { const ev = contactEvent({ kind: 'pirate' }); return { ...ev, choices: ev.choices.filter(c => /^\[Runner\]/.test(c.label)) }; }, { prep() { hired().record = { fightsRan: 3 }; } });
   run('trait:door:salvager', { post: 'pilot' }, () => { const ev = iceStageScene(0); return { ...ev, choices: ev.choices.filter(c => /^\[Salvager\]/.test(c.label)) }; }, { prep() { hired().record = { haulsClean: 2 }; hired().run = { ice: { edge: 0 }, tons: 20 }; } });
-  run('trait:door:scarred', {}, () => { const p = makePerson('earth'); registerPerson(p); p.traits = ['rude']; const o = BAR_TOPICS.find(t => t.id === 'fight').make(p, { p, known: false }, { st: G.state, bar: 'Bar' }); return { ...alone(), choices: [{ label: o.label, run: o.run }] }; }, { prep() { hired().record = { hurts: 2 }; } });  // nothing due: the button teaches nothing and says nothing (text '')
+  run('trait:door:scarred', {}, () => { const p = makePerson('earth'); registerPerson(p); p.traits = ['rude']; const o = BAR_TOPICS.find(t => t.id === 'fight').make(p, { p, known: false }, { st: G.state, bar: 'Bar' }); return { ...alone(), choices: [{ label: o.label, run: o.run }] }; }, { prep() { hired().record = { hurts: 2 }; } });  // Scarred: the rude one at the bar takes one look at the hand and there is no fight (bartopics.js)
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
-  run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.slice(-1) }; });  // the heave-to, last of a hired hand's choices at a navy stop
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
   run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
   for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
@@ -291,9 +352,9 @@ const playScenes = () => {
     run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day };
       window.buyInCompanions = () => []; BUILD.scope = 'earth-hired'; try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; } });
     run('chapter-over', {}, () => ({ ...chapterOverScene(), choices: chapterOverScene().choices.map(c => ({ ...c, run: () => '' })) }));  // its choice goes to the title, which the player does not follow
-    // chapter two's start (#891): the members with the hand, or nobody came; Ines in the pilot's seat or not; each master picked
-    for (const [name, came] of [['with', ['cato', 'ines']], ['alone', []]]) {
-      run(`chaptertwo:start:${name}`, {}, () => { const st = G.state, h = hired(); Object.assign(h, { chapter: 2, signed: st.day, share: { coop: COOP_PORT, buyIn: BUY_IN.mid, owed: SHARE_PRICE - BUY_IN.mid }, came: came.map(k => castPerson(k).id) }); return goOn(st); });
+    // chapter two's start (#891, #1045): the members with the hand, or nobody came; Ines in the pilot's seat or not; the endorsement paid, put on what is owed, or vouched
+    for (const [name, came, credits, vouched] of [['with', ['cato', 'ines'], 50000, false], ['alone', [], 0, false], ['vouched', ['cato'], 50000, true]]) {
+      run(`chaptertwo:start:${name}`, {}, () => { const st = G.state, h = hired(); st.credits = credits; Object.assign(h, { chapter: 2, signed: st.day, vouched, share: { coop: COOP_PORT, buyIn: BUY_IN.mid, owed: SHARE_PRICE - BUY_IN.mid }, came: came.map(k => castPerson(k).id) }); return goOn(st); });
     }
     run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
   }
@@ -356,20 +417,40 @@ const playScenes = () => {
     const d = HAND_EVENTS.find(x => x.id === id);
     run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text) });
   }
+  // a short month (#1059): Hester's, whose payment falls on the first
+  run('hired:cap-short:hester', {}, () => HAND_EVENTS.find(x => x.id === 'cap-short').make(handContext()), { extra: () => ({ held: hired().heldPay || 0, asked: hired().shortAsked }) });
   Math.random = real;
-  // The freight office's side on the paper (shippers.js): a crew member the Compact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
+  // The freight office's side on the paper (shippers.js): a crew member the Arcology Pact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
   // the crew member ashore signs a replacement on, whose name takes one from the names the cases after it would draw.
   {
-    const gov = 'Arcology Compact', realTies = tiesOf;
+    const gov = 'Arcology Pact', realTies = tiesOf;
     run('scene:freight-side', {}, () => {
       const st = G.state, h = hired(), here = currentPlanet(), target = st.crew.map(person).find(p => !p.cast);
       window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p)); h.runsDone = 1;  // the first run is guided and has no side
-      const run0 = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
+      const run0 = { contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
       h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: run0, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [run0] }; st.customs = {};
       return sideScene(run0, sideDue(run0), freightAgent(here));
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
     window.tiesOf = realTies;
   }
+  // ---------- a day down in Lagos (#1162): the menu on each of the three days its lines turn on, and the Port page's button and its shut line ----------
+  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); }, { skip: [3] });  // looking for work is played last (below)
+  run('scene:day-down:button', {}, () => ({ title: lagosSay('button', { fare: fmt(DOWN_FARE) }), text: lagosSay('shut'), choices: [] }));
+  run('scene:day-down:parcel', {}, () => tomasParcelEvent(tomasAboard()));  // Tomas's parcel, and the day at his parents' table (part 2)
+  run('scene:day-down:parents', {}, () => tomasParentsEvent(tomasAboard()));
+  // something brought up (#1164, part 1): the crayfish for Ngozi, a day down after eating at her bay, and her next word with it
+  run('scene:day-down:crayfish', {}, () => { const st = G.state; st.portAte = st.day - 1; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[4]] }; });
+  run('scene:day-down:ngozi-given', {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk[0]; st.forNgozi = true; return portWordEvent(f, portFolkPerson(planet, f), st); });
+  // the woman gets placed (part 2): the clerk's word once she has been met, and her first word in her bay
+  { const folk = (st, key) => { const planet = currentPlanet(), f = portLayout(planet, st).folk.find(x => x.key === key); return portWordEvent(f, portFolkPerson(planet, f), st); };
+    run('scene:day-down:seller-clerk', {}, () => { const st = G.state; G.mode = 'landed'; st.metSeller = true; delete st.sellerAt; return folk(st, 'clerk'); });
+    run('scene:day-down:seller-given', {}, () => { const st = G.state; st.sellerAt = st.day - SELLER_DAYS; delete st.sellerMet; return folk(st, 'seller'); }); }
+  // lives below the Ring (part 4): the lane on its day, and the next word of the one it was about
+  for (const [key, day] of [['repairer', 1], ['keeper', 5]]) {
+    run(`scene:day-down:below-${key}`, {}, () => { const st = G.state; st.day = day; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: e.choices.slice(-1) }; });
+    run(`scene:day-down:below-${key}-given`, {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk.find(x => x.key === key); st.belowFor = key; return portWordEvent(f, portFolkPerson(planet, f), st); });
+  }
+  run('scene:day-down:boy', {}, () => boyEvent(currentPlanet()));  // the boy comes up (part 3)
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };
@@ -388,7 +469,7 @@ const playScenes = () => {
   { const say = daySay; run('dayashore:button', {}, () => ({ title: 'x', text: [say('button'), say('hint.open'), say('hint.spent')].join(' | '), choices: [] })); }  // the Port page's button and its hint, played as words
   // ---------- the other versions of the hand's downtime and of the drills and the repair, taken by the day (#775): last, so that the people these runs
   // make do not move the ids in the runs above ----------
-  for (const shift of [1, 2]) run(`downtime:hand:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => !d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
+  for (const shift of [1, 2]) run(`downtime:hand:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: older().filter(d => !d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
   for (const shift of [1, 2]) for (const engineer of [false, true]) {
     run(`shiplife:acts:day+${shift}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['drills', 'repair'].map(id => ({ label: ACTIVITIES[id].label, run: () => ACTIVITIES[id].run() })) }), {
       prep() { uatBurn('Ceres Station', 'pallas'); G.state.armor = Math.max(1, ship().armor - 10); if (engineer) { G.state.crew = []; crewOf(1); } G.state.day += shift; },
@@ -403,7 +484,7 @@ const playScenes = () => {
   // ---------- the entry lines of chapter 1's ladder of fights (engage.js contactEvent, #810): each step's contact as it opens; its choices are the contact's, played above ----------
   for (const step of FIGHT_LADDER) run(`scene:fight-entry:${step.id}`, {}, () => {
     hired().deal = { price: 170000, day: G.state.day, until: G.state.day + 20, broker: false };  // the Ore Runner's price, which the set piece names
-    const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Compact' } : {}), ladder: step.id });
+    const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Pact' } : {}), ladder: step.id });
     return { ...ev, choices: [] };
   });
   // ---------- the ship fight (fightui.js): its panels, a move of each kind, every order, and each end, from states set by hand; last, so the
@@ -413,7 +494,7 @@ const playScenes = () => {
     try {
       const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
       const orders = (o = {}) => ({ guns: [{ foe: 0, part: 'weapons' }], torp: null, pdc: 'fire', ...o });
-      const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Compact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
+      const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Pact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
       const turn = (s, o, foe, captain = { kind: 'hold' }) => {  // one Fire with the moves set; what it shows next, or the scene it queued and what it left
         const cap = person(hired().captain), m0 = (cap.memories || []).length;
         s.shown = { foe: s.state.foes.map(() => foe), captain }; G.nextEvent = null;
@@ -486,6 +567,11 @@ const playScenes = () => {
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
+      // the range orders on the hand's own bridge (#1045): Close, Hold and Open with where each puts the range, at the knife and at long range (faster than her), one ordered, and shut with the drive down
+      { const s = start('raider').fight; Object.assign(hired(), { chapter: 2, bridge: true }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } }; s.state.me.speed = 1e6;
+        for (const band of [0, RANGE_BANDS.length - 1]) { s.state.band = band; panel(shipFightEvent(s, orders())); }
+        panel(shipFightEvent(s, orders({ range: 'open' })));
+        s.state.me.parts.drive.hp = 0; panel(shipFightEvent(s, orders())); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
       const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
@@ -535,13 +621,13 @@ const playScenes = () => {
         }
       }
       // the navy's party (Task 6): the panel names it, with its own cap, and says the standing its heads put down have cost; a turn of hold fire; holding our bridge is a search, with its fine, and the captain's memory of it
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[2].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null;
         deckLog(s, {}, { kind: 'hold', from: 2, to: 2, n: 0 }); rec.plays.push({ mem: (cap.memories || []).slice(m0) }); }
       // a navy party that withdraws at its cap still files its citation: the close names the fine
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[1].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null; s.state.turn = DECK.NAVY_TURNS - 1;
         deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
     } catch (err) { rec.error = String(err && err.stack || err); }
@@ -585,6 +671,35 @@ const playScenes = () => {
   }
   // a system gone bad, for each system, fixed, jury-rigged (won and lost) and nursed along
   for (const part of Object.keys(SHIP_PARTS)) run(`scene:trouble:${part}`, {}, () => breakdownEvent(part), { rolls: [0, 0.99], prep() { onBurn(); condition()[part] = 30; } });
+  // a worn system's part in port (parts.js, #1135): the scene with each used part on offer, and the part the hand argued for at the last repair, held and broken
+  for (const q of PART_QUIRKS) run(`scene:parts:${q.id}`, {}, () => { const real = usedPartAt; usedPartAt = () => q; try { return partsEvent(currentPlanet(), q.system); } finally { usedPartAt = real; } }, { rolls: [0, 0.99], prep() { condition()[q.system] = 70; } });
+  for (const broke of [false, true]) run(`scene:parts:argued:${broke}`, {}, () => partsEvent(currentPlanet(), 'fire'), { rolls: [0, 0.99], prep() { condition().fire = 70; hired().partsArgued = { sys: 'fire', day: 0, broke }; } });
+  // a wreck in chapter two (salvage.js, #965), played from a hired game with the wreck set up by hand: each type's history in each version, the reads
+  // by depth with Bexa, with the engineer and with nobody, and the third section with everything in it (the find, a lead, a part) and each trouble
+  const wreckAt = (o = {}) => {
+    const st = G.state, site = sites(st)['site:wreck-1'], w = site.wreck;
+    Object.assign(w, { find: 0, lead: null, leadAt: null, cut: 0, lost: [] }, o.wreck || {});
+    if (o.v !== undefined) { let seed = 0; while ([0, 1, 2, 3].some(n => salvageRoll(`${n}|story|${seed}`) % 2 !== o.v)) seed++; w.seed = seed; }
+    if (o.part) { let seed = w.seed; while (!sectionPart({ ...w, seed }, 3)) seed++; w.seed = seed; }
+    for (const key of o.cast || []) { const p = castPerson(key); if (!st.crew.includes(p.id)) st.crew.push(p.id); }
+    if (o.alone) st.crew = [];
+    hired().job = { kind: 'salvage', site: site.id, client: 'Hask Mutual', find: 'recorder', sid: 'ceres', planet: 'Ceres Station', deadline: st.day + 60, pay: 9000, got: false };
+    return site;  // the scene does not need the ship there, and a hired game of chapter one has no run home from a wreck
+  };
+  for (const type of WRECK_TYPE_IDS) for (const v of [0, 1]) {
+    run(`scene:salvage:approach:${type}:${v}`, {}, () => approachScene(G.state, wreckAt({ v, wreck: { type }, cast: ['bexa'] })));
+    for (const cut of [0, 1, 2]) run(`scene:salvage:${type}:${v}:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ v, wreck: { type, cut }, cast: ['bexa'] })), { rolls: [0.99] });
+  }
+  for (const cut of [0, 1, 2]) run(`scene:salvage:engineer:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ wreck: { cut } })), { rolls: [0.99] });
+  run('scene:salvage:nobody', {}, () => approachScene(G.state, wreckAt({ alone: true })));
+  for (const cut of [0, 1, 2]) run(`scene:salvage:nobody:cut:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ alone: true, wreck: { cut } })), { rolls: [0.99] });  // the player reads it
+  run('scene:salvage:full', {}, () => { const st = G.state; st.cargo.metal = (st.cargo.metal || 0) + cargoFree(); return cutScene(st, wreckAt({ cast: ['bexa'] })); }, { rolls: [0.99] });
+  run('scene:salvage:deep', {}, () => cutScene(G.state, wreckAt({ part: true, wreck: { cut: 2, find: 3, lead: 'site:wreck-2', leadAt: 3 }, cast: ['bexa', 'pax'] })), { rolls: [0.99, 0.01, 0.2, 0.35] });
+  // the survey (salvage.js): with no pilot aboard the check is on no skill (an even chance), so the rolls give a good, a fair and a poor report
+  run('scene:survey', {}, () => { const st = G.state, site = sites(st)['site:rock-1']; st.crew = []; hired().job = { kind: 'survey', site: site.id, client: 'Brannock Minerals', got: false }; return surveyScene(st, site); }, { rolls: [0, 0.45, 0.99] });
+  run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
+  // ---------- work below Lagos on a day down (#1162, part 3): each of the two jobs, last, since the skill a job gives the hand carries into the next game this file starts ----------
+  for (const d of [0, 1]) run(`scene:day-down:work:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 2) * 2 + d; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[3]] }; });
   return out;
 };
 

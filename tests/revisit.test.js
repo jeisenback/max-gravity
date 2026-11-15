@@ -27,7 +27,7 @@ test('no line on a first landing or inside the gap; after it, the line says the 
     out.first = landNow(planet).filter(n => /Last here/.test(n)); out.stamped = !!(st.visited && st.visited[planet.name] && st.visited[planet.name].day === st.day);
     st.day += 2; out.soon = landNow(planet).filter(n => /Last here/.test(n));
     st.day += 10; out.quiet = landNow(planet).filter(n => /Last here/.test(n));
-    st.day += 10; w.war = { a: 'Dome Concord', b: 'Mars Republic', start: st.day, until: st.day + 40, score: {} };
+    st.day += 10; w.war = { a: 'Dome Pact', b: 'Mars Republic', start: st.day, until: st.day + 40, score: {} };
     out.war = landNow(planet).filter(n => /Last here/.test(n));
     st.day += 10; w.war = null; out.over = landNow(planet).filter(n => /Last here/.test(n));
     return out;
@@ -35,8 +35,8 @@ test('no line on a first landing or inside the gap; after it, the line says the 
   assert.deepEqual(r.first, []); assert.ok(r.stamped, 'the first landing writes the stamp');
   assert.deepEqual(r.soon, [], 'inside the gap, nothing');
   assert.equal(r.quiet.length, 1); assert.match(r.quiet[0], /^Last here 10 days ago\. Nothing here has moved/);  // every landing stamps, the one inside the gap too
-  assert.equal(r.war.length, 1); assert.match(r.war[0], /^Last here 10 days ago\. Since then, Dome Concord and Mars Republic have gone to war\.$/);
-  assert.equal(r.over.length, 1); assert.match(r.over[0], /the war between Dome Concord and Mars Republic is over/);
+  assert.equal(r.war.length, 1); assert.match(r.war[0], /^Last here 10 days ago\. Since then, Dome Pact and Mars Republic have gone to war\.$/);
+  assert.equal(r.over.length, 1); assert.match(r.over[0], /the war between Dome Pact and Mars Republic is over/);
   await done();
 });
 

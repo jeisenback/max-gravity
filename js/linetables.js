@@ -45,6 +45,8 @@ const LINE_TABLES = [
   { id: 'lines:regular-arcs', title: 'Bar: the regulars\' lives, a beat a visit', file: 'js/regulars.js', plain: true, where: 'port', table: () => Object.fromEntries(Object.entries(ARCS).map(([k, a]) => [k, a.beats])) },
   { id: 'lines:port-return', title: 'Returning to a port: what changed since you were here', file: 'js/revisit.js', plain: true, where: 'port', table: () => REVISIT_LINES },
   { id: 'lines:ashore', title: 'The crew ashore: where one of them went at the port just left, by trait', file: 'js/ashore.js', plain: true, where: 'transit', table: () => ASHORE_LINES },
+  { id: 'lines:port-folk', title: 'Lagos Ring: the port\'s own people, their word for the day', file: 'js/portview.js', where: 'port', table: () => PORT_WORDS },
+  { id: 'lines:port-offers', title: 'Lagos Ring: what the port\'s own people sell, a plate at Ngozi\'s and the nurse\'s care', file: 'js/portview.js', where: 'port', table: () => PORT_OFFERS },
 ];
 const lineTable = id => LINE_TABLES.find(t => t.id === id);
 
@@ -69,7 +71,7 @@ const fillLine = (t, vars) => t.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? var
 const holidayKey = h => h.name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');  // the key of a holiday's lines: its name ('landing-day')
 const holidayName = h => familyLines('names').holidays[holidayKey(h)];  // the holiday's title
 const holidayLines = () => Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), { text: h.text, join: h.join }]));
-const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
+const traitChatter = trait => linedText('lines:trait-chatter', TRAITS[trait].chatter, trait);  // a plain list, or grouped by room (#987, shiplife.js chatterAt)
 
 // The tables as registry scenes, for the override layer and the editor: no title and no choices, only the lines (the shape the beats take, hiredscenes.js).
 function lineTableRegistry() {

@@ -18,7 +18,7 @@
    "industrial": 1382,
    "medical": 2426,
    "luxury": 5393,
-   "metal": 2100,
+   "metal": 1615,
    "equipment": 2415
   }
  },
@@ -190,7 +190,7 @@
    "industrial": 1383,
    "medical": 2426,
    "luxury": 5395,
-   "metal": 2099,
+   "metal": 1615,
    "equipment": 2415
   }
  },
@@ -362,7 +362,7 @@
    "industrial": 1452,
    "medical": 2382,
    "luxury": 5673,
-   "metal": 2000,
+   "metal": 1538,
    "equipment": 2507
   }
  },
@@ -741,10 +741,10 @@
     236.2222
    ],
    "metal": [
-    "Earth",
-    6,
-    505,
-    84.1667
+    "Enceladus",
+    17,
+    291,
+    17.1176
    ],
    "food": [
     "Ring Nine",
@@ -790,8 +790,8 @@
    "metal": [
     "Earth",
     7,
-    997,
-    142.4286
+    513,
+    73.2857
    ],
    "luxury": [
     "Juno Commons",
@@ -851,58 +851,58 @@
   "key": "world:5",
   "v": {
    "market": {
-    "Boneyard|food": 0.067,
+    "Boneyard|food": 0.065,
     "Boneyard|medical": 0.095,
     "Ceres Station|equipment": 0.0437,
     "Ceres Station|food": 0.025,
     "Ceres Station|luxury": 0.0666,
     "Ceres Station|medical": 0.025,
+    "Ceres Station|metal": 0.035,
     "Ceres Station|water": 0.025,
-    "Earth|equipment": 0.072,
-    "Earth|food": 0.0396,
+    "Earth|equipment": 0.048,
+    "Earth|food": 0.063,
     "Earth|industrial": 0.031,
     "Earth|luxury": 0.025,
     "Earth|medical": 0.019,
-    "Earth|metal": 0.025,
-    "Earth|water": 0.068,
-    "Enceladus|food": 0.095,
+    "Enceladus|food": 0.093,
     "Enceladus|metal": 0.025,
-    "Enceladus|water": 0.105,
+    "Enceladus|water": 0.081,
     "Eros Old Town|equipment": 0.0381,
     "Eros Old Town|industrial": 0.025,
-    "Eros Old Town|luxury": 0.089,
+    "Eros Old Town|luxury": 0.077,
     "Eros Old Town|water": 0.025,
     "Europa|industrial": 0.025,
-    "Europa|water": 0.077,
+    "Europa|water": 0.071,
     "Ganymede|equipment": 0.025,
-    "Ganymede|food": 0.029,
+    "Ganymede|food": 0.073,
     "Ganymede|luxury": 0.025,
-    "Ganymede|medical": 0.0373,
+    "Ganymede|medical": 0.0496,
     "Hermes Foundry|equipment": 0.021,
     "Hermes Foundry|food": 0.025,
-    "Hermes Foundry|industrial": 0.027,
+    "Hermes Foundry|industrial": 0.011,
     "Hermes Foundry|luxury": 0.0408,
     "Hermes Foundry|water": 0.025,
-    "Ironheart|food": 0.025,
+    "Ironheart|food": 0.097,
     "Ironheart|industrial": 0.033,
     "Ironheart|luxury": 0.025,
-    "Ironheart|medical": 0.0486,
-    "Ironheart|metal": 0.023,
+    "Ironheart|medical": 0.0354,
+    "Ironheart|metal": 0.025,
     "Ironheart|water": 0.025,
     "Juno Commons|equipment": 0.025,
-    "Juno Commons|food": 0.053,
+    "Juno Commons|food": 0.048,
     "Juno Commons|luxury": 0.025,
     "Juno Commons|medical": 0.025,
     "Mars|equipment": 0.025,
     "Mars|food": 0.025,
-    "Mars|industrial": 0.063,
-    "Mars|luxury": 0.0702,
-    "Mars|metal": 0.011,
+    "Mars|industrial": 0.068,
+    "Mars|luxury": 0.0558,
+    "Mars|medical": 0.07,
+    "Mars|metal": 0.033,
     "Mars|water": 0.025,
-    "Pallas Refinery|equipment": 0.093,
+    "Pallas Refinery|equipment": 0.097,
     "Pallas Refinery|food": 0.025,
     "Pallas Refinery|industrial": 0.025,
-    "Pallas Refinery|metal": 0.033,
+    "Pallas Refinery|metal": 0.027,
     "Pallas Refinery|water": 0.025,
     "Ring Nine|food": 0.025,
     "Ring Nine|medical": 0.025,
@@ -910,20 +910,20 @@
     "The Hollows|food": 0.025,
     "The Hollows|water": 0.025,
     "The Rook|equipment": 0.077,
-    "The Rook|food": 0.087,
-    "The Rook|luxury": 0.013,
+    "The Rook|food": 0.025,
+    "The Rook|luxury": 0.087,
     "The Rook|medical": 0.025,
-    "The Rook|water": 0.08,
+    "The Rook|water": 0.0504,
     "Titan|equipment": 0.091,
-    "Titan|industrial": 0.087,
-    "Titan|luxury": 0.0414,
-    "Titan|medical": 0.074,
+    "Titan|industrial": 0.071,
+    "Titan|luxury": 0.0396,
+    "Titan|medical": 0.051,
     "Triton Outpost|equipment": 0.123,
-    "Triton Outpost|food": 0.1885,
+    "Triton Outpost|food": 0.1697,
     "Triton Outpost|luxury": 0.175,
     "Triton Outpost|medical": 0.149,
-    "Triton Outpost|metal": 0.081,
-    "Triton Outpost|water": 0.151
+    "Triton Outpost|metal": 0.029,
+    "Triton Outpost|water": 0.185
    },
    "haul": [
     [
@@ -990,18 +990,18 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
+    ],
+    [
+     "metal",
+     37,
+     "Triton Outpost",
+     "Enceladus",
+     31
     ],
     [
      "equipment",
@@ -1074,11 +1074,11 @@
      22
     ],
     [
-     "metal",
+     "medical",
      34,
-     "Ironheart",
-     "Enceladus",
-     22
+     "Ganymede",
+     "Triton Outpost",
+     38
     ],
     [
      "medical",
@@ -1137,46 +1137,46 @@
      18
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
     ],
     [
      "equipment",
-     34,
+     36,
      "Pallas Refinery",
      "Titan",
      21
     ],
     [
      "industrial",
-     36,
+     28,
      "Hermes Foundry",
      "Europa",
      15
+    ],
+    [
+     "food",
+     20,
+     "Boneyard",
+     "Enceladus",
+     23
+    ],
+    [
+     "food",
+     34,
+     "Enceladus",
+     "Boneyard",
+     23
+    ],
+    [
+     "food",
+     36,
+     "Ironheart",
+     "Enceladus",
+     23
     ],
     [
      "luxury",
@@ -1200,151 +1200,151 @@
      13
     ],
     [
-     "food",
-     22,
-     "Earth",
-     "Enceladus",
-     20
-    ],
-    [
      "luxury",
-     23,
+     22,
      "Titan",
      "Juno Commons",
      19
     ],
     [
      "industrial",
-     31,
+     23,
      "Titan",
      "Eros Old Town",
      23
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     35,
-     "Enceladus",
-     "Pallas Refinery",
-     22
+     39,
+     "Triton Outpost",
+     "Ironheart",
+     40
     ],
     [
      "food",
+     35,
+     "Earth",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
      21,
-     "Boneyard",
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "medical",
+     25,
+     "Titan",
+     "Ceres Station",
+     19
+    ],
+    [
+     "water",
+     28,
+     "The Rook",
+     "The Hollows",
+     17
+    ],
+    [
+     "metal",
+     35,
+     "Ironheart",
      "Enceladus",
      24
     ],
     [
-     "food",
-     25,
-     "Triton Outpost",
-     "Boneyard",
-     42
-    ],
-    [
-     "food",
-     28,
-     "Juno Commons",
-     "Triton Outpost",
-     37
-    ],
-    [
-     "industrial",
-     35,
-     "Mars",
-     "Titan",
-     21
-    ],
-    [
-     "medical",
-     37,
-     "Titan",
-     "Ceres Station",
-     20
-    ],
-    [
      "water",
-     23,
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
+     23,
+     "Enceladus",
      "Triton Outpost",
-     41
+     35
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Ganymede",
+     17
     ],
     [
      "metal",
      39,
-     "Pallas Refinery",
-     "Enceladus",
-     23
+     "Mars",
+     "Triton Outpost",
+     39
     ],
     [
-     "water",
+     "metal",
      40,
-     "The Rook",
-     "The Hollows",
-     18
+     "Ceres Station",
+     "Mars",
+     14
     ],
     [
-     "water",
+     "industrial",
      34,
-     "Earth",
-     "The Rook",
-     16
+     "Mars",
+     "Titan",
+     22
     ],
     [
-     "equipment",
+     "metal",
      36,
-     "Earth",
-     "Ganymede",
-     17
+     "Pallas Refinery",
+     "Ironheart",
+     14
     ],
     [
-     "food",
+     "luxury",
      31,
-     "The Rook",
-     "Enceladus",
-     25
+     "Eros Old Town",
+     "Ganymede",
+     18
     ],
     [
      "food",
      22,
-     "Triton Outpost",
-     "The Rook",
-     43
-    ],
-    [
-     "metal",
-     24,
-     "Ceres Station",
+     "Ganymede",
      "Pallas Refinery",
-     17
+     20
     ],
     [
-     "water",
+     "food",
+     24,
+     "Juno Commons",
+     "Ganymede",
+     18
+    ],
+    [
+     "medical",
      35,
-     "Enceladus",
      "Mars",
-     22
+     "Ring Nine",
+     14
     ],
     [
      "luxury",
      37,
+     "The Rook",
      "Eros Old Town",
-     "Ganymede",
-     18
+     13
     ]
    ],
    "unrest": {
@@ -1368,83 +1368,81 @@
   "key": "world:10",
   "v": {
    "market": {
-    "Boneyard|food": 0.092,
+    "Boneyard|food": 0.09,
     "Boneyard|medical": 0.12,
-    "Ceres Station|equipment": 0.0812,
-    "Ceres Station|food": 0.05,
-    "Ceres Station|industrial": 0.0437,
+    "Ceres Station|equipment": 0.0793,
+    "Ceres Station|food": 0.118,
+    "Ceres Station|industrial": 0.08,
     "Ceres Station|luxury": 0.0393,
     "Ceres Station|medical": 0.05,
-    "Ceres Station|metal": 0.033,
+    "Ceres Station|metal": -0.009,
     "Ceres Station|water": 0.05,
-    "Earth|equipment": 0.101,
-    "Earth|food": 0.0234,
-    "Earth|industrial": 0.032,
+    "Earth|equipment": 0.079,
+    "Earth|food": 0.0786,
+    "Earth|industrial": 0.046,
     "Earth|luxury": 0.05,
-    "Earth|medical": 0.044,
-    "Earth|metal": 0.05,
-    "Earth|water": 0.0402,
-    "Enceladus|food": 0.12,
+    "Earth|medical": 0.036,
+    "Earth|water": 0.0354,
+    "Enceladus|food": 0.118,
     "Enceladus|metal": 0.05,
-    "Enceladus|water": 0.06,
+    "Enceladus|water": 0.114,
     "Eros Old Town|equipment": 0.075,
     "Eros Old Town|industrial": 0.05,
-    "Eros Old Town|luxury": 0.044,
+    "Eros Old Town|luxury": 0.032,
     "Eros Old Town|water": 0.05,
     "Europa|industrial": 0.05,
-    "Europa|water": 0.074,
-    "Ganymede|equipment": 0.116,
-    "Ganymede|food": 0.078,
+    "Europa|water": 0.104,
+    "Ganymede|equipment": 0.114,
+    "Ganymede|food": 0.102,
     "Ganymede|luxury": 0.05,
-    "Ganymede|medical": 0.0653,
-    "Hermes Foundry|equipment": 0.068,
+    "Ganymede|medical": 0.0293,
+    "Hermes Foundry|equipment": 0.074,
     "Hermes Foundry|food": 0.05,
-    "Hermes Foundry|industrial": 0.062,
-    "Hermes Foundry|luxury": 0.0701,
+    "Hermes Foundry|industrial": 0.04,
+    "Hermes Foundry|luxury": 0.0241,
     "Hermes Foundry|water": 0.05,
-    "Ironheart|food": 0.104,
-    "Ironheart|industrial": 0.045,
+    "Ironheart|food": 0.122,
+    "Ironheart|industrial": 0.08,
     "Ironheart|luxury": 0.05,
-    "Ironheart|medical": 0.0693,
+    "Ironheart|medical": 0.0209,
     "Ironheart|metal": -0.018,
     "Ironheart|water": 0.05,
     "Juno Commons|equipment": 0.05,
-    "Juno Commons|food": 0.058,
+    "Juno Commons|food": 0.043,
     "Juno Commons|luxury": 0.05,
     "Juno Commons|medical": 0.05,
-    "Juno Commons|water": 0.0407,
     "Mars|equipment": 0.1,
     "Mars|food": 0.05,
-    "Mars|industrial": 0.0372,
-    "Mars|luxury": 0.0415,
-    "Mars|medical": 0.0709,
-    "Mars|metal": 0.044,
+    "Mars|industrial": 0.0402,
+    "Mars|luxury": 0.0329,
+    "Mars|medical": 0.0413,
+    "Mars|metal": -0.009,
     "Mars|water": 0.05,
-    "Pallas Refinery|equipment": 0.118,
-    "Pallas Refinery|food": 0.09,
+    "Pallas Refinery|equipment": 0.122,
+    "Pallas Refinery|food": 0.116,
     "Pallas Refinery|industrial": 0.05,
-    "Pallas Refinery|metal": 0.035,
+    "Pallas Refinery|metal": -0.018,
     "Pallas Refinery|water": 0.05,
-    "Ring Nine|food": 0.05,
+    "Ring Nine|food": 0.11,
     "Ring Nine|medical": 0.05,
     "Ring Nine|water": 0.05,
-    "The Hollows|food": 0.05,
+    "The Hollows|food": 0.112,
     "The Hollows|water": 0.05,
     "The Rook|equipment": 0.102,
-    "The Rook|food": 0.112,
-    "The Rook|luxury": 0.04,
+    "The Rook|food": 0.1,
+    "The Rook|luxury": 0.042,
     "The Rook|medical": 0.05,
-    "The Rook|water": 0.0472,
+    "The Rook|water": 0.0298,
     "Titan|equipment": 0.116,
-    "Titan|industrial": 0.112,
-    "Titan|luxury": 0.0744,
-    "Titan|medical": 0.081,
+    "Titan|industrial": 0.096,
+    "Titan|luxury": 0.0674,
+    "Titan|medical": 0.076,
     "Triton Outpost|equipment": 0.148,
-    "Triton Outpost|food": 0.1632,
+    "Triton Outpost|food": 0.1859,
     "Triton Outpost|luxury": 0.2,
     "Triton Outpost|medical": 0.174,
-    "Triton Outpost|metal": 0.114,
-    "Triton Outpost|water": 0.172
+    "Triton Outpost|metal": 0.024,
+    "Triton Outpost|water": 0.14
    },
    "haul": [
     [
@@ -1511,18 +1509,18 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
+    ],
+    [
+     "metal",
+     37,
+     "Triton Outpost",
+     "Enceladus",
+     31
     ],
     [
      "equipment",
@@ -1595,11 +1593,11 @@
      22
     ],
     [
-     "metal",
+     "medical",
      34,
-     "Ironheart",
-     "Enceladus",
-     22
+     "Ganymede",
+     "Triton Outpost",
+     38
     ],
     [
      "medical",
@@ -1658,46 +1656,46 @@
      18
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
     ],
     [
      "equipment",
-     34,
+     36,
      "Pallas Refinery",
      "Titan",
      21
     ],
     [
      "industrial",
-     36,
+     28,
      "Hermes Foundry",
      "Europa",
      15
+    ],
+    [
+     "food",
+     20,
+     "Boneyard",
+     "Enceladus",
+     23
+    ],
+    [
+     "food",
+     34,
+     "Enceladus",
+     "Boneyard",
+     23
+    ],
+    [
+     "food",
+     36,
+     "Ironheart",
+     "Enceladus",
+     23
     ],
     [
      "luxury",
@@ -1721,221 +1719,235 @@
      13
     ],
     [
-     "food",
-     22,
-     "Earth",
-     "Enceladus",
-     20
-    ],
-    [
      "luxury",
-     23,
+     22,
      "Titan",
      "Juno Commons",
      19
     ],
     [
      "industrial",
-     31,
+     23,
      "Titan",
      "Eros Old Town",
      23
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     35,
-     "Enceladus",
-     "Pallas Refinery",
-     22
+     39,
+     "Triton Outpost",
+     "Ironheart",
+     40
     ],
     [
      "food",
+     35,
+     "Earth",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
      21,
-     "Boneyard",
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "medical",
+     25,
+     "Titan",
+     "Ceres Station",
+     19
+    ],
+    [
+     "water",
+     28,
+     "The Rook",
+     "The Hollows",
+     17
+    ],
+    [
+     "metal",
+     35,
+     "Ironheart",
      "Enceladus",
      24
     ],
     [
-     "food",
-     25,
-     "Triton Outpost",
-     "Boneyard",
-     42
-    ],
-    [
-     "food",
-     28,
-     "Juno Commons",
-     "Triton Outpost",
-     37
-    ],
-    [
-     "industrial",
-     35,
-     "Mars",
-     "Titan",
-     21
-    ],
-    [
-     "medical",
-     37,
-     "Titan",
-     "Ceres Station",
-     20
-    ],
-    [
      "water",
-     23,
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
+     23,
+     "Enceladus",
      "Triton Outpost",
-     41
+     35
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Ganymede",
+     17
     ],
     [
      "metal",
      39,
-     "Pallas Refinery",
-     "Enceladus",
-     23
+     "Mars",
+     "Triton Outpost",
+     39
     ],
     [
-     "water",
+     "metal",
      40,
-     "The Rook",
-     "The Hollows",
-     18
+     "Ceres Station",
+     "Mars",
+     14
     ],
     [
-     "water",
+     "industrial",
      34,
-     "Earth",
-     "The Rook",
-     16
+     "Mars",
+     "Titan",
+     22
     ],
     [
-     "equipment",
+     "metal",
      36,
-     "Earth",
-     "Ganymede",
-     17
+     "Pallas Refinery",
+     "Ironheart",
+     14
     ],
     [
-     "food",
+     "luxury",
      31,
-     "The Rook",
-     "Enceladus",
-     25
+     "Eros Old Town",
+     "Ganymede",
+     18
     ],
     [
      "food",
      22,
-     "Triton Outpost",
-     "The Rook",
-     43
-    ],
-    [
-     "metal",
-     24,
-     "Ceres Station",
-     "Pallas Refinery",
-     17
-    ],
-    [
-     "water",
-     35,
-     "Enceladus",
-     "Mars",
-     22
-    ],
-    [
-     "luxury",
-     37,
-     "Eros Old Town",
      "Ganymede",
-     18
+     "Pallas Refinery",
+     20
     ],
     [
      "food",
      24,
+     "Juno Commons",
      "Ganymede",
-     "The Hollows",
-     21
+     18
     ],
     [
-     "luxury",
-     38,
-     "The Rook",
-     "Eros Old Town",
+     "medical",
+     35,
+     "Mars",
+     "Ring Nine",
      14
     ],
     [
+     "luxury",
+     37,
+     "The Rook",
+     "Eros Old Town",
+     13
+    ],
+    [
      "equipment",
-     25,
+     24,
      "Hermes Foundry",
      "Pallas Refinery",
      16
     ],
     [
-     "medical",
-     20,
+     "industrial",
+     38,
+     "Hermes Foundry",
      "Mars",
-     "Ring Nine",
-     15
-    ],
-    [
-     "water",
-     31,
-     "Juno Commons",
-     "Earth",
      14
     ],
     [
+     "food",
+     25,
+     "The Rook",
+     "The Hollows",
+     19
+    ],
+    [
+     "food",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     44
+    ],
+    [
      "medical",
-     35,
+     31,
      "Earth",
      "Triton Outpost",
      41
     ],
     [
-     "food",
-     27,
-     "Ironheart",
-     "Ring Nine",
-     19
-    ],
-    [
      "medical",
-     33,
-     "Ganymede",
+     35,
+     "Titan",
      "Juno Commons",
-     19
+     21
     ],
     [
-     "medical",
+     "water",
+     27,
+     "Earth",
+     "Mars",
+     12
+    ],
+    [
+     "food",
+     33,
+     "Pallas Refinery",
+     "Ring Nine",
+     18
+    ],
+    [
+     "food",
      34,
-     "Mars",
-     "Ganymede",
-     19
+     "Ceres Station",
+     "Pallas Refinery",
+     18
     ],
     [
-     "medical",
+     "food",
      31,
-     "Ironheart",
-     "Mars",
-     16
+     "The Hollows",
+     "Ceres Station",
+     18
+    ],
+    [
+     "food",
+     30,
+     "Ring Nine",
+     "The Hollows",
+     18
+    ],
+    [
+     "industrial",
+     30,
+     "Earth",
+     "Hermes Foundry",
+     13
     ],
     [
      "equipment",
@@ -1947,156 +1959,114 @@
     [
      "equipment",
      38,
-     "Ceres Station",
+     "Earth",
      "Eros Old Town",
-     18
+     15
     ],
     [
-     "equipment",
+     "industrial",
      21,
-     "Hermes Foundry",
-     "Ceres Station",
-     16
+     "Ironheart",
+     "Earth",
+     18
     ],
     [
      "food",
      20,
-     "Pallas Refinery",
-     "Ceres Station",
-     19
-    ],
-    [
-     "industrial",
-     30,
-     "Ceres Station",
-     "Mars",
-     16
-    ],
-    [
-     "industrial",
-     40,
-     "Hermes Foundry",
+     "Juno Commons",
      "Ceres Station",
      16
     ],
     [
-     "industrial",
-     23,
-     "Earth",
-     "Hermes Foundry",
-     14
-    ],
-    [
-     "food",
+     "equipment",
      32,
-     "Triton Outpost",
+     "Ganymede",
+     "Juno Commons",
+     21
+    ],
+    [
+     "equipment",
+     25,
      "Mars",
-     42
+     "Ganymede",
+     21
+    ],
+    [
+     "equipment",
+     33,
+     "Ceres Station",
+     "Mars",
+     17
+    ],
+    [
+     "equipment",
+     25,
+     "Hermes Foundry",
+     "Ceres Station",
+     17
     ],
     [
      "food",
-     25,
-     "Juno Commons",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "equipment",
-     33,
-     "Ganymede",
-     "Juno Commons",
-     21
-    ],
-    [
-     "equipment",
-     25,
-     "Mars",
-     "Ganymede",
-     21
-    ],
-    [
-     "equipment",
      37,
-     "Earth",
+     "Ganymede",
      "Mars",
-     14
+     21
     ],
     [
-     "water",
+     "food",
      33,
      "Triton Outpost",
-     "Hermes Foundry",
-     45
+     "Ring Nine",
+     44
     ],
     [
-     "water",
+     "metal",
      21,
-     "Europa",
      "Triton Outpost",
-     45
+     "Enceladus",
+     39
     ],
     [
      "food",
      23,
-     "Ganymede",
-     "Ironheart",
+     "Earth",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "water",
+     39,
+     "Enceladus",
+     "Hermes Foundry",
+     28
+    ],
+    [
+     "water",
+     39,
+     "Europa",
+     "Enceladus",
      25
     ],
     [
-     "medical",
-     26,
+     "industrial",
+     40,
+     "Ceres Station",
+     "Eros Old Town",
+     21
+    ],
+    [
+     "luxury",
+     22,
      "Titan",
-     "The Rook",
-     29
+     "Juno Commons",
+     25
     ],
     [
      "industrial",
-     27,
-     "Ironheart",
-     "Titan",
-     29
-    ],
-    [
-     "metal",
-     39,
-     "Triton Outpost",
-     "Earth",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "metal",
-     40,
-     "Mars",
-     "Ceres Station",
-     19
-    ],
-    [
-     "metal",
-     22,
-     "Pallas Refinery",
-     "Mars",
-     18
-    ],
-    [
-     "luxury",
      25,
-     "Titan",
      "Ironheart",
-     30
-    ],
-    [
-     "luxury",
-     23,
-     "Hermes Foundry",
-     "Titan",
-     28
+     "Ceres Station",
+     23
     ]
    ],
    "unrest": {
@@ -2120,81 +2090,80 @@
   "key": "world:15",
   "v": {
    "market": {
-    "Boneyard|food": 0.117,
+    "Boneyard|food": 0.115,
     "Boneyard|medical": 0.145,
-    "Ceres Station|equipment": 0.072,
-    "Ceres Station|food": 0.075,
+    "Ceres Station|equipment": 0.0468,
+    "Ceres Station|food": 0.103,
+    "Ceres Station|industrial": 0.0472,
     "Ceres Station|luxury": 0.0232,
     "Ceres Station|medical": 0.075,
-    "Ceres Station|metal": -0.009,
+    "Ceres Station|metal": -0.054,
     "Ceres Station|water": 0.075,
-    "Earth|equipment": 0.056,
-    "Earth|food": 0.0473,
-    "Earth|industrial": 0.059,
+    "Earth|equipment": 0.09,
+    "Earth|food": 0.0464,
     "Earth|luxury": 0.075,
-    "Earth|medical": 0.039,
-    "Earth|metal": 0.075,
-    "Earth|water": 0.0237,
-    "Enceladus|food": 0.145,
+    "Earth|medical": 0.053,
+    "Earth|water": 0.0209,
+    "Enceladus|food": 0.143,
     "Enceladus|metal": 0.075,
-    "Enceladus|water": 0.057,
-    "Eros Old Town|equipment": 0.0443,
+    "Enceladus|water": 0.069,
+    "Eros Old Town|equipment": 0.0885,
     "Eros Old Town|industrial": 0.075,
-    "Eros Old Town|luxury": 0.069,
+    "Eros Old Town|luxury": 0.046,
     "Eros Old Town|water": 0.075,
-    "Europa|industrial": 0.079,
-    "Europa|water": 0.103,
-    "Ganymede|equipment": 0.141,
-    "Ganymede|food": 0.087,
+    "Europa|industrial": 0.019,
+    "Europa|water": 0.059,
+    "Ganymede|equipment": 0.139,
+    "Ganymede|food": 0.057,
     "Ganymede|luxury": 0.075,
-    "Ganymede|medical": 0.0386,
-    "Hermes Foundry|equipment": 0.085,
+    "Ganymede|medical": 0.0497,
+    "Hermes Foundry|equipment": 0.075,
     "Hermes Foundry|food": 0.075,
-    "Hermes Foundry|industrial": 0.017,
-    "Hermes Foundry|luxury": 0.0414,
+    "Hermes Foundry|industrial": 0.041,
+    "Hermes Foundry|luxury": 0.0142,
     "Hermes Foundry|water": 0.075,
-    "Ironheart|food": 0.129,
-    "Ironheart|industrial": 0.044,
+    "Ironheart|food": 0.147,
+    "Ironheart|industrial": 0.035,
     "Ironheart|luxury": 0.075,
-    "Ironheart|medical": 0.0409,
-    "Ironheart|metal": -0.018,
+    "Ironheart|medical": 0.0459,
     "Ironheart|water": 0.075,
     "Juno Commons|equipment": 0.075,
-    "Juno Commons|food": 0.057,
+    "Juno Commons|food": 0.078,
     "Juno Commons|luxury": 0.075,
     "Juno Commons|medical": 0.075,
-    "Juno Commons|water": 0.024,
-    "Mars|equipment": 0.051,
+    "Juno Commons|water": 0.0378,
+    "Mars|equipment": 0.125,
     "Mars|food": 0.075,
-    "Mars|industrial": 0.038,
-    "Mars|luxury": 0.0245,
-    "Mars|medical": 0.0358,
-    "Mars|water": 0.075,
-    "Pallas Refinery|equipment": 0.093,
-    "Pallas Refinery|food": 0.115,
-    "Pallas Refinery|industrial": 0.057,
+    "Mars|industrial": 0.0124,
+    "Mars|luxury": 0.0195,
+    "Mars|medical": 0.0244,
+    "Mars|metal": -0.018,
+    "Mars|water": 0.02,
+    "Pallas Refinery|equipment": 0.099,
+    "Pallas Refinery|food": 0.141,
+    "Pallas Refinery|industrial": 0.043,
     "Pallas Refinery|metal": -0.009,
     "Pallas Refinery|water": 0.075,
-    "Ring Nine|food": 0.075,
-    "Ring Nine|medical": 0.035,
+    "Ring Nine|food": 0.135,
+    "Ring Nine|medical": 0.047,
     "Ring Nine|water": 0.075,
-    "The Hollows|food": 0.075,
+    "The Hollows|food": 0.137,
     "The Hollows|water": 0.075,
     "The Rook|equipment": 0.127,
-    "The Rook|food": 0.137,
-    "The Rook|luxury": 0.075,
+    "The Rook|food": 0.125,
+    "The Rook|luxury": 0.061,
     "The Rook|medical": 0.075,
-    "The Rook|water": 0.0599,
+    "The Rook|water": 0.0572,
     "Titan|equipment": 0.141,
-    "Titan|industrial": 0.137,
-    "Titan|luxury": 0.044,
-    "Titan|medical": 0.1,
+    "Titan|industrial": 0.121,
+    "Titan|luxury": 0.0902,
+    "Titan|medical": 0.103,
     "Triton Outpost|equipment": 0.173,
-    "Triton Outpost|food": 0.1823,
+    "Triton Outpost|food": 0.1637,
     "Triton Outpost|luxury": 0.225,
     "Triton Outpost|medical": 0.199,
-    "Triton Outpost|metal": 0.069,
-    "Triton Outpost|water": 0.197
+    "Triton Outpost|metal": 0.04,
+    "Triton Outpost|water": 0.167
    },
    "haul": [
     [
@@ -2261,18 +2230,18 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
+    ],
+    [
+     "metal",
+     37,
+     "Triton Outpost",
+     "Enceladus",
+     31
     ],
     [
      "equipment",
@@ -2345,11 +2314,11 @@
      22
     ],
     [
-     "metal",
+     "medical",
      34,
-     "Ironheart",
-     "Enceladus",
-     22
+     "Ganymede",
+     "Triton Outpost",
+     38
     ],
     [
      "medical",
@@ -2408,39 +2377,39 @@
      18
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
     ],
     [
      "equipment",
-     34,
+     36,
      "Pallas Refinery",
      "Titan",
      21
+    ],
+    [
+     "food",
+     20,
+     "Boneyard",
+     "Enceladus",
+     23
+    ],
+    [
+     "food",
+     34,
+     "Enceladus",
+     "Boneyard",
+     23
+    ],
+    [
+     "food",
+     36,
+     "Ironheart",
+     "Enceladus",
+     23
     ],
     [
      "luxury",
@@ -2457,179 +2426,179 @@
      39
     ],
     [
-     "food",
-     22,
-     "Earth",
-     "Enceladus",
-     20
-    ],
-    [
      "luxury",
-     23,
+     22,
      "Titan",
      "Juno Commons",
      19
     ],
     [
      "industrial",
-     31,
+     23,
      "Titan",
      "Eros Old Town",
      23
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     35,
-     "Enceladus",
-     "Pallas Refinery",
-     22
+     39,
+     "Triton Outpost",
+     "Ironheart",
+     40
     ],
     [
      "food",
+     35,
+     "Earth",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
      21,
-     "Boneyard",
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "medical",
+     25,
+     "Titan",
+     "Ceres Station",
+     19
+    ],
+    [
+     "water",
+     28,
+     "The Rook",
+     "The Hollows",
+     17
+    ],
+    [
+     "metal",
+     35,
+     "Ironheart",
      "Enceladus",
      24
     ],
     [
-     "food",
-     25,
-     "Triton Outpost",
-     "Boneyard",
-     42
-    ],
-    [
-     "food",
-     28,
-     "Juno Commons",
-     "Triton Outpost",
-     37
-    ],
-    [
-     "industrial",
-     35,
-     "Mars",
-     "Titan",
-     21
-    ],
-    [
-     "medical",
-     37,
-     "Titan",
-     "Ceres Station",
-     20
-    ],
-    [
      "water",
-     23,
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "metal",
-     39,
-     "Pallas Refinery",
+     23,
      "Enceladus",
-     23
-    ],
-    [
-     "water",
-     40,
-     "The Rook",
-     "The Hollows",
-     18
+     "Triton Outpost",
+     35
     ],
     [
      "equipment",
-     36,
+     24,
      "Earth",
      "Ganymede",
      17
     ],
     [
-     "food",
-     31,
-     "The Rook",
-     "Enceladus",
-     25
-    ],
-    [
-     "food",
-     22,
-     "Triton Outpost",
-     "The Rook",
-     43
-    ],
-    [
      "metal",
-     24,
-     "Ceres Station",
-     "Pallas Refinery",
-     17
+     39,
+     "Mars",
+     "Triton Outpost",
+     39
     ],
     [
-     "water",
-     35,
-     "Enceladus",
+     "industrial",
+     34,
      "Mars",
+     "Titan",
      22
     ],
     [
      "luxury",
-     37,
+     31,
      "Eros Old Town",
      "Ganymede",
      18
     ],
     [
      "food",
-     24,
+     22,
      "Ganymede",
+     "Pallas Refinery",
+     20
+    ],
+    [
+     "food",
+     24,
+     "Juno Commons",
+     "Ganymede",
+     18
+    ],
+    [
+     "food",
+     25,
+     "The Rook",
      "The Hollows",
-     21
+     19
+    ],
+    [
+     "food",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     44
     ],
     [
      "medical",
-     35,
+     31,
      "Earth",
      "Triton Outpost",
      41
     ],
     [
-     "food",
-     27,
-     "Ironheart",
-     "Ring Nine",
-     19
-    ],
-    [
      "medical",
-     33,
-     "Ganymede",
+     35,
+     "Titan",
      "Juno Commons",
-     19
+     21
     ],
     [
-     "medical",
+     "food",
+     33,
+     "Pallas Refinery",
+     "Ring Nine",
+     18
+    ],
+    [
+     "food",
      34,
-     "Mars",
-     "Ganymede",
-     19
+     "Ceres Station",
+     "Pallas Refinery",
+     18
+    ],
+    [
+     "food",
+     31,
+     "The Hollows",
+     "Ceres Station",
+     18
+    ],
+    [
+     "food",
+     30,
+     "Ring Nine",
+     "The Hollows",
+     18
     ],
     [
      "equipment",
@@ -2639,312 +2608,298 @@
      44
     ],
     [
-     "equipment",
-     38,
-     "Ceres Station",
-     "Eros Old Town",
-     18
-    ],
-    [
-     "food",
-     20,
-     "Pallas Refinery",
-     "Ceres Station",
-     19
-    ],
-    [
-     "food",
-     32,
-     "Triton Outpost",
-     "Mars",
-     42
-    ],
-    [
-     "food",
-     25,
-     "Juno Commons",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "equipment",
-     33,
-     "Ganymede",
-     "Juno Commons",
-     21
-    ],
-    [
-     "equipment",
-     25,
-     "Mars",
-     "Ganymede",
-     21
-    ],
-    [
-     "water",
-     33,
-     "Triton Outpost",
-     "Hermes Foundry",
-     45
-    ],
-    [
-     "water",
-     21,
-     "Europa",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "food",
-     23,
-     "Ganymede",
-     "Ironheart",
-     25
-    ],
-    [
-     "medical",
-     26,
-     "Titan",
-     "The Rook",
-     29
-    ],
-    [
      "industrial",
-     27,
+     21,
      "Ironheart",
-     "Titan",
-     29
-    ],
-    [
-     "metal",
-     39,
-     "Triton Outpost",
      "Earth",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "metal",
-     40,
-     "Mars",
-     "Ceres Station",
-     19
-    ],
-    [
-     "metal",
-     22,
-     "Pallas Refinery",
-     "Mars",
      18
     ],
     [
-     "luxury",
-     25,
-     "Titan",
-     "Ironheart",
-     30
+     "equipment",
+     32,
+     "Ganymede",
+     "Juno Commons",
+     21
     ],
     [
-     "luxury",
-     23,
+     "equipment",
+     25,
+     "Mars",
+     "Ganymede",
+     21
+    ],
+    [
+     "equipment",
+     33,
+     "Ceres Station",
+     "Mars",
+     17
+    ],
+    [
+     "equipment",
+     25,
      "Hermes Foundry",
-     "Titan",
+     "Ceres Station",
+     17
+    ],
+    [
+     "food",
+     37,
+     "Ganymede",
+     "Mars",
+     21
+    ],
+    [
+     "food",
+     33,
+     "Triton Outpost",
+     "Ring Nine",
+     44
+    ],
+    [
+     "metal",
+     21,
+     "Triton Outpost",
+     "Enceladus",
+     39
+    ],
+    [
+     "food",
+     23,
+     "Earth",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "water",
+     39,
+     "Enceladus",
+     "Hermes Foundry",
      28
     ],
     [
-     "food",
-     35,
-     "Triton Outpost",
-     "The Rook",
-     49
-    ],
-    [
-     "industrial",
-     29,
-     "Pallas Refinery",
+     "water",
+     39,
      "Europa",
-     27
+     "Enceladus",
+     25
     ],
     [
      "industrial",
-     36,
-     "Earth",
-     "Pallas Refinery",
+     40,
+     "Ceres Station",
+     "Eros Old Town",
      21
     ],
     [
-     "industrial",
+     "luxury",
      22,
+     "Titan",
+     "Juno Commons",
+     25
+    ],
+    [
+     "industrial",
+     25,
      "Ironheart",
-     "Earth",
+     "Ceres Station",
      23
     ],
     [
      "luxury",
-     40,
-     "The Rook",
-     "Juno Commons",
-     25
-    ],
-    [
-     "luxury",
-     37,
-     "Eros Old Town",
-     "The Rook",
-     20
-    ],
-    [
-     "food",
-     23,
-     "Earth",
-     "Pallas Refinery",
-     21
-    ],
-    [
-     "water",
-     31,
-     "Earth",
-     "Ceres Station",
-     21
-    ],
-    [
-     "metal",
-     23,
-     "Ironheart",
-     "Enceladus",
-     33
-    ],
-    [
-     "water",
-     21,
-     "Enceladus",
-     "Ring Nine",
-     28
-    ],
-    [
-     "luxury",
-     36,
+     35,
      "Eros Old Town",
      "Triton Outpost",
-     50
-    ],
-    [
-     "equipment",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     31
-    ],
-    [
-     "medical",
-     32,
-     "Titan",
-     "Boneyard",
-     33
-    ],
-    [
-     "medical",
-     20,
-     "Earth",
-     "Titan",
-     29
-    ],
-    [
-     "industrial",
-     37,
-     "Europa",
-     "Eros Old Town",
-     27
-    ],
-    [
-     "industrial",
-     23,
-     "Hermes Foundry",
-     "Europa",
-     27
-    ],
-    [
-     "food",
-     22,
-     "Juno Commons",
-     "Boneyard",
-     27
-    ],
-    [
-     "water",
-     23,
-     "The Rook",
-     "Pallas Refinery",
-     28
-    ],
-    [
-     "medical",
-     28,
-     "Mars",
-     "Ring Nine",
-     24
+     48
     ],
     [
      "industrial",
      29,
-     "Ceres Station",
-     "Pallas Refinery",
-     27
+     "Hermes Foundry",
+     "Europa",
+     25
     ],
     [
-     "equipment",
-     33,
+     "water",
+     36,
+     "Triton Outpost",
      "Ceres Station",
-     "Mars",
-     24
+     47
     ],
     [
      "industrial",
-     38,
-     "Mars",
-     "Europa",
-     28
-    ],
-    [
-     "food",
-     27,
-     "Ganymede",
-     "The Hollows",
+     22,
+     "Pallas Refinery",
+     "Titan",
      30
     ],
     [
      "food",
-     20,
+     40,
+     "Juno Commons",
+     "Enceladus",
+     27
+    ],
+    [
+     "food",
+     37,
      "Triton Outpost",
-     "Ceres Station",
+     "The Rook",
      50
     ],
     [
-     "water",
-     35,
-     "Triton Outpost",
-     "Eros Old Town",
-     52
+     "medical",
+     23,
+     "Ironheart",
+     "Ceres Station",
+     25
     ],
     [
-     "water",
-     37,
-     "Europa",
-     "Triton Outpost",
-     51
+     "industrial",
+     24,
+     "Hermes Foundry",
+     "Pallas Refinery",
+     22
     ],
     [
-     "water",
-     27,
+     "medical",
+     36,
+     "Titan",
      "The Rook",
+     32
+    ],
+    [
+     "medical",
+     31,
+     "Earth",
+     "Titan",
+     28
+    ],
+    [
+     "metal",
+     31,
+     "Ironheart",
+     "Hermes Foundry",
+     22
+    ],
+    [
+     "metal",
+     23,
      "Mars",
+     "Earth",
+     19
+    ],
+    [
+     "medical",
+     21,
+     "Ring Nine",
+     "Boneyard",
+     25
+    ],
+    [
+     "metal",
+     36,
+     "Mars",
+     "Eros Old Town",
+     22
+    ],
+    [
+     "industrial",
+     31,
+     "Mars",
+     "Pallas Refinery",
+     21
+    ],
+    [
+     "luxury",
+     32,
+     "Eros Old Town",
+     "Ganymede",
+     26
+    ],
+    [
+     "medical",
+     20,
+     "Ganymede",
+     "Ring Nine",
+     23
+    ],
+    [
+     "metal",
+     37,
+     "Ironheart",
+     "Mars",
+     23
+    ],
+    [
+     "metal",
+     26,
+     "Pallas Refinery",
+     "Ironheart",
+     22
+    ],
+    [
+     "equipment",
+     37,
+     "Eros Old Town",
+     "Titan",
+     33
+    ],
+    [
+     "equipment",
+     23,
+     "Hermes Foundry",
+     "Ganymede",
      27
+    ],
+    [
+     "water",
+     22,
+     "The Rook",
+     "The Hollows",
+     27
+    ],
+    [
+     "water",
+     21,
+     "Juno Commons",
+     "The Rook",
+     27
+    ],
+    [
+     "luxury",
+     28,
+     "Titan",
+     "Ironheart",
+     34
+    ],
+    [
+     "luxury",
+     32,
+     "The Rook",
+     "Titan",
+     34
+    ],
+    [
+     "equipment",
+     23,
+     "Eros Old Town",
+     "Mars",
+     24
+    ],
+    [
+     "equipment",
+     28,
+     "Earth",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "metal",
+     29,
+     "Triton Outpost",
+     "Enceladus",
+     45
     ]
    ],
    "unrest": {
@@ -2968,81 +2923,82 @@
   "key": "world:20",
   "v": {
    "market": {
-    "Boneyard|food": 0.142,
+    "Boneyard|food": 0.14,
     "Boneyard|medical": 0.17,
-    "Ceres Station|equipment": 0.0425,
-    "Ceres Station|food": 0.06,
-    "Ceres Station|luxury": 0.0531,
-    "Ceres Station|medical": 0.026,
-    "Ceres Station|metal": 0.024,
-    "Ceres Station|water": 0.038,
-    "Earth|equipment": 0.117,
-    "Earth|food": 0.0604,
-    "Earth|industrial": 0.014,
+    "Ceres Station|equipment": 0.0602,
+    "Ceres Station|food": 0.066,
+    "Ceres Station|industrial": 0.0279,
+    "Ceres Station|luxury": 0.0137,
+    "Ceres Station|medical": 0.05,
+    "Ceres Station|metal": -0.033,
+    "Ceres Station|water": 0.1,
+    "Earth|equipment": 0.045,
+    "Earth|food": 0.0694,
+    "Earth|industrial": 0.044,
     "Earth|luxury": 0.1,
-    "Earth|medical": 0.065,
-    "Earth|metal": 0.1,
-    "Earth|water": 0.014,
-    "Enceladus|food": 0.126,
+    "Earth|medical": 0.07,
+    "Earth|metal": -0.0373,
+    "Earth|water": 0.0808,
+    "Enceladus|food": 0.168,
     "Enceladus|metal": 0.1,
-    "Enceladus|water": 0.062,
-    "Eros Old Town|equipment": 0.0481,
-    "Eros Old Town|industrial": 0.1,
-    "Eros Old Town|luxury": 0.024,
+    "Enceladus|water": 0.072,
+    "Eros Old Town|equipment": 0.0522,
+    "Eros Old Town|industrial": 0.02,
+    "Eros Old Town|luxury": 0.072,
     "Eros Old Town|water": 0.1,
-    "Europa|industrial": 0.104,
-    "Europa|water": 0.058,
-    "Ganymede|equipment": 0.044,
-    "Ganymede|food": 0.116,
-    "Ganymede|luxury": 0.026,
-    "Ganymede|medical": 0.0879,
-    "Hermes Foundry|equipment": 0.112,
+    "Europa|industrial": 0.044,
+    "Europa|water": 0.092,
+    "Ganymede|equipment": 0.066,
+    "Ganymede|food": 0.07,
+    "Ganymede|luxury": 0.038,
+    "Ganymede|medical": 0.0833,
+    "Hermes Foundry|equipment": 0.09,
     "Hermes Foundry|food": 0.1,
-    "Hermes Foundry|industrial": 0.035,
-    "Hermes Foundry|luxury": 0.0244,
+    "Hermes Foundry|luxury": 0.0084,
     "Hermes Foundry|water": 0.1,
-    "Ironheart|food": 0.08,
+    "Ironheart|food": 0.098,
+    "Ironheart|industrial": 0.065,
     "Ironheart|luxury": 0.1,
-    "Ironheart|medical": 0.0782,
-    "Ironheart|metal": 0.013,
+    "Ironheart|medical": 0.0937,
+    "Ironheart|metal": -0.045,
     "Ironheart|water": 0.1,
-    "Juno Commons|equipment": 0.034,
-    "Juno Commons|food": 0.092,
-    "Juno Commons|luxury": 0.054,
-    "Juno Commons|medical": 0.034,
-    "Juno Commons|water": 0.0142,
-    "Mars|equipment": 0.076,
-    "Mars|food": 0.1,
-    "Mars|industrial": 0.0224,
-    "Mars|luxury": 0.0655,
-    "Mars|medical": 0.0734,
-    "Mars|metal": 0.039,
-    "Mars|water": 0.1,
-    "Pallas Refinery|equipment": 0.1549,
-    "Pallas Refinery|food": 0.1309,
-    "Pallas Refinery|industrial": 0.0469,
-    "Pallas Refinery|metal": -0.0949,
+    "Juno Commons|equipment": 0.036,
+    "Juno Commons|food": 0.033,
+    "Juno Commons|luxury": 0.056,
+    "Juno Commons|medical": 0.03,
+    "Juno Commons|water": 0.0745,
+    "Mars|equipment": 0.084,
+    "Mars|food": 0.092,
+    "Mars|industrial": 0.0073,
+    "Mars|luxury": 0.0115,
+    "Mars|medical": 0.0864,
+    "Mars|metal": -0.063,
+    "Mars|water": 0.045,
+    "Pallas Refinery|equipment": 0.1609,
+    "Pallas Refinery|food": 0.0909,
+    "Pallas Refinery|industrial": 0.0429,
+    "Pallas Refinery|metal": -0.0909,
     "Pallas Refinery|water": 0.0629,
-    "Ring Nine|food": 0.046,
-    "Ring Nine|medical": 0.06,
+    "Ring Nine|food": 0.094,
+    "Ring Nine|medical": 0.072,
     "Ring Nine|water": 0.1,
     "The Hollows|food": 0.0889,
-    "The Hollows|water": 0.0569,
+    "The Hollows|water": 0.0809,
     "The Rook|equipment": 0.152,
-    "The Rook|food": 0.162,
-    "The Rook|luxury": 0.016,
+    "The Rook|food": 0.15,
+    "The Rook|luxury": 0.094,
     "The Rook|medical": 0.1,
-    "The Rook|water": 0.0354,
-    "Titan|equipment": 0.104,
-    "Titan|industrial": 0.092,
-    "Titan|luxury": 0.0584,
-    "Titan|medical": 0.055,
+    "The Rook|water": 0.0338,
+    "Titan|equipment": 0.1,
+    "Titan|industrial": 0.146,
+    "Titan|luxury": 0.0533,
+    "Titan|medical": 0.058,
     "Triton Outpost|equipment": 0.198,
-    "Triton Outpost|food": 0.2114,
+    "Triton Outpost|food": 0.1747,
     "Triton Outpost|luxury": 0.25,
     "Triton Outpost|medical": 0.224,
-    "Triton Outpost|metal": 0.024,
-    "Triton Outpost|water": 0.152
+    "Triton Outpost|metal": -0.009,
+    "Triton Outpost|water": 0.182
    },
    "haul": [
     [
@@ -3109,18 +3065,18 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
+    ],
+    [
+     "metal",
+     37,
+     "Triton Outpost",
+     "Enceladus",
+     31
     ],
     [
      "equipment",
@@ -3193,11 +3149,11 @@
      22
     ],
     [
-     "metal",
+     "medical",
      34,
-     "Ironheart",
-     "Enceladus",
-     22
+     "Ganymede",
+     "Triton Outpost",
+     38
     ],
     [
      "medical",
@@ -3235,32 +3191,32 @@
      23
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
+    ],
+    [
+     "food",
+     20,
+     "Boneyard",
+     "Enceladus",
+     23
+    ],
+    [
+     "food",
+     34,
+     "Enceladus",
+     "Boneyard",
+     23
+    ],
+    [
+     "food",
+     36,
+     "Ironheart",
+     "Enceladus",
+     23
     ],
     [
      "luxury",
@@ -3278,91 +3234,84 @@
     ],
     [
      "industrial",
-     31,
+     23,
      "Titan",
      "Eros Old Town",
      23
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     35,
-     "Enceladus",
-     "Pallas Refinery",
-     22
+     39,
+     "Triton Outpost",
+     "Ironheart",
+     40
     ],
     [
      "food",
+     35,
+     "Earth",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
      21,
-     "Boneyard",
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "metal",
+     35,
+     "Ironheart",
      "Enceladus",
      24
     ],
     [
-     "food",
-     25,
-     "Triton Outpost",
-     "Boneyard",
-     42
-    ],
-    [
-     "food",
-     28,
-     "Juno Commons",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     23,
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
+     23,
+     "Enceladus",
      "Triton Outpost",
-     41
+     35
     ],
     [
      "metal",
      39,
-     "Pallas Refinery",
-     "Enceladus",
-     23
-    ],
-    [
-     "food",
-     31,
-     "The Rook",
-     "Enceladus",
-     25
-    ],
-    [
-     "food",
-     22,
-     "Triton Outpost",
-     "The Rook",
-     43
-    ],
-    [
-     "water",
-     35,
-     "Enceladus",
      "Mars",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "industrial",
+     34,
+     "Mars",
+     "Titan",
      22
     ],
     [
+     "food",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     44
+    ],
+    [
      "medical",
-     35,
+     31,
      "Earth",
      "Triton Outpost",
      41
@@ -3376,437 +3325,409 @@
     ],
     [
      "food",
-     32,
-     "Triton Outpost",
-     "Mars",
-     42
-    ],
-    [
-     "food",
-     25,
-     "Juno Commons",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "water",
      33,
      "Triton Outpost",
-     "Hermes Foundry",
-     45
-    ],
-    [
-     "water",
-     21,
-     "Europa",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "food",
-     23,
-     "Ganymede",
-     "Ironheart",
-     25
-    ],
-    [
-     "medical",
-     26,
-     "Titan",
-     "The Rook",
-     29
-    ],
-    [
-     "industrial",
-     27,
-     "Ironheart",
-     "Titan",
-     29
-    ],
-    [
-     "metal",
-     39,
-     "Triton Outpost",
-     "Earth",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "luxury",
-     25,
-     "Titan",
-     "Ironheart",
-     30
-    ],
-    [
-     "luxury",
-     23,
-     "Hermes Foundry",
-     "Titan",
-     28
-    ],
-    [
-     "food",
-     35,
-     "Triton Outpost",
-     "The Rook",
-     49
-    ],
-    [
-     "industrial",
-     29,
-     "Pallas Refinery",
-     "Europa",
-     27
-    ],
-    [
-     "industrial",
-     22,
-     "Ironheart",
-     "Earth",
-     23
-    ],
-    [
-     "luxury",
-     40,
-     "The Rook",
-     "Juno Commons",
-     25
-    ],
-    [
-     "metal",
-     23,
-     "Ironheart",
-     "Enceladus",
-     33
-    ],
-    [
-     "water",
-     21,
-     "Enceladus",
      "Ring Nine",
-     28
-    ],
-    [
-     "luxury",
-     36,
-     "Eros Old Town",
-     "Triton Outpost",
-     50
-    ],
-    [
-     "equipment",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     31
-    ],
-    [
-     "medical",
-     32,
-     "Titan",
-     "Boneyard",
-     33
-    ],
-    [
-     "medical",
-     20,
-     "Earth",
-     "Titan",
-     29
-    ],
-    [
-     "industrial",
-     37,
-     "Europa",
-     "Eros Old Town",
-     27
-    ],
-    [
-     "industrial",
-     23,
-     "Hermes Foundry",
-     "Europa",
-     27
-    ],
-    [
-     "food",
-     22,
-     "Juno Commons",
-     "Boneyard",
-     27
-    ],
-    [
-     "water",
-     23,
-     "The Rook",
-     "Pallas Refinery",
-     28
-    ],
-    [
-     "medical",
-     28,
-     "Mars",
-     "Ring Nine",
-     24
-    ],
-    [
-     "industrial",
-     29,
-     "Ceres Station",
-     "Pallas Refinery",
-     27
-    ],
-    [
-     "equipment",
-     33,
-     "Ceres Station",
-     "Mars",
-     24
-    ],
-    [
-     "industrial",
-     38,
-     "Mars",
-     "Europa",
-     28
-    ],
-    [
-     "food",
-     27,
-     "Ganymede",
-     "The Hollows",
-     30
-    ],
-    [
-     "food",
-     20,
-     "Triton Outpost",
-     "Ceres Station",
-     50
-    ],
-    [
-     "water",
-     35,
-     "Triton Outpost",
-     "Eros Old Town",
-     52
-    ],
-    [
-     "water",
-     37,
-     "Europa",
-     "Triton Outpost",
-     51
-    ],
-    [
-     "water",
-     27,
-     "The Rook",
-     "Mars",
-     27
+     44
     ],
     [
      "metal",
-     22,
-     "Pallas Refinery",
-     "Hermes Foundry",
-     25
-    ],
-    [
-     "equipment",
-     20,
-     "Eros Old Town",
-     "Pallas Refinery",
-     27
-    ],
-    [
-     "equipment",
-     33,
-     "Eros Old Town",
-     "Ganymede",
-     30
-    ],
-    [
-     "food",
-     30,
+     21,
      "Triton Outpost",
-     "Hermes Foundry",
-     53
-    ],
-    [
-     "metal",
-     24,
-     "Mars",
-     "Eros Old Town",
-     26
-    ],
-    [
-     "water",
-     25,
-     "Enceladus",
-     "Ironheart",
-     37
-    ],
-    [
-     "luxury",
-     35,
-     "Mars",
-     "Ganymede",
-     30
-    ],
-    [
-     "luxury",
-     27,
-     "Ceres Station",
-     "Mars",
-     26
-    ],
-    [
-     "medical",
-     32,
-     "Ganymede",
-     "Juno Commons",
-     31
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Mars",
-     27
-    ],
-    [
-     "luxury",
-     20,
-     "Titan",
-     "Earth",
-     34
-    ],
-    [
-     "food",
-     20,
-     "Earth",
-     "Enceladus",
-     34
-    ],
-    [
-     "equipment",
-     20,
-     "Earth",
-     "The Rook",
-     28
-    ],
-    [
-     "luxury",
-     30,
-     "The Rook",
-     "Ceres Station",
-     31
-    ],
-    [
-     "medical",
-     37,
-     "Earth",
-     "Triton Outpost",
-     54
-    ],
-    [
-     "food",
-     40,
-     "Juno Commons",
-     "Ironheart",
-     31
-    ],
-    [
-     "industrial",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     37
-    ],
-    [
-     "medical",
-     30,
-     "Ironheart",
-     "Ceres Station",
-     32
-    ],
-    [
-     "medical",
-     38,
-     "Ganymede",
-     "Ironheart",
-     35
-    ],
-    [
-     "medical",
-     29,
-     "Mars",
-     "Ganymede",
-     32
-    ],
-    [
-     "metal",
-     38,
-     "Ironheart",
      "Enceladus",
      39
     ],
     [
-     "metal",
-     40,
-     "Ceres Station",
+     "food",
+     23,
+     "Earth",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "water",
+     39,
+     "Enceladus",
+     "Hermes Foundry",
+     28
+    ],
+    [
+     "water",
+     39,
+     "Europa",
+     "Enceladus",
+     25
+    ],
+    [
+     "luxury",
+     22,
+     "Titan",
+     "Juno Commons",
+     25
+    ],
+    [
+     "industrial",
+     25,
      "Ironheart",
+     "Ceres Station",
+     23
+    ],
+    [
+     "luxury",
+     35,
+     "Eros Old Town",
+     "Triton Outpost",
+     48
+    ],
+    [
+     "industrial",
+     29,
+     "Hermes Foundry",
+     "Europa",
+     25
+    ],
+    [
+     "water",
+     36,
+     "Triton Outpost",
+     "Ceres Station",
+     47
+    ],
+    [
+     "industrial",
+     22,
+     "Pallas Refinery",
+     "Titan",
+     30
+    ],
+    [
+     "food",
+     40,
+     "Juno Commons",
+     "Enceladus",
+     27
+    ],
+    [
+     "food",
+     37,
+     "Triton Outpost",
+     "The Rook",
+     50
+    ],
+    [
+     "medical",
+     23,
+     "Ironheart",
+     "Ceres Station",
+     25
+    ],
+    [
+     "industrial",
+     24,
+     "Hermes Foundry",
+     "Pallas Refinery",
+     22
+    ],
+    [
+     "medical",
+     36,
+     "Titan",
+     "The Rook",
      32
     ],
     [
+     "medical",
+     31,
+     "Earth",
+     "Titan",
+     28
+    ],
+    [
      "metal",
-     40,
+     31,
+     "Ironheart",
+     "Hermes Foundry",
+     22
+    ],
+    [
+     "medical",
+     21,
+     "Ring Nine",
+     "Boneyard",
+     25
+    ],
+    [
+     "metal",
+     36,
      "Mars",
+     "Eros Old Town",
+     22
+    ],
+    [
+     "luxury",
+     32,
+     "Eros Old Town",
+     "Ganymede",
+     26
+    ],
+    [
+     "medical",
+     20,
+     "Ganymede",
+     "Ring Nine",
+     23
+    ],
+    [
+     "metal",
+     37,
+     "Ironheart",
+     "Mars",
+     23
+    ],
+    [
+     "metal",
+     26,
+     "Pallas Refinery",
+     "Ironheart",
+     22
+    ],
+    [
+     "equipment",
+     37,
+     "Eros Old Town",
+     "Titan",
+     33
+    ],
+    [
+     "equipment",
+     23,
+     "Hermes Foundry",
+     "Ganymede",
+     27
+    ],
+    [
+     "water",
+     22,
+     "The Rook",
+     "The Hollows",
+     27
+    ],
+    [
+     "water",
+     21,
+     "Juno Commons",
+     "The Rook",
+     27
+    ],
+    [
+     "luxury",
+     28,
+     "Titan",
+     "Ironheart",
+     34
+    ],
+    [
+     "luxury",
+     32,
+     "The Rook",
+     "Titan",
+     34
+    ],
+    [
+     "equipment",
+     23,
+     "Eros Old Town",
+     "Mars",
+     24
+    ],
+    [
+     "equipment",
+     28,
+     "Earth",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "metal",
+     29,
+     "Triton Outpost",
+     "Enceladus",
+     45
+    ],
+    [
+     "equipment",
+     22,
      "Ceres Station",
+     "Pallas Refinery",
      28
     ],
     [
      "food",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     51
+    ],
+    [
+     "food",
+     23,
+     "Ganymede",
+     "Pallas Refinery",
+     31
+    ],
+    [
+     "industrial",
+     33,
+     "Earth",
+     "Europa",
+     29
+    ],
+    [
+     "food",
+     30,
+     "Ganymede",
+     "The Hollows",
+     32
+    ],
+    [
+     "water",
+     24,
+     "Enceladus",
+     "Eros Old Town",
+     36
+    ],
+    [
+     "equipment",
+     25,
+     "Ceres Station",
+     "The Rook",
+     29
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "water",
+     39,
+     "Europa",
+     "Mars",
+     31
+    ],
+    [
+     "water",
      30,
      "Triton Outpost",
      "Ring Nine",
-     55
+     54
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Ring Nine",
+     32
+    ],
+    [
+     "medical",
+     40,
+     "Mars",
+     "Ironheart",
+     29
+    ],
+    [
+     "medical",
+     31,
+     "Earth",
+     "Mars",
+     25
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Juno Commons",
+     32
+    ],
+    [
+     "water",
+     38,
+     "Earth",
+     "Ironheart",
+     30
+    ],
+    [
+     "water",
+     29,
+     "Juno Commons",
+     "Earth",
+     27
     ],
     [
      "equipment",
      30,
      "Titan",
-     "The Rook",
-     40
+     "Mars",
+     36
     ],
     [
      "equipment",
-     36,
+     30,
      "Hermes Foundry",
      "Titan",
      38
     ],
     [
-     "equipment",
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Juno Commons",
+     31
+    ],
+    [
+     "metal",
      33,
+     "Ceres Station",
      "Earth",
-     "Hermes Foundry",
-     27
+     28
+    ],
+    [
+     "industrial",
+     37,
+     "Ironheart",
+     "Titan",
+     40
+    ],
+    [
+     "industrial",
+     31,
+     "Earth",
+     "Ironheart",
+     31
     ],
     [
      "food",
-     37,
-     "Ganymede",
+     33,
      "Mars",
-     33
+     "Boneyard",
+     32
+    ],
+    [
+     "food",
+     21,
+     "Earth",
+     "Mars",
+     26
+    ],
+    [
+     "luxury",
+     39,
+     "The Rook",
+     "Eros Old Town",
+     28
     ]
    ],
    "unrest": {
@@ -3832,84 +3753,82 @@
   "key": "world:25",
   "v": {
    "market": {
-    "Boneyard|food": 0.167,
-    "Boneyard|medical": 0.149,
-    "Ceres Station|equipment": 0.082,
-    "Ceres Station|food": 0.085,
-    "Ceres Station|luxury": 0.0313,
-    "Ceres Station|medical": 0.051,
-    "Ceres Station|metal": -0.018,
-    "Ceres Station|water": 0.063,
-    "Earth|equipment": 0.072,
-    "Earth|food": 0.0806,
-    "Earth|industrial": -0.009,
+    "Boneyard|food": 0.097,
+    "Boneyard|medical": 0.107,
+    "Ceres Station|equipment": 0.0355,
+    "Ceres Station|food": 0.091,
+    "Ceres Station|industrial": 0.0369,
+    "Ceres Station|luxury": 0.0486,
+    "Ceres Station|medical": 0.029,
+    "Ceres Station|metal": -0.078,
+    "Ceres Station|water": 0.125,
+    "Earth|equipment": 0.05,
+    "Earth|food": 0.041,
     "Earth|luxury": 0.125,
-    "Earth|medical": 0.02,
-    "Earth|metal": 0.125,
-    "Earth|water": 0.0083,
-    "Enceladus|food": 0.089,
-    "Enceladus|metal": -0.021,
-    "Enceladus|water": 0.077,
-    "Eros Old Town|equipment": 0.0853,
-    "Eros Old Town|industrial": 0.063,
-    "Eros Old Town|luxury": 0.046,
-    "Eros Old Town|metal": -0.048,
+    "Earth|medical": 0.025,
+    "Earth|metal": -0.022,
+    "Earth|water": 0.0477,
+    "Enceladus|food": 0.125,
+    "Enceladus|metal": 0.055,
+    "Enceladus|water": 0.063,
+    "Eros Old Town|equipment": 0.0323,
+    "Eros Old Town|luxury": 0.069,
+    "Eros Old Town|metal": -0.0472,
     "Eros Old Town|water": 0.125,
-    "Europa|industrial": 0.129,
-    "Europa|water": 0.087,
-    "Ganymede|equipment": 0.069,
-    "Ganymede|food": 0.071,
-    "Ganymede|luxury": 0.051,
-    "Ganymede|medical": 0.0519,
-    "Hermes Foundry|equipment": 0.067,
+    "Europa|industrial": 0.011,
+    "Europa|water": 0.047,
+    "Ganymede|equipment": 0.091,
+    "Ganymede|food": 0.093,
+    "Ganymede|luxury": 0.068,
+    "Ganymede|medical": 0.0492,
+    "Hermes Foundry|equipment": 0.045,
     "Hermes Foundry|food": 0.125,
-    "Hermes Foundry|industrial": -0.009,
-    "Hermes Foundry|luxury": 0.0144,
-    "Hermes Foundry|metal": -0.0396,
+    "Hermes Foundry|industrial": 0.009,
+    "Hermes Foundry|luxury": 0.0519,
+    "Hermes Foundry|metal": -0.0407,
     "Hermes Foundry|water": 0.125,
-    "Ironheart|food": 0.059,
-    "Ironheart|industrial": 0.027,
+    "Ironheart|food": 0.123,
+    "Ironheart|industrial": 0.02,
     "Ironheart|luxury": 0.125,
-    "Ironheart|medical": 0.0462,
-    "Ironheart|metal": -0.036,
-    "Ironheart|water": 0.087,
-    "Juno Commons|equipment": 0.1177,
-    "Juno Commons|food": -0.0117,
-    "Juno Commons|luxury": 0.0577,
-    "Juno Commons|medical": 0.1177,
-    "Juno Commons|water": 0.0084,
-    "Mars|equipment": 0.035,
-    "Mars|food": 0.125,
-    "Mars|industrial": 0.0132,
-    "Mars|luxury": 0.0527,
-    "Mars|medical": 0.0433,
-    "Mars|metal": -0.009,
-    "Mars|water": 0.055,
-    "Pallas Refinery|equipment": 0.2307,
-    "Pallas Refinery|food": 0.1367,
-    "Pallas Refinery|industrial": 0.1227,
-    "Pallas Refinery|metal": -0.1907,
+    "Ironheart|medical": 0.0553,
+    "Ironheart|metal": -0.068,
+    "Ironheart|water": 0.045,
+    "Juno Commons|equipment": 0.1197,
+    "Juno Commons|food": -0.0707,
+    "Juno Commons|luxury": 0.0957,
+    "Juno Commons|medical": 0.1137,
+    "Juno Commons|water": 0.044,
+    "Mars|equipment": 0.063,
+    "Mars|food": 0.075,
+    "Mars|luxury": 0.07,
+    "Mars|medical": 0.0402,
+    "Mars|metal": -0.04,
+    "Mars|water": 0.07,
+    "Pallas Refinery|equipment": 0.2367,
+    "Pallas Refinery|food": 0.1667,
+    "Pallas Refinery|industrial": 0.0707,
+    "Pallas Refinery|metal": -0.1867,
     "Pallas Refinery|water": 0.1387,
-    "Ring Nine|food": 0.071,
-    "Ring Nine|medical": 0.029,
+    "Ring Nine|food": 0.119,
+    "Ring Nine|medical": 0.057,
     "Ring Nine|water": 0.125,
     "The Hollows|food": 0.1647,
-    "The Hollows|water": 0.1327,
+    "The Hollows|water": 0.1567,
     "The Rook|equipment": 0.111,
-    "The Rook|food": 0.187,
-    "The Rook|luxury": 0.041,
+    "The Rook|food": 0.175,
+    "The Rook|luxury": 0.049,
     "The Rook|medical": 0.125,
-    "The Rook|water": 0.0209,
-    "Titan|equipment": 0.129,
-    "Titan|industrial": 0.039,
-    "Titan|luxury": 0.0903,
-    "Titan|medical": 0.092,
+    "The Rook|water": 0.0199,
+    "Titan|equipment": 0.125,
+    "Titan|industrial": 0.025,
+    "Titan|luxury": 0.0708,
+    "Titan|medical": 0.055,
     "Triton Outpost|equipment": 0.223,
-    "Triton Outpost|food": 0.188,
+    "Triton Outpost|food": 0.1894,
     "Triton Outpost|luxury": 0.275,
     "Triton Outpost|medical": 0.249,
-    "Triton Outpost|metal": 0.053,
-    "Triton Outpost|water": 0.165
+    "Triton Outpost|metal": 0.01,
+    "Triton Outpost|water": 0.137
    },
    "haul": [
     [
@@ -3976,18 +3895,18 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
+    ],
+    [
+     "metal",
+     37,
+     "Triton Outpost",
+     "Enceladus",
+     31
     ],
     [
      "equipment",
@@ -4046,6 +3965,13 @@
      37
     ],
     [
+     "medical",
+     34,
+     "Ganymede",
+     "Triton Outpost",
+     38
+    ],
+    [
      "equipment",
      26,
      "The Rook",
@@ -4067,29 +3993,8 @@
      36
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
@@ -4110,49 +4015,63 @@
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     25,
+     39,
      "Triton Outpost",
-     "Boneyard",
-     42
+     "Ironheart",
+     40
     ],
     [
      "food",
-     28,
-     "Juno Commons",
+     35,
+     "Earth",
      "Triton Outpost",
-     37
+     39
     ],
     [
      "water",
-     23,
+     21,
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "water",
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
+     23,
+     "Enceladus",
      "Triton Outpost",
-     41
+     35
+    ],
+    [
+     "metal",
+     39,
+     "Mars",
+     "Triton Outpost",
+     39
     ],
     [
      "food",
-     22,
+     20,
      "Triton Outpost",
      "The Rook",
-     43
+     44
     ],
     [
      "medical",
-     35,
+     31,
      "Earth",
      "Triton Outpost",
      41
@@ -4166,507 +4085,444 @@
     ],
     [
      "food",
-     32,
-     "Triton Outpost",
-     "Mars",
-     42
-    ],
-    [
-     "food",
-     25,
-     "Juno Commons",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "water",
      33,
      "Triton Outpost",
-     "Hermes Foundry",
-     45
-    ],
-    [
-     "water",
-     21,
-     "Europa",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "medical",
-     26,
-     "Titan",
-     "The Rook",
-     29
-    ],
-    [
-     "industrial",
-     27,
-     "Ironheart",
-     "Titan",
-     29
-    ],
-    [
-     "metal",
-     39,
-     "Triton Outpost",
-     "Earth",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Triton Outpost",
-     45
-    ],
-    [
-     "luxury",
-     25,
-     "Titan",
-     "Ironheart",
-     30
-    ],
-    [
-     "luxury",
-     23,
-     "Hermes Foundry",
-     "Titan",
-     28
-    ],
-    [
-     "food",
-     35,
-     "Triton Outpost",
-     "The Rook",
-     49
-    ],
-    [
-     "industrial",
-     29,
-     "Pallas Refinery",
-     "Europa",
-     27
-    ],
-    [
-     "metal",
-     23,
-     "Ironheart",
-     "Enceladus",
-     33
-    ],
-    [
-     "water",
-     21,
-     "Enceladus",
      "Ring Nine",
-     28
-    ],
-    [
-     "luxury",
-     36,
-     "Eros Old Town",
-     "Triton Outpost",
-     50
-    ],
-    [
-     "equipment",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     31
-    ],
-    [
-     "medical",
-     32,
-     "Titan",
-     "Boneyard",
-     33
-    ],
-    [
-     "medical",
-     20,
-     "Earth",
-     "Titan",
-     29
-    ],
-    [
-     "industrial",
-     37,
-     "Europa",
-     "Eros Old Town",
-     27
-    ],
-    [
-     "industrial",
-     23,
-     "Hermes Foundry",
-     "Europa",
-     27
-    ],
-    [
-     "food",
-     22,
-     "Juno Commons",
-     "Boneyard",
-     27
-    ],
-    [
-     "water",
-     23,
-     "The Rook",
-     "Pallas Refinery",
-     28
-    ],
-    [
-     "industrial",
-     29,
-     "Ceres Station",
-     "Pallas Refinery",
-     27
-    ],
-    [
-     "industrial",
-     38,
-     "Mars",
-     "Europa",
-     28
-    ],
-    [
-     "food",
-     27,
-     "Ganymede",
-     "The Hollows",
-     30
-    ],
-    [
-     "food",
-     20,
-     "Triton Outpost",
-     "Ceres Station",
-     50
-    ],
-    [
-     "water",
-     35,
-     "Triton Outpost",
-     "Eros Old Town",
-     52
-    ],
-    [
-     "water",
-     37,
-     "Europa",
-     "Triton Outpost",
-     51
-    ],
-    [
-     "water",
-     27,
-     "The Rook",
-     "Mars",
-     27
-    ],
-    [
-     "equipment",
-     20,
-     "Eros Old Town",
-     "Pallas Refinery",
-     27
-    ],
-    [
-     "equipment",
-     33,
-     "Eros Old Town",
-     "Ganymede",
-     30
-    ],
-    [
-     "food",
-     30,
-     "Triton Outpost",
-     "Hermes Foundry",
-     53
-    ],
-    [
-     "water",
-     25,
-     "Enceladus",
-     "Ironheart",
-     37
-    ],
-    [
-     "luxury",
-     35,
-     "Mars",
-     "Ganymede",
-     30
-    ],
-    [
-     "medical",
-     32,
-     "Ganymede",
-     "Juno Commons",
-     31
+     44
     ],
     [
      "metal",
-     39,
-     "Ceres Station",
-     "Mars",
-     27
-    ],
-    [
-     "luxury",
-     20,
-     "Titan",
-     "Earth",
-     34
-    ],
-    [
-     "food",
-     20,
-     "Earth",
-     "Enceladus",
-     34
-    ],
-    [
-     "equipment",
-     20,
-     "Earth",
-     "The Rook",
-     28
-    ],
-    [
-     "luxury",
-     30,
-     "The Rook",
-     "Ceres Station",
-     31
-    ],
-    [
-     "medical",
-     37,
-     "Earth",
+     21,
      "Triton Outpost",
-     54
-    ],
-    [
-     "food",
-     40,
-     "Juno Commons",
-     "Ironheart",
-     31
-    ],
-    [
-     "industrial",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     37
-    ],
-    [
-     "medical",
-     30,
-     "Ironheart",
-     "Ceres Station",
-     32
-    ],
-    [
-     "medical",
-     38,
-     "Ganymede",
-     "Ironheart",
-     35
-    ],
-    [
-     "medical",
-     29,
-     "Mars",
-     "Ganymede",
-     32
-    ],
-    [
-     "metal",
-     38,
-     "Ironheart",
      "Enceladus",
      39
     ],
     [
-     "metal",
-     40,
+     "food",
+     23,
+     "Earth",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "water",
+     39,
+     "Enceladus",
+     "Hermes Foundry",
+     28
+    ],
+    [
+     "luxury",
+     35,
+     "Eros Old Town",
+     "Triton Outpost",
+     48
+    ],
+    [
+     "water",
+     36,
+     "Triton Outpost",
      "Ceres Station",
-     "Ironheart",
+     47
+    ],
+    [
+     "industrial",
+     22,
+     "Pallas Refinery",
+     "Titan",
+     30
+    ],
+    [
+     "food",
+     40,
+     "Juno Commons",
+     "Enceladus",
+     27
+    ],
+    [
+     "food",
+     37,
+     "Triton Outpost",
+     "The Rook",
+     50
+    ],
+    [
+     "medical",
+     36,
+     "Titan",
+     "The Rook",
      32
     ],
     [
+     "medical",
+     31,
+     "Earth",
+     "Titan",
+     28
+    ],
+    [
+     "equipment",
+     37,
+     "Eros Old Town",
+     "Titan",
+     33
+    ],
+    [
+     "equipment",
+     23,
+     "Hermes Foundry",
+     "Ganymede",
+     27
+    ],
+    [
+     "water",
+     22,
+     "The Rook",
+     "The Hollows",
+     27
+    ],
+    [
+     "water",
+     21,
+     "Juno Commons",
+     "The Rook",
+     27
+    ],
+    [
+     "luxury",
+     28,
+     "Titan",
+     "Ironheart",
+     34
+    ],
+    [
+     "luxury",
+     32,
+     "The Rook",
+     "Titan",
+     34
+    ],
+    [
      "metal",
-     40,
-     "Mars",
+     29,
+     "Triton Outpost",
+     "Enceladus",
+     45
+    ],
+    [
+     "equipment",
+     22,
      "Ceres Station",
+     "Pallas Refinery",
      28
     ],
     [
      "food",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     51
+    ],
+    [
+     "food",
+     23,
+     "Ganymede",
+     "Pallas Refinery",
+     31
+    ],
+    [
+     "industrial",
+     33,
+     "Earth",
+     "Europa",
+     29
+    ],
+    [
+     "food",
+     30,
+     "Ganymede",
+     "The Hollows",
+     32
+    ],
+    [
+     "water",
+     24,
+     "Enceladus",
+     "Eros Old Town",
+     36
+    ],
+    [
+     "equipment",
+     25,
+     "Ceres Station",
+     "The Rook",
+     29
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "water",
+     39,
+     "Europa",
+     "Mars",
+     31
+    ],
+    [
+     "water",
      30,
      "Triton Outpost",
      "Ring Nine",
-     55
+     54
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Ring Nine",
+     32
+    ],
+    [
+     "medical",
+     40,
+     "Mars",
+     "Ironheart",
+     29
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Juno Commons",
+     32
+    ],
+    [
+     "water",
+     38,
+     "Earth",
+     "Ironheart",
+     30
+    ],
+    [
+     "water",
+     29,
+     "Juno Commons",
+     "Earth",
+     27
     ],
     [
      "equipment",
      30,
      "Titan",
-     "The Rook",
-     40
+     "Mars",
+     36
     ],
     [
      "equipment",
-     36,
+     30,
      "Hermes Foundry",
      "Titan",
      38
     ],
     [
-     "equipment",
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Juno Commons",
+     31
+    ],
+    [
+     "metal",
      33,
+     "Ceres Station",
      "Earth",
-     "Hermes Foundry",
-     27
+     28
+    ],
+    [
+     "industrial",
+     37,
+     "Ironheart",
+     "Titan",
+     40
+    ],
+    [
+     "industrial",
+     31,
+     "Earth",
+     "Ironheart",
+     31
     ],
     [
      "food",
-     37,
-     "Ganymede",
+     33,
      "Mars",
-     33
+     "Boneyard",
+     32
+    ],
+    [
+     "luxury",
+     39,
+     "The Rook",
+     "Eros Old Town",
+     28
     ],
     [
      "metal",
      37,
-     "Triton Outpost",
-     "Earth",
-     56
-    ],
-    [
-     "medical",
-     20,
-     "Titan",
-     "The Rook",
-     41
-    ],
-    [
-     "water",
-     21,
      "Ironheart",
-     "Ring Nine",
+     "Ceres Station",
      34
     ],
     [
-     "water",
-     30,
-     "Enceladus",
-     "Ironheart",
+     "food",
+     20,
+     "Triton Outpost",
+     "Mars",
+     55
+    ],
+    [
+     "medical",
+     21,
+     "Titan",
+     "Boneyard",
      41
     ],
     [
-     "water",
-     37,
-     "Europa",
-     "Enceladus",
-     36
-    ],
-    [
-     "industrial",
-     29,
+     "luxury",
+     30,
+     "Titan",
      "Earth",
-     "Mars",
-     28
+     37
     ],
     [
      "equipment",
-     39,
+     29,
      "Eros Old Town",
      "Triton Outpost",
      59
     ],
     [
-     "equipment",
+     "metal",
      39,
-     "Ceres Station",
-     "Eros Old Town",
-     33
-    ],
-    [
-     "luxury",
-     34,
-     "The Rook",
-     "Triton Outpost",
-     61
-    ],
-    [
-     "luxury",
-     32,
-     "Eros Old Town",
-     "The Rook",
-     31
-    ],
-    [
-     "water",
-     29,
-     "Triton Outpost",
-     "Ceres Station",
-     58
-    ],
-    [
-     "food",
-     39,
-     "Triton Outpost",
-     "Ceres Station",
-     58
-    ],
-    [
-     "food",
-     21,
-     "Enceladus",
-     "Boneyard",
-     44
-    ],
-    [
-     "food",
-     25,
-     "Earth",
-     "Enceladus",
-     40
+     "Mars",
+     "Hermes Foundry",
+     30
     ],
     [
      "industrial",
-     36,
-     "Ironheart",
+     39,
+     "Ceres Station",
      "Eros Old Town",
      33
     ],
     [
-     "luxury",
-     31,
-     "Titan",
+     "industrial",
+     27,
+     "Hermes Foundry",
+     "Ceres Station",
+     32
+    ],
+    [
+     "food",
+     22,
+     "Enceladus",
      "Ironheart",
-     44
+     42
+    ],
+    [
+     "equipment",
+     25,
+     "Earth",
+     "Ganymede",
+     34
+    ],
+    [
+     "food",
+     34,
+     "Ganymede",
+     "Enceladus",
+     38
+    ],
+    [
+     "metal",
+     32,
+     "Triton Outpost",
+     "Enceladus",
+     54
+    ],
+    [
+     "luxury",
+     29,
+     "Hermes Foundry",
+     "Triton Outpost",
+     59
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Hermes Foundry",
+     31
+    ],
+    [
+     "luxury",
+     25,
+     "Ceres Station",
+     "Mars",
+     32
+    ],
+    [
+     "food",
+     37,
+     "Triton Outpost",
+     "Ring Nine",
+     58
+    ],
+    [
+     "water",
+     21,
+     "Enceladus",
+     "Eros Old Town",
+     43
+    ],
+    [
+     "medical",
+     25,
+     "Mars",
+     "Triton Outpost",
+     58
+    ],
+    [
+     "water",
+     36,
+     "Enceladus",
+     "Hermes Foundry",
+     42
     ],
     [
      "luxury",
      34,
-     "Mars",
-     "Titan",
+     "Ganymede",
+     "Ironheart",
      41
     ],
     [
-     "medical",
+     "luxury",
      21,
-     "Titan",
-     "Boneyard",
-     45
+     "Eros Old Town",
+     "Ganymede",
+     38
+    ],
+    [
+     "metal",
+     32,
+     "Mars",
+     "Eros Old Town",
+     34
     ]
    ],
    "unrest": {
@@ -4693,81 +4549,83 @@
   "key": "world:30",
   "v": {
    "market": {
-    "Boneyard|food": 0.148,
-    "Boneyard|medical": 0.174,
-    "Ceres Station|equipment": 0.0484,
-    "Ceres Station|food": 0.11,
-    "Ceres Station|luxury": 0.0325,
-    "Ceres Station|medical": 0.076,
-    "Ceres Station|metal": -0.075,
-    "Ceres Station|water": 0.088,
-    "Earth|equipment": 0.105,
-    "Earth|food": 0.0476,
-    "Earth|industrial": 0.014,
+    "Boneyard|food": 0.122,
+    "Boneyard|medical": 0.132,
+    "Ceres Station|equipment": 0.0749,
+    "Ceres Station|food": 0.116,
+    "Ceres Station|industrial": 0.0218,
+    "Ceres Station|luxury": 0.0287,
+    "Ceres Station|medical": 0.054,
+    "Ceres Station|metal": -0.049,
+    "Ceres Station|water": 0.15,
+    "Earth|equipment": 0.083,
+    "Earth|food": 0.0623,
+    "Earth|industrial": 0.025,
     "Earth|luxury": 0.15,
-    "Earth|medical": 0.033,
-    "Earth|metal": 0.15,
-    "Earth|water": 0.0399,
-    "Enceladus|food": 0.114,
-    "Enceladus|metal": 0.005,
-    "Enceladus|water": 0.106,
-    "Eros Old Town|equipment": 0.0504,
-    "Eros Old Town|industrial": 0.015,
-    "Eros Old Town|metal": -0.0283,
+    "Earth|medical": 0.06,
+    "Earth|metal": -0.0611,
+    "Earth|water": 0.0282,
+    "Enceladus|food": 0.13,
+    "Enceladus|metal": 0.006,
+    "Enceladus|water": 0.086,
+    "Eros Old Town|equipment": 0.0532,
+    "Eros Old Town|industrial": 0.025,
+    "Eros Old Town|luxury": 0.014,
+    "Eros Old Town|metal": -0.0279,
     "Eros Old Town|water": 0.15,
-    "Europa|industrial": -0.026,
-    "Europa|water": 0.042,
-    "Ganymede|equipment": 0.104,
-    "Ganymede|food": 0.066,
-    "Ganymede|luxury": 0.005,
-    "Ganymede|medical": 0.0307,
-    "Hermes Foundry|equipment": 0.094,
+    "Europa|industrial": -0.03,
+    "Europa|water": 0.078,
+    "Ganymede|equipment": 0.07,
+    "Ganymede|food": 0.108,
+    "Ganymede|luxury": 0.093,
+    "Ganymede|medical": 0.0291,
+    "Hermes Foundry|equipment": 0.056,
     "Hermes Foundry|food": 0.15,
-    "Hermes Foundry|luxury": 0.0085,
-    "Hermes Foundry|metal": -0.0234,
-    "Hermes Foundry|water": 0.15,
-    "Ironheart|food": 0.04,
-    "Ironheart|industrial": -0.018,
-    "Ironheart|luxury": 0.1,
-    "Ironheart|medical": 0.0273,
-    "Ironheart|metal": -0.017,
-    "Ironheart|water": 0.112,
-    "Juno Commons|equipment": 0.1886,
-    "Juno Commons|food": -0.1026,
-    "Juno Commons|luxury": 0.1286,
-    "Juno Commons|medical": 0.1246,
-    "Mars|equipment": 0.06,
-    "Mars|food": 0.15,
-    "Mars|industrial": 0.0107,
-    "Mars|luxury": 0.0311,
-    "Mars|medical": 0.0256,
-    "Mars|metal": -0.072,
-    "Mars|water": 0.026,
-    "Pallas Refinery|equipment": 0.2549,
-    "Pallas Refinery|food": 0.2009,
-    "Pallas Refinery|industrial": 0.1289,
-    "Pallas Refinery|metal": -0.2749,
-    "Pallas Refinery|water": 0.1569,
-    "Ring Nine|food": 0.096,
-    "Ring Nine|medical": 0.054,
-    "Ring Nine|water": 0.108,
-    "The Hollows|food": 0.1749,
-    "The Hollows|water": 0.1969,
-    "The Rook|equipment": 0.096,
-    "The Rook|food": 0.212,
-    "The Rook|luxury": -0.012,
-    "The Rook|medical": 0.098,
-    "The Rook|water": 0.0692,
-    "Titan|equipment": 0.092,
-    "Titan|industrial": 0.01,
-    "Titan|luxury": 0.0606,
-    "Titan|medical": 0.061,
+    "Hermes Foundry|luxury": -0.0073,
+    "Hermes Foundry|metal": -0.0942,
+    "Hermes Foundry|water": 0.072,
+    "Ironheart|food": 0.148,
+    "Ironheart|industrial": -0.011,
+    "Ironheart|luxury": 0.15,
+    "Ironheart|medical": 0.062,
+    "Ironheart|metal": -0.039,
+    "Ironheart|water": -0.006,
+    "Juno Commons|equipment": 0.1906,
+    "Juno Commons|food": -0.1616,
+    "Juno Commons|luxury": 0.0946,
+    "Juno Commons|medical": 0.1846,
+    "Juno Commons|water": 0.026,
+    "Mars|equipment": 0.088,
+    "Mars|food": 0.1,
+    "Mars|luxury": 0.0413,
+    "Mars|medical": 0.0238,
+    "Mars|metal": -0.085,
+    "Mars|water": 0.017,
+    "Pallas Refinery|equipment": 0.2569,
+    "Pallas Refinery|food": 0.1849,
+    "Pallas Refinery|industrial": 0.1349,
+    "Pallas Refinery|metal": -0.2709,
+    "Pallas Refinery|water": 0.2029,
+    "Ring Nine|food": 0.144,
+    "Ring Nine|medical": 0.082,
+    "Ring Nine|water": 0.15,
+    "The Hollows|food": 0.2289,
+    "The Hollows|water": 0.1769,
+    "The Rook|equipment": 0.086,
+    "The Rook|food": 0.2,
+    "The Rook|luxury": 0.066,
+    "The Rook|medical": 0.15,
+    "The Rook|water": 0.0301,
+    "Titan|equipment": 0.15,
+    "Titan|industrial": 0.005,
+    "Titan|luxury": 0.0418,
+    "Titan|medical": 0.088,
     "Triton Outpost|equipment": 0.248,
-    "Triton Outpost|food": 0.235,
+    "Triton Outpost|food": 0.221,
     "Triton Outpost|luxury": 0.3,
     "Triton Outpost|medical": 0.274,
-    "Triton Outpost|metal": 0.008,
-    "Triton Outpost|water": 0.18
+    "Triton Outpost|metal": -0.036,
+    "Triton Outpost|water": 0.14
    },
    "haul": [
     [
@@ -4834,15 +4692,8 @@
      36
     ],
     [
-     "metal",
-     27,
-     "Triton Outpost",
-     "Earth",
-     36
-    ],
-    [
      "medical",
-     37,
+     27,
      "Ironheart",
      "Triton Outpost",
      37
@@ -4904,6 +4755,13 @@
      37
     ],
     [
+     "medical",
+     34,
+     "Ganymede",
+     "Triton Outpost",
+     38
+    ],
+    [
      "equipment",
      26,
      "The Rook",
@@ -4925,29 +4783,8 @@
      36
     ],
     [
-     "medical",
-     23,
-     "Ganymede",
-     "Triton Outpost",
-     39
-    ],
-    [
-     "metal",
-     36,
-     "Triton Outpost",
-     "Earth",
-     38
-    ],
-    [
-     "metal",
-     28,
-     "Mars",
-     "Triton Outpost",
-     37
-    ],
-    [
      "water",
-     20,
+     23,
      "Triton Outpost",
      "Ceres Station",
      38
@@ -4968,49 +4805,63 @@
     ],
     [
      "luxury",
-     39,
+     31,
      "Mars",
      "Triton Outpost",
      38
     ],
     [
      "food",
-     25,
+     39,
      "Triton Outpost",
-     "Boneyard",
-     42
+     "Ironheart",
+     40
     ],
     [
      "food",
-     28,
-     "Juno Commons",
+     35,
+     "Earth",
      "Triton Outpost",
-     37
+     39
     ],
     [
      "water",
-     23,
+     21,
+     "Europa",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "water",
+     37,
      "Triton Outpost",
      "Ring Nine",
      40
     ],
     [
      "water",
-     24,
-     "Europa",
+     23,
+     "Enceladus",
      "Triton Outpost",
-     41
+     35
+    ],
+    [
+     "metal",
+     39,
+     "Mars",
+     "Triton Outpost",
+     39
     ],
     [
      "food",
-     22,
+     20,
      "Triton Outpost",
      "The Rook",
-     43
+     44
     ],
     [
      "medical",
-     35,
+     31,
      "Earth",
      "Triton Outpost",
      41
@@ -5024,472 +4875,486 @@
     ],
     [
      "food",
-     32,
-     "Triton Outpost",
-     "Mars",
-     42
-    ],
-    [
-     "food",
-     25,
-     "Juno Commons",
-     "Triton Outpost",
-     41
-    ],
-    [
-     "water",
      33,
      "Triton Outpost",
-     "Hermes Foundry",
-     45
+     "Ring Nine",
+     44
     ],
     [
-     "water",
+     "metal",
      21,
-     "Europa",
      "Triton Outpost",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Triton Outpost",
-     "Earth",
-     45
-    ],
-    [
-     "metal",
-     39,
-     "Ceres Station",
-     "Triton Outpost",
-     45
+     "Enceladus",
+     39
     ],
     [
      "food",
-     35,
-     "Triton Outpost",
-     "The Rook",
-     49
-    ],
-    [
-     "metal",
      23,
-     "Ironheart",
-     "Enceladus",
-     33
+     "Earth",
+     "Triton Outpost",
+     44
     ],
     [
      "luxury",
-     36,
+     35,
      "Eros Old Town",
      "Triton Outpost",
+     48
+    ],
+    [
+     "water",
+     36,
+     "Triton Outpost",
+     "Ceres Station",
+     47
+    ],
+    [
+     "food",
+     37,
+     "Triton Outpost",
+     "The Rook",
      50
     ],
     [
      "medical",
-     32,
+     36,
      "Titan",
-     "Boneyard",
+     "The Rook",
+     32
+    ],
+    [
+     "equipment",
+     37,
+     "Eros Old Town",
+     "Titan",
      33
+    ],
+    [
+     "luxury",
+     28,
+     "Titan",
+     "Ironheart",
+     34
+    ],
+    [
+     "luxury",
+     32,
+     "The Rook",
+     "Titan",
+     34
+    ],
+    [
+     "metal",
+     29,
+     "Triton Outpost",
+     "Enceladus",
+     45
     ],
     [
      "food",
      20,
      "Triton Outpost",
      "Ceres Station",
-     50
-    ],
-    [
-     "water",
-     35,
-     "Triton Outpost",
-     "Eros Old Town",
-     52
-    ],
-    [
-     "water",
-     37,
-     "Europa",
-     "Triton Outpost",
      51
     ],
     [
      "food",
      30,
-     "Triton Outpost",
-     "Hermes Foundry",
-     53
+     "Ganymede",
+     "The Hollows",
+     32
     ],
     [
      "water",
-     25,
+     24,
      "Enceladus",
-     "Ironheart",
-     37
-    ],
-    [
-     "luxury",
-     20,
-     "Titan",
-     "Earth",
-     34
+     "Eros Old Town",
+     36
     ],
     [
      "food",
-     20,
-     "Earth",
-     "Enceladus",
-     34
+     32,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "water",
+     30,
+     "Triton Outpost",
+     "Ring Nine",
+     54
     ],
     [
      "medical",
      37,
-     "Earth",
-     "Triton Outpost",
-     54
-    ],
-    [
-     "industrial",
-     31,
-     "Hermes Foundry",
-     "Titan",
-     37
-    ],
-    [
-     "medical",
-     30,
      "Ironheart",
-     "Ceres Station",
-     32
-    ],
-    [
-     "medical",
-     38,
-     "Ganymede",
-     "Ironheart",
-     35
-    ],
-    [
-     "medical",
-     29,
-     "Mars",
-     "Ganymede",
-     32
-    ],
-    [
-     "metal",
-     38,
-     "Ironheart",
-     "Enceladus",
-     39
-    ],
-    [
-     "metal",
-     40,
-     "Ceres Station",
-     "Ironheart",
-     32
-    ],
-    [
-     "food",
-     30,
-     "Triton Outpost",
      "Ring Nine",
-     55
+     32
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Juno Commons",
+     32
     ],
     [
      "equipment",
      30,
      "Titan",
-     "The Rook",
-     40
+     "Mars",
+     36
     ],
     [
      "equipment",
-     36,
+     30,
      "Hermes Foundry",
      "Titan",
      38
     ],
     [
-     "food",
+     "industrial",
      37,
-     "Ganymede",
+     "Ironheart",
+     "Titan",
+     40
+    ],
+    [
+     "food",
+     33,
      "Mars",
-     33
+     "Boneyard",
+     32
     ],
     [
      "metal",
      37,
-     "Triton Outpost",
-     "Earth",
-     56
-    ],
-    [
-     "medical",
-     20,
-     "Titan",
-     "The Rook",
-     41
-    ],
-    [
-     "water",
-     21,
      "Ironheart",
-     "Ring Nine",
+     "Ceres Station",
      34
     ],
     [
-     "water",
-     30,
-     "Enceladus",
-     "Ironheart",
+     "food",
+     20,
+     "Triton Outpost",
+     "Mars",
+     55
+    ],
+    [
+     "medical",
+     21,
+     "Titan",
+     "Boneyard",
      41
     ],
     [
-     "water",
-     37,
-     "Europa",
-     "Enceladus",
-     36
+     "luxury",
+     30,
+     "Titan",
+     "Earth",
+     37
     ],
     [
      "equipment",
-     39,
+     29,
      "Eros Old Town",
      "Triton Outpost",
      59
     ],
     [
-     "equipment",
+     "industrial",
      39,
      "Ceres Station",
      "Eros Old Town",
      33
-    ],
-    [
-     "luxury",
-     34,
-     "The Rook",
-     "Triton Outpost",
-     61
-    ],
-    [
-     "water",
-     29,
-     "Triton Outpost",
-     "Ceres Station",
-     58
-    ],
-    [
-     "food",
-     39,
-     "Triton Outpost",
-     "Ceres Station",
-     58
-    ],
-    [
-     "food",
-     21,
-     "Enceladus",
-     "Boneyard",
-     44
-    ],
-    [
-     "food",
-     25,
-     "Earth",
-     "Enceladus",
-     40
     ],
     [
      "industrial",
-     36,
+     27,
+     "Hermes Foundry",
+     "Ceres Station",
+     32
+    ],
+    [
+     "food",
+     22,
+     "Enceladus",
      "Ironheart",
-     "Eros Old Town",
-     33
-    ],
-    [
-     "luxury",
-     31,
-     "Titan",
-     "Ironheart",
-     44
-    ],
-    [
-     "luxury",
-     34,
-     "Mars",
-     "Titan",
-     41
-    ],
-    [
-     "medical",
-     21,
-     "Titan",
-     "Boneyard",
-     45
+     42
     ],
     [
      "equipment",
-     35,
-     "Hermes Foundry",
-     "Titan",
-     44
-    ],
-    [
-     "metal",
-     30,
-     "Mars",
-     "Hermes Foundry",
-     33
-    ],
-    [
-     "medical",
-     29,
+     25,
      "Earth",
-     "Ring Nine",
+     "Ganymede",
      34
     ],
     [
-     "metal",
+     "food",
      34,
-     "Ceres Station",
-     "Eros Old Town",
+     "Ganymede",
+     "Enceladus",
      38
+    ],
+    [
+     "metal",
+     32,
+     "Triton Outpost",
+     "Enceladus",
+     54
+    ],
+    [
+     "luxury",
+     29,
+     "Hermes Foundry",
+     "Triton Outpost",
+     59
+    ],
+    [
+     "luxury",
+     25,
+     "Ceres Station",
+     "Mars",
+     32
     ],
     [
      "food",
      37,
+     "Triton Outpost",
+     "Ring Nine",
+     58
+    ],
+    [
+     "water",
+     21,
+     "Enceladus",
+     "Eros Old Town",
+     43
+    ],
+    [
+     "medical",
+     25,
+     "Mars",
+     "Triton Outpost",
+     58
+    ],
+    [
+     "water",
+     36,
+     "Enceladus",
+     "Hermes Foundry",
+     42
+    ],
+    [
+     "luxury",
+     34,
+     "Ganymede",
+     "Ironheart",
+     41
+    ],
+    [
+     "luxury",
+     21,
+     "Eros Old Town",
+     "Ganymede",
+     38
+    ],
+    [
+     "metal",
+     32,
+     "Mars",
+     "Eros Old Town",
+     34
+    ],
+    [
+     "water",
+     35,
+     "The Rook",
+     "Ceres Station",
+     38
+    ],
+    [
+     "food",
+     30,
+     "Enceladus",
+     "Ceres Station",
+     41
+    ],
+    [
+     "food",
+     29,
+     "Earth",
+     "Enceladus",
+     43
+    ],
+    [
+     "water",
+     29,
+     "Earth",
+     "The Rook",
+     36
+    ],
+    [
+     "medical",
+     31,
+     "Titan",
+     "The Rook",
+     46
+    ],
+    [
+     "equipment",
+     26,
+     "Eros Old Town",
+     "Titan",
+     45
+    ],
+    [
+     "medical",
+     40,
+     "Earth",
+     "Ceres Station",
+     34
+    ],
+    [
+     "luxury",
+     31,
+     "The Rook",
+     "Ganymede",
+     39
+    ],
+    [
+     "luxury",
+     34,
+     "Eros Old Town",
+     "The Rook",
+     35
+    ],
+    [
+     "equipment",
+     37,
+     "Ceres Station",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     28,
+     "Hermes Foundry",
+     "Ceres Station",
+     37
+    ],
+    [
+     "food",
+     31,
      "Triton Outpost",
      "The Rook",
      65
     ],
     [
-     "luxury",
-     28,
-     "Titan",
-     "Earth",
-     44
-    ],
-    [
-     "industrial",
-     31,
-     "Mars",
-     "Europa",
-     40
-    ],
-    [
-     "water",
+     "medical",
      39,
-     "The Rook",
-     "Hermes Foundry",
-     37
+     "Titan",
+     "Boneyard",
+     47
     ],
     [
      "water",
      24,
-     "Earth",
-     "The Rook",
-     37
-    ],
-    [
-     "medical",
-     27,
-     "Titan",
-     "The Rook",
-     48
-    ],
-    [
-     "industrial",
-     27,
-     "Hermes Foundry",
-     "Titan",
-     46
-    ],
-    [
-     "industrial",
-     34,
-     "Earth",
-     "Hermes Foundry",
-     35
-    ],
-    [
-     "food",
-     20,
-     "Ganymede",
-     "Hermes Foundry",
-     41
-    ],
-    [
-     "equipment",
-     38,
-     "Ganymede",
-     "Mars",
-     42
-    ],
-    [
-     "equipment",
-     34,
-     "Hermes Foundry",
-     "Ganymede",
-     42
+     "Triton Outpost",
+     "Ring Nine",
+     62
     ],
     [
      "equipment",
      39,
      "Earth",
      "Hermes Foundry",
-     36
+     34
+    ],
+    [
+     "medical",
+     27,
+     "Ironheart",
+     "Triton Outpost",
+     64
     ],
     [
      "water",
-     30,
-     "Triton Outpost",
-     "Eros Old Town",
-     66
-    ],
-    [
-     "luxury",
-     28,
-     "The Rook",
-     "Ganymede",
+     38,
+     "Europa",
+     "Mars",
      42
     ],
     [
      "water",
-     37,
+     34,
      "Enceladus",
-     "Mars",
+     "Europa",
+     44
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Europa",
      45
     ],
     [
      "food",
-     20,
+     30,
+     "Ganymede",
+     "Mars",
+     42
+    ],
+    [
+     "medical",
+     28,
      "Ironheart",
-     "Enceladus",
-     50
+     "Ring Nine",
+     42
     ],
     [
      "luxury",
-     37,
-     "Ceres Station",
-     "Mars",
-     39
+     20,
+     "Hermes Foundry",
+     "Ganymede",
+     43
     ],
     [
      "metal",
-     32,
-     "Ironheart",
-     "Enceladus",
-     50
+     37,
+     "Ceres Station",
+     "Earth",
+     37
     ],
     [
      "food",
-     35,
+     32,
      "Triton Outpost",
-     "Ironheart",
+     "Hermes Foundry",
      66
+    ],
+    [
+     "industrial",
+     35,
+     "Earth",
+     "Titan",
+     47
+    ],
+    [
+     "industrial",
+     20,
+     "Hermes Foundry",
+     "Earth",
+     37
+    ],
+    [
+     "metal",
+     37,
+     "Ironheart",
+     "Enceladus",
+     50
     ]
    ],
    "unrest": {
@@ -6226,7 +6091,7 @@
     "type": "bounty",
     "targetSystem": "mars",
     "targetName": "The Widow Kade",
-    "issuer": "Dome Concord",
+    "issuer": "Dome Pact",
     "title": "Bounty: destroy The Widow Kade near Mars",
     "pay": 130000,
     "deadline": 13
@@ -7990,7 +7855,7 @@
     "type": "bounty",
     "targetSystem": "pallas",
     "targetName": "Old Iron Tess",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy Old Iron Tess near Pallas",
     "pay": 150000,
     "deadline": 27
@@ -7999,7 +7864,7 @@
     "type": "bounty",
     "targetSystem": "jupiter",
     "targetName": "Captain Ruin",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy Captain Ruin near Jupiter",
     "pay": 130000,
     "deadline": 33
@@ -8075,7 +7940,7 @@
     "tons": 15,
     "destSystem": "mars",
     "destPlanet": "Mars",
-    "title": "Arcology Compact contract: deliver 15t of scientific samples to Mars",
+    "title": "Arcology Pact contract: deliver 15t of scientific samples to Mars",
     "pay": 68000,
     "deadline": 11,
     "contract": true
@@ -8151,7 +8016,7 @@
     "tons": 13,
     "destSystem": "pallas",
     "destPlanet": "The Hollows",
-    "title": "Arcology Compact contract: deliver 13t of prefab habitat panels to The Hollows",
+    "title": "Arcology Pact contract: deliver 13t of prefab habitat panels to The Hollows",
     "pay": 81600,
     "deadline": 17,
     "contract": true
@@ -8217,7 +8082,7 @@
     "type": "bounty",
     "targetSystem": "pallas",
     "targetName": "The Widow Kade",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy The Widow Kade near Pallas",
     "pay": 130000,
     "deadline": 27
@@ -8258,7 +8123,7 @@
     "tons": 13,
     "destSystem": "hygiea",
     "destPlanet": "The Rook",
-    "title": "Arcology Compact contract: deliver 13t of medical crates to The Rook",
+    "title": "Arcology Pact contract: deliver 13t of medical crates to The Rook",
     "pay": 92800,
     "deadline": 20,
     "contract": true
@@ -8593,7 +8458,7 @@
  {
   "key": "job:lock:0:0:0.999",
   "v": {
-   "text": "The pin is harder than it looked. You're still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The pin is harder than it looked. You're still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 500,
    "rep": {},
    "xp": false,
@@ -8645,7 +8510,7 @@
  {
   "key": "job:lock:0:2:0.999",
   "v": {
-   "text": "The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8714,7 +8579,7 @@
    "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -8727,7 +8592,7 @@
    "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -8763,7 +8628,7 @@
    "text": "The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there's a visit to your ship the next morning, polite and thorough. Nothing's found, and nothing's forgotten. (-600 cr)",
    "credits": -600,
    "rep": {
-    "Charter League": -4
+    "Guild Federation": -4
    },
    "xp": false,
    "mem": [],
@@ -8843,7 +8708,7 @@
  {
   "key": "job:escort:0:0:0.999",
   "v": {
-   "text": "They're three, not two, and the third has a length of pipe. It's short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+1,400 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're three, not two, and the third has a length of pipe. It's short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+1,400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 1400,
    "rep": {},
    "xp": false,
@@ -8871,7 +8736,7 @@
    "text": "The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it. (+1,100 cr)",
    "credits": 1100,
    "rep": {
-    "Charter League": -2
+    "Guild Federation": -2
    },
    "xp": false,
    "mem": [],
@@ -8973,7 +8838,7 @@
    "text": "You find out whose chit it's by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can. (+1,900 cr)",
    "credits": 1900,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -8983,7 +8848,7 @@
  {
   "key": "job:ration:0:0:0.999",
   "v": {
-   "text": "You make it worse. Somebody says you're taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You make it worse. Somebody says you're taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8997,7 +8862,7 @@
    "text": "You put yourself in the gap with your hands open and don't move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": 2
+    "Guild Federation": 2
    },
    "xp": false,
    "mem": [],
@@ -9007,7 +8872,7 @@
  {
   "key": "job:ration:0:1:0.999",
   "v": {
-   "text": "Somebody doesn't step back. It's a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "Somebody doesn't step back. It's a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9030,6 +8895,208 @@
   "key": "job:ration:0:2:0.999",
   "v": {
    "text": "You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size. (+500 cr)",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0",
+  "v": {
+   "title": "A Sled Stuck on the Platform",
+   "text": "The sled runs on a rail from the warehouse to the spaceplane's hold, and it has stopped halfway with a load of pump parts on it and the clamp locked. The crew chief has the loading schedule on her wrist. The next plane goes in fifty minutes, and the platform charges the shipper for every minute it waits. \"Day rate,\" she says, \"if you can do anything with that clamp.\"",
+   "labels": [
+    "Take the clamp's housing off and release it by hand [Engineer, 45%; if it fails: you may be hurt]",
+    "Walk the sled in on the manual controls [Pilot, 45%]",
+    "Unload it by hand with the crew [Gunner, 50%; if it fails: you may be hurt]",
+    "Hold the tag line and keep out of the way"
+   ]
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:0:0",
+  "v": {
+   "text": "The release is behind a cover held on with six bolts, two of them rounded. You get it off with a borrowed extractor and push the pawl back with a screwdriver. The sled moves. The crew chief writes your name on her wrist under the schedule. (+2,200 cr)",
+   "credits": 2200,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:0:0.999",
+  "v": {
+   "text": "The pawl lets go all at once and the load shifts on the sled. Nobody is under it, but the crew chief sends you to the medical room to have your hand looked at, and logs the delay against the clamp. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:1:0",
+  "v": {
+   "text": "The manual controls are a lever and a dead-man switch in a box at the end of the rail. You walk the sled the last forty metres at a pace a person can follow, and the load goes into the hold on the fork. The plane goes on time. (+1,800 cr)",
+   "credits": 1800,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:1:0.999",
+  "v": {
+   "text": "You overrun the stop by half a metre and the sled noses the ramp. Nothing breaks. The crew chief pays you for the morning and takes the controls back. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:2:0",
+  "v": {
+   "text": "It takes four of you and most of the fifty minutes. The pump parts are packed in foam, in crates of twenty kilos. Your shoulders know about it by the evening flight. (+1,400 cr)",
+   "credits": 1400,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:2:0.999",
+  "v": {
+   "text": "A crate slips off the stack on the turn and you get a hand under it. The crate is fine. The crew chief has someone look at your wrist. (+500 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:3:0",
+  "v": {
+   "text": "You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-sled:0:3:0.999",
+  "v": {
+   "text": "You hold a line on the load while people who do this every day do it. The crew chief pays you a half day without looking up. (+600 cr)",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0",
+  "v": {
+   "title": "The Generator on the Roof",
+   "text": "The generator is on the roof of a block of flats in Yaba, under a sheet of tin, and it serves three blocks by the hour. It stopped at six. The generator man, Femi, has the cover off and a phone in his other hand, and the tenants in the stairwell want to know when. \"I pay by the job,\" he says. \"If it starts, you get paid.\"",
+   "labels": [
+    "Find the fault [Engineer, 45%]",
+    "Call round the parts dealers for a filter [Comms, 50%]",
+    "Carry the spare up from the store [Gunner, 50%; if it fails: you may be hurt]",
+    "Hold the torch"
+   ]
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:0:0",
+  "v": {
+   "text": "It's the fuel filter, packed with water and grit. You drain the bowl into a can, rinse the element in diesel and put it back, and on the fourth pull it catches. Femi tells the stairwell before he tells you. (+1,900 cr)",
+   "credits": 1900,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:0:0.999",
+  "v": {
+   "text": "You find the filter and clean it, and it still won't run. Femi finds the second fault an hour later, in the wiring, and pays you for the first. (+700 cr)",
+   "credits": 700,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:1:0",
+  "v": {
+   "text": "The third dealer has one, and will send it over on a motorbike for the price of the ride. You get the price down by mentioning the second dealer. Femi pays you the difference and a day. (+1,600 cr)",
+   "credits": 1600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:1:0.999",
+  "v": {
+   "text": "Nobody has the filter. One dealer can get one by Thursday. Femi pays you for the calls. (+400 cr)",
+   "credits": 400,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:2:0",
+  "v": {
+   "text": "The spare is a smaller machine in a storeroom on the ground floor, and it weighs as much as you do. You and Femi get it up six flights with a rope and a sack truck, and it runs two of the three blocks until the big one is fixed. (+1,700 cr)",
+   "credits": 1700,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:2:0.999",
+  "v": {
+   "text": "On the fifth flight it gets away from you on the turn. It doesn't go far. Your knee goes a little further. (+600 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "credits": 600,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:3:0",
+  "v": {
+   "text": "You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter. (+500 cr)",
+   "credits": 500,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lagos-generator:0:3:0.999",
+  "v": {
+   "text": "You hold the torch while Femi works. It takes him until two. He pays you, and tells the stairwell it was the filter. (+500 cr)",
    "credits": 500,
    "rep": {},
    "xp": false,
@@ -9070,7 +9137,7 @@
    "text": "You ask, and he answers well enough, and you hand it over. It's not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You're paid a fee for the trip, and nothing for the package. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": -2
+    "Guild Federation": -2
    },
    "xp": false,
    "mem": [],
@@ -9094,7 +9161,7 @@
  {
   "key": "awayjob:package:0:1:0.999",
   "v": {
-   "text": "The market square isn't as crowded as you thought. He steps close and the case leaves your hands in a movement you don't quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The market square isn't as crowded as you thought. He steps close and the case leaves your hands in a movement you don't quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 2300,
    "rep": {},
    "xp": false,
@@ -9163,7 +9230,7 @@
    "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9176,7 +9243,7 @@
    "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9213,7 +9280,7 @@
  {
   "key": "awayjob:stranded:0:0:0.999",
   "v": {
-   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you're in worse shape than it is. He gives you what he can for the effort. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you're in worse shape than it is. He gives you what he can for the effort. (+2,300 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 2300,
    "rep": {},
    "xp": false,
@@ -9307,7 +9374,7 @@
    "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -9320,7 +9387,7 @@
    "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -9357,7 +9424,7 @@
  {
   "key": "awayjob:witness:0:0:0.999",
   "v": {
-   "text": "They're waiting at the third corner, two of them, and it's short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+3,400 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're waiting at the third corner, two of them, and it's short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+3,400 cr) You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
    "credits": 3400,
    "rep": {},
    "xp": false,
@@ -9385,7 +9452,7 @@
    "text": "The call goes through somebody else's relay. By the time the officer arrives, there's a man across the street with a good view of the stall, and the dockworker has gone out the back and hasn't come back. You get a fee for the trouble, and a lasting dislike of relays. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": -3
+    "Guild Federation": -3
    },
    "xp": false,
    "mem": [],
@@ -9453,7 +9520,7 @@
    "text": "You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9466,7 +9533,7 @@
    "text": "You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],

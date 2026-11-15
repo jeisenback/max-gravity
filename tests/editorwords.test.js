@@ -46,7 +46,7 @@ test('the news of the world has its lines in the form, the pools of news are tab
   await page.fill('textarea[data-path="part.war"]', 'War has come: {a} against {b}.');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);
-  assert.ok(seen.includes('War has come: Arcology Compact against Charter League.') && seen.includes('never arrived'), seen.slice(0, 300));
+  assert.ok(seen.includes('War has come: Arcology Pact against Guild Federation.') && seen.includes('never arrived'), seen.slice(0, 300));
   await select('lines:world-flares');
   const flares = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
   assert.ok(flares.length >= 4 && flares.every(k => k.startsWith('part.')), flares.join());
@@ -108,7 +108,7 @@ test('the notes and memories at the port and the hand\'s screens have their line
 test('the memories play leaves where no scene is its own have their lines in the form and play in the preview (#508)', async () => {
   await reload(); await select('scene:memories');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.patrol-fine.memory', 'part.landing.memory', 'part.ice.clean.memory', 'part.mourn.wrote.memory', 'part.strain.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['part.landing.memory', 'part.ice.clean.memory', 'part.mourn.wrote.memory', 'part.strain.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.landing.memory"]', 'You brought me to {planet}.');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);

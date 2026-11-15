@@ -5,7 +5,7 @@
 // earns, once and for the run, named on the hand's page, said once when it lands (hired.js traitNote), and opening a door or turning a reading at its site.
 // Pure: it reads no G, so it runs in plain Node (tests/traits.test.js). Loaded after picks.js. TRAITS is the crew's personalities; this table is HAND_TRAITS.
 
-const RECORD_KEYS = ['haulsClean', 'haulsBad', 'repelsHeld', 'repelsLost', 'boardingsWon', 'boardingsLost', 'fightsWon', 'fightsRan', 'fled', 'hurts', 'matesHurt', 'matesLost', 'onTime', 'late', 'fines', 'ranFromNavy', 'barWon', 'barLost', 'rocksFound'];
+const RECORD_KEYS = ['haulsClean', 'haulsBad', 'repelsHeld', 'repelsLost', 'boardingsWon', 'boardingsLost', 'fightsWon', 'fightsRan', 'fled', 'hurts', 'matesHurt', 'matesLost', 'onTime', 'late', 'fines', 'ranFromNavy', 'barWon', 'barLost', 'rocksFound', 'wrecksCut', 'salvageDone', 'rocksSurveyed'];  // the last three: the co-op's salvage and surveys (salvage.js, #965)
 const recordOf = h => (h && h.record) || {};
 const count = (r, key) => r[key] || 0;
 
@@ -45,6 +45,7 @@ const RECORD_WORDS = {
   onTime: ['One delivery on time', '{n} deliveries on time'], late: ['One delivery late', '{n} deliveries late'],
   fines: ['Fined once', 'Fined {n} times'], ranFromNavy: ['Ran from the navy once', 'Ran from the navy {n} times'],
   barWon: ['One bar fight won', '{n} bar fights won'], barLost: ['One bar fight lost', '{n} bar fights lost'], rocksFound: ['One rock found', '{n} rocks found'],
+  wrecksCut: ['One wreck cut', '{n} wrecks cut'], salvageDone: ['One salvage job delivered', '{n} salvage jobs delivered'], rocksSurveyed: ['One rock surveyed', '{n} rocks surveyed'],
 };
 const capital = s => s.charAt(0).toUpperCase() + s.slice(1);
 const recordWords = record => RECORD_KEYS.filter(k => count(record, k) > 0).map(k => { const n = count(record, k); return `${n === 1 ? RECORD_WORDS[k][0] : capital(RECORD_WORDS[k][1].replace('{n}', numberWord(n)))}.`; }).join(' ');

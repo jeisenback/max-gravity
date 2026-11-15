@@ -32,7 +32,7 @@ function succeed(fate, heirName) {
     const kept = st.crew.filter(id => st.people[id] && st.people[id].cast);  // main characters the floor spared
     for (const id of st.crew) if (st.people[id] && !kept.includes(id)) delete st.people[id];
     const lost = aboard - kept.length;
-    Object.assign(st, { crew: kept, shipId: 'shuttle', outfits: {}, torpedoes: 0, cargo: {}, paid: {} });
+    Object.assign(st, { crew: kept, shipId: 'shuttle', outfits: {}, torpedoes: 0, cargo: {}, paid: {} }); dropPatches(st);  // a new Dust Skiff, none of the old hull's patches (#935)
     st.missions = st.missions.filter(m => m.type === 'bounty');
     st.home = null;
     homeLog(sceneSay('scene:ship-log', lost ? 'lost.crew.log' : 'lost.log', { captain: cleanName(old.name), ship: oldShip }));

@@ -681,7 +681,7 @@ test('the first arrival comes before a job waiting at the port', async () => {
     Object.assign(o, { planet: plan.planet, sid: plan.sid, until: st.day + 50 }); o.ctx.dest = plan.planet;
     h.away = [o];
     const a = arriveFirst();
-    return { first: a.scene && a.scene.title, queued: G.nextEvent && G.nextEvent.title };
+    return { first: a.scene && a.scene.title, queued: sceneQueue[0] && sceneQueue[0].title };  // waiting its turn (#1096)
   });
   assert.equal(r.first, 'Settling Up'); assert.ok(r.queued, 'the job follows it');
 });

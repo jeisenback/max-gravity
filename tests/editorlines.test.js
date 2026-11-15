@@ -81,7 +81,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 39);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 8 of js/familytext.js, the regulars' lives, the port's return line and the crew ashore
+  assert.equal(r.tables.length, 41);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 8 of js/familytext.js, the regulars' lives, the port's return line, the crew ashore, and the Ring's own people's word for the day and what they sell (#1103)
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -188,7 +188,7 @@ test('the errand ashore is a port scene, and the preview plays the errand being 
 test('the jobs on the station and further away are rows (the job, then each stage) with the words in the form, and each stage plays in the preview (#457)', async () => {
   await reload(); await select('job:lock:0');
   const r = await page.evaluate(() => ({ ids: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).map(x => x.id), shape: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).every(x => x.kind === 'data' && x.table && x.where === 'port') }));
-  assert.equal(r.ids.length, 19, 'eight jobs, and their stages');
+  assert.equal(r.ids.length, 23, 'ten jobs, and their stages: with the two below Lagos (#1162)');
   assert.ok(r.shape, 'each is a table scene, at a port');
   assert.ok(['job:lock', 'job:lock:1', 'job:ration:0', 'away:package', 'away:package:1', 'away:witness:0'].every(id => r.ids.includes(id)), r.ids.join());
   const lock = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
@@ -225,18 +225,18 @@ test('the pitch for work further away has its lines in the form and plays in the
 test('the entry lines of the ladder\'s fights are in the form, and the step whose line was typed plays in the preview (#810)', async () => {
   await reload(); await select('scene:fight-entry');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['raider', 'corsair', 'cutter', 'pair', 'setpiece']) assert.ok(paths.includes(`part.${k}.text`), `${k} in ${paths.join()}`);
-  await page.fill('textarea[data-path="part.cutter.text"]', 'The {patrol}, edited.');
+  for (const k of ['raider', 'corsair', 'pair', 'setpiece']) assert.ok(paths.includes(`part.${k}.text`), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.corsair.text"]', 'A corsair, edited.');
   const f = await play();
   const seen = await f.evaluate(() => ({ title: G.dialog.event.title, text: G.dialog.event.text }));  // the captain takes the call on a contact (hiredCall), so the choices are hers
   assert.equal(seen.title, 'Contact');
-  assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. The (Compact cutter|Concord frigate|League militia), edited\. /, seen.text);
+  assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. A corsair, edited\./, seen.text);
 });
 
 test('the contact on a burn has its lines in the form, and a hand\'s own move plays at its post in the preview (#796)', async () => {
   await reload(); await select('scene:contact');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['text', 'who.pirate', 'who.patrol', 'fight.label', 'pay.result', 'spoof.own', 'move.pilot.win', 'heave.result']) assert.ok(paths.includes(`part.${k}`), `${k} in ${paths.join()}`);
+  for (const k of ['text', 'who.pirate', 'who.patrol', 'fight.label', 'pay.result', 'spoof.own', 'move.pilot.win']) assert.ok(paths.includes(`part.${k}`), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.who.pirate"]', 'A pirate, edited.');
   await page.fill('textarea[data-path="part.move.engineer.label"]', 'Go dark, edited');
   const f = await play();

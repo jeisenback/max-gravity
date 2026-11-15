@@ -13,7 +13,7 @@ const NAMES = ['SYSTEMS', 'orbitPeriod', 'orbitPos', 'distAU', 'baseDays', 'trav
 // A fresh game state and crew for each test. `skill` is what roleSkill(role) answers; `fuel` is the player's full tank.
 function setup({ day = 1, skill = {}, flags = {}, fuel = 300, perks = [] } = {}) {  // perks: the hand's picks (handPerk, hired.js)
   const G = { state: { day, flags, systemId: 'earth', market: {}, rumors: [], missions: [], cargo: {} } };
-  const api = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js'], { G, roleSkill: role => skill[role] || 0, ship: () => ({ fuel, cargo: 100 }), handPerk: id => perks.includes(id) }, NAMES);
+  const api = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js', 'js/salvage.js'], { G, Mods: { register() {} }, roleSkill: role => skill[role] || 0, ship: () => ({ fuel, cargo: 100 }), handPerk: id => perks.includes(id) }, NAMES);
   return { G, ...api, ids: Object.keys(api.SYSTEMS) };
 }
 
@@ -110,6 +110,6 @@ test('the pilot\'s trim and long-legs picks take a twentieth off a burn\'s mass 
     assert.equal(trimmed.travelDays('earth', to, 1), Math.max(1, Math.round(plain.baseDays('earth', to, 1) * (1 - 0.07 * 2) * 0.95)), `${to}: long legs, on the pilot's own saving`);
   }
   const G = { state: { day: 1, flags: {}, systemId: 'earth', market: {}, rumors: [], missions: [], cargo: {} } };
-  const bare = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js'], { G, roleSkill: () => 0, ship: () => ({ fuel: 300, cargo: 100 }) }, ['burnFuel', 'travelDays']);
+  const bare = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js', 'js/salvage.js'], { G, Mods: { register() {} }, roleSkill: () => 0, ship: () => ({ fuel: 300, cargo: 100 }) }, ['burnFuel', 'travelDays']);
   assert.equal(bare.burnFuel('earth', 'mars', 1), setup().burnFuel('earth', 'mars', 1), 'no handPerk in scope (a node test, or no hand): no saving and no throw');
 });

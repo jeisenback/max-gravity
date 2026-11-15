@@ -48,7 +48,7 @@ test('a choice tagged self is left to the hand, whatever its words say, and the 
     // every choice of the events a captain can decide that looks like a payment or a fight carries the tag for it
     const looksCostly = l => /pay|fine|buy/i.test(l), looksFight = l => /battle stations/i.test(l);
     const events = [...TRANSIT_EVENTS];
-    for (const kind of ['pirate', 'patrol', 'bounty', 'hunter']) events.push(contactEvent({ kind, gov: 'Arcology Compact', mission: { targetName: 'X' }, person: { first: 'A', last: 'B' } }));
+    for (const kind of ['pirate', 'patrol', 'bounty', 'hunter']) events.push(contactEvent({ kind, gov: 'Arcology Pact', mission: { targetName: 'X' }, person: { first: 'A', last: 'B' } }));
     events.push(agentConsoleEvent(false), agentConsoleEvent(true));
     for (const s of STORYLETS) if (s.via === 'ship') events.push(storyletEvent(s));
     out.untagged = [];
@@ -94,8 +94,8 @@ test('every real condition of the world has an id, and a war, a boom and a slump
   const r = await g.ev(() => {
     begin();
     const fs = factionState(), st = G.state;
-    fs.war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
-    fs.prosperity['Arcology Compact'] = 0.9; fs.prosperity['Charter League'] = 0.1;
+    fs.war = { a: 'Arcology Pact', b: 'Dome Pact', start: st.day, until: st.day + 40, score: { 'Arcology Pact': 0, 'Dome Pact': 0 } };
+    fs.prosperity['Arcology Pact'] = 0.9; fs.prosperity['Guild Federation'] = 0.1;
     const ids = new Set(), missing = [];
     for (const sid of Object.keys(SYSTEMS)) for (const c of conditions(sid)) { if (typeof c.id !== 'string') missing.push(c.text); ids.add(c.id.replace(/-.*/, '')); }
     return { ids: [...ids], missing };

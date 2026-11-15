@@ -12,6 +12,7 @@ const fightSay = (key, vars) => sceneSay('scene:fight', key, vars);
 // The gunner moves a hand knows (docs/superpowers/specs/2026-10-23-gunner-moves-design.md): the career's list, empty for a save from before. Whether this fight offers them
 // is the caller's gate (a hired hand at the gunner post, startShipFight).
 const knownMoves = c => (c && c.moves) || [];
+const heldCut = () => (handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD);  // what a held turret takes off her volley: half with the pd-watch perk (picks.js); the fight, its read of her volley and the Gunnery readout read it
 
 // The start: the contact's own logic (a patrol's standing, the flee roll, the first fight explained once), then the fight. Returns what to show now
 // and queues the panel. `o.edge` (the contact's move, an ambush) is a free first volley, ours ahead and hers behind; `o.shift` is km that move opened
@@ -35,11 +36,12 @@ function startShipFight(spec, flee, o = {}) {
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0, breakAt: hasTrait(hired(), 'hard-case') ? FIGHT.BREAK + 0.1 : undefined });  // Hard Case (traits.js): she breaks off a tenth sooner
-  const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
-  mine.pdcHold = handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD;  // what a held turret takes off her volley (the fight perks, picks.js)
+  const fit = partFight(st), own = stationFight(hired());  // the fitted parts' and the hand's station's fight numbers (parts.js, #1135)
+  const mine = shipSide({ ...me, dmgMult: me.dmgMult * perf('fire') * fit.dmgMult * own.dmgMult, shields: me.shields * perf('shields') * fit.shields * own.shields }, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
+  mine.pdcHold = heldCut();
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
-  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster
+  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
   if (s.edge) {
     const r = headStart(s.state, s.edge, Math.random);
@@ -66,7 +68,16 @@ function headStart(state, edge, rand) {
   return { state: st, events };
 }
 
-const fightMoves = st => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: captainMove(st) });
+// The range is the captain's call, from her card (captainMove); on the hand's own bridge (#1045) it is the player's order, `range`, Hold unless they give another.
+const ownRange = () => role().captain === 'you';
+const fightMoves = (st, range) => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: ownRange() ? { kind: range || 'hold' } : captainMove(st) });
+// The range orders: Close, Hold and Open, each saying where the range will be next turn with her move as shown (nextBand); shut while the drive is down, which has no vote.
+function rangeChoices(f, shown, orders, redo) {
+  const group = fightSay('range.orders');
+  if (f.me.parts.drive.hp <= 0) return [{ label: fightSay('range.shut'), group, keep: true, can: () => false, run: redo({}) }];
+  const band = kind => fightSay(`band.${RANGE_BANDS[nextBand(f, { ...shown, captain: { kind } })] || 'away'}`);
+  return ['close', 'hold', 'open'].map((kind, i) => ({ row: 'range', rowLabel: fightSay('range.row'), ...(i ? {} : { group }), label: fightSay(`range.${kind}`, { band: band(kind) }), on: (orders.range || 'hold') === kind, keep: true, run: redo({ range: kind }) }));
+}
 const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.drive.hp > 0);
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
 const fightHit = e => (e.move ? fightSay(e.landed === false ? 'move.failed.parley' : `move.used.${e.move}`) : fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg }));  // a used move has no part or damage; a hit on a part already gone does nothing; a hit on her consort names it
@@ -74,8 +85,13 @@ const fightHits = events => (events.length ? events.map(fightHit).join(', ') : f
 
 // What the turn cost: the ship keeps its armor (the fight's armor lost since the start, divided by FIGHT.POOL, off the real armor it started with; never up, never under 1) and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your real maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
+const FIGHT_WEAR = { salvo: 0.4, hit: 0.9 };  // what a salvo takes off fire control and a hit off the shields, in the hand's fight
 function fightTook(s, events) {
   const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe' && e.part === 'hull').reduce((n, e) => n + e.dmg, 0), out = [];
+  // Each salvo wears fire control and each hit the shields, scaled so a fight costs about what one costs the owner (duel.js: 0.05 a shot over about
+  // a hundred shots, 0.3 a hit over about fifteen), from a hand's fight of about six turns of two salvos and five hits (#1135).
+  wear('fire', FIGHT_WEAR.salvo * events.filter(e => e.who === 'me').length);
+  wear('shields', FIGHT_WEAR.hit * events.filter(e => e.who === 'foe' && e.part === 'hull').length);
   st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor) / FIGHT.POOL)));
   if (me.launcher) st.torpedoes = me.torps;
   if (dealt > FIGHT.HEAVY_HIT * me.maxArmor / FIGHT.POOL) {  // judged at the real scale: the foe's damage is not pooled, so a heavy turn takes what it did before #814
@@ -124,7 +140,7 @@ function moveHints(f, shown) {
     else if (m.kind === 'board' && foe.parts.lock.hp > 0) keys.add('hint.board');
     else if (['broadside', 'pin', 'close'].includes(m.kind) && f.me.pdc) keys.add('hint.volley');
   });
-  return [...keys].map(k => fightSay(k, { salvo: Math.round(FIGHT.PDC_SALVO * 100), volley: Math.round(FIGHT.PDC_HOLD * 100) }));
+  return [...keys].map(k => fightSay(k, { salvo: Math.round(FIGHT.PDC_SALVO * 100), volley: Math.round(heldCut() * 100) }));
 }
 
 // What Fire will do, in words for its button: the guns by where they aim ("2 guns at her hull", or each gun when they differ), and the torpedo where one is
@@ -144,7 +160,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   const ready = gunsReady(vent ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns before the shots
   const hot = orders.move === 'hot-start' && canUse(f, hit, 'hot-start', known);  // a hot start charges every shot at a plain shot's heat
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
-  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), ...moveHints(f, s.shown), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
+  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), ...moveHints(f, s.shown), ...(ownRange() ? [] : [fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })])].join(' ');  // on the hand's own bridge the range is their order, below
   const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
   const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
@@ -159,6 +175,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   });
   if (torp) choices.push(...targets('torp', fightSay('torp.row', { left: f.me.torps }), orders.torp, o => redo({ torp: o })));
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
+  if (ownRange() && !over) choices.push(...rangeChoices(f, s.shown, orders, redo));
   choices.push(...moveChoices(f, hit, known, redo));
   const split = orders.move === 'split' && canUse(f, hit, 'split', known);
   const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, hit, split).reduce((h, { o }) => h + (o.over && !hot ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
@@ -221,16 +238,16 @@ function retargeted(foes, orders) {
 // Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
 // to the scene the end leads to (G.nextEvent), and this returns nothing.
 function fireTurn(s, orders) {
-  const aimed = retargeted(s.state.foes, orders);
-  const r = resolveShipTurn(s.state, aimed, s.shown, Math.random, s.known || [], () => Math.random() < handCheck('wit', skillLevel('comms'), 'post'));  // the roll is parley's word
+  const aimed = retargeted(s.state.foes, orders), shown = ownRange() ? { ...s.shown, captain: { kind: orders.range || 'hold' } } : s.shown;  // the range as ordered at Fire
+  const r = resolveShipTurn(s.state, aimed, shown, Math.random, s.known || [], () => Math.random() < handCheck('wit', skillLevel('comms'), 'post'));  // the roll is parley's word
   s.before = s.state; s.state = r.state;  // the state before the turn, for the bars' losses
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));
   fightTook(s, r.events);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
   const end = shipEnd(s.state);
   if (end) { shipFightEnd(s, end); return null; }
-  s.shown = fightMoves(s.state);
-  return shipFightEvent(s, { ...orders, move: null });  // a move is ordered for one turn
+  s.shown = fightMoves(s.state, orders.range);
+  return shipFightEvent(s, { ...orders, move: null });  // a move is ordered for one turn; the range order stands until it is changed
 }
 
 // Being boarded: the deck fight (below), a raider's whole run or a short one.

@@ -62,7 +62,22 @@ const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).
 
 // Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks or holds as the wrong kind of thing. Add a
 // field there, not here; add a step here (and a version in the save to tell old from new) only when an old value has to be rewritten, not just filled in.
+// The three powers became the blocs (#1043, docs/bible/owners.md): an older save has the old names (OLD_NAMES, data.js) in its keys (standing, the shippers' regard, the
+// world's economies, ties) and in its words (the news, the logs), and gets the new ones. The world's tension is kept by a pair of names sorted together, so those keys are
+// sorted again. A save with no old name in it is returned as it is, so the step needs no version.
+function renamePowers(st) {
+  const old = new RegExp(OLD_NAMES.map(([a]) => a).join('|'), 'g'), to = Object.fromEntries(OLD_NAMES);
+  if (!old.test(JSON.stringify(st))) return st;
+  const name = s => s.replace(old, a => to[a]);
+  const walk = v => (typeof v === 'string' ? name(v) : Array.isArray(v) ? v.map(walk)
+    : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [name(k), walk(x)])) : v);
+  const out = walk(st), tension = out.factions && out.factions.tension;
+  if (tension && typeof tension === 'object') out.factions.tension = Object.fromEntries(Object.entries(tension).map(([k, t]) => [k.split('|').sort().join('|'), t]));
+  return out;
+}
+
 function migrate(st) {
+  st = renamePowers(st);
   const defaults = stateDefaults(st.shipId);
   // A field that is missing, or present as a different kind of thing than its default (a string where a list goes, a number where an object goes), gets the default: a slot that crashes on
   // landing can never be opened again. A default of null stands for anything.
@@ -74,7 +89,14 @@ function migrate(st) {
   // The fields stateDefaults() leaves out (a save may not have them) are dropped when they are the wrong kind of thing, so a pasted save code cannot throw here (#749).
   const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
   if (isObj(st.hired) && st.hired.share > 0) Object.assign(st.hired, ratingTerms(st.hired));  // signed for a share, before a rating's pay (#879)
+  // A chapter two save from before #1045 had a master on the bridge: the master goes ashore at Ceres, a person in the war, and the hand has the bridge on the endorsement.
+  if (isObj(st.hired) && st.hired.chapter === 2 && MASTER_CAPTAINS[st.hired.captainKey]) {
+    const h = st.hired, m = st.people[h.captain];
+    if (m) Object.assign(m, { role: null, location: COOP_PORT });
+    Object.assign(h, { bridge: true, papers: ['endorsement'] }); delete h.captainKey; delete h.captain; delete h.masters;
+  }
   for (const key of ['captain', 'home', 'outpost']) if (st[key] != null && !isObj(st[key])) delete st[key];
+  for (const key of ['patches', 'hullMarks']) if (st[key] != null) { if (Array.isArray(st[key]) && st[key].length) st[key] = st[key].filter(id => typeof id === 'string'); else delete st[key]; }  // the hull's patches and marks (shiplife.js, #935)
   for (const key of ['captains', 'memorial']) if (st[key] != null) { if (Array.isArray(st[key])) st[key] = st[key].filter(isObj); else delete st[key]; }
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
@@ -87,9 +109,9 @@ function migrate(st) {
 // ---------- starting out ----------
 const BACKGROUNDS = {
   earth: { name: 'Earth', text: 'Start on Earth with 120,000 credits and a patched-up Dust Skiff. The tutorial walks you through your first trade run.', at: ['earth', 'Earth'], credits: 120000 },
-  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Concord.', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Concord': 10 },
+  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Pact.', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Pact': 10 },
     intro: () => ['You grew up under the domes of Tharsis, where everyone argues about the future. Now you have a Dust Skiff, 100,000 credits, and a way off the planet.', 'Mars pays well for Electronics from Earth, and sells Refined Metals cheap.'] },
-  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Charter League.', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Charter League': 10 },
+  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Guild Federation.', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Guild Federation': 10 },
     intro: () => ['You were born in the Ceres Warren, and you know what water is worth. Now you have a Dust Skiff, 90,000 credits, and the whole Belt to work.', 'Ceres is always short of water and food. Europa and Ganymede, at Jupiter, sell both cheap.'] },
 };
 
@@ -97,7 +119,7 @@ function startGame(o) {
   if (scopeOff('starts')) o = { ...o, mode: 'hired', background: 'earth' };  // the one start this build has
   Saves.use(o.slot);
   G.paused = false;
-  G.dialog = null; G.transit = null;
+  G.dialog = null; G.transit = null; G.portOffers = []; G.portLater = [];  // a port's offers are a game's own (#1192)
   G.state = newState();
   const st = G.state, b = BACKGROUNDS[o.background] || BACKGROUNDS.earth;
   st.systemId = b.at[0]; st.planet = b.at[1]; st.credits = b.credits;
@@ -119,7 +141,7 @@ function startGame(o) {
 
 function loadSlot(n) {
   Saves.use(n);
-  G.paused = false; G.dialog = null; G.transit = null;
+  G.paused = false; G.dialog = null; G.transit = null; G.portOffers = []; G.portLater = [];
   loadGame();
 }
 
@@ -129,7 +151,7 @@ const Menu = {
 
   showTitle() {
     G.mode = 'title';
-    for (const id of ['menuBtn', 'tlife']) { const el = document.getElementById(id); if (el) el.hidden = true; }
+    for (const id of ['menuBtn']) { const el = document.getElementById(id); if (el) el.hidden = true; }
     G.paused = false;
     this.pausedFrom = null;
     this.view = 'main';
@@ -165,7 +187,7 @@ const Menu = {
     const V = this.views[this.view].call(this);
     if (G.mode === 'title') UI.setLight(TITLE_SUN.angle);
     UI.el.innerHTML = `<div class="menu${G.mode === 'title' ? ' at-title' : ''}">${V}${this.note ? `<p class="hint">${this.note}</p>` : ''}</div>`;
-    UI.el.classList.remove('hidden', 'event');
+    UI.el.classList.remove('hidden', 'event', 'staged');
     this.note = '';
   },
 
@@ -256,7 +278,7 @@ const Menu = {
       const flying = `<h3>Flying</h3>${row('W / Up', 'thrust')}${row('A D / Left Right', 'turn')}${row('S / Down', 'turn to brake')}${row('Space', 'fire')}${row('F',
         'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J',
         'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}${row('F8', 'report a problem')}`;
-      const burns = `<h3>Burns</h3>${row('Space', 'pause or resume the burn')}${row('1 / 2 / 3', 'normal, 4x, 16x')}`;  // the burn's speed (burnspeed.js, #992)
+      const burns = `<h3>Burns</h3>${row('Space', 'pause or resume the burn')}${row('1 / 2 / 3', 'normal, 2x, 16x')}${row('4', 'run ahead to the next scene or arrival')}${row('Up / Down, wheel, drag', 'look up and down the ship')}${row('H', 'follow yourself')}${row('Click someone', 'follow them')}`;  // the burn's speed (burnspeed.js, #992); its camera (shiplife.js, #1182)
       const fights = hand ? '' : `<h3>Fights during burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}`;
       const note = hand ? '<div class="hint">The captain calls the burn. You work your post.</div>' : '';
       return `<h2>Controls</h2>${note}${flying}${burns}${fights}

@@ -34,7 +34,7 @@ A level at a post adds a tenth to the post's rolls and opens a few marked choice
 
 ### The table
 
-Two a rung, ten a post. The first word of each is its id. Moves marked (taught) play their teaching scene on a burn as the gunner's do and are known after it; the others are known when taken. Every move is a move of the turn-based ship fight (`js/fight.js`, `FIGHT_MOVES`), once a fight, offered beside the guns as the gunner's three are (`fightui.js` `moveChoices`); the fights' hooks named below are that engine's (the owner approved the table on 2026-11-08 with the old raid's words in some hooks; they are corrected here to the fights that exist).
+Two a rung, ten a post. The first word of each is its id, except a stat pick, whose id is the post and the stat (`gunner-eye`), since a stat comes up at more than one post. Moves marked (taught) play their teaching scene on a burn as the gunner's do and are known after it; the others are known when taken. Every move is a move of the turn-based ship fight (`js/fight.js`, `FIGHT_MOVES`), once a fight, offered beside the guns as the gunner's three are (`fightui.js` `moveChoices`); the fights' hooks named below are that engine's (the owner approved the table on 2026-11-08 with the old raid's words in some hooks; they are corrected here to the fights that exist).
 
 **Gunner** (eye)
 
@@ -59,7 +59,7 @@ Two a rung, ten a post. The first word of each is its id. Moves marked (taught) 
 | 1 | trim | perk | A burn you fly costs a twentieth less reaction mass (`burnFuel`) |
 | 2 | break-intercept | move | Once a fight, your vote to open the range stands this turn whatever her speed (`nextBand`) |
 | 2 | soft-hands | perk | The ice run's approach costs no hull on a lost roll when you fly it (`iceStep`, the first scene, the pilot's choice) |
-| 3 | lane-sense | perk | A contact's plume is read sooner: the fight starts 10 km farther out (`engage.js`, the range at contact) |
+| 3 | lane-sense | perk | A contact's plume is read sooner: the fight starts 10 km farther out (`fightui.js`, the range at contact) |
 | 3 | long-legs | perk | Burns you fly are shorter by another twentieth (`travelDays`, on top of the post's perk) |
 | 4 | nerve | stat | Nerve up one |
 | 4 | brace | perk | A run from a contact gets away a tenth more often (`fleeOdds`, `fightui.js`) |
@@ -112,7 +112,7 @@ The words are a first draft for the owner to edit, as every line is. The eight m
 
 ### Moves (`js/gunnermoves.js` becomes `js/moves.js`)
 
-- `MOVE_TEACH` is read from the `PICKS` table (`teacher`), not its own table. `moveDue(career, levels, teacher, opinionOf)` returns the first taken move pick not yet known whose teacher trusts the hand; the teaching scenes are the gunner's three as they are, and one new scene each for redline, hot-start and parley (the pilot's, the engineer's, the first officer's), as scene lines in `js/hiredscenes.js`. A move with no teacher is known when taken.
+- `MOVE_TEACH` is read from the `PICKS` table (`teacher`), not its own table. `moveDue(career, teacher, opinionOf)` returns the first taken move pick not yet known whose teacher trusts the hand; the teaching scenes are the gunner's three as they are, and one new scene each for redline, hot-start and parley (the pilot's, the engineer's, the first officer's), as scene lines in `js/hiredscenes.js`. A move with no teacher is known when taken.
 - The ship fight reads `career().moves` as now for all eleven; `moveChoices` gains a label and a condition for each new one, and the engine spends it as it spends the three.
 
 ### Not in this piece

@@ -10,7 +10,7 @@ after(closeBrowser);
 
 const helpers = () => {
   window.startHand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; G.state.story.next = 1e9; };
-  window.aContract = (st, extra = {}) => ({ contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 90, from: st.planet, planet: 'Ironheart', sid: 'psyche', pay: 220020, due: st.day + 8, days: 6, ...extra });
+  window.aContract = (st, extra = {}) => ({ contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 90, from: st.planet, planet: 'Ironheart', sid: 'psyche', pay: 220020, due: st.day + 8, days: 6, ...extra });
 };
 
 test('the strip: the contract and its days, the hull, the fund, the savings, and a hurt while it lasts, under the header of every landed screen', async () => {
@@ -51,7 +51,7 @@ test('the contract is a paper in the hold: the shipper, the load, the ports, the
   });
   assert.doesNotMatch(r.none, /class="eyebrow">Contract</, 'no contract, no paper');
   assert.match(r.paper, /class="eyebrow">Contract</);
-  for (const line of ['Shipper</span><b >the Compact Freight Office', 'Load</span><b >90t Water', 'To</span><b >Ironheart, Psyche', 'Pay on delivery</span><b >220,020 cr', 'Due</span><b >', ', in 8 days</b>', 'Signed</span><b >', 'Docked a tenth of the pay a day late']) assert.ok(r.paper.includes(line), `the paper says ${line}`);
+  for (const line of ['Shipper</span><b >the Arcology Pact Freight Office', 'Load</span><b >90t Water', 'To</span><b >Ironheart, Psyche', 'Pay on delivery</span><b >220,020 cr', 'Due</span><b >', ', in 8 days</b>', 'Signed</span><b >', 'Docked a tenth of the pay a day late']) assert.ok(r.paper.includes(line), `the paper says ${line}`);
   await done();
 });
 
@@ -95,12 +95,12 @@ test('the captain\'s log: each settled run is a row with the shipper, the load, 
   });
   assert.match(r.clean, /^Your pay: [\d,]+ cr wage, less [\d,]+ cr for your kit\./, 'nothing off: the pay alone (a rating\'s, #879)');
   assert.match(r.late, /^3 days late, and the pay docked\. Your pay:/);
-  assert.match(r.short, /^Short: 30t of the water did not arrive, and the Compact Freight Office paid for what did\. Your pay:/);
-  assert.match(r.lost, /^The load for the Compact Freight Office was lost on the way, and there is no pay\. Your pay:/);
+  assert.match(r.short, /^Short: 30t of the water did not arrive, and the Arcology Pact Freight Office paid for what did\. Your pay:/);
+  assert.match(r.lost, /^The load for the Arcology Pact Freight Office was lost on the way, and there is no pay\. Your pay:/);
   const rows = r.rows.match(/<div class="con-read">/g);
   assert.equal(rows.length, 4);
-  assert.match(r.rows, /90t Water for the Compact Freight Office, paid 220,020 cr<\/div>/, 'the clean run');
-  assert.match(r.rows, /paid [\d,]+ cr, 3 days late<\/div>/); assert.match(r.rows, /60t Water for the Compact Freight Office, paid [\d,]+ cr, short<\/div>/); assert.match(r.rows, /the load for the Compact Freight Office lost, no pay<\/div>/);
+  assert.match(r.rows, /90t Water for the Arcology Pact Freight Office, paid 220,020 cr<\/div>/, 'the clean run');
+  assert.match(r.rows, /paid [\d,]+ cr, 3 days late<\/div>/); assert.match(r.rows, /60t Water for the Arcology Pact Freight Office, paid [\d,]+ cr, short<\/div>/); assert.match(r.rows, /the load for the Arcology Pact Freight Office lost, no pay<\/div>/);
   assert.match(r.journal, /<h3>Captain's log<\/h3>/); assert.equal((r.journal.match(/<div class="con-read">/g) || []).length, 4, 'the Journal page holds the log');
   assert.match(r.port, /class="eyebrow">Captain's log</); assert.ok(r.captain.includes('Recent runs') && r.captain.includes('paid 220,020 cr'), 'the captain\'s page shows the same rows');
   await done();

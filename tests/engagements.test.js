@@ -269,7 +269,7 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), gov = 'Arcology Compact', before = repOf(gov);
+    const st = raid('gunner'), gov = 'Arcology Pact', before = repOf(gov);
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     const text = startDuel({ kind: 'patrol', gov }, false); begin();
     const out = { duel: !!G.duel, title: G.dialog.event.title, open: /navy ship/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), band: RANGE_BANDS[fightNow().state.band] };
@@ -288,26 +288,11 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
   await done();
 });
 
-test('a hired hand can heave to and let the ship pay a quarter of its fund, instead of fighting', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact', cap = person(h.captain), op = cap.opinion;
-    st.rep[gov] = -30; h.fund = 20000;
-    const e = contactEvent({ kind: 'patrol', gov }), i = e.choices.findIndex(c => /Heave to/.test(c.label));
-    G.dialog = { event: e, choices: e.choices };
-    const t = chooseEvent(i);
-    return { i, fund: h.fund, rep: st.rep[gov], opinion: cap.opinion - op, text: /5,000 cr/.test(t) };
-  });
-  assert.ok(r.i >= 0); assert.equal(r.fund, 15000); assert.equal(r.rep, -10); assert.equal(r.opinion, -1); assert.ok(r.text);
-  await done();
-});
-
 test('a patrol that boards a hired hand\'s ship and holds the bridge searches it, fining the fund the heave-to\'s quarter, and does not rob it', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact';
+    const st = raid('gunner'), h = hired(), gov = 'Arcology Pact';
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
     h.fund = 10000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
@@ -337,7 +322,7 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     rolls([0.5, 0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
   });
-  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
+  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you, and another hit before then could kill you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
   assert.equal(r.paid, 1500); assert.equal(r.armor, 260 - Math.round(60 / 0.45), 'the hit stays on the ship, at the ship\'s scale: 60 of the fight\'s armor is 133 of the real');
   assert.equal(r.light, false); assert.match(r.lightLine, /she hits your hull for 20\.$/);
   await done();
@@ -454,7 +439,7 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Compact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
+    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Pact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
     for (const post of ['comms', 'pilot', 'gunner', 'engineer']) out[post] = contact(post);
     out.patrols = ['comms', 'pilot', 'gunner', 'engineer'].map(post => contact(post, 'patrol').decided);
     const spoof = (level, roll) => {
@@ -596,7 +581,7 @@ test('the turn cap ends it by who is worse hurt, whatever the range: she breaks 
   await done();
 });
 
-test('an owner who kept a post meets a pirate or a patrol in the ship fight (#721): the helm takes the captain\'s part, a hurt lays them up and never kills, and the close goes in the log; one who never was a hand keeps the card duel', async () => {
+test('an owner who kept a post meets a pirate or a patrol in the ship fight (#721): the range is the owner\'s order (#1045), a hurt lays them up and never kills, and the close goes in the log; one who never was a hand keeps the card duel', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -608,8 +593,8 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     out.owner = !hired() && lockPost() === 'gunner';
     const real = Math.random;  // a foe is made with the dice back: people are drawn until they differ
     window.rateFoe = f => { f.grade = 0; f.pack = false; return f; };  // an ordinary foe, whatever the seed draws
-    const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Compact' }, false); begin(); return text; };
-    out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.read = G.dialog.event.read;
+    const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Pact' }, false); begin(); return text; };
+    out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.read = G.dialog.event.read; out.range = G.dialog.event.choices.filter(c => c.row === 'range').map(c => c.label);
     // a heavy hit, and the hurt that follows it (the dice are set after the foe is made)
     const xp = skillXp('gunner'); fightNow().state.me.shields = 0; shownMoves({ kind: 'broadside', target: 'hull', dmg: [30, 30] });
     rolls([0.5, 0.5, 0.99, 0.01, 0.01]);  // our shot, her volley, no casualty, the hand's roll, and the roll that would kill a hand
@@ -622,7 +607,7 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     return out;
   });
   assert.ok(r.owner); assert.match(r.text, /Battle stations/); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false, 'no card duel');
-  assert.match(r.read, /: (holding|closing|opening) the range\.$/); assert.doesNotMatch(r.read, /Captain/, 'there is no captain: the helm');
+  assert.doesNotMatch(r.read, /the range\.|Captain/, 'there is no captain: the range is the owner\'s order'); assert.equal(r.range.length, 3); assert.match(r.range[1], /^Hold \(/);
   assert.match(r.lost, /You are hurt/); assert.ok(r.hurtUntil >= 12, 'laid up'); assert.ok(r.alive, 'and the fight goes on');
   assert.match(r.off, /breaks off/); assert.match(r.off, /You write it in the log and nothing else/); assert.doesNotMatch(r.off, /Captain/); assert.ok(r.xp >= 3, 'the post learns from a stand');
   assert.equal(r.patrol, 'Battle Stations'); assert.equal(r.patrolDuel, false);
@@ -681,7 +666,7 @@ test('what the captain remembers says what happened: a raider let drift, and a n
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' }); fireOrders();
     choose('Let her drift'); out.drift = cap.memories[cap.memories.length - 1];
     raid('gunner'); cap = person(hired().captain);
-    const gov = 'Arcology Compact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
+    const gov = 'Arcology Pact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     startDuel({ kind: 'patrol', gov }, false); begin();
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.shields = 0; foe.armor = 5; }); shownMoves({ kind: 'break' }); fireOrders();  // hurt as well as unarmed: she breaks off, and does not just get away
     out.navy = cap.memories[cap.memories.length - 1];
@@ -770,20 +755,5 @@ test('a contract due on the arrival day is late after a run', async () => {
     return { before, lateBy, day: st.day, late: h.ledger[0] && h.ledger[0].late, due };
   });
   assert.equal(r.before, false); assert.equal(r.lateBy, 2); assert.equal(r.late, 2, 'delivered two days late');
-  await done();
-});
-
-test('heaving to on the ladder cutter meets the step, and the next burn brings the set piece, not the cutter again (the pair is parked)', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = raid('pilot'), h = hired(); ladderDone(h, 'raider'); ladderDone(h, 'corsair'); h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; st.credits = Math.max(st.credits, 1000);
-    const spec = { kind: 'patrol', shipId: 'cutter', gov: 'Arcology Compact', ladder: 'cutter' }; h.fund = 20000;
-    const e = contactEvent(spec), shown = h.fights.done.slice(); G.dialog = { event: e, choices: e.choices };
-    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label)));
-    return { shown, done: h.fights.done.slice(), paid: 20000 - h.fund, next: (ladderNext(h, st, 'mars') || {}).id };
-  });
-  assert.deepEqual(r.shown, ['raider', 'corsair']); assert.deepEqual(r.done, ['raider', 'corsair', 'cutter']); assert.ok(r.paid > 0);
-  assert.equal(r.next, 'setpiece');
   await done();
 });

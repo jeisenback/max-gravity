@@ -290,7 +290,7 @@ test('an owner boarding a disabled ship still rolls for it, with the odds in the
 
 // ---------- the hand can die (#357) ----------
 
-test('the hand dies on a second hurt or a lost bridge while laid up, one in four, halved by a medic; a first hurt rolls one in twelve', async () => {
+test('the hand dies on a second hurt or a lost bridge while laid up, one in four, halved by a medic; a first hurt never kills (#1157)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -298,9 +298,7 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic);  // made before the rolls: a constant random hangs makePerson
     const reset = () => { G.nextEvent = null; delete h.died; delete h.hurtUntil; };
     st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879);  // the chapter's crew carries one: start without
-    reset(); rolls([0.5]); const first = {}; hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent };   // 0.5 is over one in twelve
-    reset(); rolls([0.05]); const firstDies = {}; const said = hurtHand(firstDies); out.firstDies = { died: !!firstDies.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how, said };
-    reset(); st.crew.push(medic.id); rolls([0.05]); const firstMedic = {}; hurtHand(firstMedic); out.firstMedic = !firstMedic.handDied;   // 0.05 is under one in twelve, over one in twenty-four
+    reset(); rolls([0.001]); const first = {}; const said = hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent, said };   // a first hurt never kills, on any roll (#1157)
     st.crew = st.crew.filter(id => id !== medic.id); reset(); rolls([0.5]); hurtHand({});  // hurt once, so the next is a second
     rolls([0.2]); const again = {}; hurtHand(again); out.again = { died: !!again.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how };
     reset(); hurtHand({}); rolls([0.3]); const miss = {}; hurtHand(miss); out.miss = { died: !!miss.handDied, next: G.nextEvent };   // 0.3 is over one in four
@@ -313,8 +311,8 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     reset(); rolls([0.99]); const s2 = repelStart(d, 'full'); s2.won = false; repelSettle(s2); out.well = { next: G.nextEvent, died: !!h.died };
     return out;
   });
-  assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt is over one in twelve');
-  assert.deepEqual(r.firstDies, { died: true, title: 'The Last Run', how: 'first', said: "You're hit." }); assert.ok(r.firstMedic, 'a medic halves it');
+  assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt never kills');
+  assert.match(r.first.said, /another hit before then could kill you/, 'and says that the next one could');
   assert.deepEqual(r.again, { died: true, title: 'The Last Run', how: 'hurt' });
   assert.deepEqual([r.miss.died, r.miss.next], [false, null]);
   assert.ok(r.medicSaves, 'a medic halves it'); assert.ok(r.medicStillRolls);
@@ -323,8 +321,8 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
   await done();
 });
 
-test('a pirate bridge taken can cost the captain, one in six, and the hand goes ashore keeping savings, skill and debt', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+test('a pirate bridge taken can cost the captain, one in six, and the hand goes ashore keeping savings, skill and debt (the full build; the narrow one starts afresh, stakes.test.js)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const st = fight(), h = hired(), d = G.duel, cap = person(h.captain), out = { last: cap.last };
@@ -572,7 +570,7 @@ test('the last of them going down wins the fight with its line, and so few left 
 // settle, whether repelled, withdrawn or searched; holding our bridge is a search, which costs the heave-to's fine (heaveToFine, a quarter of the purse) and a point of the captain's regard,
 // and the ship is kept.
 const navyHelpers = () => {
-  window.GOV = 'Arcology Compact';
+  window.GOV = 'Arcology Pact';
   window.navy = () => { const d = { foe: makeEnemy({ kind: 'patrol', gov: GOV, shipId: 'cutter' }), foeHp: 0, init: 'foe' }; return repelStart(d, 'half'); };
 };
 
@@ -642,20 +640,19 @@ test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, whic
   await done();
 });
 
-test('the heave-to and the search charge the same fine, a quarter of the same purse', async () => {
+test('a search charges a quarter of the ship\'s fund, and a hand has no heave-to on a contact any more (#993)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(navyHelpers);
   const r = await ev(() => {
     const st = fight(), h = hired(); G.duel = null; G.nextEvent = null;
     h.fund = 20000; const fine = heaveToFine(), purse0 = purse();
     const e = contactEvent({ kind: 'patrol', gov: GOV }); G.dialog = { event: e, choices: e.choices };
-    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label))); G.dialog = null;
-    const heave = 20000 - h.fund;
+    const heave = e.choices.some(c => /^Heave to/.test(c.label)); G.dialog = null;
     h.fund = 20000; const s = navy(); s.won = false; s.searched = true; rolls([]); repelSettle(s); G.nextEvent = null;
     return { fine, purse0, heave, search: 20000 - h.fund };
   });
   assert.equal(r.purse0, 20000, 'the purse is the ship\'s fund'); assert.equal(r.fine, 5000);
-  assert.equal(r.heave, 5000); assert.equal(r.search, 5000);
+  assert.equal(r.heave, false); assert.equal(r.search, 5000);
   await done();
 });
 

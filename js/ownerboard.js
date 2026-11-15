@@ -14,19 +14,19 @@ const freightHeld = good => { const run = role().canTrade && career() && career(
 // The Port page's section: the run under way, or the day's contracts, each with its pay and when it is due.
 function ownerBoardHtml() {
   if (!ownerHasBoard()) return '';
-  const st = G.state, c = career(), run = c.run;
-  if (run) return String(h`<h3>Contracts</h3><p class="desc">${run.tons}t of ${goodName(run.good).toLowerCase()} for ${run.shipper}, to ${run.planet}, ${dueWord(run, st.day)}.</p>`);
+  const st = G.state, c = career(), run = c.run, jobs = salvageJobsHtml(st);  // the co-op's salvage and survey jobs follow the contracts (salvage.js)
+  if (run) return String(h`<h3>Contracts</h3><p class="desc">${run.tons}t of ${goodName(run.good).toLowerCase()} for ${run.shipper}, to ${run.planet}, ${dueWord(run, st.day)}.</p>`) + jobs;
   const list = contractBoard(st, currentPlanet());
-  if (!list.length) return String(h`<h3>Contracts</h3><p class="hint">Nothing on the board today.</p>`);
+  if (!list.length) return String(h`<h3>Contracts</h3><p class="hint">Nothing on the board today.</p>`) + jobs;
   const free = cargoFree();
   return String(h`<h3>Contracts</h3>${listHtml(list, (k, i) => h`<div class="row">
       <span>${k.shipper}: ${k.tons}t of ${goodName(k.good).toLowerCase()} to ${k.planet} (${SYSTEMS[k.sid].name}, ${dayWord(k.days)}), ${dueWord(k, st.day)}. Pays ${fmt(k.pay)} cr.</span>
-      <button data-action="takeContract" data-arg="${i}" ${k.tons <= free ? '' : raw('disabled title="Not enough cargo space"')}>Take it</button></div>`)}`);
+      <button data-action="takeContract" data-arg="${i}" ${k.tons > free ? raw('disabled title="Not enough cargo space"') : c.job ? raw('disabled title="A job is under way"') : ''}>Take it</button></div>`)}`) + jobs;
 }
 
 // Takes the i-th contract on the board: the shipper's cargo goes aboard, the course is set, and the ship leaves if a pilot is crewed to take her out.
 function takeContract(i) {
-  if (!ownerHasBoard() || career().run || G.mode !== 'landed' || G.dialog) return '';
+  if (!ownerHasBoard() || career().run || career().job || G.mode !== 'landed' || G.dialog) return '';
   const st = G.state, c = career(), list = contractBoard(st, currentPlanet()), k = list[i];
   if (!k || k.tons > cargoFree()) return '';
   st.cargo[k.good] = (st.cargo[k.good] || 0) + k.tons;  // the shipper's cargo, loaded at no cost (contracts.js)

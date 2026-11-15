@@ -42,7 +42,7 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const h = hired();
-      if (!h || !marketWait(h, planet, currentPlan())) return;
+      if (!h || (h.chapter || 1) > 1 || !marketWait(h, planet, currentPlan())) return;  // the captain's wait for a shipper is chapter one's: in chapter two the player picks the work
       beginStay(h, RESUPPLY_WAIT, 'market');
       M.note(`Nothing on the board is worth the fuel. Captain ${hiredCaptain().last} is waiting ${RESUPPLY_WAIT} days for a shipper, and the ship stays on the pad.`);
     });

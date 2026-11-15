@@ -7306,6 +7306,76 @@
   }
  },
  {
+  "id": "hired:cap-short",
+  "i": 0,
+  "label": "Take 1,000 of your pay at the next port",
+  "result": "She writes it under the last one: 1,000, the date, and 1,030 beside it. \"The next port,\" she says, and closes the notebook on the pencil.",
+  "changes": [
+   "s.credits: 50000 -> 49000",
+   "s.hired.heldPay: undefined -> 1030",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You waited for your pay again when the fund was short.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take 1,000 of your pay at the next port",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take 1,000 of your pay at the next port",
+    "open": false,
+    "why": "You have 0 cr; this costs 1,000 cr."
+   },
+   "liked": {
+    "label": "Take 1,000 of your pay at the next port",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Take 1,000 of your pay at the next port",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:cap-short",
+  "i": 1,
+  "label": "Say you need it this port",
+  "result": "\"Then you have it,\" she says, and turns the page back. She finds the money somewhere else. You do not see where.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You needed your pay when the fund was short."
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you need it this port",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you need it this port",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you need it this port",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Say you need it this port",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
   "id": "hired:cap-favour",
   "i": 0,
   "label": "Stand the watch",

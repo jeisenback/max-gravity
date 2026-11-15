@@ -1,16 +1,16 @@
 # Ama Kessler
 
-Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `rotterdam.md` and `work.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `rotterdam.md` and `work.md`. Amended 2026-11-11: the hand captains the co-op's hull, and the lender's masters are met in the war (`chapter-2.md`).
 
 ## Where she stands
 
 A licensed master, 61, from Rotterdam. One of the four masters in Van Leeuwen & Co.'s pool (`chapter-2.md`). She is a placement master: the house puts her on the hulls it is nervous about, on the borrower's wage, for as long as it stays nervous. She has done this for eighteen years, on eleven hulls.
 
-If the co-op chooses her, she holds the bridge for the co-op and carries out what the player and the meeting decide. She also writes to the house every week.
+In chapter two the house has her on another of the co-op's hulls, which it is nervous about. She holds that bridge and writes to the house every week, and what she writes about the co-op reaches the house before the minutes do.
 
 ## Money
 
-A master's wage from the co-op, and a retainer from the house that she does not hide. Out of it go:
+A master's wage from the co-op's other hull, and a retainer from the house that she does not hide. Out of it go:
 
 - the rent on a flat in Rotterdam, kept for the months between placements;
 - her licence and medicals;
@@ -47,10 +47,10 @@ She doesn't say: what the house says back to her; that she likes some of the cre
 
 ## What she wants
 
-A clean last placement, and a pension she can live on in Rotterdam. In the war she leans to the lender: under her the co-op is safe and watched, and a charter to the lender's side is the easiest road. If the members hold, she will write it down fairly, and that may be the most help they get.
+A clean last placement, and a pension she can live on in Rotterdam. In the war she leans to the lender: she would see the co-op's hulls safe and watched, and a charter to the lender's side is the easiest road. If the members hold, she will write it down fairly, and that may be the most help they get.
 
 ## Assumptions to confirm
 
-- A placement master in Van Leeuwen's pool, who reports to the house openly.
+- A placement master in Van Leeuwen's pool, who reports to the house openly, on another of the co-op's hulls in chapter two.
 - Her brother Joost at the house; a husband dead off Callisto.
 - She leans the co-op toward the lender.

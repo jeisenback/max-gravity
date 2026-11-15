@@ -1,6 +1,6 @@
 'use strict';
 
-// Faction standing (-100..100) with the Arcology Compact, Dome Concord, Charter League,
+// Faction standing (-100..100) with the Arcology Pact, Dome Pact, Guild Federation,
 // and pirates, plus the faction patrols that enforce it. Loaded before game.js; only
 // calls into it at runtime.
 

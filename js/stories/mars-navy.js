@@ -1,6 +1,6 @@
 'use strict';
 
-// Reserve Commission: a Dome Concord Fleet career, written as storylets. The quality
+// Reserve Commission: a Dome Pact Fleet career, written as storylets. The quality
 // `mcrn` is your standing in the Fleet (promotion at 4); `navyTask` is set while you
 // have Fleet work in hand; `mcrnRefused` remembers the order you would not follow;
 // `mcrnDone` ends the storyline. Which assignment comes third depends on whether Mars
@@ -18,15 +18,15 @@ Mods.register({
 
     M.addStorylet({
       id: 'navy-recruit', where: 'port', priority: 1, once: false,
-      when: { planet: home, day: 15, standing: { 'Dome Concord': 15 }, qBelow: { mcrn: 1, mcrnDone: 1, pirateSworn: 1, corpSworn: 1 }, chance: 0.4 },  // not for the Rook's or the Consortium's
+      when: { planet: home, day: 15, standing: { 'Dome Pact': 15 }, qBelow: { mcrn: 1, mcrnDone: 1, pirateSworn: 1, corpSworn: 1 }, chance: 0.4 },  // not for the Rook's or the Consortium's
       title: 'Lt. Commander Osei',
       text: ('A fleet officer in dress grays takes the stool beside you and buys you a drink you didn\'t ask for: Lieutenant Commander Amara Osei, ' +
-          'Dome Concord Fleet Reserve, forty-odd, weathered, with the calm, unhurried patience of someone who has sat at a great many bars waiting for ' +
+          'Dome Pact Fleet Reserve, forty-odd, weathered, with the calm, unhurried patience of someone who has sat at a great many bars waiting for ' +
           'the right person. She turns her glass slowly on the counter. "The Fleet is short of hulls and long on enemies. We commission independent ' +
           'captains with good standing: reserve pay, the odd tasking, and a call-up if it comes to war. You\'d still be your own captain." A small ' +
           'dry smile. "Mostly."'),
       choices: [
-        { label: 'Accept the commission', effects: { q: { mcrn: 1 }, rep: { 'Dome Concord': 3 }, log: 'Took a reserve commission in the Dome Concord Fleet.' },
+        { label: 'Accept the commission', effects: { q: { mcrn: 1 }, rep: { 'Dome Pact': 3 }, log: 'Took a reserve commission in the Dome Pact Fleet.' },
           result: ('Osei swears you in at the bar, one hand raised over a plate of fried dumplings, which she says is traditional. It\'s not. The ' +
               'barman applauds, slowly, without looking up. "Welcome aboard, Reservist," she says, and stamps a small brass pin into your palm. "I\'ll ' +
               'be in touch. Do try to stay alive. The paperwork is horrible."') },
@@ -51,9 +51,9 @@ Mods.register({
           'down, and the Reserve will notice."'),
       choices: [
         { label: 'Take the hunt', effects: { ...task, log: 'Tasked by the Fleet Reserve to hunt the raider Hollow Crown near Pallas.',
-          bounty: { at: 'pallas', name: 'Raider "Hollow Crown"', pay: 90000, days: 45, issuer: 'Dome Concord',
-            onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 3 }, log: 'Destroyed the Hollow Crown for the Fleet Reserve.' },
-            onFail: { set: taskOver, rep: { 'Dome Concord': -3 }, log: 'The Hollow Crown got away. Osei wasn\'t impressed.' } } },
+          bounty: { at: 'pallas', name: 'Raider "Hollow Crown"', pay: 90000, days: 45, issuer: 'Dome Pact',
+            onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Pact': 3 }, log: 'Destroyed the Hollow Crown for the Fleet Reserve.' },
+            onFail: { set: taskOver, rep: { 'Dome Pact': -3 }, log: 'The Hollow Crown got away. Osei wasn\'t impressed.' } } },
           result: '"Forty-five days," Osei says. "After that it\'s someone else\'s problem, and a mark against yours." She taps the chit once, with one blunt fingernail, the way a sergeant taps a map. "Don\'t be brave. Be exact. The Crown is clever, and the ones who are brave don\'t come home."' },
         { label: 'Ask for another time', result: '"Another time, then," she says, without any reproach, and pockets the chit. "The Crown will still be out there. That, I promise you." She looks at her empty glass for a moment. "So will the crews it leaves behind."' },
       ],
@@ -69,16 +69,16 @@ Mods.register({
           'that it\'s going to be all right.'),
       choices: [
         { label: '{crew} goes over to treat the burned', when: { crew: 'medic' },
-          effects: { q: { mcrn: 1 }, rep: { 'Dome Concord': 4 }, log: 'Answered the Tharsis Dawn\'s distress call; our medic saved her crew.' },
+          effects: { q: { mcrn: 1 }, rep: { 'Dome Pact': 4 }, log: 'Answered the Tharsis Dawn\'s distress call; our medic saved her crew.' },
           result: ('{crew:medic} goes across in a suit with a case of dressings and a face like stone, and comes back six hours later, gray with ' +
               'exhaustion, with somebody else\'s blood down one sleeve. All three will live. The captain of the Tharsis Dawn sends a message, formal ' +
               'and stumbling and very sincere, and the Fleet logs your transponder with a commendation you didn\'t ask for.') },
         { label: 'Send over spare parts (15,000 cr)', when: { credits: 15000 },
-          effects: { credits: -15000, q: { mcrn: 1 }, rep: { 'Dome Concord': 3 }, log: 'Answered the Tharsis Dawn\'s distress call with spare parts.' },
+          effects: { credits: -15000, q: { mcrn: 1 }, rep: { 'Dome Pact': 3 }, log: 'Answered the Tharsis Dawn\'s distress call with spare parts.' },
           result: ('You pack the spare coolant pumps into a cargo sled and send it drifting across on a thin line of thrust. They fit, barely, and a ' +
               'shaky voice on the channel says, "It\'s holding. Oh, God, it\'s holding." The containment stays up until a Fleet tug arrives, two hours ' +
               'later. Their captain promises to mention you, and you suspect that, for once, it\'s true.') },
-        { label: 'Log the call and keep burning', effects: { rep: { 'Dome Concord': -3 } },
+        { label: 'Log the call and keep burning', effects: { rep: { 'Dome Pact': -3 } },
           result: ('You log the call, and the position, and the time. You tell yourself somebody else is closer. Somebody else answers, eventually, ' +
               'and the Tharsis Dawn limps home. But the Reserve keeps its own records, and it notices who was in range and didn\'t come. The silence ' +
               'on the next Fleet channel you open has a particular, careful quality.') },
@@ -87,7 +87,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'navy-callup', where: 'port', priority: 2,
-      when: { planet: 'Mars', q: { mcrn: 2 }, ...free, war: 'Dome Concord' },
+      when: { planet: 'Mars', q: { mcrn: 2 }, ...free, war: 'Dome Pact' },
       title: 'Call-Up',
       text: ('The Reserve is activated. The dock is alive with Fleet trucks and hurried officers, and Osei, now in combat grays with a sidearm on her ' +
           'hip, is all business, without a trace of the dry humor you remember. There\'s dust on her boots and a deep, tired line between her brows. ' +
@@ -97,8 +97,8 @@ Mods.register({
         { label: 'Load the munitions (12t)', when: { space: 12 },
           effects: { ...task, log: 'Called up by the Fleet Reserve: munitions run to Phobos Yards.',
             mission: { to: 'Phobos Yards', tons: 12, good: 'Fleet munitions', pay: 60000, days: 10, title: 'Fleet call-up: munitions to Phobos Yards',
-              onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 5 }, log: 'Delivered munitions to the fleet at Phobos.' },
-              onFail: { set: taskOver, q: { mcrn: -1 }, rep: { 'Dome Concord': -6 }, log: 'Failed to deliver the Fleet\'s munitions.' } } },
+              onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Pact': 5 }, log: 'Delivered munitions to the fleet at Phobos.' },
+              onFail: { set: taskOver, q: { mcrn: -1 }, rep: { 'Dome Pact': -6 }, log: 'Failed to deliver the Fleet\'s munitions.' } } },
           result: ('Sailors in gray fatigues load the crates in a silent, efficient line, and the manifest arrives on your console with three ' +
               'separate seals. "Ten days," Osei says. She looks at you for a long moment, and, for the first time, doesn\'t smile. "Don\'t make me ' +
               'come looking for you. I\'d rather not be that person."') },
@@ -107,7 +107,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'navy-flag', where: 'port', priority: 2,
-      when: { planet: home, q: { mcrn: 2 }, ...free, peace: 'Dome Concord' },
+      when: { planet: home, q: { mcrn: 2 }, ...free, peace: 'Dome Pact' },
       title: 'Showing the Flag',
       text: ('Peacetime work, Osei says, is the part nobody writes songs about. She has found you at the docks, in a plain gray jacket, holding a tin ' +
           'of Martian tea like a guilty secret. "A sealed pouch for our consulate on Ganymede. The Jovians like to see Martian reservists in port. It ' +
@@ -116,8 +116,8 @@ Mods.register({
       choices: [
         { label: 'Carry the pouch', effects: { ...task, log: 'Carrying a sealed Fleet pouch to Ganymede.',
           mission: { to: 'Ganymede', tons: 1, good: 'sealed Fleet pouch', pay: 50000, days: 35, title: 'Carry a sealed Fleet pouch to Ganymede',
-            onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 3 }, log: 'Delivered the Fleet pouch to Ganymede.' },
-            onFail: { set: taskOver, rep: { 'Dome Concord': -3 }, log: 'The Fleet pouch never reached Ganymede.' } } },
+            onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Pact': 3 }, log: 'Delivered the Fleet pouch to Ganymede.' },
+            onFail: { set: taskOver, rep: { 'Dome Pact': -3 }, log: 'The Fleet pouch never reached Ganymede.' } } },
           result: ('"Don\'t open it," Osei says. "I\'m serious. Don\'t." She pauses. "I opened one, once. As a very young ensign. It was menus. ' +
               'Fourteen pages of menus for a state dinner. I\'ve never been so frightened in my life." You\'re not sure if she\'s joking. You decide ' +
               'it\'s safer not to ask.') },
@@ -130,21 +130,21 @@ Mods.register({
       when: { planet: home, q: { mcrn: 3 }, ...free },
       title: 'An Unpleasant Order',
       text: ('Osei doesn\'t sit down. She stands at the edge of the table with her hands clasped behind her back, and for once she doesn\'t meet your ' +
-          'eye. "The fleet auditors want a League freighter, the Blue Ice, boarded and searched at Ceres. They think she\'s carrying Aquilon ' +
+          'eye. "The fleet auditors want a Federation freighter, the Blue Ice, boarded and searched at Ceres. They think she\'s carrying Aquilon ' +
           'contraband that was never declared to the air levy. They want it done by a reservist, so it\'s not an act of war." She pauses, and the pause is heavy. "Ceres will remember who ' +
           'did it. Ceres remembers everything. I want you to know that I didn\'t choose this."'),
       choices: [
-        { label: 'Do it', effects: { q: { mcrn: 1 }, rep: { 'Dome Concord': 6, 'Charter League': -12 }, unrest: { ceres: 0.15 },
-          log: 'Boarded and searched the League freighter Blue Ice for the fleet auditors.', news: 'A Martian reservist boards a League freighter at Ceres. The League protests.' },
+        { label: 'Do it', effects: { q: { mcrn: 1 }, rep: { 'Dome Pact': 6, 'Guild Federation': -12 }, unrest: { ceres: 0.15 },
+          log: 'Boarded and searched the Federation freighter Blue Ice for the fleet auditors.', news: 'A Martian reservist boards a Federation freighter at Ceres. The Federation protests.' },
           result: ('The search takes four humiliating hours, with the whole crew of the Blue Ice lined up along the bulkhead, watching you paw ' +
               'through their bunks. It finds nothing. The captain, a lean, gray woman with a tattoo of a water drop on her neck, spits on your boots ' +
               'as you leave. Osei meets you on the dock afterward. "Good work," she says, and it sounds like an apology.') },
         { label: '{crew} fakes the search records', when: { crew: 'slicer' },
-          effects: { q: { mcrn: 1 }, rep: { 'Dome Concord': 2 }, log: 'Faked the search of the Blue Ice. The fleet auditors are satisfied, for now.' },
+          effects: { q: { mcrn: 1 }, rep: { 'Dome Pact': 2 }, log: 'Faked the search of the Blue Ice. The fleet auditors are satisfied, for now.' },
           result: ('{crew:slicer} produces a flawless search log for a boarding that never happened, complete with photographs, a chain of custody, ' +
               'and a small comment about the quality of the coffee. Osei reads it twice, scrolling slowly, and looks at you for a long time over the ' +
               'top of the page. Then she closes the file. "I didn\'t see this," she says, quietly, "and I\'m very glad I didn\'t."') },
-        { label: 'Refuse', effects: { q: { mcrn: 1 }, set: { mcrnRefused: 1 }, rep: { 'Dome Concord': -4 }, log: 'Refused a fleet auditor\'s order to board a League freighter.' },
+        { label: 'Refuse', effects: { q: { mcrn: 1 }, set: { mcrnRefused: 1 }, rep: { 'Dome Pact': -4 }, log: 'Refused a fleet auditor\'s order to board a Federation freighter.' },
           result: ('"Noted," Osei says, and writes something down in a small black notebook, and then, to your surprise, closes it and puts it away. ' +
               '"It\'ll cost you. Not as much as you think." There\'s something in her face that you haven\'t seen before, and it takes you a moment ' +
               'to recognize it as respect. "Between us: I\'d have done the same, if I had the choice."') },
@@ -159,7 +159,7 @@ Mods.register({
           'looks slightly bored. The light comes down in long dusty bars from the gantry windows. Osei stands at the front with a small velvet box, ' +
           'and, for a moment, you think her hands aren\'t entirely steady. She pins the bars on herself, as the old custom has it. "Lieutenant, ' +
           'Reserve. You\'ve earned the Fleet\'s trust, and its enemies. Both come with the rank."'),
-      choices: [{ label: 'Salute', effects: { set: { mcrnDone: 1 }, credits: 150000, rep: { 'Dome Concord': 10 }, log: 'Promoted to Lieutenant in the Fleet Reserve.', news: 'The Dome Concord Fleet promotes an independent captain to Lieutenant in its Reserve.' },
+      choices: [{ label: 'Salute', effects: { set: { mcrnDone: 1 }, credits: 150000, rep: { 'Dome Pact': 10 }, log: 'Promoted to Lieutenant in the Fleet Reserve.', news: 'The Dome Pact Fleet promotes an independent captain to Lieutenant in its Reserve.' },
         result: ('You salute, and the honor guard, on cue, does the same, and for a moment the whole hangar is a still, white-gold picture. The ' +
             'promotion comes with a 150,000 cr bonus and a standing no Martian patrol will question. Afterwards Osei buys you a drink at the same bar, ' +
             'at the same stool, and for once doesn\'t say a word about the war.') }],
@@ -170,7 +170,7 @@ Mods.register({
       text: ('No ceremony. Osei meets you on the docks, in the gray of an early shift change, with the bars in her pocket and the look of someone who ' +
           'has been arguing all night. "The auditors wanted you out," she says, without preamble. "I told them a reservist who can say no is worth ' +
           'three who can\'t. It took a long time, and a great deal of shouting. You\'ll never make commander. You\'re still ours."'),
-      choices: [{ label: 'Take the bars', effects: { set: { mcrnDone: 1 }, credits: 80000, rep: { 'Dome Concord': 5 }, log: 'Promoted to Lieutenant in the Fleet Reserve, despite refusing an order.' },
+      choices: [{ label: 'Take the bars', effects: { set: { mcrnDone: 1 }, credits: 80000, rep: { 'Dome Pact': 5 }, log: 'Promoted to Lieutenant in the Fleet Reserve, despite refusing an order.' },
         result: ('You pin them on yourself, and Osei watches with her arms folded, and, very slightly, nods. The bars come with an 80,000 cr bonus and ' +
             'a note in your file that Osei says she\'ll deny writing. "Don\'t let it go to your head," she says. It\'s the kindest thing she has ever ' +
             'said to you, and you both know it.') }],

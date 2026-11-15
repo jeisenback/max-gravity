@@ -61,7 +61,8 @@ definePick('comms', 5, 'parley', 'move', 'Parley', 'Once a fight, at the mid or 
 definePick('comms', 5, 'comms-hands', 'stat', 'Hands', 'A point of hands.', { stat: 'hands' });
 
 const picksFor = (post, level) => Object.values(PICKS).filter(p => p.post === post && p.level === level);
-const takenPicks = c => (c && c.picks) || [];
+// An old save from before the ladders has no `picks`: a taught move it already knows counts as its rung's pick, so the rung is not offered again (#1002).
+const takenPicks = c => (c ? c.picks || Object.values(PICKS).filter(p => p.move && p.teacher && (c.moves || []).includes(p.move)).map(p => p.id) : []);
 // The lowest rung, 1 to `level`, with no pick of its taken; 0 when none waits. A hurt hand's lower level offers less (hired.js skillLevel).
 function pickDue(c, level) {
   const taken = takenPicks(c).map(id => PICKS[id]).filter(Boolean);

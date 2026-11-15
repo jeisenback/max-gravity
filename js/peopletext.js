@@ -167,42 +167,56 @@ const NAMES = {
 const TRAITS = {
   talkative: {
     adj: 'talkative',
-    chatter: [
-      '{first}: "Did I ever tell you about the time the tug on {home} lost my cargo..."',
-      '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
-      '{first}: "And that, I always say, is the whole trouble with the lane pilots on {home}, and the tug that never comes. Oh, but that reminds me..."',
-      '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
-      '{first} is explaining, to nobody in particular, what they\'d do with a ship of their own, down to the pump rating on the recycler.',
-      '{first}: "Don\'t let me start on the pilotage fees on {home}, or the tug that never came. Too late. Where was I."',
-      '{first} has told the same story to three watches, and each has been given a different ending.',
-      '{first} is narrating the flip to the empty bridge as it happens.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first}: "Did I ever tell you about the time the tug on {home} lost my cargo..."',
+        '{first}: "And that, I always say, is the whole trouble with the lane pilots on {home}, and the tug that never comes. Oh, but that reminds me..."',
+        '{first} is explaining, to nobody in particular, what they\'d do with a ship of their own, down to the pump rating on the recycler.',
+        '{first}: "Don\'t let me start on the pilotage fees on {home}, or the tug that never came. Too late. Where was I."',
+        '{first} has told the same story to three watches, and each has been given a different ending.',
+      ],
+      galley: [
+        '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
+        '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
+      ],
+      bridge: [
+        '{first} is talking the empty bridge through the next flip, step by step, a day early.',
+      ],
+    }
   },
   nervous: {
     adj: 'nervous',
-    chatter: [
-      '{first} keeps checking the hull pressure readouts.',
-      '{first} jumps at a clank from the engine room, and pretends they didn\'t.',
-      '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.',
-      '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.',
-      '{first} sleeps with a hand flat on the bulkhead, to feel the drive.',
-      '{first} has put the survival kit within reach of the bunk, and moved it twice.',
-      '{first} listens to the hull ticking as it cools, and counts the gaps.',
-      '{first} asked the pilot for the burn time, and then asked again to be sure.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} keeps checking the hull pressure readouts.',
+        '{first} jumps at a clank from the engine room, and pretends they didn\'t.',
+        '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.',
+        '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.',
+        '{first} sleeps with a hand flat on the bulkhead, to feel the drive.',
+        '{first} listens to the hull ticking as it cools, and counts the gaps.',
+        '{first} asked the pilot for the burn time, and then asked again to be sure.',
+      ],
+      berths: [
+        '{first} has put the survival kit within reach of the bunk, and moved it twice.',
+      ],
+    }
   },
   generous: {
     adj: 'generous',
-    chatter: [
-      '{first} made coffee for the whole watch out of their own ration.',
-      '{first} has left a plate of something sweet outside the engine room, without a note.',
-      '{first} is giving away, one piece at a time, the contents of their locker.',
-      '{first} covered someone\'s watch, and won\'t hear a word about it.',
-      '{first} has a knack for turning up at the engine room, unasked, with exactly the spare you need.',
-      '{first} split the last ration bar in four and kept the smallest piece.',
-      '{first} has lent out three pairs of EVA gloves and is down to one.',
-      '{first} is mending a mag boot that belongs to someone else.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} made coffee for the whole watch out of their own ration.',
+        '{first} is giving away, one piece at a time, the contents of their locker.',
+        '{first} covered someone\'s watch, and won\'t hear a word about it.',
+        '{first} split the last ration bar in four and kept the smallest piece.',
+        '{first} has lent out three pairs of EVA gloves and is down to one.',
+        '{first} is mending a mag boot that belongs to someone else.',
+      ],
+      engine: [
+        '{first} has left a plate of something sweet outside the engine room, without a note.',
+        '{first} has a knack for turning up at the engine room, unasked, with exactly the spare you need.',
+      ],
+    }
   },
   greedy: {
     adj: 'money-minded',
@@ -219,16 +233,22 @@ const TRAITS = {
   },
   pious: {
     adj: 'devout',
-    chatter: [
-      '{first} is praying quietly among the cargo straps, at the turn of the watch.',
-      '{first} has tied a ribbon to a handrail by the airlock, and blessed it.',
-      '{first} murmurs a short blessing over the drive before each flip.',
-      '{first} is reading, aloud and softly, from a worn book, in the galley, over the sound of the recycler.',
-      '{first} says the thanks at the turn of the watch, quietly, at the hatch, before handing over the log.',
-      '{first} touches the hatch frame before going through.',
-      '{first} keeps a cord and a coin on a shelf behind the bunk curtain, and doesn\'t explain them.',
-      '{first} says grace over the ration pack, in a language nobody else on board speaks.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} is praying quietly among the cargo straps, at the turn of the watch.',
+        '{first} has tied a ribbon to a handrail by the airlock, and blessed it.',
+        '{first} murmurs a short blessing over the drive before each flip.',
+        '{first} says the thanks at the turn of the watch, quietly, at the hatch, before handing over the log.',
+        '{first} touches the hatch frame before going through.',
+        '{first} says grace over the ration pack, in a language nobody else on board speaks.',
+      ],
+      galley: [
+        '{first} is reading, aloud and softly, from a worn book, in the galley, over the sound of the recycler.',
+      ],
+      berths: [
+        '{first} keeps a cord and a coin on a shelf behind the bunk curtain, and doesn\'t explain them.',
+      ],
+    }
   },
   rude: {
     adj: 'abrasive',
@@ -245,55 +265,73 @@ const TRAITS = {
   },
   curious: {
     adj: 'curious',
-    chatter: [
-      '{first} is asking the nav computer far too many questions.',
-      '{first} has taken the panel off the galley clock to see what makes it tick.',
-      '{first} is following the plume readout with a notebook, and has filled four pages.',
-      '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
-      '{first} is pressing an ear to the bulkhead, listening for a pump cycle nobody else can hear.',
-      '{first} has asked the engineer what the third gauge is for, and is writing down the answer.',
-      '{first} is timing how long a dropped spoon takes to reach the deck under thrust, and has a number.',
-      '{first} reads the label on every cabinet in the stores locker and asks about the ones in another language.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} is asking the nav computer far too many questions.',
+        '{first} is following the plume readout with a notebook, and has filled four pages.',
+        '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
+        '{first} is pressing an ear to the bulkhead, listening for a pump cycle nobody else can hear.',
+        '{first} has asked the engineer what the third gauge is for, and is writing down the answer.',
+        '{first} is timing how long a dropped spoon takes to reach the deck under thrust, and has a number.',
+        '{first} reads the label on every cabinet in the stores locker and asks about the ones in another language.',
+      ],
+      galley: [
+        '{first} has taken the panel off the galley clock to see what makes it tick.',
+      ],
+    }
   },
   drunk: {
     adj: 'hard-drinking',
-    chatter: [
-      '{first} is suspiciously cheerful for this point in the watch.',
-      '{first} is humming, loudly, an old song from {home}, over the sound of the pumps, and has forgotten the second verse.',
-      '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.',
-      '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
-      '{first} is cheerfully explaining the burn plan to a coaster.',
-      '{first} has found a bottle nobody remembers stowing, and is being generous with it.',
-      '{first} is walking the passage between the berths with a hand on each wall, sure that it\'s straight.',
-      '{first} is singing the one verse of a song from {home} that they know, off key, twice, down the ladder.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} is suspiciously cheerful for this point in the watch.',
+        '{first} is humming, loudly, an old song from {home}, over the sound of the pumps, and has forgotten the second verse.',
+        '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.',
+        '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
+        '{first} is cheerfully explaining the burn plan to a coaster.',
+        '{first} has found a bottle nobody remembers stowing, and is being generous with it.',
+        '{first} is singing the one verse of a song from {home} that they know, off key, twice, down the ladder.',
+      ],
+      berths: [
+        '{first} is walking the passage between the berths with a hand on each wall, sure that it\'s straight.',
+      ],
+    }
   },
   secretive: {
     adj: 'guarded',
-    chatter: [
-      '{first} closes the comms window whenever you walk past, and leaves only the ship\'s log on the screen.',
-      '{first} answers every question with a question, even the one about the cargo manifest, and does it very gracefully.',
-      '{first} has a locked case, and a way of standing between it and everyone else.',
-      '{first} is very quiet, and very watchful, and always knows which watch everyone\'s on.',
-      '{first} deletes a message from the ship\'s comms log, and looks up, and smiles at you.',
-      '{first} closes the terminal window when the berth door hisses, and keeps a hand on the lid.',
-      '{first} has moved the locked case twice since breakfast.',
-      '{first} gives the date of arrival when asked where they were born.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} closes the comms window whenever you walk past, and leaves only the ship\'s log on the screen.',
+        '{first} answers every question with a question, even the one about the cargo manifest, and does it very gracefully.',
+        '{first} has a locked case, and a way of standing between it and everyone else.',
+        '{first} is very quiet, and very watchful, and always knows which watch everyone\'s on.',
+        '{first} deletes a message from the ship\'s comms log, and looks up, and smiles at you.',
+        '{first} has moved the locked case twice since breakfast.',
+        '{first} gives the date of arrival when asked where they were born.',
+      ],
+      berths: [
+        '{first} closes the terminal window when the berth door hisses, and keeps a hand on the lid.',
+      ],
+    }
   },
   kind: {
     adj: 'kind',
-    chatter: [
-      '{first} fixed the squeaky hatch without being asked.',
-      '{first} noticed someone was tired, and quietly took the rest of their watch.',
-      '{first} is sewing a torn flight-suit sleeve, by the berth lamp, for someone who\'s not going to ask.',
-      '{first} has pinned a note to the watch bill: "Ask me if you need anything. Anything at all."',
-      '{first} is humming, softly, at the sink, washing everyone else\'s cups out of their own share of the water ration.',
-      '{first} stays at the galley table after the change until the one coming off watch late has eaten.',
-      '{first} has put a second blanket on whoever sleeps nearest the vent.',
-      '{first} wrote everyone\'s birthday in the galley log, and has marked the next one.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} fixed the squeaky hatch without being asked.',
+        '{first} noticed someone was tired, and quietly took the rest of their watch.',
+        '{first} has pinned a note to the watch bill: "Ask me if you need anything. Anything at all."',
+        '{first} is humming, softly, at the sink, washing everyone else\'s cups out of their own share of the water ration.',
+        '{first} has put a second blanket on whoever sleeps nearest the vent.',
+      ],
+      berths: [
+        '{first} is sewing a torn flight-suit sleeve, by the berth lamp, for someone who\'s not going to ask.',
+      ],
+      galley: [
+        '{first} stays at the galley table after the change until the one coming off watch late has eaten.',
+        '{first} wrote everyone\'s birthday in the galley log, and has marked the next one.',
+      ],
+    }
   },
   brave: {
     adj: 'steady',
@@ -310,16 +348,20 @@ const TRAITS = {
   },
   homesick: {
     adj: 'homesick',
-    chatter: [
-      '{first} is looking through old pictures of {home} on a hand terminal, with the screen dimmed to save charge.',
-      '{first} has gone very quiet, and is watching the viewport.',
-      '{first} is making a dish from {home}, out of galley stores that aren\'t quite right, and eating it with great seriousness.',
-      '{first} is humming something from {home}, low and soft, over the sound of the drive, and doesn\'t seem to know.',
-      '{first} keeps a stone from {home} tied in a sock, worn smooth, and takes it out at every flip.',
-      '{first} has set a clock to the time on {home} and checks it at every watch change.',
-      '{first} asks every crew that has docked at {home} what the weather is there.',
-      '{first} is making tea the way they make it on {home}, from the ration kettle. It doesn\'t taste right, and they\'re drinking it anyway.'
-    ]
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        '{first} is looking through old pictures of {home} on a hand terminal, with the screen dimmed to save charge.',
+        '{first} has gone very quiet, and is watching the viewport.',
+        '{first} is humming something from {home}, low and soft, over the sound of the drive, and doesn\'t seem to know.',
+        '{first} keeps a stone from {home} tied in a sock, worn smooth, and takes it out at every flip.',
+        '{first} has set a clock to the time on {home} and checks it at every watch change.',
+        '{first} asks every crew that has docked at {home} what the weather is there.',
+        '{first} is making tea the way they make it on {home}, from the ration kettle. It doesn\'t taste right, and they\'re drinking it anyway.',
+      ],
+      galley: [
+        '{first} is making a dish from {home}, out of galley stores that aren\'t quite right, and eating it with great seriousness.',
+      ],
+    }
   }
 };
 
@@ -904,7 +946,7 @@ const PEOPLE_LINES = {
     critics: 'Critics on Luna call "{title}" {verdict}.',
     cliffhanger: 'Episode {ep} of "{title}" ends on a cliffhanger. Half the Belt is furious.',
     'book-tops': '"{book}" by {author} tops the reading lists again.',
-    'book-denies': '{author} denies that "{book}" is about a real Compact admiral.',
+    'book-denies': '{author} denies that "{book}" is about a real Arcology Pact admiral.',
     'song-playlist': '"{song}" by {band} is on every station playlist from Mercury to Titan.',
     'band-cancels': '{band} cancel their Ceres concert, citing "water ration reasons".',
     'star-spotted': '{s1}, star of "{title}", was spotted on {place} with {s2}. Nobody\'s confirming anything.',
@@ -921,7 +963,7 @@ const PEOPLE_LINES = {
     'water-price': 'The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about.',
     comedian: 'An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch.',
     'ring-ball-kid': 'A kid on Ganymede beats the record for most consecutive ring-ball goals, and the entire agri-dome has declared a holiday.',
-    'press-office': 'Somebody in the Compact\'s press office accidentally posts the wrong file, and spends an afternoon being the most-quoted person in the system.',
+    'press-office': 'Somebody in the Arcology Pact\'s press office accidentally posts the wrong file, and spends an afternoon being the most-quoted person in the system.',
     'food-craze': 'A new food craze sweeps the outer stations: it\'s noodles, again, but this time with, of all things, cheese.',
     rain: 'Weather on Earth: rain for the ninth day running. The feeds, by popular demand, have started a rain channel, and it\'s astonishingly popular in the Belt.',
     documentary: 'A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway.',
@@ -974,6 +1016,7 @@ const PEOPLE_LINES = {
     'league.start': 'The season has just started.',
   },
   'social:card-night': {
+    on: 'The cards are out on the galley table.',
     label: 'Card night',
     win: 'You clean everyone out for {won} cr, over three hours and a deck with a missing nine that everyone has agreed not to mention. {who} swears the deck is marked and goes through it card by card in front of the table. It isn\'t.',
     lose: '{who} takes the pot, and {lost} cr of yours with it, on a pair of fours you should have called. Over the last hand, with the cards going round and nobody watching them, you hear the ship\'s gossip{tail}',
@@ -981,6 +1024,7 @@ const PEOPLE_LINES = {
     'lose.nogossip': ', which is mostly about you. Nobody lowers their voice.',
   },
   'social:watch-show': {
+    on: 'The galley screen has "{title}" on tonight, {when}.',
     nofans: 'Nobody aboard is a fan. The episode runs its length anyway, and the only question at the end is who the brother was.',
     bored: '{who} falls asleep before the first act break, with a tray on both knees, and isn\'t woken for the second.',
     feud: '{A} and {B} argue about the ending for an hour, over the dishes, and neither will give up the dishes.',
@@ -993,6 +1037,7 @@ const PEOPLE_LINES = {
     fan: '{names} knows every line, and says them half a second before the actors do.',
   },
   'social:read-book': {
+    on: 'The ship\'s copy of "{title}" is going round the berths.',
     label: 'Pass around "{title}"',
     intro: 'The ship\'s one printed copy of "{title}" by {author} does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader\'s place by the crease.',
     bored: '{who} leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn\'t rub them out.',
@@ -1001,6 +1046,7 @@ const PEOPLE_LINES = {
     fan: '{names} reads it twice, the second time with a pencil.',
   },
   'social:watch-broadcast': {
+    on: '"{title}" is on the galley screen tonight only.',
     label: 'Watch "{title}", tonight only',
     intro: 'Everyone crowds into the galley for "{title}", the late-watch crew standing with their trays against the bulkhead because the galley seats five. {blurb}',
     nofans: 'Nobody aboard is a fan, but nobody leaves, either. It\'s on every feed in the system tonight, and the galley has the only screen on the ship.',
@@ -1009,6 +1055,7 @@ const PEOPLE_LINES = {
     fan: '{names} wasn\'t going to miss it for anything, and has been saving the good chair since the second watch.',
   },
   'social:stream-match': {
+    on: 'The {league} {kind} is coming in on the lagged stream.',
     intro: 'The lagged stream from {place} comes in: {ma} against {mb}, {sport}. The picture stutters on every goal, which is the stream catching up with a crowd that has already finished celebrating. Final score {sa} to {sb}.',
     nobody: 'Nobody aboard cares who wins, so everyone picks a side by coin toss and defends it with the full weight of a conviction they\'ve held for forty minutes.',
     label: 'Stream the {league} {kind}',
@@ -1930,8 +1977,8 @@ const PEOPLE_LINES = {
   },
   'family:luna-licensed-home': {  // a crew member's home: a rigger's household on a Luna yard licence
     title: 'With {n}',
-    'text.0': '{n} recites a string of numbers under their breath while checking a tether clip, and stops when you look. "Licence number," {n} says. "My mother\'s. Luna, Compact rigging, yard six. You hear it at the table so often you say it in your sleep. Our whole life had a number."',
-    'text.1': 'You ask {n} where they grew up. "In a yard on Luna," {n} says. "The housing block inside the pressure. Small and clean, and the window looked at the drydock. My mother rigged hulls under a Compact licence. The yard owned the block, the school, and the debt."',
+    'text.0': '{n} recites a string of numbers under their breath while checking a tether clip, and stops when you look. "Licence number," {n} says. "My mother\'s. Luna, Arcology Pact rigging, yard six. You hear it at the table so often you say it in your sleep. Our whole life had a number."',
+    'text.1': 'You ask {n} where they grew up. "In a yard on Luna," {n} says. "The housing block inside the pressure. Small and clean, and the window looked at the drydock. My mother rigged hulls under an Arcology Pact licence. The yard owned the block, the school, and the debt."',
     'text.2': '{n} stands very straight when the captain comes into the galley, and then relaxes, and laughs at themselves. "Inspections," {n} says. "On Luna the licensing officers come round in pressed uniforms, and you stand up straight or they find something. Every rigger hates them. Every rigger stands up straight."',
     'c0.label': 'Listen',
     'c1.label': 'Tell them about where you came from',
@@ -1997,7 +2044,7 @@ const PEOPLE_LINES = {
   'family:luna-dust-hope': {  // a crew member's hope: a licence, or the family out of the dust
     title: 'With {n}',
     'text.0': 'Late in the watch {n} tells you what they want: a licence, any licence, or the family out of Luna\'s dust. "Either," {n} says. "A licence and the queue reads your name every morning. Or somewhere with no dust and no queue." They brush the table. "My grandmother says she\'ll die in that dome. I want her to choose to."',
-    'text.1': '{n} has a list on their terminal of Compact licences, the cheapest first, with their training costs beside them. "Sweeper\'s the cheapest," {n} says. "Then carrier. Rigger\'s at the bottom, and it\'s a fortune." They close it. "Any of them. That\'s what I want."',
+    'text.1': '{n} has a list on their terminal of Arcology Pact licences, the cheapest first, with their training costs beside them. "Sweeper\'s the cheapest," {n} says. "Then carrier. Rigger\'s at the bottom, and it\'s a fortune." They close it. "Any of them. That\'s what I want."',
     'text.2': '{n} asks what you want, out here, and then says, "A name on the list," and explains: a licence, so the clerk at the yard gate reads their name out every morning. "Every morning," {n} says. "Not twenty sweepers. My name."',
     'c0.label': '"It\'s not a stupid thing to want."',
     'c1.label': '"If I can help, I will."',
@@ -4259,6 +4306,8 @@ const PEOPLE_LINES = {
   },
   'family:picker': {
     title: 'Sit With Someone',
+    on: '{first} has an hour with nothing to do in it.',
+    with: 'Sit with {first}',
     'text.0': 'You make two mugs of coffee. Who could use the company?',
     'text.1': 'The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.',
     'text.2': 'Between watches, you find yourself with an hour and two mugs. Who gets the second one?',

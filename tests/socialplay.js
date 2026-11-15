@@ -64,6 +64,9 @@ const playSocial = raw => {  // raw: every case, with the scenes that repeat (th
   for (const [id, build] of Object.entries(SETUPS)) play(id, id.startsWith('hired'), build, () => relationshipScene(), MORE[id] ? Array.from({ length: MORE[id] }, (_, i) => i + 1) : SEEDS);
   // a regular back aboard: with nothing remembered, with a memory, and with friends among the crew
   const regular = (st, memory, friends) => { const g = guest(st, 'Pia', { memories: memory ? ['Day 3: You lent me a coat.'] : [] }, { regular: true }); if (friends) { const a = mate(st, 'Ana'), b = mate(st, 'Ben'); setBond(st, a, g, 3); setBond(st, b, g, 2); } else if (friends === false) mate(st, 'Ana'); };
+  // what each activity says is on, in the downtime scene (shiplife.js, 2026-11-12)
+  play('on:activities', false, () => {}, () => ({ title: 'x', choices: [], text: [watchShow({ title: 'T', genre: Object.keys(GENRES)[0], ep: 2 }), readBook({ title: 'B', author: 'A', genre: Object.keys(GENRES)[0] }),
+    watchBroadcast({ title: 'X', blurb: '' }), streamMatch(LEAGUES[0]), SOCIAL_ACTIVITIES.cards].map(a => a.on()).join(' | ') }), [1]);
   play('back:plain', false, st => regular(st, false, false), () => welcomeBack(), [1]);
   play('back:memory', false, st => regular(st, true, false), () => welcomeBack(), [1]);
   play('back:friend', false, st => { const g = guest(st, 'Pia', { memories: ['Day 3: You lent me a coat.'] }, { regular: true }); const a = mate(st, 'Ana'); setBond(st, a, g, 3); }, () => welcomeBack(), [1]);

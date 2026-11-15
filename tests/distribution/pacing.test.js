@@ -4,7 +4,11 @@
 // random games, so it moves whenever any new random draw shifts the stream, and the bands below have been widened for that more
 // than once. It guards against a captain who pays far more or less than the rest, or a chapter that does not reach its target.
 //
-// Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time.
+// Profiles:  attentive and hurried (tools/soak.js SOAK_PROFILES, #1199): the bands below hold for a player who takes every offer and one who takes none.
+//            Measured over the four captains, seeds 1 to 5, 2026-11-14: attentive a median of 11 to 18 runs and day 101 to 167; hurried 9 to 14 runs
+//            and day 94 to 121, a little sooner with no downtime and no offers, so the hurried player's floor is 8 runs, not 10 (the owner, 2026-11-14).
+//            The spread across captains is checked for the attentive player.
+// Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time, for each profile.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
 //            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 200 (raised from 190 by the owner, 2026-11-07: Zoya sat on 190 and the guns on her hull put one seed a day over), and the mean pay
 //            per run is 2,500 to 8,000 cr; across captains the pay per day, as a share of each captain's day rate less the kit,
@@ -15,17 +19,18 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { closeBrowser, open } = require('../helpers');
+const { band } = require('./band');
 
 after(closeBrowser);
 
 // Seeds differ in luck (the answers are random), so each captain's runs are checked seed by seed, and the pay as a mean per day.
 // The tuning aim is about 15 percent between captains; the test only guards against a captain who pays far more or less.
 // The day bound is wide because an unlucky seed can run to the 170s (the random stream shifts with whatever draws before it).
-test('about twenty runs reach the target with every captain, and the planner is never stuck', async () => {
+for (const profile of ['attentive', 'hurried']) test(`about twenty runs reach the target with every captain, and the planner is never stuck: the ${profile} player (#1199)`, async () => {
   const { soaks } = require('../../tools/soak');
-  const perDay = {};
+  const perDay = {}, sample = `${profile}, 5 seeds a captain`;
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
-    const all = await soaks([1, 2, 3, 4, 5], { legs: 40, captainKey }, 5);
+    const all = await soaks([1, 2, 3, 4, 5], { legs: 40, captainKey, profile }, 5);
     for (const r of all) { assert.equal(r.stuck, 0, `${captainKey} seed ${r.seed}: the captain had no plan`); assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); }
     // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js and stakes-fights.test.js hold how often) or be ruined by one bad pick of the random answers (4,000 cr of a small fund
     // paid at a patrol stop), so most seeds must reach the target and the pace is read from those that do.
@@ -33,12 +38,14 @@ test('about twenty runs reach the target with every captain, and the planner is 
     assert.ok(rs.length >= 3, `${captainKey}: ${rs.length} of 5 seeds reached the target (${all.map(r => r.ending ? 'ended' : r.reached ? 'ok' : `no, ${r.runs} runs`).join(', ')})`);
     for (const r of rs) assert.ok(r.reached.runs >= 6 && r.reached.runs <= 40 && r.reached.day >= 30 && r.reached.day <= 260, `${captainKey} seed ${r.seed}: ${r.reached.runs} runs, day ${r.reached.day}`);  // no single seed is far out: the tight band is on the median, below
     const med = a => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)], mr = med(rs.map(r => r.reached.runs)), md = med(rs.map(r => r.reached.day));
-    assert.ok(mr >= 10 && mr <= 30 && md >= 60 && md <= 200, `${captainKey}: median ${mr} runs, day ${md}`);  // about twenty runs, with a little room: any one seed moves when the random numbers shift
+    band(`${captainKey}: median runs`, mr, [profile === 'hurried' ? 8 : 10, 30], { sample, measured: 'attentive 11 to 18, hurried 9 to 14 over the four captains (2026-11-14)' });  // a hurried player reaches the share sooner: its floor is 8 (the owner, 2026-11-14)  // about twenty runs, with a little room: any one seed moves when the random numbers shift
+    band(`${captainKey}: median day`, md, [60, 200], { sample, measured: 'attentive 101 to 167, hurried 94 to 121 over the four captains (2026-11-14)' });
     const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
     // (an ice run, js/icerun.js, is long and pays about 28,000, so the mean a run is up; what the economy keeps is the pay a day)
-    assert.ok(pay >= 2500 && pay <= 8000, `${captainKey}: mean pay per run ${Math.round(pay)}`);  // a rating's day rate less the kit, and no share (#879): measured 3,166 to 5,408 over the four captains; 8,000 to 20,000 with the share
+    band(`${captainKey}: mean pay per run`, Math.round(pay), [2500, 8000], { sample, measured: '3,166 to 5,408 over the four captains (attentive); Hester 5,456 hurried (2026-11-14)' });  // a rating's day rate less the kit, and no share (#879); 8,000 to 20,000 with the share
     perDay[captainKey] = pay / days;
   }
+  if (profile !== 'attentive') return;  // the spread across captains is the attentive player's
   const { ev, done } = await open({ scope: 'full' }), rate = await ev(() => Object.fromEntries(Object.entries(CAPTAINS).map(([k, c]) => [k, c.wage - KIT_DEDUCTION]))); await done();  // the day rate a rating is paid (hired.js)
   const rates = Object.entries(perDay).map(([k, v]) => v / rate[k]), spread = Math.max(...rates) / Math.min(...rates);
   // Measured against each captain's day rate less the kit: 0.95 to 1.01 over 20 seeds (2026-11-06); five seeds swing more, so this

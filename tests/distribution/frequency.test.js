@@ -4,6 +4,7 @@
 // spread over many random draws. The pins (weight 1 and equal weights draw as before, a scene off or at weight 0 is never drawn, a cooldown
 // holds) are in tests/overrides.test.js; how the editor's simulator is made is in tests/editorfreq.test.js.
 //
+// Profiles:  none: the draws here use no soak player (tools/soak.js SOAK_PROFILES, #1199).
 // Sample:    4000 draws of pickStorylet('transit') in a fresh game, for each of weight 1 (the shipped game) and weight 8 for one scene.
 // Tolerance: at weight 8 the scene comes up at least twice as often as at weight 1 (the expected share goes from 1 in the number of scenes
 //            drawn from, to 8 in that number plus 7), and at weight 0 not once.

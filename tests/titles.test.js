@@ -29,7 +29,7 @@ test('a contract title keeps the capitals of the place it names (#559)', async (
 test('no line puts an article in front of a faction name, and none says "a the" (#558)', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
-    const govs = ['Arcology Compact', 'Dome Concord', 'Charter League', 'Pirate'], lines = [];
+    const govs = ['Arcology Pact', 'Dome Pact', 'Guild Federation', 'Pirate'], lines = [];
     for (const a of govs.slice(0, 3)) for (const b of govs.slice(0, 3)) if (a !== b) for (const t of INCIDENTS) lines.push({ where: 'incident', text: t.replace(/\{a\}/g, a).replace(/\{b\}/g, b).replace('{s}', 'Ceres') });
     for (const id of ['scene:customs', 'scene:war-call']) for (const [key, t] of Object.entries(SCENE_LINES[id])) {
       if (typeof t !== 'string' || !t.includes('{faction}')) continue;
@@ -39,6 +39,6 @@ test('no line puts an article in front of a faction name, and none says "a the" 
   });
   await g.done();
   assert.ok(r.length >= 80, `${r.length} lines`);
-  const bad = r.filter(l => /\b[Aa]n? the\b|\b[Aa] Arcology|\b[Aa]n (Dome|Charter)/.test(l.text));
+  const bad = r.filter(l => /\b[Aa]n? the\b|\b[Aa] Arcology|\b[Aa]n (Dome|Guild)/.test(l.text));
   assert.deepEqual(bad.map(l => `${l.where}: ${l.text.slice(0, 70)}`), []);
 });

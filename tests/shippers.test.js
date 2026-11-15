@@ -12,7 +12,7 @@ after(closeBrowser);
 const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; st.tutorial = null; hired().runsDone = 1; return st; };
   // The ship arrives at the port she is docked at with a contract run to it: `tons` of 90 aboard, `dueIn` days from today the paper's day.
-  window.deliver = ({ tons = 90, dueIn = 2, shipper = 'the Compact Freight Office', day = null } = {}) => {
+  window.deliver = ({ tons = 90, dueIn = 2, shipper = 'the Arcology Pact Freight Office', day = null } = {}) => {
     const st = G.state, h = hired(), here = currentPlanet();
     h.run = { contract: true, shipper, good: 'water', tons: 90, from: 'X', planet: here.name, sid: st.systemId, pay: 200000, day: day === null ? st.day - 6 : day, days: 6, due: st.day + dueIn, cost: 0, profit: 200000 };
     st.cargo = tons ? { water: tons } : {}; st.paid = {}; h.plan = null; h.off = null;
@@ -25,7 +25,7 @@ const run = async (fn, o) => { const t = await open(o); await t.ev(helpers); con
 
 test('a delivery on the day and whole raises the shipper\'s regard and meets nobody at the ramp; each fault lowers it and brings the agent', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), out = {}, name = 'the Compact Freight Office', agentTitles = /^(Late at the Lock|Short at the Lock|Nothing to Sign For)$/;
+    const st = start(), h = hired(), out = {}, name = 'the Arcology Pact Freight Office', agentTitles = /^(Late at the Lock|Short at the Lock|Nothing to Sign For)$/;
     const e0 = deliver(); out.clean = { standing: h.standing[name], scene: !!e0 && agentTitles.test(e0.title), off: h.off };
     const e1 = deliver({ dueIn: -2 }); out.late = { standing: h.standing[name], title: e1 && e1.title, text: e1 && e1.text, labels: e1 && e1.choices.map(c => c.label), people: e1 && e1.people };
     G.dialog = null; const e2 = deliver({ tons: 60 }); out.short = { standing: h.standing[name], title: e2 && e2.title, text: e2 && e2.text };
@@ -36,10 +36,10 @@ test('a delivery on the day and whole raises the shipper\'s regard and meets nob
   });
   assert.deepEqual(r.clean, { standing: 1, scene: false, off: null }, 'a clean delivery: up one, and nothing at the ramp');
   assert.equal(r.late.standing, 0, 'late takes it from 1 to 0'); assert.equal(r.late.title, 'Late at the Lock');
-  assert.match(r.late.text, /The paper said [\d]+ \w+ 2214\. The ship is 2 days past it\./); assert.match(r.late.text, /the Compact Freight Office docks a tenth/);
+  assert.match(r.late.text, /The paper said [\d]+ \w+ 2214\. The ship is 2 days past it\./); assert.match(r.late.text, /the Arcology Pact Freight Office docks a tenth/);
   assert.equal(r.late.labels.length, 3); assert.equal(r.late.labels[0], 'Own it'); assert.match(r.late.labels[1], /^Make the case \[\d+%; if it fails: the shipper's regard\]$/); assert.equal(r.late.labels[2], 'Say nothing');
   assert.equal(r.short.standing, -1, 'short takes it from 0 to -1'); assert.equal(r.short.title, 'Short at the Lock'); assert.match(r.short.text, /The paper says 90t of water\. \S+ \S+ makes it 60t\./);
-  assert.equal(r.lost.standing, -3, 'lost takes it down two more'); assert.equal(r.lost.title, 'Nothing to Sign For'); assert.match(r.lost.text, /The paper says 90t of water for the Compact Freight Office\. The hold is empty\./);
+  assert.equal(r.lost.standing, -3, 'lost takes it down two more'); assert.equal(r.lost.title, 'Nothing to Sign For'); assert.match(r.lost.text, /The paper says 90t of water for the Arcology Pact Freight Office\. The hold is empty\./);
   assert.equal(r.lost.people[0], r.agentId, 'the same agent every time at the port');
   assert.deepEqual(r.agent, { job: 'freight agent', title: 'Agent', agent: true, at: true, map: r.agentId });
   assert.equal(r.barSees, false, 'the agent keeps off the bar\'s stools');
@@ -47,7 +47,7 @@ test('a delivery on the day and whole raises the shipper\'s regard and meets nob
 
 test('the hand\'s answer: owning it warms the agent, making the case is a roll on the shipper\'s regard and the agent\'s, saying nothing changes nothing', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), out = {}, name = 'the Compact Freight Office';
+    const st = start(), h = hired(), out = {}, name = 'the Arcology Pact Freight Office';
     const real = Math.random;  // the roll is set only around the choice: a constant random hangs the generators the landing uses
     const play = (i, roll) => { const e = deliver({ dueIn: -1 }); const agent = person(e.people[0]); const s0 = h.standing[name], o0 = agent.opinion; Math.random = () => roll; const text = e.choices[i].run(); Math.random = real; return { text, standing: h.standing[name] - s0, agent: agent.opinion - o0, mem: agent.memories.slice(-1)[0] }; };
     out.own = play(0, 0.5); out.win = play(1, 0); out.lose = play(1, 0.999); out.silent = play(2, 0.5);
@@ -82,7 +82,7 @@ test('the board reads the regard: a shipper that trusts the ship is named on the
 test('an older save with no regard kept settles a delivery without error and starts the shipper at nothing', async () => {
   const r = await run(() => {
     const st = start(), h = hired(); delete h.standing; delete h.off;
-    const e = deliver(); return { standing: h.standing && h.standing['the Compact Freight Office'], scene: !!e && /Lock|Sign/.test(e.title) };
+    const e = deliver(); return { standing: h.standing && h.standing['the Arcology Pact Freight Office'], scene: !!e && /Lock|Sign/.test(e.title) };
   });
   assert.deepEqual(r, { standing: 1, scene: false });
 });
@@ -111,7 +111,7 @@ test('the dock broker holds money back: the pay is less than the paper, the ledg
 
 test('a state\'s freight office reads the crew list at the lock: a crew member it wants is a scene before she sails, played once, with the customs stop\'s ways out', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Compact Freight Office', gov = 'Arcology Compact';
+    const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Arcology Pact Freight Office', gov = 'Arcology Pact';
     const target = st.crew.map(person).find(p => !p.cast);
     const realTies = tiesOf; window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p));
     const plan = shipper => { h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { contract: true, shipper, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false }, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [h.plan.run] }; h.run = null; G.dialog = null; };
@@ -129,13 +129,13 @@ test('a state\'s freight office reads the crew list at the lock: a crew member i
   });
   assert.equal(r.other, false, 'a paper from another shipper does not ask'); assert.equal(r.first, false, 'the first run is guided and does not'); assert.equal(r.due, true);
   assert.equal(r.scene.title, 'On the Manifest'); assert.equal(r.sailed, false, 'she does not sail until it is played'); assert.equal(r.scene.people, 2); assert.equal(r.again, false, 'and it is played once: the same person is not asked again');
-  assert.match(r.scene.text, /the Compact Freight Office puts the names of everyone aboard on its manifest/); assert.match(r.scene.text, /"This one's wanted by the Compact,"/);
-  assert.deepEqual(r.scene.labels.map(l => l.replace(r.target, 'N').replace(/ \(.*$/, '')), ['[Your Arcology Compact papers] Vouch for N as a member', 'Pay the office\'s fee', 'Say nothing and keep N below', 'Put N ashore', 'Turn the contract down']);
+  assert.match(r.scene.text, /the Arcology Pact Freight Office puts the names of everyone aboard on its manifest/); assert.match(r.scene.text, /"This one's wanted by the Arcology Pact,"/);
+  assert.deepEqual(r.scene.labels.map(l => l.replace(r.target, 'N').replace(/ \(.*$/, '')), ['[Your Arcology Pact papers] Vouch for N as a member', 'Pay the office\'s fee', 'Say nothing and keep N below', 'Put N ashore', 'Turn the contract down']);
 });
 
 test('the side scene\'s ways out: papers and the fee clear the name, silence holds more often than not and costs the paper when it does not, a crew member put ashore is replaced, and turning the paper down leaves the day\'s board empty', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Compact Freight Office', gov = 'Arcology Compact', real = Math.random;
+    const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Arcology Pact Freight Office', gov = 'Arcology Pact', real = Math.random;
     const target = st.crew.map(person).find(p => !p.cast), realTies = tiesOf;
     window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p));
     const run0 = { contract: true, shipper: office, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
@@ -148,7 +148,7 @@ test('the side scene\'s ways out: papers and the fee clear the name, silence hol
       const text = c.run(); Math.random = real;
       return { text, fund: hh.fund - f1, standing: ((hh.standing || {})[office] || 0) - st1, rep: repOf(gov) - rep1, captain: person(hh.captain).opinion - cap1, target: person(target.id).opinion - t1, board: hh.freight.list.length, planGone: !hh.plan, aboard: s2.crew.includes(target.id), crew: s2.crew.length - crew1 };
     };
-    out.papers = play('[Your Arcology Compact papers]', 0.5); out.pay = play('Pay the office', 0.5); out.clear = play('Say nothing', 0); out.lost = play('Say nothing', 0.999); out.ashore = play('Put', null); out.decline = play('Turn the contract down', 0.5);
+    out.papers = play('[Your Arcology Pact papers]', 0.5); out.pay = play('Pay the office', 0.5); out.clear = play('Say nothing', 0); out.lost = play('Say nothing', 0.999); out.ashore = play('Put', null); out.decline = play('Turn the contract down', 0.5);
     window.tiesOf = realTies;
     return out;
   });

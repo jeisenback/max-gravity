@@ -1,16 +1,16 @@
 # Tavi Mensah
 
-Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `the-belt.md` and `work.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `the-belt.md` and `work.md`. Amended 2026-11-11: the hand captains the co-op's hull, and the lender's masters are met in the war (`chapter-2.md`).
 
 ## Where he stands
 
 A licensed master, 39, from Ceres Station. One of the four masters in Van Leeuwen & Co.'s pool (`chapter-2.md`), and the youngest. He flew fuel tankers for Kaur Enrichment for ten years, out of Vesta to the small rocks off the lanes, and left when Kaur cut the small runs to save money. The house took him into its pool because Belt masters are scarce.
 
-If the co-op chooses him, he holds the bridge for the co-op and carries out what the player and the meeting decide.
+In chapter two he is ashore at Ceres between bridges, waiting on the house and drinking in the Belt bars. When the blockade comes he takes a Kaur tanker, paid or not. The co-op meets him in port.
 
 ## Money
 
-A master's wage from the co-op. Out of it go:
+What the house's pool pays a master between bridges, and day work at the Ceres fuel office. Out of it go:
 
 - his mother's rent on the station's lower ring;
 - a loan on a licence upgrade he took to fly bigger tankers, which Kaur then never gave him;
@@ -47,7 +47,7 @@ He doesn't say: how close the last tanker he lost came; no, to a friend.
 
 ## What he wants
 
-To fly the Belt's small runs, and keep the rocks alive. In the war he leans to Kaur, and to the rocks behind it: under him the co-op is the hull most likely to run a blockade, the best paid and the most likely to be shot at.
+To fly the Belt's small runs, and keep the rocks alive. In the war he leans to Kaur, and to the rocks behind it: he would have the co-op run fuel to the rocks with him, the best paid work in the Belt and the most likely to be shot at.
 
 ## Assumptions to confirm
 

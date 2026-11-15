@@ -32,9 +32,16 @@ const { answerDeck } = require('./answer');
 // A page that has not answered one evaluate in this long fails with what the browser was doing (tests/helpers.js open's `stall`), as the distribution tests' pages do, rather than waiting forever.
 const SOAK_STALL = 900000;
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
-async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
+// The player's profile (#1199): what they do with what is optional on a burn, the offers on the ship (#1183) and downtime. `attentive` takes every
+// offer at once and spends downtime, as a player at 1x would; `hurried` runs ahead and takes nothing optional; `between` takes every other offer
+// and spends downtime. Which offers `between` takes is by count, not a roll. A distribution test says which profiles its bands hold for.
+// At a port with a view, a landing's business is taken by every profile, as a player takes the yard and the agent; its people and the port's own
+// are offers like the burn's (#1192).
+const SOAK_PROFILES = ['attentive', 'hurried', 'between'];
+async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false, profile = 'attentive' } = {}) {
+  if (!SOAK_PROFILES.includes(profile)) throw new Error(`no soak profile '${profile}': ${SOAK_PROFILES.join(', ')}`);
   const { ev, errors, ctx } = await open({ scope, seed, debt: true, brief: true, stall: SOAK_STALL });  // the chapter's economy includes the hiring hall's bond
-  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString()]);
+  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString(), profile]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -44,11 +51,12 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
 // burn, landing and port (scene, result, burn, port), it stops the chapter (done), and between the steps of a burn or of the flight it yields to the page's frames (tick), so
 // the game draws what is happening. With hooks.live a burn's events are not drawn up front: they are left on the burn's clock and the burn's contact on its own, and each opens
 // when the transit update reaches it. The port hook is played at every landing (the day ashore, the buy-in); the chapter ends when the hand has bought a ship.
-async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName, deckSrc]) {
+async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName, deckSrc, profile = 'attentive']) {
     const H = hooksName ? window[hooksName] : null, live = !!(H && H.live);
     const deckAnswer = deckSrc ? (0, eval)(`(${deckSrc})`) : null;  // the deck fight's plan each turn, as the fight tool's answer policy plays it (tools/answer.js answerDeck); without it, the panel's plan as it stands
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
+    let offersSeen = 0;  // the offers the profile has met, for `between`'s every other one (#1199)
     // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
     const messages = { log: 0, note: 0, comm: 0, lines: {} };
     { const places = new RegExp(`\\b(${Object.values(SYSTEMS).flatMap(y => [y.name, ...y.planets.map(p => p.name)]).join('|')})\\b`, 'g');
@@ -62,7 +70,12 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const hand = { hurt: 0, again: 0 }, landed = { on: false, opened: 0, mix: {} };  // the hand's hurts, and how many scenes each landing opened or queued
     { const rh = window.hurtHand; window.hurtHand = function (s) { hand.hurt++; if ((s && s.youHurt) || handHurt()) hand.again++; return rh.apply(this, arguments); };
       const oe = window.openEvent; window.openEvent = function (e) { if (landed.on) landed.opened++; return oe.apply(this, arguments); };
-      const em = Mods.emit; Mods.emit = function (name) { if (name !== 'landed') return em.apply(this, arguments); const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return em.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
+      // a scene queued behind an open one (transit.js queueScene) is counted when it is queued; one with nothing open is counted by openEvent
+      const qs = window.queueScene; window.queueScene = function (e) { if (landed.on && e && G.dialog) landed.opened++; return qs.apply(this, arguments); };
+      // a scene that waits as an offer on a port's view (#1192) is still the landing's: it is counted when it is put
+      const pp = window.portOfferPut; window.portOfferPut = function (kind, e) { if (landed.on && e) landed.opened++; return pp.apply(this, arguments); };
+      // the whole of landAt, not only the 'landed' emit: its handlers offer their scenes, which open after the emit, in rank order (landingScenesPlay, #1096, #1160)
+      const la = window.landAt; window.landAt = function () { const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return la.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
     // The jobs (--jobs): how many were worked at the station and played at the far end of a job elsewhere, what each kind paid the hand (applyJob moves the credits, and a
     // hurt's clinic bill comes out inside it), the hurts, and the jobs elsewhere offered, put to the captain and agreed to.
     const work = { station: 0, away: 0, pay: { station: 0, away: 0 }, hurt: 0, offered: 0, pitched: 0, booked: 0, current: 'station' };
@@ -143,6 +156,15 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
       try {
         UI.tab = atSite(st) ? 'site' : 'bar'; UI.render();  // on station at a rock there is no bar (sites.js)
         const talk = async () => { if (!atSite(st) && G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
+        // a landing's scenes at a port with a view wait as offers (#1192): the yard's and the run's business is taken as a player would take it, the
+        // people's and the port's own by the profile, as the burn's offers are
+        const takePortOffers = async () => {
+          while (!G.dialog && (G.portOffers || []).length) {
+            const o = G.portOffers[0], take = o.kind === 'business' || profile === 'attentive' || (profile === 'between' && offersSeen++ % 2 === 0);
+            if (take) { portOfferTake(o); await answer(); } else G.portOffers = G.portOffers.filter(x => x !== o);
+          }
+        };
+        await takePortOffers();
         await talk();
         while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market) or the shifts on a rock (icerun.js)  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
@@ -165,14 +187,22 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         }
         for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); await answer(); }
         const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
-        if (!live) for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); await answer(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
+        // An offer on the ship (#1184): the profile takes it at once (its scene opens and is answered) or lets it go (#1199).
+        const takeOffers = async () => {
+          const tr = G.transit;
+          while (tr && !G.dialog && (tr.offers || []).length) {
+            const o = tr.offers[0], take = profile === 'attentive' || (profile === 'between' && offersSeen++ % 2 === 0);
+            if (take) { offerClick({ offer: o }); await answer(); } else tr.offers = tr.offers.filter(x => x !== o);
+          }
+        };
+        if (!live) for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); await answer(); await takeOffers(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
           beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name] || 1);  // due and played in the same burn: one burn
         }
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
-        if (acts.length) pick(acts).run();
+        if (acts.length && profile !== 'hurried') pick(acts).run();  // downtime is optional: a hurried player spends none (#1199)
         const rs = relationshipScene(); if (rs) { openEvent(rs); await answer(); }
         if (play) {  // the whole burn, in the game's own transit update: speed, heat and reaction mass tick as the frame loop would, the comms talk, and she arrives when the burn is done
           const t = G.transit, fuel0 = st.fuel, dt = 0.25;
@@ -182,6 +212,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
           for (let k = 0; G.transit === t && k < 100000 && !ending.v; k++) {
             engineeringTick(dt); updateTransit(dt);
             if (live && G.transit === t) contact();
+            if (!G.dialog) await takeOffers();
             if (H) { if (G.dialog) await answer(); await H.tick('burn', t); }
           }
           fr.fuel += fuel0 - st.fuel;
@@ -215,7 +246,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         const d = hired().deal, open = d && dealOpen(), price = open ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
         // With the deal open she is bought at a yard, as the game has it: with the price in hand at a port without one she sails on (planRun heads for a yard), and
         // that burn is where the ladder's set piece comes (fightladder.js).
-        if (st.credits >= price && !H && (!open || currentPlanet().services.includes('shipyard'))) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
+        if (st.credits >= price && !H && (!open || currentPlanet().services.includes('shipyard'))) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, regard: (st.people[hired().captain] || {}).opinion, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
         if (H && !ending.v) await H.port(answer);  // the day ashore and the buy-in
         if (!hired()) { ending.v = { day: st.day - since, title: 'Bought in', bought: true }; break; }  // the hand bought a ship: the chapter's own close
@@ -245,7 +276,8 @@ function framesReport(runs, label = '') {
   const whole = runs.filter(r => !r.ending), mean = (list, f) => (list.length ? list.reduce((t, r) => t + f(r), 0) / list.length : 0);
   const one = x => Math.round(x * 10) / 10, reached = whole.filter(r => r.reached);
   console.log(`${label}${runs.length} chapters, ${whole.length} whole, ${reached.length} reached the price: runs ${one(mean(whole, r => r.runs))}, days ${one(mean(whole, r => r.days))}, ` +
-    `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))} ` +
+    `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))}, ` +
+    `the captain trusts the hand at the price in ${reached.filter(r => r.reached.regard >= 3).length} of ${reached.length} (her regard ${one(mean(reached, r => r.reached.regard || 0))} on the mean) ` +  // the vouch (#1059, #1045)
     `| per chapter: raids ${one(mean(runs, r => r.frames.raids))}, scrams ${one(mean(runs, r => r.frames.scrams))}, hull lost ${one(mean(runs, r => r.frames.hull))}, ` +
     `extra reaction mass ${one(mean(runs, r => r.frames.fuel))}, contacts seen ${one(mean(runs, r => r.frames.seen))} of ${one(mean(runs, r => r.frames.planned))}`);
 }
@@ -356,7 +388,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, chapter, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
+module.exports = { SOAK_PROFILES, soak, soaks, chapter, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };

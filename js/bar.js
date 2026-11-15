@@ -15,7 +15,7 @@ const BARS = {
   Earth: ['The Gravity Well', ('A spaceport bar with a long copper counter and travel posters from a dozen ports curling on the walls. The drinks are ' +
       'real, and so are the prices. At the far end a man in a good coat is telling a story about the sea to a table of freight hands, and he is paying for ' +
       'every round.')],
-  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Compact officers in civilian jackets that do not fit. The bartender pours slow on ' +
+  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Arcology Pact officers in civilian jackets that do not fit. The bartender pours slow on ' +
       'purpose: in one-sixth g the drinks come out in tall ribbons and take a long time to settle. A window behind the bar looks out on the gray ' +
       'plain, the drydocks and, past them, Earth. People keep their voices down.')],
   Mars: ['The Red Line', ('Tharsis veterans at one end of the bar, terraforming engineers at the other, and in the middle an argument about the ' +
@@ -332,7 +332,7 @@ function barOf(planet) {
 function fillBar(planet) {
   const st = G.state, sid = st.systemId, aboard = new Set(paxAboard().map(m => m.pid));
   const regulars = barRegulars(planet).filter(x => !aboard.has(x.p.id) && !st.crew.includes(x.p.id));
-  const known = Object.values(st.people).filter(p => p.location === planet.name && !p.regular && !p.official && !p.agent && !p.arcPerson && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)  // the dock's official is at the dock (official.js)
+  const known = Object.values(st.people).filter(p => p.location === planet.name && !p.regular && !p.official && !p.portFolk && !p.agent && !p.arcPerson && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)  // the dock's official is at the dock (official.js)
     .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 2);
   G.patrons = [
     ...castPatrons(),  // the main characters with a scene due (castbar.js)
@@ -399,7 +399,7 @@ function talkEvent(pat) {
     ][byName(p, 'intro', 3)];
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });
-  return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
+  return { title: `${bar}: ${p.first} ${p.last}`, text, choices, place: 'bar' };  // at the counter, at a port drawn as a place (portview.js, #1103)
 }
 
 function barHtml() {

@@ -6,21 +6,22 @@
 // They matter in four places: how the crew get on (social.js bondDay), how the crew take what you do (changeRep in
 // factions.js), what a port makes of who is aboard (customs below), and your own papers (youTies). Loaded after stakes.js.
 
-const CULTURE_FACTION = { earth: 'Arcology Compact', mars: 'Dome Concord', belt: 'Charter League' };
-const FACTION_COOL = { 'Arcology Compact': { 'Charter League': -1 }, 'Dome Concord': { 'Charter League': -1 }, 'Charter League': { 'Arcology Compact': -1, 'Dome Concord': -1 } };
+const CULTURE_FACTION = { earth: 'Arcology Pact', mars: 'Dome Pact', belt: 'Guild Federation' };
+const FACTION_COOL = { 'Arcology Pact': { 'Guild Federation': -1 }, 'Dome Pact': { 'Guild Federation': -1 }, 'Guild Federation': { 'Arcology Pact': -1, 'Dome Pact': -1 } };
 const TIE_NOTES = {
-  ines: { aff: 'Arcology Compact', status: { 'Arcology Compact': 'exile' } },  // her license, lost over one landing
-  tomas: { aff: 'Arcology Compact', status: { 'Arcology Compact': 'member' } },
-  yelena: { aff: 'Dome Concord', status: { 'Dome Concord': 'member' } },
-  ruben: { aff: 'Dome Concord', status: { 'Dome Concord': 'officer' } },
-  bexa: { aff: 'Charter League', status: { 'Charter League': 'member' } },
-  pax: { aff: 'Charter League', status: { 'Charter League': 'member' } },
+  ines: { aff: 'Arcology Pact', status: { 'Arcology Pact': 'exile' } },  // her license, lost over one landing
+  tomas: { aff: 'Arcology Pact', status: { 'Arcology Pact': 'member' } },
+  yelena: { aff: 'Dome Pact', status: { 'Dome Pact': 'member' } },
+  ruben: { aff: 'Dome Pact', status: { 'Dome Pact': 'officer' } },
+  bexa: { aff: 'Guild Federation', status: { 'Guild Federation': 'member' } },
+  pax: { aff: 'Guild Federation', status: { 'Guild Federation': 'member' } },
 };
-const shortFaction = f => (f === 'Pirate' ? 'the pirates' : `the ${f.replace(/^(Arcology|Dome|Charter) /, '')}`);
+const shortFaction = f => (f === 'Pirate' ? 'the pirates' : f === 'Guild Federation' ? 'the Federation' : `the ${f}`);  // the two pacts keep their whole names, or "the Pact" would be either
 
+const tieSeed = f => (OLD_NAMES.find(([, now]) => now === f) || [f])[0];  // a power's regard is drawn from its name before #1043, so nobody's ties change with the names
 function tiesOf(p) {
   const id = String(p.id || p.name || `${p.first || ''}${p.last || ''}` || 'x'), h = s => Math.abs(hash(id + s)), note = TIE_NOTES[p.cast || p.captainKey];
-  const culture = p.culture || cultureOfPerson(p), home = CULTURE_FACTION[culture] || 'Arcology Compact';
+  const culture = p.culture || cultureOfPerson(p), home = CULTURE_FACTION[culture] || 'Arcology Pact';
   const others = FACTIONS.filter(f => f !== home && f !== 'Pirate'), roll = h('aff') % 100;
   const aff = note ? note.aff : roll < 70 ? home : roll < 82 ? others[h('other') % others.length] : roll < 90 ? 'Pirate' : null;
   const status = note ? { ...note.status } : {};
@@ -30,7 +31,7 @@ function tiesOf(p) {
   for (const f of FACTIONS) {
     let r = f === aff ? (status[f] === 'exile' ? -1 : status[f] === 'wanted' ? -2 : 2) : aff === 'Pirate' ? -1 : f === 'Pirate' ? -2 : ((FACTION_COOL[aff] || {})[f] || 0);
     if (status[f] === 'wanted' && f !== aff) r -= 1;  // they are hunted by it
-    regard[f] = Math.max(-3, Math.min(3, r + (h(f) % 3) - 1));
+    regard[f] = Math.max(-3, Math.min(3, r + (h(tieSeed(f)) % 3) - 1));
   }
   return { aff, status, regard };
 }
@@ -38,7 +39,7 @@ const regardWord = n => (n >= 2 ? 'loyal' : n === 1 ? 'warm' : n === 0 ? 'neutra
 
 // You: your background's faction, a member, with your standing as the factions' regard for you (factions.js).
 function youTies() {
-  const st = G.state, aff = CULTURE_FACTION[(BACKGROUNDS[st.background] || {}).culture || st.background] || 'Arcology Compact';
+  const st = G.state, aff = CULTURE_FACTION[(BACKGROUNDS[st.background] || {}).culture || st.background] || 'Arcology Pact';
   return { aff, status: { [aff]: 'member' }, standing: Object.fromEntries(FACTIONS.map(f => [f, standingWord(repOf(f))])) };
 }
 
@@ -104,9 +105,9 @@ function markStop(p, gov, patrol) {
 // landing, S: the cargo seals, W: who signed the person on and where), the first on a first stop and then whichever it did not ask last. `met` is what the journal
 // (st.customs.met) holds of the last stop with that faction: { q, answer, day }. The words are the `key` lines of scene:customs (hiredscenes.js).
 const PATROL_LT = {
-  'Arcology Compact': { key: 'compact', asks: ['S', 'W'] },
-  'Dome Concord': { key: 'concord', asks: ['W', 'A'] },
-  'Charter League': { key: 'charter', asks: ['A', 'S'] },
+  'Arcology Pact': { key: 'compact', asks: ['S', 'W'] },
+  'Dome Pact': { key: 'concord', asks: ['W', 'A'] },
+  'Guild Federation': { key: 'charter', asks: ['A', 'S'] },
 };
 const lieutenantQuestion = (met, gov) => met ? PATROL_LT[gov].asks.find(q => q !== met.q) : PATROL_LT[gov].asks[0];
 const lieutenantName = gov => PATROL_LT[gov] ? sceneSay('scene:customs', `${PATROL_LT[gov].key}.name`) : '';
@@ -138,7 +139,8 @@ function lieutenantScene(gov, planet) {
 
 // `shade` is how much a gap in the lieutenant's question takes off the chance that saying nothing clears.
 function customsScene(gov, planet, patrol, shade = 0) {
-  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? wantedAboard(gov) : null;
+  const st = G.state, h = hired(), cap = hiredCaptain(), p = customsDue(patrol) ? wantedAboard(gov) : null;
+  const capLike = (k, m) => { if (cap) like(cap, k, m); };  // on the hand's own bridge (#1045) there is no captain to think less of them
   if (!p) return null;
   markStop(p, gov, patrol);
   const officer = patrol && st.crew.map(person).find(q => q && q !== p && tiesOf(q).status[gov] === 'officer');
@@ -149,10 +151,10 @@ function customsScene(gov, planet, patrol, shade = 0) {
   const choices = [], k = (key, vars) => say(patrol ? key.replace('.', '.patrol.') : key, vars);  // the patrol's own words for a key that names the dock
   if (officer) choices.push({ label: say('officer.label', { officer: officer.first }), run() { like(officer, 1, say('officer.memory')); return say('officer.result', { officer: officer.first }); } });
   if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return k('papers.result'); } });
-  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { moveMoney(-4000); like(cap, -1, say('pay.memory')); return k('pay.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { moveMoney(-4000); capLike(-1, say('pay.memory')); return k('pay.result'); } });
   choices.push({ label: say('silent.label'), run() {
     if (Math.random() < weight) return k('silent.clear');
-    const fine = Math.min(purse(), 8000); moveMoney(-fine); like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory')); changeRep(gov, -2);
+    const fine = Math.min(purse(), 8000); moveMoney(-fine); capLike(-1, say('silent.captain.memory')); like(p, -1, say('silent.memory')); changeRep(gov, -2);
     if (p.cast) return k('silent.stay', { fine: fmt(fine) });  // a main character does not leave
     return k('silent.gone', { fine: fmt(fine) }) + gone();
   } });
@@ -162,7 +164,7 @@ function customsScene(gov, planet, patrol, shade = 0) {
       const won = Math.random() < soloOdds('gunner');
       boldWithCaptain(won);  // the captain's nerve (captains.js)
       if (won) { like(p, 1, say('gunner.memory')); changeRep(gov, -1); return say('gunner.win'); }
-      const fine = Math.min(purse(), 8000); moveMoney(-fine); like(cap, -1, say('gunner.lose.memory')); changeRep(gov, -2);
+      const fine = Math.min(purse(), 8000); moveMoney(-fine); capLike(-1, say('gunner.lose.memory')); changeRep(gov, -2);
       const lost = say('gunner.lose', { fine: fmt(fine) });
       return p.cast ? lost + say('gunner.lose.stay') : lost + say('gunner.lose.gone') + gone();
     },
@@ -255,7 +257,7 @@ Mods.register({
       const gov = system().gov;
       if (!isFaction(gov) || gov === 'Pirate') return list;
       const out = [];
-      if (customsDue() && (dockPeople(gov, 'wanted').length || dockPeople(gov, 'exile').length)) out.push({ tier: 1, weight: 4, via: 'crew', make: () => customsScene(gov, planet) });
+      // a crewmate this port's owner wants is met at the lock, with the inspection (inspection.js inspectAtLanding, #1097), not drawn here
       if (dockPeople(gov, 'officer').length) out.push({ tier: 1, weight: 2, via: 'crew', make: () => dockFriendScene(gov, planet) });
       return list.concat(out);
     });

@@ -39,7 +39,7 @@ They like: the range; a checklist done twice; Femi's messages. They don't like: 
 - **Bexa** watches out for them without saying so. Pax knows, and pretends not to.
 - **Cato** spoke for them at the vote. They would do a great deal for Cato.
 - **Tomas** checks their gun's mounts with them and doesn't make a point of it.
-- **The master** frightens them a little, because he decides who goes out of the lock.
+- **The hand, as captain,** decides who goes out of the lock, and Pax watches how they decide.
 - **The hand** is the member nearest their age, and the one they ask things.
 
 ## How they talk

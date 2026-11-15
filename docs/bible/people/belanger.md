@@ -1,16 +1,16 @@
 # Noor Belanger
 
-Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `mars.md` and `work.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `chapter-2.md`, `the-fuel-war.md`, `mars.md` and `work.md`. Amended 2026-11-11: the hand captains the co-op's hull, and the lender's masters are met in the war (`chapter-2.md`).
 
 ## Where she stands
 
 A licensed master, 46, from a hub dome on Mars. One of the four masters in Van Leeuwen & Co.'s pool (`chapter-2.md`), and the cheapest. She commanded convoys for Ballast Security for eight years. She left after a convoy she commanded fired on a freehold's ship that would not stand off; three of its crew died. The inquiry put a mark on her licence. The house keeps her in its pool because she is cheap and very good in a fight.
 
-If the co-op chooses her, she holds the bridge for the co-op and carries out what the player and the meeting decide.
+In chapter two Ballast takes her back to command its convoys in the Belt, as the war rumbles. The co-op meets her across a convoy, beside it or against it.
 
 ## Money
 
-A master's wage from the co-op, lower than the others', because of the mark. Out of it go:
+A convoy master's wage from Ballast, lower than it was, because of the mark. Out of it go:
 
 - her parents' air account in the dome;
 - the lawyer who is trying to have the mark lifted;
@@ -38,14 +38,14 @@ Lines in her voice:
 - "Guns warm. Nobody fires before I say. Nobody."
 - "Yes, I was the master. Yes, three died. Ask what you want to ask."
 - "Ballast pays well. That's the whole of what I'll say for it."
-- "I'm cheap because of the mark. You're getting a bargain. Don't make me prove it."
+- "I'm cheap because of the mark. Ballast knows it. So do I."
 - "Stand off, and nobody has to find out what I'm like."
 
 She doesn't say: the three crew's names, though she knows them; whether she'd fire again.
 
 ## What she wants
 
-The mark lifted, and a bridge she doesn't have to apologise for. In the war she leans to Ballast, through people she still knows: under her the co-op is the hull best able to fight, and the easiest for Ballast to hire.
+The mark lifted, and a bridge she doesn't have to apologise for. In the war she leans to Ballast, through people she still knows: she would see the co-op hired to Ballast's convoys, where a hull that can fight is paid best.
 
 ## Assumptions to confirm
 

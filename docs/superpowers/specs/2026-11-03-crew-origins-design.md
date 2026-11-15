@@ -1,6 +1,6 @@
 # Generated crew sittings by place and circumstance (#871, first slice)
 
-Status: draft for the owner's review, 2026-11-03.
+Status: built for the first slice (#871); the other places are still to write.
 
 ## Goal
 

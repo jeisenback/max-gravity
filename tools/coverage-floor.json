@@ -24,7 +24,9 @@
     "js/suggest.js",
     "js/signon.js",
     "js/fight.js",
-    "js/fightui.js"
+    "js/fightui.js",
+    "js/parts.js",
+    "js/salvage.js"
   ],
   "files": {
     "js/boarders.js": 97,
@@ -54,6 +56,8 @@
     "js/stakes.js": 98,
     "js/suggest.js": 98,
     "js/ui.js": 94,
-    "js/views.js": 98
+    "js/views.js": 98,
+    "js/parts.js": 96,
+    "js/salvage.js": 98
   }
 }

@@ -21,6 +21,11 @@ function pickHappening(where, planet) {
     let r = Math.random() * level.reduce((n, c) => n + c.weight, 0), c = level[0];
     for (const x of level) { if ((r -= x.weight) < 0) { c = x; break; } }
     if (c.quiet) return null;
+    if (c.offer && where === 'transit' && G.transit) {  // one of the people's scenes: an offer on the ship, its scene made only if it is taken (shiplife.js, #1184)
+      const o = c.offer;
+      if (offerOnShip(G.transit, { key: o.key, who: o.who, label: lifeSay(`offer.${o.kind}`, o.vars), make: c.make })) { G.handled = true; return null; }
+      pool = pool.filter(x => x !== c); continue;  // the same one is already up: draw another
+    }
     const ev = c.make();
     if (ev && ev.auto && where === 'transit' && postMode('comms') === 'crewed') {  // a routine hail the comms officer takes
       const text = ev.auto();
@@ -40,7 +45,7 @@ function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
   const s = pickStorylet(where, keep);  // the one roll of its chance: the scene offered is the scene played
   if (!s) return [];
-  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => storyletEvent(s) }];
+  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => (story ? { ...storyletEvent(s), turn: true } : storyletEvent(s)) }];  // turn: a main story's scene, which opens at once at a port with a view (transit.js, #1192)
 }
 
 Mods.register({
@@ -60,7 +65,8 @@ Mods.register({
         if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: BURN_WEIGHTS.breakdown, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
         if ((Mods.hooks.transitEvent || []).length) out.push({ tier: 1, weight: BURN_WEIGHTS.transitHook, via: 'ship', make: () => Mods.filter('transitEvent', null) });
         const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
-        if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); } });
+        if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); },
+          ...(pax.pid && G.state.people[pax.pid] ? { offer: { kind: 'passenger', key: `pax:${pax.pid}`, who: pax.pid, vars: { first: G.state.people[pax.pid].first } } } : {}) });  // an offer, #1184
         const arcs = st.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
         if (arcs.length) out.push({ tier: 2, weight: BURN_WEIGHTS.crewArc, via: 'crew', make() { const id = pick(arcs), step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; } });
         out.push({ tier: 2, weight: BURN_WEIGHTS.trait, via: 'crew', make: crewTraitEvent });
@@ -84,10 +90,9 @@ Mods.register({
       return list.concat(out);
     });
     M.on('landed', planet => {
-      if (G.dialog && G.nextEvent) return;  // nowhere to put a scene, and none is used up
+      if (landingSceneCount() >= 2) return;  // a landing with two scenes already has its share: none is drawn, and none used up (#1096)
       const ev = pickHappening('port', planet);
-      if (!ev) return;
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      offerScene(ev && ev.turn ? 'turn' : 'ambient', ev);
     });
   },
 });

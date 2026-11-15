@@ -8,6 +8,17 @@ Status: draft for the owner's review, 2026-11-08. Built on `shape.md`, `chapter-
 
 Each later chapter keeps the funnel of `shape.md`: a short written start that says where the player now stands, a long stretch the world carries, and a decision that sets where the next chapter starts. The spine thins with each one. By chapter 6 the written start is a page and the decision is the player's own.
 
+## How the later chapters play
+
+Each chapter stays its own slice, a little wider than the one before. What *King of Dragon Pass* lends is how a wider slice plays, not a new structure:
+
+- **The ring.** Decisions are argued by the people around the player, and the ring grows with the chapters: the crew, the co-op's members, a fleet's masters, a bloc's delegates. Their sheets and opinions are the ones the game already keeps.
+- **The calendar and the pool.** Time passes in the same days and burns; events come from one pool, drawn by what the player holds and the state of the world.
+- **Holdings.** What *King of Dragon Pass* does not have: hulls to crew and refit, outposts to supply. Each chapter adds one kind, and what a path keeps stays in the later chapters, so on the organiser's path a run may hold two hulls and a rock by chapter 6. A path that sells or scatters keeps less: chapter 2's sell vote leaves no co-op hull.
+- **A coarser step.** A day at a time does not carry two hulls and an outpost. The later chapters pass time in larger steps (a burn, a month, a season), and the player can still drop into a day aboard or ashore when a scene wants it. This is an assumption to test before chapter 4 is built.
+- **Succession.** From chapter 4, when the hand dies or retires, the run goes on with someone from the ring, at a cost: the holdings kept, the money and a lost ship gone, standing and regard cut. Before chapter 4 a death ends the run. `js/legacy.js` does most of this for the parked owner game (the company kept, money halved, the lost ship and its crew gone, standing and regard halved), with an heir by a new name; drawing the heir from the ring is new.
+- **The levers.** A fleet or a place puts the player where the owners and agencies stood in chapter 1: hiring ratings, setting deductions, signing charters. The endings read what the player did with them.
+
 ## The chapters
 
 | Chapter | Where the player stands | What is theirs |
@@ -58,11 +69,20 @@ The goal endings of `shape.md` land in this chapter for most runs: a fleet organ
 
 A thing from outside the Belt's politics, which every bloc of chapter 6 has to answer, together or not. It is a finale: what the player built is put to the test, and the run ends on what held. The rule of `shape.md` stands: no interstellar war, no great power, this one system. So the threat is from outside the Belt, not outside the system.
 
-**The threat is not settled.** Three fit the rule, and the page names them so the choice is made against the world and not in the code:
+**The threat is a pool** (the owner, 2026-11-14): each run meets one, drawn from what that run's world became, so the finale is the run's own and not a coin. All of them share one frame, built once: the written start, the blocs deciding whether to answer together, the test of what the player built, and the endings, which read the record. Each threat is a set of events on that frame, and its cost is the new system it needs.
 
-1. **The arcologies act together.** Earth's holding companies (`README.md`: the arcologies replaced the nations) have stayed home through the whole war, with the lift and the largest yards. They come to end it on their terms: a combined fleet, a settlement imposed, a levy on everything that moves. The one power the Belt has always feared, and the first time it moves as one. Every bloc decides whether to bend, bargain or fight, and standing is what is spent. Uses everything built; changes nothing in the bible.
-2. **The sky.** A long-period comet breaking up through the Belt, or a solar maximum that burns relays and strands ships for weeks. No enemy, only a thing the blocs answer together or do not. Strong on the outposts' survival side, weaker as a finale, since nobody chose it.
-3. **Something returns.** A ship that left generations ago on a slow drive comes back, changed. Human, so the rule is only bent, but a new kind of thing in the world, and it would need pages of its own before anything else.
+| Threat | What it is | What makes it likely | Reuses | Cost |
+|---|---|---|---|---|
+| **The fuel fails** | the enrichment plants fail in a cascade (a plant shelled in the war, upkeep put off to pay for guns), and deuterium runs short across the system | a long war; plants damaged or neglected | the fuel economy, the depots, the war (`the-fuel-war.md`) | low |
+| **The paper fails** | the finance houses' notes collapse; every loan, charter and share is called or worthless | the houses lending deep into the war (`economy.md`, Money) | money, the loans, the shares, the houses | low |
+| **The well closes** | Earth stops the lift: no finance, medicine or people up, no metal down | the Belt winning more of its own way than Earth will bear | the markets and the goods (`trade-goods.md`) | low |
+| **The arcologies act** | Earth's holding companies end the war on their terms: a combined fleet, a settlement imposed, a levy on everything that moves | the war going on too long, or a bloc growing too strong | fights, the fleets of chapter 4, the blocs | medium |
+| **The sky** | a long-period comet breaking up through the Belt, or a solar maximum that burns the relays and strands ships for weeks | none: the one that is not the world's doing | hazards, the relays, the outposts | medium |
+| **Something returns** | a ship that left generations ago on a slow drive comes back, changed | none | little; a new people, their pages and voice | high, and it bends the rule |
+
+**The order of building:** the frame with the three that cost little (the fuel, the paper, the well), which the record chooses between; then the arcologies, if a run needs an enemy with a face; the sky as a fourth. Something returning, and anything alien beyond the grades (`technology.md`), are left out unless the owner chooses to bend the rule.
+
+A player sees one threat a run, so the pool is for replay, not for one run. Every threat multiplies the endings by how the blocs answered it, and each needs its own pins and soak.
 
 The decision is the run's last: the ending reads the record of all seven chapters (`shape.md`, Endings).
 
@@ -74,6 +94,7 @@ So that these chapters can be built without reopening chapter 2:
 - **A hull is a record** with a name, a registry, a master and a crew, so that a second hull in chapter 4 is another of the same and not a special case of the player's.
 - **A site is a place** (`ROADMAP.md`, 7, step 1): a rock the outpost of chapter 5 can be founded on is a site that stays.
 - **The war's state** is the world's, read by every chapter, as `the-fuel-war.md` has it.
+- **The record keeps what chapter 7 is drawn from:** how long the war ran, the state of the enrichment plants, how deep the houses lent, and how far the Belt went its own way.
 
 ## Assumptions to confirm
 
@@ -81,5 +102,8 @@ So that these chapters can be built without reopening chapter 2:
 - Fleet combat arrives in chapter 4 as a convoy on the sensor board, an option beside the single-hull raid, and not a new kind of combat.
 - The outpost of chapter 5 is of the Belt's kinds of place, and its industry is the economy borrowing.
 - The blocs of chapter 6 are the league of co-ops, the freeholds' assembly, an owner's charter and the havens' families; standing is what is spent in them.
-- Chapter 7 is a threat from outside the Belt's politics and inside the system; which one is open, with the arcologies acting together as the written case.
+- Chapter 7's threat is drawn per run from a pool of six, by the run's record, on one shared frame; the fuel, the paper and the well are built first.
 - The parked milestones come back under this map and are not rebuilt from nothing.
+- The later chapters play as *King of Dragon Pass* does: a growing ring, one pool, holdings a path keeps.
+- Time passes in a coarser step than a day from chapter 4, with a drop into a day; to be tested.
+- From chapter 4 a death or a retirement passes the run to someone from the ring, at a cost.

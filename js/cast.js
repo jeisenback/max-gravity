@@ -154,7 +154,7 @@ const CAST = {
         ],
       },
       pivot: {
-        days: 60, title: 'Cold Thrusters',
+        days: 60, title: 'Cold Thrusters', room: 'bridge',  // she flies it in; "the drive" put it in the engine room (#1170)
         get text() {
           return 'The drive trips on final approach and won\'t relight, with the dock a few kilometres off and closing. There\'s nothing to slow the ship but the thrusters. Ines has both hands on the controls and the docking software off. "I can bring her in on these," she says. "Same as the practice, with less room. Somebody on the abort."'
             + castRiskLines();
@@ -186,11 +186,15 @@ const CAST = {
         bad: ['{who} says the rent on {home} has gone up again', '{who} says the yard has laid off another shift, and the stall is quiet', '{who} says Chidi is in the ring clinic with a fever, and the clinic wants paying first'],
       },
     },
-    chatter: ['Tomas is swearing at a seized valve in Igbo, quietly and steadily.',
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
         'Tomas: "The pump\'s noisy because the bearing\'s going. Running fine and noisy aren\'t the same thing."',
         'Tomas is copying numbers from his terminal into a paper notebook.',
         'Tomas is watching the Lagos Orbitals on a two-day-old recording, with the score hidden.',
-        'Tomas: "I did it right the first time. Now I\'m doing it right the second time."'],
+        'Tomas: "I did it right the first time. Now I\'m doing it right the second time."',
+      ],
+      engine: ['Tomas is swearing at a seized valve in Igbo, quietly and steadily.'],
+    },
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
       walk: 'Tomas racks and labels his tools before he goes, so the next engineer can find them. He takes his bag down the ramp at {planet}.',
@@ -224,7 +228,7 @@ const CAST = {
         ],
       },
       intro: {
-        title: 'The Service',
+        title: 'The Service', room: 'engine',  // the coolant pump: no room word, so it fell back to the galley or the night's watch post (#1170)
         text: ('Tomas has the covers off the coolant pump, with the parts laid out on a rag in the order they came off. "The last engineer skipped it," he ' +
             'says. "The schedule says every two thousand hours. The software doesn\'t give anyone the hours to do it, so it doesn\'t get done." He holds up ' +
             'a seal, cracked through. "That\'s what not getting done looks like."'),
@@ -332,9 +336,17 @@ const CAST = {
     skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
     ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
     bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
-    chatter: ['Yelena is arguing with the ring-ball feed. The feed is losing.', ('Yelena: "A gun is just a very serious ball. Same principle. You don\'t' +
-        ' look at the thing, you look at where it\'s going to be."'), ('Yelena is doing knee exercises in the corridor with the grim cheer of a ' +
-            'woman who has been told to.'), 'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."', 'Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it\'s not regulation.'],
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        ('Yelena: "A gun is just a very serious ball. Same principle. You don\'t' +
+          ' look at the thing, you look at where it\'s going to be."'),
+        ('Yelena is doing knee exercises in the corridor with the grim cheer of a ' +
+          'woman who has been told to.'),
+        'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."',
+      ],
+      galley: ['Yelena is arguing with the ring-ball feed. The feed is losing.'],
+      gunnery: ['Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it\'s not regulation.'],
+    },
     scenes: {
       meet: {
         title: 'The Striker at the Rail',
@@ -406,7 +418,7 @@ const CAST = {
         choices: [
           {
             label: 'Take her watch',
-            effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' } },
+            effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' }, standWatch: { stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' } },
             result: 'You tell her to go. She doesn\'t argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
               'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there\'s a ' +
               'small black raven drawn on the back of your hand, in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line ' +
@@ -414,7 +426,7 @@ const CAST = {
           },
           {
             label: '"It\'s your watch."',
-            effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 } },
+            effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 }, standWatch: { stands: 'yelena', post: 'gunnery', relieved: null } },
             result: '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or ' +
               'after. She runs every drill on the board while she\'s up there, twice, faster the second time. When you come to relieve her she\'s at ' +
               'the guns with her chin up.',
@@ -469,15 +481,19 @@ const CAST = {
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
     bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
-        'they\'d pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
+        'they\'d pay. When the Dome Pact closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
-    chatter: [
-      'Ruben: "Mars isn\'t quiet. It\'s listening. You can hear the difference if you hold still."',
-      'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.',
-      'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.',
-      'Ruben: "The dome at Hellas is short of pumps, and it\'s telling everyone it\'s short of morale. Remember that."',
-      'Ruben is humming along with a dome council meeting, and has gone gently pink with indignation on behalf of the chair.'
-    ],
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        'Ruben: "Mars isn\'t quiet. It\'s listening. You can hear the difference if you hold still."',
+        'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.',
+        'Ruben: "The dome at Hellas is short of pumps, and it\'s telling everyone it\'s short of morale. Remember that."',
+        'Ruben is humming along with a dome council meeting, and has gone gently pink with indignation on behalf of the chair.',
+      ],
+      bridge: [
+        'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.',
+      ],
+    },
     scenes: {
       meet: {
         title: 'The Man with the Relay',
@@ -603,13 +619,17 @@ const CAST = {
     skills: { pilot: 3, engineer: 1, slicer: 1, gunner: 0 }, captain: { trade: 3, nerve: 3, thrift: 4 },
     ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
     bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she doesn\'t talk about the list unless you ask the right way.',
-    chatter: [
-      'Bexa: "I\'ve never been aboard a dead one. Cold, yes. The lights on a timer, and the log waiting for somebody to read it."',
-      'Bexa is flying with both hands on the stick and her thumbs tucked under, the way you hold something that might slip.',
-      'Bexa has a brass tag on a string above the console. She won\'t say whose it was.',
-      'Bexa: "In the Belt we don\'t leave a ship. Not for money. Not for orders. You tow her home."',
-      'Bexa is humming a tug-pilot lullaby, low, to the transponder.'
-    ],
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        'Bexa: "I\'ve never been aboard a dead one. Cold, yes. The lights on a timer, and the log waiting for somebody to read it."',
+        'Bexa: "In the Belt we don\'t leave a ship. Not for money. Not for orders. You tow her home."',
+      ],
+      bridge: [
+        'Bexa is flying with both hands on the stick and her thumbs tucked under, the way you hold something that might slip.',
+        'Bexa has a brass tag on a string above the console. She won\'t say whose it was.',
+        'Bexa is humming a tug-pilot lullaby, low, to the transponder.',
+      ],
+    },
     scenes: {
       meet: {
         title: 'The Tug Pilot',
@@ -744,13 +764,17 @@ const CAST = {
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
     bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',
-    chatter: [
-      'Pax is on the range, again, with a perfect score and a tight jaw.',
-      'Pax: "I know the numbers. The numbers are fine. It\'s the part after the numbers I\'m bad at."',
-      'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.',
-      'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.',
-      'Pax: "It\'s funny. I\'m not nervous when it\'s only me and the target. It\'s when there\'s somebody beside me."'
-    ],
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        'Pax: "I know the numbers. The numbers are fine. It\'s the part after the numbers I\'m bad at."',
+        'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.',
+        'Pax: "It\'s funny. I\'m not nervous when it\'s only me and the target. It\'s when there\'s somebody beside me."',
+      ],
+      gunnery: [
+        'Pax is on the range, again, with a perfect score and a tight jaw.',
+        'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.',
+      ],
+    },
     scenes: {
       meet: {
         title: 'The Kid at the Range',
@@ -1183,7 +1207,7 @@ const castSceneId = (key, sc, shown) => { const e = Object.entries({ ...CAST[key
 const castScene = (key, sc) => {
   const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc;
   if (s.flag) captainFlag(s.flag);  // a fact the open reading tells (the captain's secret, #283): the goodbye reads it, as it does when the captain tells it
-  const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices });  // the editor's words, if any (storylets.js)
+  const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices, ...(s.room ? { room: s.room } : {}) });  // the editor's words, if any (storylets.js); `room`: where it is acted out on a burn, when its words would mislead (shiplife.js sceneStage)
   return { ...scene, choices: scene.choices.map(c => dataChoice(c)) };
 };
 
@@ -1200,7 +1224,8 @@ Mods.register({
           // one plays within the chapter; the introduction is tier 1, the later ones tier 2.
           const rec = castRec(p.cast), intro = n.name === 'intro', missed = rec.wait || 0;
           rec.wait = missed + 1;  // a miss unless make() runs and clears it
-          out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); } });
+          out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); },
+            ...(n.name === 'pivot' || intro ? {} : { offer: { kind: 'cast', key: `cast:${p.cast}`, who: p.id, vars: { first: p.first } } }) });  // an offer on the ship; an introduction and a fate scene open at once (#1184; the owner, 2026-11-14: every player meets them)
         }
       } else if (castDue()) {
         const key = castDue();

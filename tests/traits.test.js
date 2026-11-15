@@ -14,10 +14,10 @@ const { HAND_TRAITS, RECORD_KEYS, recordAdd, handTraits, hasTrait, recordWords }
 const IDS = ['cool-head', 'salvager', 'marked', 'reliable', 'scarred', 'hard-case', 'runner', 'jonah'];
 const hand = record => ({ record });
 
-test('the table has the eight traits in order, each with a name, a speaker and a rule; the record has nineteen keys', () => {
+test('the table has the eight traits in order, each with a name, a speaker and a rule; the record has twenty-two keys (the last three for salvage, #965)', () => {
   assert.deepEqual([...HAND_TRAITS.map(t => t.id)], IDS);
   for (const t of HAND_TRAITS) { assert.ok(t.name, t.id); assert.ok(['captain', 'engineer', 'shipper', null].includes(t.by), `${t.id}: ${t.by}`); assert.equal(typeof t.earned, 'function'); }
-  assert.equal(RECORD_KEYS.length, 19);
+  assert.equal(RECORD_KEYS.length, 22);
 });
 
 test('recordAdd counts, makes the record where there is none, and returns the traits earned by that add and not before', () => {
@@ -115,7 +115,7 @@ test('a moment over a fight panel goes to the comms and leaves the panel; an own
   await done();
 });
 
-test('each site writes its count: the repel, the assault, the fight\'s end, the run, the ice home, the delivery, the heave-to, the citation, the rock, the hand hurt, a casualty', async () => {
+test('each site writes its count: the repel, the assault, the fight\'s end, the run, the ice home, the delivery, the inspection, the citation, the rock, the hand hurt, a casualty', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -126,16 +126,18 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
     s = assaultStart(makeEnemy({ kind: 'pirate', shipId: 'raider' })); assaultSettle(s, true, ''); out.carried = rec().boardingsWon;
     startDuel({ kind: 'pirate' }, false); let f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'broke'); out.won = rec().fightsWon;
     startDuel({ kind: 'pirate' }, false); f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'ran'); out.ran = rec().fightsRan; G.nextEvent = null; G.dialog = null;
-    const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Compact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
+    const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Pact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
     h.run = { ice: { edge: 3 }, tons: 20 }; iceHome(3); iceHome(-2); out.hauls = [rec().haulsClean, rec().haulsBad];
-    const stop = contactEvent({ kind: 'patrol', gov: 'Arcology Compact' }); stop.choices.find(c => /heave|Cut your drive/i.test(c.label)).run(); out.heave = rec().fines;
+    const here = currentPlanet(), run = due => ({ contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due, cost: 0, profit: 30000 });
+    st.cargo.water = 10; h.run = run(st.day + 5); settleRun(here); st.cargo.water = 10; h.run = run(st.day - 1); settleRun(here); out.delivered = [rec().onTime, rec().late];  // the delivery, on the day and late (hired.js settleRun)
+    const inspect = inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); inspect.choices[inspect.choices.length - 1].run(); out.heave = rec().fines;  // keeping out of it (inspection.js)
     citation(); out.cited = rec().fines;
     hurtHand({ hurt: new Set() }); out.hurt = rec().hurts;
     const c = repelStart(foe(), 'half'); c.covered = true; c.hurt = new Set(); c.dead = []; c.marked = []; Math.random = () => 0.99; repelCasualty(c, st.crew[0]); Math.random = real; out.mate = rec().matesHurt;
     return out;
   });
   assert.deepEqual([r.held, r.lost, r.carried, r.won, r.ran], [1, 1, 1, 1, 1]);
-  assert.deepEqual(r.fled, [1, 1]); assert.deepEqual(r.hauls, [1, 1]); assert.equal(r.heave, 1); assert.equal(r.cited, 2); assert.equal(r.hurt, 1); assert.equal(r.mate, 1);
+  assert.deepEqual(r.fled, [1, 1]); assert.deepEqual(r.hauls, [1, 1]); assert.deepEqual(r.delivered, [0, 1], 'one on the day, then one late, which resets the run of days'); assert.equal(r.heave, 1); assert.equal(r.cited, 2); assert.equal(r.hurt, 1); assert.equal(r.mate, 1);
   await done();
 });
 
@@ -194,24 +196,27 @@ test('Salvager reads the seam on the rock, and Scarred ends a bar fight with no 
 
 // ---------- the readings (one line at a knob that exists) ----------
 
-test('Marked halves a pirate\'s pay-off and raises the heave-to fine; Hard Case costs two more points at a stop; Runner meets a raider ten km nearer', async () => {
+test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner meets a raider ten km nearer', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(doorHelpers);
   const r = await ev(() => {
-    const st = setup(), h = hired(), out = {}, gov = 'Arcology Compact'; burn(); fixEnemy();
+    const st = setup(), h = hired(), out = {}; burn(); fixEnemy();
     const pay = () => { const c = contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost); const cr = st.credits; c.run(); return cr - st.credits; };
     st.credits = 200000; const plainPay = pay(); st.credits = 200000; const plainFine = heaveToFine();
     h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
-    const stop = () => { const rep0 = repOf(gov); contactEvent({ kind: 'patrol', gov }).choices.find(c => /Heave to/.test(c.label)).run(); return repOf(gov) - rep0; };
-    h.record = {}; st.rep[gov] = 0; h.fund = 100000; const plainRep = stop(); h.record = { boardingsWon: 2 }; st.rep[gov] = 0; h.fund = 100000; out.rep = [plainRep, stop()];
     const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
     h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
+    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    h.record = {}; const plainNavy = navyBand(); h.record = { fightsRan: 3 }; out.navy = [plainNavy, navyBand()];
+    const payGate = () => !contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost).can();
+    st.credits = 3000; h.record = {}; out.gate = [payGate()]; h.record = { fines: 2 }; out.gate.push(payGate());
     return out;
   });
   assert.ok(r.pay[0] > 0 && r.pay[1] === Math.round(r.pay[0] / 2), `the pay-off ${r.pay}`);
   assert.equal(r.fine[1], Math.round(r.fine[0] * 1.2), `the fine ${r.fine}`);
-  assert.equal(r.rep[1], r.rep[0] - 2, `the standing ${r.rep}`);
   assert.deepEqual(r.band, ['long', 'mid'], 'a raider at 40 km, 30 with Runner');
+  assert.equal(r.navy[1], r.navy[0], 'Runner: pirates close faster, a patrol does not (#1010)');
+  assert.deepEqual(r.gate.map(Boolean), [true, false], 'with 3,000 cr: the pay-off of 5,000 is closed, and Marked\'s 2,500 is open (#1010)');
   await done();
 });
 
@@ -243,8 +248,8 @@ test('a hurt that kills the hand says no moment, the search\'s fine is on the re
     out.planned = { option: !!o, rocks: h.record.rocksFound || 0 };
     h.run = { ice: { edge: 0 }, tons: 20, site: o && o.site }; h.stay = null; G.mode = 'landed'; G.dialog = null; siteArrival(st); out.arrived = h.record.rocksFound || 0; G.dialog = null;
     h.record = { ...h.record, hurts: 1 }; h.traitsTold = [];
-    const f = { hurt: new Set(), dead: [], marked: [], ashore: false, d: { foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0 }, state: { kind: 'ship' }, spec: { kind: 'pirate' } };  // made before the stub: the foe's maker draws
-    const rnd = Math.random; let first = true; Math.random = () => { if (first) { first = false; return 0; } return rnd(); };  // the death roll lands; a constant random would hang the ending's generators
+    const f = { youHurt: true, hurt: new Set(), dead: [], marked: [], ashore: false, d: { foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0 }, state: { kind: 'ship' }, spec: { kind: 'pirate' } };  // made before the stub: the foe's maker draws
+    const rnd = Math.random; let first = true; Math.random = () => { if (first) { first = false; return 0; } return rnd(); };  // hurt already this fight, so the death roll is made (a first hurt never kills, #1157), and it lands; a constant random would hang the ending's generators
     hurtHand(f); Math.random = rnd; out.death = { told: [...h.traitsTold], died: !!h.died };
     return out;
   });

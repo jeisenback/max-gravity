@@ -28,7 +28,7 @@ Open space is policed by nobody in particular. Security companies escort ships f
 
 ## The old three powers
 
-The code's Arcology Compact, Dome Concord and Charter League become loose agreements: a bond market and licence-recognition pact among the arcologies, a patrol pact among the domes, a federation of the Belt guilds. They are not governments. What replaces their navies, economies and wars in the game is still to be designed.
+The code's Arcology Compact, Dome Concord and Charter League become loose agreements: a bond market and licence-recognition pact among the arcologies, a patrol pact among the domes, a federation of the Belt guilds. They are not governments. They are the blocs of `owners.md` (the Arcology Pact, the Dome Pact, the Guild Federation), and the owners inside them are the powers that act.
 
 ## Assumptions to confirm
 

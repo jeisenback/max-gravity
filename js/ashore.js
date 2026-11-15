@@ -42,7 +42,7 @@ const errandKind = p => ((G.state.injured || {})[p.id] ? 'clinic' : cultureOfPer
 // A culture has three errands, taken by the day (#777); the clinic, which plays only when someone is hurt, has one.
 function errandEvent(p, kind = errandKind(p)) {
   const say = familySay('errand'), v = { n: p.first, port: G.state.planet, home: p.home }, e = kind === 'clinic' ? kind : tellingOn(kind, G.state.day);
-  return { title: say('title', v), text: say(`${e}.text`, v), choices: [
+  return { title: say('title', v), text: say(`${e}.text`, v), place: kind === 'clinic' ? 'clinic' : 'market', choices: [  // where it happens on a port's view (portview.js, #1103)
     { label: say(`${e}.go.label`, v), run() { like(p, 1, say(`${e}.go.memory`, v)); return say(`${e}.go.result.${pick([0, 1])}`, v); } },
     { label: say('stay.label', v), run: () => say(`${e}.stay.result`, v) },
   ] };
@@ -60,7 +60,7 @@ Mods.register({
       if (line) comm(`[Ship] ${line}`);
     });
     M.filter('happenings', (list, where) => {
-      if (where !== 'port' || G.dialog || G.nextEvent) return list;  // an errand takes a landing's turn only when nothing else is up, so it does not stack (#788)
+      if (where !== 'port' || G.dialog || G.nextEvent || landingSceneCount()) return list;  // an errand takes a landing's turn only when nothing else is up, so it does not stack (#788, #1096)
       const p = errandDue(G.state);
       return p ? list.concat([{ tier: 2, weight: 1, via: 'crew', errand: true, make() { p.errandAt = G.state.day; return errandEvent(p); } }]) : list;
     });

@@ -8,29 +8,11 @@
 // way the main characters are. A hired save with no `captainKey` keeps the generated captain it was made with.
 
 const CAPTAINS = {};
-const MASTER_CAPTAINS = {};  // the lender's masters (chapter two, #891): kept apart from chapter one's captains, who each come with a first officer
+const MASTER_CAPTAINS = {};  // the lender's four masters (#891), people met in chapter two's war (#1045), none aboard: kept apart from chapter one's captains, who each come with a first officer
 const captainDef = key => CAPTAINS[key] || MASTER_CAPTAINS[key] || null;  // a captain or a master, by key
 
 const captainEntry = () => { const h = hired(); return (h && h.captainKey && captainDef(h.captainKey)) || null; };
 const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds
-
-// The lender's masters (chapter two, #891): four in its pool (js/captains/saran.js and the rest), three sent to the co-op. The draw rolls the co-op's own
-// dice, kept on the hand's record and seeded from the day the share was signed, the day the hand signed on and the names of the game's people, which differ from game to game,, so it shifts no other system's rolls (as ship life's).
-const MASTERS = ['saran', 'kessler', 'mensah', 'belanger'];
-function coopRand(st) {
-  const h = st.hired;
-  if (typeof h.coopRng !== 'number') { let x = 2166136261; for (const ch of `${h.signed}|${h.since}|${Object.values(st.people || {}).map(p => `${p.first}${p.last}`).join(',')}`) x = Math.imul(x ^ ch.charCodeAt(0), 16777619); h.coopRng = x >>> 0; }
-  return () => {
-    let x = (h.coopRng = (h.coopRng + 0x6D2B79F5) >>> 0);  // mulberry32
-    x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
-    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function masterDraw(rnd) {
-  const left = [...MASTERS], out = [];
-  while (out.length < 3) out.push(left.splice(Math.floor(rnd() * left.length), 1)[0]);
-  return out;
-}
 
 // The captain's person record, built from the entry the way castPerson builds a main character's.
 function captainPerson(key) {
@@ -43,7 +25,7 @@ function captainPerson(key) {
 
 // ---------- what a captain does and says ----------
 let leavingCaptain = null;  // the captain a goodbye is with: the hired game is over by the time its choice is made
-const captainLike = (n, memory) => like(leavingCaptain || hiredCaptain(), n, memory);
+const captainLike = (n, memory) => { const cap = leavingCaptain || hiredCaptain(); return cap ? like(cap, n, memory) : undefined; };  // no captain (an owner's game): nobody to think less of you
 const captainFlag = name => { const h = hired(); if (h) (h.flags = h.flags || {})[name] = true; };  // (an owner has no captain to remember)
 const hiredPostName = () => POSTS[hired().post].name.toLowerCase();
 
@@ -123,7 +105,7 @@ function boldWithCaptain(won) {
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 
 // The first arrival: settleRun (hired.js) keeps the first run's figures in h.first instead of the one-line note, and the first officer
-// settles up at the port, opened by hired.js's own 'landed' handler (which runs before the others, so before any landing scene or station call). The page's words are the lines of
+// settles up at the port, offered by hired.js's own 'landed' handler as the landing's settling up, after customs and before the rest (transit.js offerScene, #1096). The page's words are the lines of
 // 'scene:settling-up' (hiredscenes.js); the first officer's are the cast entry's `arrival`: open, memory, column (the captain's name is {cap}), pace, which that row lists as theirs. An older save with runs behind it has no h.first, so it never plays.
 const arrivalWanted = () => { const xo = hiredXo(); return !!(xo && CAST[xo.cast].arrival); };
 function arrivalPending(planet) {
@@ -230,7 +212,9 @@ Mods.register({
       if (!name) return list;
       const h = hired(), missed = h.beatWait || 0;
       h.beatWait = missed + 1;  // a miss unless make() runs and clears it
-      return list.concat([{ tier: beatTier(G.state), weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); } }]);
+      const cap = hiredCaptain();
+      return list.concat([{ tier: beatTier(G.state), weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); },
+        ...(cap ? { offer: { kind: 'captain', key: 'captain', who: cap.id, vars: { last: cap.last } } } : {}) }]);  // an offer on the ship (#1184)
     });
   },
 });

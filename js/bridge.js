@@ -117,7 +117,7 @@ function fightCard() {
     conRead('Guns', `${me.guns}, aimed at her weapons, drive, lock or hull`),
     conRead('Heat', `a shot adds 1, overcharged ${FIGHT.OVER_HEAT}; over ${FIGHT.HEAT_CAP} a gun locks for a turn`),
     ...(me.launcher ? [conRead('Torpedoes', role().canTrade ? `${Math.min(TORP_MAX, G.state.torpedoes || 0)} of ${TORP_MAX}` : `${torpsShown()}, ${sceneSay('scene:screens', 'torps.kept', { n: HAND_TORPS })}`)] : []),  // on a captain's ship, hers (#956)
-    conRead('Turret', me.pdc ? `held back, it takes ${pct(FIGHT.PDC_HOLD)}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
+    conRead('Turret', me.pdc ? `held back, it takes ${pct(heldCut())}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
     conRead('Moves', moves.length ? moves.map(id => fightSay(`move.name.${id}`)).join(', ') : 'none yet: the crew teach them on a burn'),
   ].join(''));
 }
@@ -157,7 +157,7 @@ function deckSvg() {
   const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff';
   const homeRoom = role => HAUNTS[role] ? Object.entries(HAUNTS[role]).sort((a, b) => b[1] - a[1])[0][0] : 'berths';
   const placed = Object.keys(POSTS).map(id => ({ room: homeRoom(POSTS[id].role), o: postOccupant(id) }));
-  placed.push({ room: 'bridge', o: hired() ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge
+  placed.push({ room: 'bridge', o: role().captain === 'npc' ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge: the hand's, on their own (#1045)
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   for (const c of crewMembers()) if (!holders.has(c)) placed.push({ room: homeRoom(c.role), o: { who: c } });
   const rooms = ROOMS.map(r => {
@@ -192,10 +192,10 @@ function deckSvg() {
     <text x="30" y="26" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
 }
 
-// The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
+// The Interior station as a console: the deck plan and who has which post.
 function interiorPanel() {
   const st = G.state, t = G.transit, crew = crewMembers();
-  const captainRow = conRead('Captain', raw(hired() ? personLink(hiredCaptain()) : `${youLink()}, in command`));
+  const captainRow = conRead('Captain', raw(role().captain === 'npc' ? personLink(hiredCaptain()) : `${youLink()}, in command`));
   const posts = captainRow + Object.keys(POSTS).map(id => {
     const o = postOccupant(id), h = postHolder(id);
     const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');
@@ -204,12 +204,10 @@ function interiorPanel() {
   // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   const off = crew.filter(c => !holders.has(c)).map(c => conRead(raw(personLink(c)), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
-  const free = t && phase() === 'move' && lifeFree(t);
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
     screen: `<svg class="con-plant" viewBox="18 14 604 ${deckPlanH(LAYOUTS.freighter) - 14}" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
     side: conCard('Posts', posts) + (off ? conCard('Off post', off) : ''),
-    controls: t ? `<div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>` : '',
   });
 }
 
@@ -253,7 +251,7 @@ UI.views.port = function () { return (hired() && chapterOf(G.state) === 1 ? (for
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return engineerPanel() + (hired() && chapterOf(G.state) === 1 ? buyInHtml() : shipyardView.call(this)); };  // the share's offer is chapter one's; the co-op refuels, repairs and fits out (#891)
+UI.views.shipyard = function () { return engineerPanel() + (hired() && chapterOf(G.state) === 1 ? (forShare() ? '' : buyInHtml()) : shipyardView.call(this)); };  // the share's offer is chapter one's, and at the co-op's office it is on the Port page, not here too (#1098); the co-op refuels, repairs and fits out (#891)
 
 // ---------- the viewscreen at port ----------
 
@@ -283,6 +281,13 @@ function drawViewscreen(time) {
   g.setTransform(d, 0, 0, d, 0, 0);
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
   if (!p) return;  // a save whose port is unknown: the sky alone
+  const view = c.classList.contains('view') && portLayout(p, st);
+  if (view) {
+    const now = portViewNow(p, view); G.portRooms = drawPortView(g, w, h, view, time, now.hour, now.cast, now.look);
+    const rooms = G.portRooms.filter(b => b.id && b.w), heads = G.portRooms.filter(b => b.head).map(b => ({ id: b.head.id, head: b.head }));  // a landing's offers as tags (portview.js, #1192)
+    G.portOfferBoxes = drawDowntimeTags(portOffersNow(p, view, now.cast), rooms, heads, { x: 0, y: PORT_BAR, w, h: h - PORT_BAR }, g);
+    return;
+  }  // a port drawn as a place, on its Port page, with its people (portview.js, #1101, #1102)
   if (p.site) { const r = sunLight(); return drawSiteVista(g, w, h, p, { angle: Math.sin(r.angle) > 0 ? -r.angle : r.angle, strength: r.strength }); }  // on station: the rock (sites.js)
   const img = vistaImage(p.name);
   if (img) {  // cover the strip, centred
@@ -339,11 +344,10 @@ function buildBridgeKeys() {
   const sheet = Object.assign(document.createElement('div'), { id: 'bsheet', hidden: true });
   document.body.append(sheet, keys);
   const click = e => {
-    const k = e.target.closest('[data-bst]'), down = e.target.closest('[data-bdown]'), act = e.target.closest('[data-action]'), t = G.transit;
+    const k = e.target.closest('[data-bst]'), act = e.target.closest('[data-action]');
     if (e.target.closest('[data-bclose]')) { Sfx.click(); G.bridgeOpen = null; syncBridge(true); }  // the sheet's own close button (#913)
     else if (act && !act.disabled) { Sfx.click(); Mods.act(act.dataset.action, act.dataset.arg); syncBridge(true); }
     else if (k) { G.bridgeOpen = G.bridgeOpen === k.dataset.bst ? null : k.dataset.bst; Sfx.click(); syncBridge(true); }
-    else if (down && !down.disabled && t && !t.event) { Sfx.click(); G.bridgeOpen = null; openEvent(downtimeEvent()); }
   };
   keys.addEventListener('click', click);
   sheet.addEventListener('click', click);

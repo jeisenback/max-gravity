@@ -45,7 +45,7 @@ const capLike = (c, n, memory) => like(c.cap, n, memory);
 const learnNote = n => ` (+${n} experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`;
 const learn = n => { gainSkill(hired().post, n); return learnNote(n); };
 const castKeys = () => castAboard().map(m => m.cast);
-const handEvent = (title, text, choices) => ({ title, text, choices, via: 'crew', personal: true });
+const handEvent = (title, text, choices, room) => ({ title, text, choices, via: 'crew', personal: true, ...(room ? { room } : {}) });  // room: where it is acted out on a burn (shiplife.js sceneStage)
 // The words of an event written in code (#463): the editor's line, else a captain's own wording of the part (captains/*.js, `events`), else the shipped line (SCENE_LINES,
 // hiredscenes.js), with its {words} filled from `vars`.
 function eventSay(id, key, vars = {}) {
@@ -58,7 +58,7 @@ function eventSay(id, key, vars = {}) {
 function dataHandEvent(d, c) {
   const mate = t => (typeof t === 'string' && c.mate ? t.replace(/\{mate\}/g, c.mate.first) : t);
   const scene = sceneWords(`hired:${d.id}`, d.data);
-  return handEvent(mate(scene.title), mate(scene.text), scene.choices.map(ch => dataChoice({ ...ch, label: mate(ch.label), result: mate(ch.result) }, c)));
+  return handEvent(mate(scene.title), mate(scene.text), scene.choices.map(ch => dataChoice({ ...ch, label: mate(ch.label), result: mate(ch.result) }, c)), scene.room);
 }
 const dataEvent = def => { const d = { ...def }; d.make = c => dataHandEvent(d, c); return d; };
 // A choice sets a follow-up going (stories/hired-aftermath.js) and the Journal keeps the thread.
@@ -110,9 +110,17 @@ const HAND_EVENTS = [
       } },
     ]); } },
 
+  // A short month (#1059): the payment is due and the fund is short, and she asks the hand to take some of their pay a port late, written down with interest.
+  { id: 'cap-short', group: 'captain', when: () => shortMonthDue(G.state, hired()), make: c => { const h = hired(), say = (key, vars) => eventSay('cap-short', key, { last: c.cap.last, sum: fmt(SHORT_PAY), back: fmt(SHORT_PAY + SHORT_BACK), ...vars });
+    h.shortAsked = monthKey(G.state.day);
+    return handEvent(say('title'), say('text'), [
+      { label: say('c0.label'), ...gated(needCr(SHORT_PAY)), run() { G.state.credits -= SHORT_PAY; h.heldPay = (h.heldPay || 0) + SHORT_PAY + SHORT_BACK; capLike(c, 1, say('c0.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { capLike(c, 0, say('c1.memory')); return say('c1.result'); } },
+    ]); } },
+
   { id: 'cap-favour', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-favour', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); return `${say('stand')}${learn(2)}`; } },
+      { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' }); return `${say('stand')}${learn(2)}`; } },  // the engineer's night watch, so they sleep (#951)
       { label: say('c1.label'), run() { G.state.credits += 400; capLike(c, 0, say('c1.memory')); return say('fee'); } },
       { label: say('c2.label'), run() { setLater('h-favour-cold', 5, say('c2.log')); capLike(c, -1, say('c2.memory')); return say('beg'); } },
     ]); } },
@@ -164,7 +172,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'),
     data: {
-      title: 'Ines Calls the Numbers',
+      title: 'Ines Calls the Numbers', room: 'bridge',  // a hard approach by hand: its words name no room (#1170)
       text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you\'d read her the numbers. "Slowly," she says. "And don\'t be clever."',
       choices: [
         {
@@ -238,7 +246,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'),
     data: {
-      title: 'Yelena Wants a Sparring Partner',
+      title: 'Yelena Wants a Sparring Partner', room: 'gunnery',  // the range sim: its words name no room (#1170)
       text: 'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."',
       choices: [
         {
@@ -276,7 +284,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'),
     data: {
-      title: 'Ruben and the Thermos',
+      title: 'Ruben and the Thermos', room: 'bridge',  // the intercepts, at the comms post: its words name no room (#1170)
       text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he doesn\'t. "Help me sort," he says. "Slowly. I\'ll tell you what\'s true and what\'s only lovely."',
       choices: [
         {
@@ -314,7 +322,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'),
     data: {
-      title: 'Bexa\'s List',
+      title: 'Bexa\'s List', room: 'bridge',  // a tag above the helm: its words name no room (#1170)
       text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and doesn\'t like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It\'s a list," she says. "Ask me properly."',
       choices: [
         {
@@ -335,7 +343,7 @@ const HAND_EVENTS = [
   dataEvent({
     id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'),
     data: {
-      title: 'Pax Checks the Coupling',
+      title: 'Pax Checks the Coupling', room: 'gunnery',  // the gun mount: its words name no room (#1170)
       text: 'Pax is checking the coupling on the gun mount for the fifth time this watch. It\'s perfect. Pax knows it\'s perfect, and checks it anyway, jaw tight, and glances at you when the check is done.',
       choices: [
         {
@@ -537,25 +545,82 @@ const postOfRole = role => Object.keys(POSTS).find(k => POSTS[k].role === role);
 const shadowable = () => mates().filter(m => postOfRole(m.role) && postOfRole(m.role) !== hired().post);
 const downSay = (key, vars) => sceneSay('scene:downtime', key, vars);  // the words of these are the lines of scene:downtime (hiredscenes.js)
 const learnAt = (post, n) => { gainSkill(post, n); return ` ${downSay('learn', { n, post: POSTS[post].name.toLowerCase() })}`; };
+// The one of `xs` a slot of the burn offers: by the day and the slot, so its "what's on" line, its tag and what it does name the same person (#1073 spec).
+// The slot's place in the burn (0 for the first), so a pick turns from slot to slot as well as from day to day: the game's day stands still on a burn.
+const slotIndex = () => (G.transit ? Math.max(0, lifeSlotKeys(G.transit.slots || 2).indexOf(lifeSlot())) : 0);
+// `skip`: ids a choice of the same scene already names, passed over while anyone else is left (final review: one person in three choices).
+// With nobody left, none: that choice is not offered rather than naming someone twice.
+// `offset`: each pick starts at its own place in the list, so the picks of one slot fall on different people (the scene drops any repeat left).
+const slotPick = (xs, skip = [], offset = 0) => { const ys = xs.filter(x => !skip.includes(x.id)); return ys.length ? ys[(G.state.day + slotIndex() + offset) % ys.length] : null; };
+const castIds = () => HAND_DOWNTIME.filter(d => d.cast && d.can()).map(d => d.where());  // the main characters aboard with a choice of their own
+const teachMate = () => slotPick(mates(), [...castIds(), ...fixedIds()]), shadowMate = () => slotPick(shadowable(), [...castIds(), ...fixedIds()], 1);
+// Who the scene's other choices name, for Sit with someone to pass over (family.js sitWith).
+const namedInDowntime = () => (hired() ? [...castIds(), ...fixedIds()] : []);
+// The four activities of #1073, #1075, #1076 and #1081: a message home on the cheap relay slot (docs/bible/ship.md), help at the bench, the medic
+// looking at a hurt hand, and an hour with tonight's bridge watch before their night.
+const MESSAGE_COST = 40, BENCH_DRIVE = 5, MEDIC_DAYS = 2;
+const watchKeeper = () => { const b = G.transit && hired() ? billOn(0) : null, id = b && b.bridge; return id && id !== 'you' && !castIds().includes(id) ? person(id) : null; };  // a main character has their own choice
+// Who holds a role for the hand's downtime: up, aboard, and not a main character with a choice of their own.
+const roleHand = role => { const m = hired() ? roleHolder(role) : null; return m && !castIds().includes(m.id) ? m : null; };
+const benchHand = () => (hired() ? roleHolder('engineer') : null), medicHand = () => (handHurt() ? roleHand('medic') : null);
+// The people these name, whom the picks of teach, shadow, a shipmate's messages and Sit with someone pass over. The others named by a role
+// (the quartermaster, the ice hand, the cook) are left to the scene, which drops a choice naming someone an earlier one names (downtimeScene).
+const fixedIds = () => [(medicHand() || {}).id, (watchKeeper() || {}).id].filter(Boolean);
+// The shipmate whose messages from home the hand sits through (#1074): one no other choice names.
+const homeMate = () => slotPick(mates(), [...castIds(), ...fixedIds()], 2);
+// Who covers on a small ship (docs/bible/ship.md, chapter-1.md): the bosun (the first officer, Cato) holds the first aid (roleHolder finds the one best
+// at it) and checks the lashings when there is no quartermaster; the galley goes on a rota when there is no cook, a shipmate a turn.
+const lashingsHand = () => roleHand('quartermaster') || roleHand('xo'), galleyHand = () => roleHand('cook') || slotPick(mates(), [...castIds(), ...fixedIds()], 4);
+// The reply to a message home, at the first dawn of a later burn (shiplife.js lifeTick): a line by the hand's start, turned by the day.
+const homeReply = st => downSay(`reply.${['earth', 'mars', 'belt'].includes(st.background) ? st.background : 'earth'}.${st.day % 3}`);
+// Where a line puts the one it names: the room their `on` line says they are in, or a function of the people for the post a shipmate is going up
+// to. The downtime scene offers such a choice only when that person is there (shiplife.js downtimeThere). A line that names no place (the captain's few
+// minutes, a mate asking about your post, tonight's watch, Ruben's intercepts) has none, and is offered wherever they are.
+const DOWNTIME_AT = {
+  shadow: () => postOf(shadowMate().role), bench: 'workshop', medic: 'medbay', home: 'bridge', firstaid: 'medbay', lashings: 'hold', suits: 'airlock', cook: 'galley',
+  ines: 'bridge', tomas: 'engine', yelena: 'gunnery', bexa: 'hold', pax: 'gunnery',
+};
 const castDowntime = (key, post) => ({
-  cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
+  at: DOWNTIME_AT[key], cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
+  on: () => downSay(`${key}.on`), where: () => castPerson(key).id,
   run() { castLike(key, 1, downSay('cast.memory')); return downSay(tellingOn(`${key}.result`, G.state.day)) + learnAt(post, 3); },
 });
-const downtime = (key, can, run) => ({ get label() { return downSay(`${key}.label`); }, can, run });
+// Each with what's on (its `on` line, given `vars()`) and where: a room, or a function returning a person's id (downtime scene, shiplife.js).
+const downtime = (key, can, run, where, vars = () => ({})) => ({ at: DOWNTIME_AT[key], get label() { return downSay(`${key}.label`); }, can, run, where, on: () => downSay(`${key}.on`, vars()) });
 
 const HAND_DOWNTIME = [
   downtime('advice', () => !!hired(),
-    () => { const cap = person(hired().captain); like(cap, 1, downSay('advice.memory')); return downSay(tellingOn('advice.result', G.state.day), { cap: cap.last }) + learnAt(hired().post, 2); }),
-  downtime('shadow', () => !!hired() && shadowable().length > 0,
-    () => { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay(tellingOn('shadow.result', G.state.day), { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); }),
-  downtime('mend', () => !!hired() && mates().length > 0,
-    () => { const m = pick(mates()), n = randInt(3, 6) * 100; G.state.credits += n; like(m, 1, downSay('mend.memory')); return downSay(tellingOn('mend.result', G.state.day), { first: m.first, n: fmt(n) }); }),
-  downtime('spare', () => !!hired(),
-    () => { const cap = person(hired().captain); G.state.credits += 400; like(cap, 1, downSay('spare.memory')); return downSay(tellingOn('spare.result', G.state.day), { n: fmt(400) }) + learnAt(hired().post, 1); }),
-  downtime('teach', () => !!hired() && mates().length > 0,
-    () => { const m = pick(mates()); like(m, 2, downSay('teach.memory')); return downSay(tellingOn('teach.result', G.state.day), { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); }),
+    () => { const cap = person(hired().captain); like(cap, 1, downSay('advice.memory')); return downSay(tellingOn('advice.result', G.state.day), { cap: cap.last }) + learnAt(hired().post, 2); },
+    () => hired().captain, () => ({ cap: person(hired().captain).last })),
+  downtime('shadow', () => !!hired() && !!shadowMate(),
+    () => { const m = shadowMate(), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay(tellingOn('shadow.result', G.state.day), { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); },
+    () => shadowMate().id, () => { const m = shadowMate(); return { first: m.first, post: POSTS[postOfRole(m.role)].name.toLowerCase() }; }),
+  downtime('teach', () => !!hired() && !!teachMate(),
+    () => { const m = teachMate(); like(m, 2, downSay('teach.memory')); return downSay(tellingOn('teach.result', G.state.day), { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); },
+    () => teachMate().id, () => ({ first: teachMate().first, post: POSTS[hired().post].name.toLowerCase() })),
   downtime('stories', () => !!hired() && mates().length > 0,
-    () => { for (const m of mates()) like(m, 1, downSay('stories.memory')); return downSay(tellingOn('stories.result', G.state.day)); }),
+    () => { for (const m of mates()) like(m, 1, downSay('stories.memory')); return downSay(tellingOn('stories.result', G.state.day)); }, 'galley'),
+  downtime('message', () => !!hired() && !!G.transit && !G.transit.messaged && G.state.credits >= MESSAGE_COST,
+    () => { G.state.credits -= MESSAGE_COST; G.transit.messaged = true; hired().letter = { day: G.state.day }; return downSay(tellingOn('message.result', G.state.day), { n: MESSAGE_COST }); },
+    'bridge', () => ({ n: MESSAGE_COST })),
+  downtime('bench', () => !!benchHand() && condition().drive < 100,
+    () => { const e = benchHand(), c = condition(); c.drive = Math.min(100, c.drive + BENCH_DRIVE); like(e, 1, downSay('bench.memory')); return downSay(tellingOn('bench.result', G.state.day), { first: e.first, n: BENCH_DRIVE }); },
+    'workshop', () => ({ first: benchHand().first })),
+  downtime('medic', () => !!medicHand(),
+    () => { const m = medicHand(); career().hurtUntil -= MEDIC_DAYS; like(m, 1, downSay('medic.memory')); return downSay(tellingOn('medic.result', G.state.day), { first: m.first }); },
+    () => medicHand().id, () => ({ first: medicHand().first })),
+  // the other six (#1074, #1077, #1078, #1079, #1080, #1082): each leaves the one it is with (the captain, for the chore) better disposed
+  downtime('home', () => !!homeMate(),
+    () => { const m = homeMate(); like(m, 1, downSay('home.memory')); return downSay(tellingOn('home.result', G.state.day), { first: m.first, home: m.home || 'home' }); },
+    () => homeMate().id, () => ({ first: homeMate().first })),
+  ...[['firstaid', () => (handHurt() ? null : roleHand('medic'))], ['lashings', lashingsHand], ['suits', () => roleHand('icehand')], ['cook', galleyHand]].map(([key, who]) => downtime(key, () => !!who(),
+    () => { const m = who(); like(m, 1, downSay(`${key}.memory`)); return downSay(tellingOn(`${key}.result`, G.state.day), { first: m.first }); },
+    () => who().id, () => ({ first: who().first }))),
+  downtime('scrubbers', () => !!hired(),
+    () => { like(person(hired().captain), 1, downSay('scrubbers.memory')); return downSay(tellingOn('scrubbers.result', G.state.day)); }, 'lifesupport'),
+  downtime('watch', () => !!watchKeeper(),
+    () => { const p = watchKeeper(); like(p, 1, downSay('watch.memory')); return downSay(tellingOn('watch.result', G.state.day), { first: p.first }); },
+    () => watchKeeper().id, () => ({ first: watchKeeper().first })),
   castDowntime('ines', 'pilot'),
   castDowntime('tomas', 'engineer'),
   castDowntime('yelena', 'gunner'),

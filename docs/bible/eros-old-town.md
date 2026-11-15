@@ -18,6 +18,35 @@ A few families bought their flats outright in the boom, and own them still: almo
 
 Most of the town rents from the trust, in the lit half. Some families live in the closed half, in flats the trust doesn't charge for because it doesn't count them, running heaters off taps the trust hasn't found and patching the seals themselves. Everyone knows, and the trust's inspectors come round twice a year.
 
+## Its places
+
+Status of this section: draft for the owner's review, 2026-11-14 (#1246), bringing the place in line with `places.md`, `regulars.md`, `powers-people.md`, `trade-goods.md` and the code (`js/data.js`, `js/bar.js`).
+
+**Who owns it.** The Eros Town Trust (`powers-people.md`), for the mining company's creditors. It is an old town (`places.md`) and Independent (`js/data.js`): under no bloc, and nobody inspects at its lock.
+
+| Inner place | In Old Town | Whose | Where |
+|---|---|---|---|
+| **Berth** | the boom's old docks, most of them shut; the trust rents the lit ones | the trust's | the lit half |
+| **Market** | traders' stalls at the lock, salvage and repair | private | the lock |
+| **Bar** | the Last Strike, sepia holos of the boom on the walls (`js/bar.js`) | private | the lit half |
+| **Clinic** | a doctor who takes what you have | private | the lit half |
+| **Lodging** | rooms let by the old families | private | the lit half |
+| **Hiring** | the agencies' board, nearly empty | the agencies' | the lock |
+| **Shipper's office** | the Old Town traders' desk (`js/contracts.js`) | private | the lock |
+| **Yard** | repair bays, no cradles: a patch, not a refit | private | the lit half |
+| **The trust's office** | where the service charge is paid, and the inspectors' rota kept | the trust's | by the lock |
+| **The air plant** | the town's old plant, kept running by its steward (Hob Strand) | the trust's, run by its steward | the boundary of the two halves |
+| **The closed half** | fourteen sealed corridors, unlit and unheated, lived in off the books | nobody's, on paper | the far half |
+| **Fence** | the dealers who buy the boom's heirlooms | private | the lit half |
+
+**Its people's places.** The Last Strike's stools, the trader's stall at the lock and the town's archive (`regulars.md`, Eros Old Town); the trust's agent at his office, the steward at the air plant, the Dome Pact's auditor in the sealed corridors (`powers-people.md`).
+
+**Its law.** None at the lock: Independent, so no inspection. The trust's rules are its service charge.
+
+**Its trade.** Old Town sells luxury goods, priced low (the boom's heirlooms and what passes through), and wants water and machine parts, priced high (`js/data.js`).
+
+**In the story.** The air at Eros is the closed half's (`chapter-1.md`). From chapter 2 the closed half is somewhere the co-op can trade quietly, or a door shut (`chapter-3.md`).
+
 ## Growing up here
 
 **In an old family.** A child of one of the boom families that still own their flats, raised among the heirlooms and the stories of the boom, watching the family sell one of them every time the service charge goes up. Who is missed: a grandparent who remembers the boom, or says they do. Why they leave: to send money home before the family sells the last of it. What they hope for: to keep the flat in the family, or to buy back something that was sold.

@@ -58,11 +58,11 @@ const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 const lockPost = () => { const c = career(); return c && c.post ? c.post : null; };
 const handHurt = () => { const c = career(); return !!(c && c.hurtUntil > G.state.day); };
 // The money a fight moves is the ship's fund for a hand and the player's credits for an owner (role.js paysFrom). Inside a burn event's choice (hired.js hiredFunds,
-// a contact's heave-to) the fund is held in the credits until the choice is done, so it is read and paid there.
+// a contact's choice) the fund is held in the credits until the choice is done, so it is read and paid there.
 const fundHeld = () => role().paysFrom() === 'fund' && !handPurse;
 const purse = () => (fundHeld() ? hired().fund : G.state.credits);
 const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits += n; };
-// The navy's fine: a quarter of the purse. The heave-to pays it (engage.js contactEvent), and so does a search, when a navy party holds our bridge (repelSettle).
+// The navy's fine: a quarter of the purse. A search pays it, when a navy party holds our bridge (repelSettle), and so does a citation.
 const heaveToFine = () => Math.round(purse() * (hasTrait(hired(), 'marked') ? 0.3 : 0.25));  // Marked (traits.js): a fifth more
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
@@ -115,12 +115,12 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a hit falls on the hand (repelCasualty, below), on a heavy turn of the ship fight (fightui.js fightTook), and on a job ashore (jobs.js).
 const HAND_CLINIC = 1500;
-// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, and a first hurt
-// is a roll of one in twelve; each is halved with a medic aboard (the factor crew deaths use, losses.js). The hand is hurt about 0.4 times a chapter
-// and rarely twice inside the 12 days it takes to mend, so the first-hurt roll is what puts a death near 3 in 100 chapters (as the captain's loss is).
+// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, halved with a medic
+// aboard (the factor crew deaths use, losses.js). A first hurt never kills: it says that another one could (#1157), so a death is always seen coming.
+// The hand is hurt about 0.4 times a chapter and rarely twice inside the 12 days it takes to mend, so a death is near 3 in 1,000 chapters.
 // The next scene is the ending (stakes.js), so a caller that queues a scene after this one checks `s.handDied` first.
-const HAND_DEATH = 0.25, HAND_DEATH_FIRST = 1 / 12;
-const handDeathOdds = (again = true) => (again ? HAND_DEATH : HAND_DEATH_FIRST) * (roleHolder('medic') ? LOSS_MEDIC : 1);
+const HAND_DEATH = 0.25;
+const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
 // The captain can be lost (#357): a pirate bridge taken is a roll of one in six (one in three when the lock fight was rarely lost; now a repel can be, and a lost
 // one still costs the fund, the cargo, the crew who fell and the captain's regard). The next scene is the captain's loss (stakes.js).
 const CAPTAIN_LOST = 1 / 6;
@@ -135,7 +135,7 @@ function hurtHand(s) {
   c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
+  if (again && !s.ashore && role().canDie && Math.random() < handDeathOdds()) { handDies(s, 'hurt'); return hurtSay('hurt.you.down'); }
   recordHand('hurts');  // the record (traits.js), after the death roll: a dead hand gets no moment
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';
@@ -208,15 +208,15 @@ function repelSettle(s) {
   return s.searched ? shipSearched(s) : shipTaken(s);
 }
 
-// A navy party that withdrew at its cap: the citation stands, and the ship pays the heave-to's fine. No regard lost, and the standing is not reset.
+// A navy party that withdrew at its cap: the citation stands, and the ship pays the navy's fine. No regard lost, and the standing is not reset.
 function citation() {
   const fine = heaveToFine();
   moveMoney(-fine); recordHand('fines');
   return ` ${sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(fine) })}`;
 }
 
-// A navy party on our bridge: the ship is searched and fined the heave-to's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is
-// not reset as the heave-to resets it, since we fought them.
+// A navy party on our bridge: the ship is searched and fined the navy's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is
+// not reset, since we fought them.
 function shipSearched(s) {
   const h = hired(), cap = h && person(h.captain), fine = heaveToFine();
   moveMoney(-fine); recordHand('fines');  // the record (traits.js): a search's fine is a fine

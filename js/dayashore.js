@@ -40,7 +40,7 @@ function ashoreLanes() {
 function dayAshoreEvent(all) {
   const st = G.state, lanes = ashoreLanes();
   return {
-    title: daySay('title'), personal: true,
+    title: daySay('title'), personal: true, place: 'market',  // the day starts in the market, on a port's view (portview.js, #1103)
     text: daySay('text', { port: currentPlanet().name }),
     choices: [
       ...(all ? lanes.flat() : menuFive(lanes, st.day)).map(a => ({ label: a.label, run() { st.dayAshore = { used: true }; return a.run(); } })),

@@ -1,6 +1,6 @@
 # Prose and world: voice cards, a world bible and a tic report
 
-Date: 2026-10-08. Status: draft for the owner to review.
+Date: 2026-10-08. Status: superseded by `docs/bible/` and `docs/bible/voice.md` (#869), which replaced the voice cards and the world files it planned.
 
 ## Intent
 

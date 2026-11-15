@@ -9,7 +9,7 @@ const CHATTER_PER_BURN = 3;  // lines of the crew's chatter in one burn, spread 
 const CHATTER = [
   'Nav: trajectory nominal, drift within tolerance.',
   'Ice hauler "Mule\'s Promise" to all ships: anyone got a spare coolant pump?',
-  'Compact Navy picket: routine sweep, no contacts.',
+  'Arcology Pact Navy picket: routine sweep, no contacts.',
   'Somebody\'s broadcasting polka on the emergency band again.',
   'Crash couch: anti-g drip reservoir at 80 percent.',
   '"...and that\'s why you never play cards with a Pallas refinery crew." [laughter]',
@@ -17,13 +17,13 @@ const CHATTER = [
   'Courier "Swift Dispatch": running a hard burn, clear the approach please.',
   'Life support: CO2 scrubbers cycling.',
   'Unknown ship: "Anyone else see that drive plume? No transponder? Just me?"',
-  'Dome Concord Navy: all vessels, maintain transponders in Martian space.',
+  'Dome Pact Navy: all vessels, maintain transponders in Martian space.',
   'Belt pirate radio: static, then a laugh, then static again.',
   'Reactor: output steady. Drive plume stable.',
   'Freighter "Second Wind" to nobody in particular: "Forty days out and I\'ve run out of things to say to the cat."',
   'An old recorded voice, on an old beacon: "This lane is maintained by the Ceres Water Authority. Please burn responsibly."',
   'Hauler "Long Odds": "Anybody running to Titan? I\'ve got a spare berth and a very bad sense of direction."',
-  'Compact traffic control: reminder that lane fees are due on the first, and that "I forgot" isn\'t a payment method.',
+  'Arcology Pact traffic control: reminder that lane fees are due on the first, and that "I forgot" isn\'t a payment method.',
   'A child, on an open band: "This is Captain Pip of the good ship Blanket Fort. Do you copy?"',
   'Ceres Water Authority relay: "Reminder to all vessels, water isn\'t a right, but it\'s a courtesy. Thank you for your understanding."',
   'Belt trader on the band: "Fresh onions! Real onions! Meet me at the flip, and bring your own bags!"',
@@ -294,8 +294,13 @@ const TRANSIT_EVENTS = [
 function comm(text) {
   if (!G.transit) return;  // rumors can also arrive while docked
   if (isQuiet(text)) return;  // muted on the Comms screen
-  G.transit.comms.push(text);
-  if (G.transit.comms.length > 10) G.transit.comms.shift();
+  const t = G.transit;
+  // When each line came, in real seconds, to fade it over the ship (burnlayout.js commsShown); kept the length of comms, a line from before
+  // (an older save, or comms set by hand) with no time.
+  const keep = t.comms.length, old = t.commsAt || [], at = keep && old.length <= keep ? old.slice(-keep) : [];  // longer than comms: set by hand, its times are not these lines' (#1089)
+  while (at.length < keep) at.unshift(null);
+  t.comms.push(text); at.push(G.time); t.commsAt = at;
+  if (t.comms.length > 10) { t.comms.shift(); t.commsAt.shift(); }
   announce(text);
 }
 
@@ -315,7 +320,7 @@ function enterTransit() {
     chatter: rand(5, 10), chattered: 0,
   };
   G.mode = 'transit'; G.speed = G.speedBefore = 1;  // each burn starts at normal speed, and a pause on it resumes there (#992)
-  G.cam = null;  // each burn starts with the camera snapped to the hand
+  G.cam = null;  // each burn starts with the camera snapped to where the player left it, or the hand's deck on a first look (camAim, #1182)
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   const run = hired() && hired().run;  // an ice run's first leg says what the run is, once, at the start (icerun.js, #948)
@@ -353,11 +358,7 @@ function updateTransit(dt) {
   if (t.chattered < CHATTER_PER_BURN && (t.chatter -= dt * r) <= 0) {
     t.chattered++;
     t.chatter = rand(0.7, 1.3) * (t.left / burnSpeed()) / (CHATTER_PER_BURN - t.chattered + 2);  // the next one, a share of what is left of the burn
-    const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
-    const aboard = [
-      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),
-      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick(traitChatter(t)), p)}`)),
-    ];
+    const aboard = crewChatter();
     const line = pickFresh(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : linedText('lines:comms-chatter', CHATTER)));
     if (!Settings.quiet.chatter) comm(line);
   }
@@ -366,6 +367,21 @@ function updateTransit(dt) {
     startHappening();
   }
   if (t.left <= 0) arrive();
+}
+
+// The crew's and the passengers' chatter that fits where the cutaway shows each of them (#987, shiplife.js chatterAt, chatterRoom): their own lines
+// (a main character's, or the owner crew's), else a line of each of their traits; nothing from anyone asleep or strapped in.
+function crewChatter() {
+  const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
+  const said = (c, room) => {
+    const own = c.cast ? CAST[c.cast].chatter : c.chatter;
+    if (own) return chatterAt(own, room);
+    return c.traits.flatMap(t => { const lines = chatterAt(traitChatter(t), room); return lines.length ? [fill(pick(lines), c)] : []; });
+  };
+  return [
+    ...crewMembers().flatMap(c => said(c, chatterRoom(c.id))),
+    ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => said(p, chatterRoom(p.id)).map(l => `(passenger) ${l}`)),
+  ];
 }
 
 // What happens on this burn is decided by pickHappening (happenings.js); a quiet
@@ -395,18 +411,43 @@ function openEvent(ev) {
   UI.showEvent(ev, choices);
 }
 
+// Scenes waiting their turn (#1096). A landing's handlers hand their scenes to offerScene with a rank instead of opening them; when every handler has
+// run (landAt), they play in rank order, the order offered within a rank, none dropped and none written over. A scene offered while another is open
+// waits in sceneQueue, which finishEvent opens after a scene's own follow-on (G.nextEvent). Not saved, as G.nextEvent is not.
+const SCENE_RANK = { customs: 0, settle: 1, mourn: 2, turn: 3, business: 4, people: 5, ambient: 6 };  // the lock first; the run's settling up; a crewmate mourned; a story's turn; the run's own business; people; what the port brings
+// At a port with a view (portview.js), a landing's scenes up to the mourning, and a story's turn, which comes once and sets its course (burn.md, What
+// stops the burn), open at once; the rest wait on the view as offers (#1192, ports.md, A landing's scenes at a port with a view). Elsewhere they all open in
+// turn, as before.
+const SCENE_AT_ONCE = SCENE_RANK.turn;
+let sceneQueue = [], landingScenes = null;
+function queueScene(ev) { if (!ev) return; if (G.dialog) sceneQueue.push(ev); else openEvent(ev); }
+function offerScene(rank, ev) { if (!ev) return; if (landingScenes) landingScenes.push({ rank: SCENE_RANK[rank], kind: rank, ev }); else queueScene(ev); }
+const landingSceneCount = () => (landingScenes ? landingScenes.length : 0);
+function landingScenesOpen() { if (!G.dialog) sceneQueue = []; landingScenes = []; }  // with nothing open, anything still queued is a game before this one's
+function landingScenesPlay() {
+  const planet = currentPlanet(), view = !!portLayout(planet), back = portOffersBack(planet);  // people's offers that lapsed here before come round again (portview.js)
+  // without a view the mourning is among the people and a story's turn among what the port brings, in their handlers' turns, as before (#1096)
+  const key = x => (view ? x.rank : x.kind === 'mourn' ? SCENE_RANK.people : x.kind === 'turn' ? SCENE_RANK.ambient : x.rank);
+  const list = [...(landingScenes || []), ...back.map(o => ({ rank: SCENE_RANK.people, kind: 'people', ev: o.ev }))].sort((a, b) => key(a) - key(b));
+  landingScenes = null;
+  for (const x of list) if (view && x.rank > SCENE_AT_ONCE) portOfferPut(x.kind, x.ev, planet); else queueScene(x.ev);
+}
+
 function chooseEvent(i) {
+  if (dockShown()) G.dock = dockChose(G.dock, G.dialog.choices[i].dock);  // the dock's result page (dock.js, #940)
   const c = G.dialog.choices[i], result = G.dialog.event.personal ? c.run() : hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs; their own affairs, their own
   return c.role && !c.keep ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
 }
 
 function finishEvent() {
-  G.dialog = null;
+  if (dockShown()) G.cam = null;  // the scene at the dock is over: the port screen (dock.js, #940)
+  G.dialog = null; G.dock = null;
   if (G.nextEvent) {  // a scene that leads straight into another
     const ev = G.nextEvent;
     G.nextEvent = null;
     return openEvent(ev);
   }
+  if (sceneQueue.length) return openEvent(sceneQueue.shift());  // one waiting its turn (#1096)
   if (G.mode === 'landed') return storyNextScene() || UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;
@@ -570,25 +611,6 @@ function drawBurnBar(b, dates, progress) {
   ctx.textAlign = 'left';
 }
 
-// The Comms ticker under the ship: the last n messages, the newest brighter. On a wide screen one line each, cut to fit; on a narrow
-// one they wrap to fill the box, the newest first to be kept whole.
-function drawCommsTicker(b, comms, n, wrap) {
-  transitPanel(b.x, b.y, b.w, b.h, G.bridgeOpen === 'comms' ? 'COMMS · tap to close' : 'COMMS · tap to open');  // a tap on the box opens the sheet (game.js), and the box says so (#919)
-  const w = b.w - 24, msgs = comms.slice(-n), color = (m, newest) => (m.startsWith('[Market]') ? '#ffcf7f' : newest ? '#cfe3ff' : '#7d93aa');
-  let rows = [];
-  if (wrap) {
-    const max = Math.max(1, Math.floor((b.h - 30) / 16));
-    for (let i = msgs.length - 1; i >= 0 && rows.length < max; i--) {
-      let lines = wrapText(msgs[i], w);
-      const room = max - rows.length;
-      if (lines.length > room) { lines[room - 1] = fitLine(`${lines[room - 1]} ${lines[room]}`, w); lines = lines.slice(0, room); }  // cut, with an ellipsis
-      rows = lines.map(l => ({ l, c: color(msgs[i], i === msgs.length - 1) })).concat(rows);
-    }
-  } else rows = msgs.map((m, i) => ({ l: fitLine(m, w), c: color(m, i === msgs.length - 1) }));
-  const first = b.y + (b.h >= 60 ? 38 : 32), step = wrap ? 16 : 20;
-  rows.forEach((r, i) => { ctx.fillStyle = r.c; ctx.fillText(r.l, b.x + 12, first + i * step); });
-}
-
 // The ship's log for a burn (it was the canvas box at the bottom left; now the HUD sidebar and the Comms sheet draw it): what the owner has on the books, then what is aboard. The
 // carried contract (#686) is the captain's log line: the load, the shipper, the due date, and whether the ship is on time for it. Reads only what it is given.
 function shipLogLines(st, t, carried, crewNames = []) {
@@ -609,15 +631,32 @@ function shipLogLines(st, t, carried, crewNames = []) {
 // The log for the burn in progress, or none: the one place the lines are read from the game (the HUD and the Comms sheet ask here).
 const burnShipLog = () => (G.transit ? shipLogLines(G.state, G.transit, hired() && heldContract(hired()), crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`)) : []);
 
-// The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and the
-// Comms ticker under it, or the tutorial's prompt in its place. The downtime buttons (shiplife.js) and the bridge keys are DOM below.
+// The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and over the
+// ship's bottom left the comms lines, fading, and the tutorial's prompt. The Menu and map buttons and the bridge keys are DOM below.
+
+// A star streak's fill along its length (#1121), from 0 to 1: the head, body and tail as hard bands, each fainter, warmer as the ship goes
+// faster (hot, 0 to 1, in sixteenths). Drawn with the star's own brightness as the alpha. Kept, one for each sixteenth.
+const STREAK_FILLS = new Map();
+function streakFill(ctx, hot) {
+  const q = Math.round(hot * 16) / 16;
+  let g = STREAK_FILLS.get(q);
+  if (!g) {
+    g = ctx.createLinearGradient(0, 0, 1, 0);
+    for (let i = 0; i < 3; i++) {
+      const c = `rgba(${200 + 40 * q * (1 - i / 3)},${215 + 30 * q * (1 - i / 3)},255,${0.85 - i * 0.28})`;
+      g.addColorStop(i / 3, c); g.addColorStop((i + 1) / 3, c);
+    }
+    STREAK_FILLS.set(q, g);
+  }
+  return g;
+}
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cy = H / 2, t = G.transit;
   const narrow = !G.hudW;  // the HUD strip on top
   const progress = Math.min(1, 1 - t.left / t.total);
   const panel = t.event && document.querySelector('#panel.event');
   const dialogSize = panel ? { h: panel.scrollHeight + panel.offsetHeight - panel.clientHeight } : null;  // the content and the panel's border, which max-height includes (border-box)
-  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER);  // the tutorial's prompt, at the ticker's width: the layout keeps room for it
+  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER - 16);  // the tutorial's prompt, at its box's width inside the ship (burnlayout.js)
   const L = burnLayout(W, H, G.hudW, narrow, dialogSize, prompt ? prompt.h : 0), shipBox = L.ship;
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, '#03060f'); bg.addColorStop(1, '#070b18');
@@ -635,25 +674,28 @@ function drawTransit(W, H) {
 
   // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving. They turn
   // with the ship about the cutaway's centre (0 before the flip, half a turn after), wrapped so they fill the view at any angle.
-  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion;
+  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion, hush = still ? 1 : streakHush(t.days, progress);  // quieter at the flip (burnspeed.js, #962); reduced motion as it was
   const a = t.angle + Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), ox = shipBox.x + shipBox.w / 2, oy = shipBox.y + shipBox.h / 2, wrap = (v, m) => ((v % m) + m) % m;
-  const streak = (x, y, draw) => { const dx = x - ox, dy = y - oy; ctx.save(); ctx.translate(wrap(ox + dx * ca - dy * sa, viewW), wrap(oy + dx * sa + dy * ca, H)); ctx.rotate(a); draw(); ctx.restore(); };
-  for (const s of G.transitStars) {
-    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110)), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
-    streak(s.x * viewW, s.y * H, () => {
-      for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
-        ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28)})`;
-        ctx.fillRect((len * i) / 3, 0, len / 3 + 1, w);
-      }
-    });
+  const behind = (x, y) => x > shipBox.x && x < shipBox.x + shipBox.w && y > shipBox.y && y < shipBox.y + shipBox.h;
+  const m = ctx.getTransform(), ra = m.a * ca + m.c * sa, rb = m.b * ca + m.d * sa, rc = m.c * ca - m.a * sa, rd = m.d * ca - m.b * sa;  // the turn, once for every streak (#1117)
+  const streak = (x, y, draw, k = 1) => {  // draw(dim): dim is how bright a streak is where it passes behind the ship; k: its length's scale along it
+    const dx = x - ox, dy = y - oy, px = wrap(ox + dx * ca - dy * sa, viewW), py = wrap(oy + dx * sa + dy * ca, H);
+    ctx.setTransform(ra * k, rb * k, rc, rd, m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f); draw(still || !behind(px, py) ? 1 : 0.4);
+  };
+  const hot = Math.min(1, speed * 1.4), fill = streakFill(ctx, hot), alpha = ctx.globalAlpha;
+  ctx.fillStyle = fill;
+  for (const s of G.transitStars) {  // one rectangle each, its length the unit: the head, body and fainter tail are the fill's bands (#1121)
+    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110) * hush), w = s.z > 0.7 ? 2 : 1;
+    streak(s.x * viewW, s.y * H, dim => { ctx.globalAlpha = alpha * s.z * hush * dim; ctx.fillRect(0, 0, 1 + 1 / len, w); }, len);
   }
+  ctx.globalAlpha = alpha;
   if (!still && speed > 0.2) {
     for (let i = 0; i < 26; i++) {
-      const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70);
-      ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5)})`;
-      streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, () => ctx.fillRect(0, 0, len, 1));  // across the ship's band, clear of the bar and the keys
+      const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70) * hush;
+      streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, dim => { ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5) * hush * dim})`; ctx.fillRect(0, 0, len, 1); });  // across the ship's band, clear of the bar and the keys
     }
   }
+  ctx.setTransform(m);
 
   // The destination ahead, growing with progress: one 40px sprite drawn scaled, lit from the sun behind us. In the ship box's top right,
   // behind the nose, drawn first so the hull covers it. Not on a narrow screen, where the ship takes the box's width.
@@ -668,23 +710,26 @@ function drawTransit(W, H) {
 
   // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it; the camera keeps the hand in the part a
   // docked dialog leaves clear.
-  drawCutaway(shipBox, L.clear);
+  const tags = drawCutaway(shipBox, L.clear);
   G.burnBoxes = { bar: L.bar, ship: shipBox };  // where each block was drawn, for the taps and the tests (#262)
+  if (tags.length) G.burnBoxes.tags = tags;  // the downtime scene's tags in the cutaway (shiplife.js), while it is open
   if (L.dock) Object.assign(G.burnBoxes, { dock: L.dock, clear: L.clear });  // a scene's dock (the frame puts the dialog in it) and the ship it leaves clear
   if (destBox) G.burnBoxes.dest = destBox;
-  G.lifeY = L.life.y;  // the downtime buttons sit in the row of life under the ticker
   drawBurnBar(L.bar, L.datesLine, progress);
 
-  // The ticker, clear of the dock: beside it on a wide screen, under it (so not drawn) on a narrow one. None on a landscape phone.
-  const dock = L.dock;
-  let tick = L.tickerLines ? { ...L.ticker } : null;
-  if (tick && dock && !narrow) tick.w = Math.min(tick.w, dock.x - BURN_GUTTER - tick.x);
-  if (tick && dock && narrow && tick.y + tick.h > dock.y - 4) tick = null;
-  if (!tick || tick.w < 160) return;
-  if (prompt && !dock) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); hidden while a scene is open, which is what to read then
-    G.burnBoxes.tutorial = tick;
-    return;
-  }
-  G.burnBoxes.ticker = tick;
-  drawCommsTicker(tick, t.comms, L.tickerLines, narrow);
+  // Over the bottom left of the ship, in the part a scene's dialog leaves clear: the tutorial's prompt (tutorial.js draws it, #735; hidden while a
+  // scene is open, which is what to read then), and above it the newest comms lines, fading (commsShown, burnlayout.js; 2026-11-12).
+  const clear = L.clear;
+  if (prompt && !L.dock) G.burnBoxes.tutorial = L.tutorial;
+  const shown = commsShown(t.comms, t.commsAt, G.time), base = (prompt && !L.dock ? L.tutorial.y : clear.y + clear.h) - 12, lineW = Math.min(clear.w - 24, 760);
+  if (!shown.length || lineW < 160) return;
+  ctx.save(); ctx.font = '13px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.shadowColor = '#000'; ctx.shadowBlur = 3;
+  shown.forEach((m, i) => {
+    const line = fitLine(m.text, lineW), y = base - (shown.length - 1 - i) * 18;
+    ctx.globalAlpha = m.alpha; ctx.shadowBlur = 0; ctx.fillStyle = 'rgba(6,13,22,0.7)'; ctx.fillRect(clear.x + 6, y - 13, ctx.measureText(line).width + 12, 18);  // a dark strip, so it reads over any room
+    ctx.shadowBlur = 3; ctx.fillStyle = m.text.startsWith('[Market]') ? '#ffcf7f' : '#d7e2ee';
+    ctx.fillText(line, clear.x + 12, y);
+  });
+  ctx.restore();
+  G.burnBoxes.comms = { x: clear.x + 6, y: base - shown.length * 18 + 5, w: lineW + 12, h: shown.length * 18 };
 }

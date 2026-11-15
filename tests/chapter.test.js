@@ -131,7 +131,7 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
 test('the sheet, the kit and the shippers\' regard outlive the buy as the career, and what reads them reads the career when there is no hand (#685)', async () => {
   const { ev, done } = await hauler();
   const r = await ev(() => {
-    const st = start(), h = hired(), out = {}, hall = 'the League Freight Hall';
+    const st = start(), h = hired(), out = {}, hall = 'the Federation Freight Hall';
     h.sheet = { hands: 4, eye: 3, nerve: 3, wit: 5 }; h.kit = ['valve-keys']; h.standing = { [hall]: 2 };
     out.during = career() === h; out.hands = handStat('hands');
     st.credits = 1000000; buyIn('courier');
@@ -146,7 +146,7 @@ test('the sheet, the kit and the shippers\' regard outlive the buy as the career
   });
   assert.equal(r.during, true, 'while there is a hand, the career is the hand\'s own record'); assert.equal(r.hands, 4);
   assert.equal(r.gone, null); assert.equal(r.after, true, 'after the buy it is the career the hand left');
-  assert.deepEqual(r.career, { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the League Freight Hall': 2 } });
+  assert.deepEqual(r.career, { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the Federation Freight Hall': 2 } });
   assert.equal(r.hands2, 4); assert.equal(r.wit, 5); assert.ok(Math.abs(r.kitOdds - 0.05) < 1e-9, `the keys still add five points to a job (${r.kitOdds})`);
   assert.equal(r.standing, 3); assert.equal(r.kept, 3, 'a shipper\'s regard moves in the career'); assert.equal(r.addNew, 'You carry a Fleet audit seal now.'); assert.equal(r.addTwice, '');
   assert.deepEqual(r.kit2, ['valve-keys', 'audit-seal']); assert.deepEqual(r.cover, [0, 1, 0]); assert.equal(r.copy, true, 'the sheet, the kit and the regard are copied, so the old record cannot change them');

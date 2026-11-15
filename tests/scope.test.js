@@ -83,10 +83,11 @@ test('errands, bar side work and leads are off, and come back with the full buil
   await done();
 });
 
-test('the five storylines are not loaded in the narrow build, and are in the full one', async () => {
-  const count = async scope => { const { ev, done } = await open({ scope }); const n = await ev(() => STORYLETS.filter(s => /^(strike|navy|rook|tsc|cw)-/.test(s.id)).length); await done(); return n; };
-  assert.equal(await count('earth-hired'), 0);
-  assert.ok(await count('full') > 20);
+test('the four parked storylines are not loaded in the narrow build, and are in the full one; the haulers\' strike is the hand\'s, in both', async () => {
+  const count = async (scope, re) => { const { ev, done } = await open({ scope }); const n = await ev(src => STORYLETS.filter(s => new RegExp(src).test(s.id)).length, re.source); await done(); return n; };
+  assert.equal(await count('earth-hired', /^(navy|rook|tsc|cw)-/), 0);
+  assert.ok(await count('full', /^(navy|rook|tsc|cw)-/) > 20);
+  assert.equal(await count('earth-hired', /^strike-/), 6, 'the strike for the hand (#1044)');
 });
 
 test('the owner systems stay shut after the buy-in: company, stakes, outposts, community', async () => {

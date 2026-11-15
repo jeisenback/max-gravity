@@ -36,7 +36,7 @@ Not aboard the Ore Runner unless the co-op recruits her.
 
 - **Cato** she would like, and argue with.
 - **Pax** she would see as a rookie with a good eye and a fear to beat, and say so, loudly.
-- **The master** she would take orders from on the bridge and nowhere else; Belanger she knows from Ballast.
+- **The hand, as captain,** she would take orders from on the bridge and nowhere else, once they had earned it; Belanger she knows from Ballast.
 - **The hand** she meets across a convoy, and judges by whether they hold their place in it.
 
 ## How she talks

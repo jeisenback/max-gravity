@@ -45,10 +45,13 @@ const CONDITIONS = {
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   night: v => !!G.transit && isDark() === !!v,  // the ship's night (shiplife.js): the lights are down on a burn
+  onWatch: v => !!G.transit && isDark() && !!handWatchPost() === !!v,  // the hand keeps tonight's watch, by the bill or a scene (shiplife.js, #1034); only at night
+  watchStood: post => !!G.transit && !!(billOn(0) || {})[post],  // tonight's 'bridge' or 'engine' watch has someone on it (#1034)
   chance: v => Math.random() < v,
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
+  chapter: v => chapterOf(G.state) === v,  // the hand's chapter (#1045): chapter one's scenes that name Hester's ship stop at the signing
   // A fact the hired hand's record holds (the flags captainFlag sets: the secret learned, a loan lent), by name (#476).
   captainFlag: name => !!(hired() && (hired().flags || {})[name]),
   // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
@@ -124,6 +127,16 @@ const EFFECTS = {
   castXp: v => castXp(v.who, v.role, v.n),
   captainLike: v => captainLike(v.n, v.memory),
   captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
+  // A watch for one night of the burn (#951, shiplife.js standWatch): who stands it ('you', a main character's key or a post's role), the room,
+  // who is relieved (the same, or null for an extra watch) and where they go ('bunk' or a room). Nothing at a port, with no burn to show it.
+  standWatch: v => {
+    const t = G.transit;
+    if (!t) return;
+    const id = x => (x === 'you' ? 'you' : !x ? null : CAST[x] ? ((G.state.cast || {})[x] || {}).pid || null  // a character met, never one made here (#1036)
+      : HIRED_POSTS.includes(x) ? (roleHolder(POSTS[x].role) || {}).id || null : null);  // a post by its role: comms is the slicer's
+    const stands = id(v.stands);
+    if (stands) standWatch(t, shipDay(t.elapsed).day, stands, v.post, id(v.relieved), v.relievedAt || 'bunk');  // nobody to stand it: no watch
+  },
   // A main character joins the crew, or is put off for eight days (the meeting scenes of js/cast.js, #461): the key of the person. The words are the choice's result.
   castJoin: key => { castJoin(key); },
   castLater: key => { castLater(key); },
@@ -136,6 +149,12 @@ const EFFECTS = {
   news: text => worldNews(fill(text)),
   log: text => journal(fill(text)),
   unrest: v => { for (const [sid, n] of Object.entries(v)) worldOf(sid).unrest = Math.max(0, Math.min(1, worldOf(sid).unrest + n)); },
+  // The ship's purse (#1060): n credits into it (or out, below 0), the captain's fund in chapter one and the co-op's in chapter two (boarders.js moveMoney), where
+  // `credits` is the hand's own savings.
+  purse: n => { moveMoney(n); },
+  // A price that moves at a port for a stretch (#1044): { 'Port name': { good: pressure } }, a share of the price up (dearer) or down, pushed into the
+  // port's market as trade pushes it (world.js nudge), and worn back by the port's own use and the haulers over the days that follow.
+  price: v => { for (const [name, goods] of Object.entries(v)) { const at = planetNamed(name); if (at) for (const [cid, dp] of Object.entries(goods)) nudge(at.pl, cid, dp); } },
   // Drop missions carrying this good (by its name), applying their onFail effects.
   cancelMission: good => {
     const st = G.state;
@@ -192,6 +211,7 @@ function fill(text = '') {
   }
   return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, placeOf(sidNow()).name)
     .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role))
+    .replace(/\{watch:(bridge|engine)\}/g, (_, post) => { const b = billOn(0), id = b && b[post]; return !id ? '' : id === 'you' ? 'you' : (person(id) || {}).first || ''; })  // tonight's watch (#1034)
     .replace(/\{captain\}/g, () => { const c = hired() && person(hired().captain); return c ? `Captain ${c.last}` : 'the captain'; })
     .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; })
     .replace(/\{official\}/g, () => officialName(currentPlanet()));  // the port's own official (official.js)
@@ -199,7 +219,7 @@ function fill(text = '') {
 
 // ---------- the scene editor's changes (js/overrides.js, #336) ----------
 // {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
-const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|official|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|official|crew:(\w+)|thread:\w+|watch:(?:bridge|engine))\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
 // The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The
@@ -385,12 +405,20 @@ const EFFECT_SHAPES = {
   captainFlag: v => ([].concat(v).every(f => typeof f === 'string' && f.trim()) ? '' : 'needs a name, or a list of names'),
   mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
+  purse: v => (Number.isFinite(v) ? '' : 'needs a number of credits'),
+  price: v => (!isPlain(v) ? "needs { 'Port name': { good: share } }" : Object.entries(v).map(([name, goods]) => (!planetNamed(name) ? `${name} is not a port`
+    : !isPlain(goods) ? `${name} needs { good: share }` : Object.entries(goods).map(([cid, dp]) => (!COMMODITIES.some(c => c.id === cid) ? `${cid} is not a good` : !Number.isFinite(dp) || Math.abs(dp) > MARKET_CAP ? `${cid}: a share between -${MARKET_CAP} and ${MARKET_CAP}` : '')).find(Boolean) || '')).find(Boolean) || ''),
 };
+const watchWho = x => x === 'you' || !!CAST[x] || HIRED_POSTS.includes(x);  // 'you', a main character's key, or a post (its holder)
+EFFECT_SHAPES.standWatch = v => (!isPlain(v) ? 'needs { stands, post, relieved, relievedAt }' : !watchWho(v.stands) ? `${v.stands} is not 'you', a main character or a post`
+  : v.relieved != null && !watchWho(v.relieved) ? `${v.relieved} is not 'you', a main character or a post` : !ROOMS.some(r => r.id === v.post) ? `${v.post} is not a room`
+  : v.relievedAt != null && v.relievedAt !== 'bunk' && !ROOMS.some(r => r.id === v.relievedAt) ? `${v.relievedAt} is not 'bunk' or a room` : '');
 EFFECT_SHAPES.castJoin = EFFECT_SHAPES.castLater = v => (typeof v !== 'string' || !CAST[v] ? `needs the key of a main character` : '');
 EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
 const CONDITION_SHAPES = {
   captainFlag: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
+  chapter: v => (Number.isInteger(v) && v >= 1 ? '' : 'needs a chapter number'),
   opinion: v => (!isPlain(v) ? 'needs { who, min }' : !['captain', 'xo'].includes(v.who) && !CAST[v.who] ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
 };
 const conditionProblems = when => Object.entries(when || {}).flatMap(([k, v]) => (!CONDITIONS[k] ? [`unknown condition "${k}"`] : CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v) ? [`condition ${k} ${CONDITION_SHAPES[k](v)}`] : []));

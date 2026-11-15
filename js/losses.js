@@ -56,13 +56,11 @@ function mournScene(m) {
 Mods.register({
   id: 'losses', name: 'Losses', builtin: true,
   init(M) {
-    // At a port, once, the scene for the oldest loss: after the repairs, before the bar.
+    // At a port, once, the scene for the oldest loss: after the repairs, before the bar; at a port with a view, at once, after the settling up (#1192).
     M.on('landed', () => {
       const st = G.state;
       if (!hired() || !(st.mourn || []).length) return;
-      if (G.dialog && G.nextEvent) return;  // nowhere to put it yet: it waits for the next port
-      const ev = mournScene(st.mourn.shift());
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      offerScene('mourn', mournScene(st.mourn.shift()));
     });
   },
 });

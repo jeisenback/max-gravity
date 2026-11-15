@@ -12,7 +12,7 @@ after(closeBrowser);
 test('every background and post opens with Signing On, naming the ship, the captain, the pair and the post', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
-    const out = [], marks = { earth: 'kept by the berth book', mars: 'domes of Tharsis', belt: 'Ceres Warren' }, lines = { pilot: 'the helm', gunner: 'the guns', engineer: 'the plant', comms: 'the bands' };
+    const out = [], marks = { earth: 'The berth book at the arcology docks', mars: 'domes of Tharsis', belt: 'Ceres Warren' }, lines = { pilot: 'the helm', gunner: 'the guns', engineer: 'the plant', comms: 'the bands' };
     for (const bg of ['earth', 'mars', 'belt']) {
       for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
         startGame({ slot: 1, background: bg, captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'imre' });  // a first officer with no walk-through of their own: the opening names the pair
@@ -147,7 +147,7 @@ test('Signing On says what the pay goes to: the hall\'s bond, the co-op\'s buy-i
   });
   assert.match(r.text, /you owe it 9,000 cr for them: 30 percent of each run's pay goes to the hall/);
   assert.match(r.text, /the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote/);
-  assert.match(r.text, /Your papers name you a member of the Arcology Compact/);
+  assert.match(r.text, /Your papers name you a member of the Arcology Pact/);
   assert.doesNotMatch(r.text, /Ore Runner/, 'the used ship is Tomas\'s to find');
   assert.equal(r.before, 'Owed to the hall: 9,000 cr. A co-op buy-in on a plain vote is 57,000 cr, and you have 3,000 cr.');
   assert.match(r.offered, /The co-op's buy-in for you is 51,000 cr/, 'your own buy-in while the berths are open');

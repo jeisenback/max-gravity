@@ -81,3 +81,26 @@ test('the Record card renders its golden markup with one trait earned', async ()
   assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `record: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });
+
+test('the Ladder for a taught pick whose teacher is gone, and for a hurt hand; the level note offers a pick only when the Ladder does (#1002)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), c = career(), out = {};
+    c.skill.gunner = 45; c.picks = ['vent']; c.moves = [];  // level 2, vent picked and not yet shown
+    st.crew = st.crew.filter(id => person(id).role !== 'engineer');  // its teacher gone ashore
+    out.learning = /Vent the guns \(being learned\)/.test(ladder().textContent);
+    c.picks = []; c.hurtUntil = st.day + 5; const card = ladder();  // hurt: level 1 worked, not 2
+    out.hurt = { takes: [...card.querySelectorAll('button[data-action="pick"]')].map(b => b.dataset.arg), waits: (card.textContent.match(/A pick waits/g) || []).length };
+    c.picks = ['steady-eye']; UI.notes = []; G.mode = 'landed'; c.skill.gunner = 44; gainSkill('gunner', 1);  // level 2 lands while hurt: rung 2 is not offered yet
+    out.note = UI.notes.join(' ');
+    c.hurtUntil = 0; c.skill.gunner = 44; UI.notes = []; gainSkill('gunner', 1);
+    out.noteWell = UI.notes.join(' ');
+    return out;
+  });
+  await done();
+  assert.equal(r.learning, true);
+  assert.deepEqual(r.hurt, { takes: ['vent', 'steady-eye'], waits: 1 }, 'a hurt hand at level 2 is offered rung 1 only');
+  assert.match(r.note, /level 2 now/); assert.doesNotMatch(r.note, /A pick waits/, 'hurt: the Ladder has no pick for it, so the note says none');
+  assert.match(r.noteWell, /A pick waits on your page/);
+});

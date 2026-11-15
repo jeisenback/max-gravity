@@ -38,7 +38,7 @@ She likes: a hull that answers; the quiet of a long tow; people who don't fill a
 - **Tomas** rebuilt the hull she towed. They talk about her the way other people talk about a relative.
 - **Cato** she trusts to run the rota, and lets him.
 - **Pax** she watches out for without saying so, and Pax knows.
-- **The master** she judges by how he flies the Ore Runner, and by nothing else.
+- **The hand, as captain,** she judges by how they fly the Ore Runner, and by nothing else.
 - **The hand** is a member, and gets her vote's respect, and, if they earn it, a look at the list.
 
 ## How she talks

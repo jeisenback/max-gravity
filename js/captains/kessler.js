@@ -8,7 +8,7 @@ MASTER_CAPTAINS.kessler = {
   bio: 'Eighteen years a placement master for Van Leeuwen & Co., on eleven hulls the house was nervous about. Nine still fly. She writes to the house every Sunday, and tells every crew so on the first day.',
   wants: 'A clean last placement, and a pension she can live on in Rotterdam.', fears: 'A surprise.',
   captain: { trade: 4, nerve: 2, thrift: 5 }, wage: 850, hears: 0, bonus: 3, talk: 0.7,
-  master: true, leans: 'lender',
+  master: true, leans: 'lender', at: 'coop-hull',  // at: where chapter two puts them (#1045)
 
   intro: () => ('Ama Kessler has a folder under her arm and the rain of somewhere else still on her coat. "I write to the house every Sunday," she says. ' +
       '"The log, the cargo, the minutes. Nothing you\'d not show them yourselves. You may read it first, if you like. Most crews stop asking by the ' +

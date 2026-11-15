@@ -35,9 +35,11 @@ function icePick(st, from, fuel, { price, travelDays, burnFuel }) {
 }
 
 // The run the planner takes when it is due: out to the rock, the shifts, and home to the port that pays most for water, the whole hold, no cost.
+// The captain keeps the ship off the ice while the haulers' strike runs, when the hand has asked and she has agreed (stories/ice-strike.js, #1044).
+const iceHeld = st => { const q = st.qualities || {}; return !!q.strikeHold && st.day < (q['due:strike-end'] || 0); };
 function iceOption(from, free) {
   const h = hired(), st = G.state;
-  if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
+  if (!h || iceHeld(st) || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
   const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });
   if (!pick) return null;
   findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure

@@ -426,23 +426,23 @@ test('downtime for a hired hand: not the captain\'s drills, and a chance to prac
   const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
-    const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent(true).choices.map(c => c.label); };
+    const labels = () => { G.transit.lifeUsed = {}; return downtimeScene(true).choices.map(c => c.label); };
     startHired('engineer'); const st = G.state; st.tutorial = null; st.armor = 10;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const eng = labels(), engText = downtimeEvent(true).text;
-    const x0 = skillXp('engineer'); const prac = downtimeEvent(true).choices.find(c => c.label === 'Practice at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
+    const eng = labels(), engText = downtimeScene(true).text;
+    const x0 = skillXp('engineer'); const prac = downtimeScene(true).choices.find(c => c.label === 'Practice at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
     startHired('pilot'); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const pilot = labels();
     startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const owner = labels(), ownerText = downtimeEvent(true).text;
+    const owner = labels(), ownerText = downtimeScene(true).text;
     return { eng, engText, gained, said, pilot, owner, ownerText };
   });
   assert.ok(!r.eng.includes('Run drills') && !r.eng.includes('Check on passengers'), 'the drills and the rounds of the berths are the captain\'s');
   assert.ok(r.eng.includes('Practice at your post') && r.eng.includes('Maintenance'), 'an engineer keeps the hull');
   assert.ok(!r.pilot.includes('Maintenance') && r.pilot.includes('Practice at your post'), 'a pilot does not');
-  assert.match(r.engText, /What do you do/); assert.equal(r.gained, 3); assert.match(r.said, /engineer post/);
+  assert.match(r.engText, /The engineer post is clear/, 'the scene says what is on: practice at the hand\'s post'); assert.equal(r.gained, 3); assert.match(r.said, /engineer post/);
   assert.ok(r.owner.includes('Run drills') && !r.owner.includes('Practice at your post'), 'an owner is unchanged');
-  assert.match(r.ownerText, /What does the ship do/);
+  assert.match(r.ownerText, /drill run/, 'and for an owner, the drills');
   await done();
 });
 
@@ -467,8 +467,8 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     out.mine = { minePaid, fundMoved };
     // The contact (a patrol: no option fits a pilot, as a pirate's would): the captain answers, and pays from the ship's purse.
     h.fund = 200000; let contactMine = 0;
-    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Compact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
-    out.contactMine = contactMine; out.contactFund = h.fund !== 200000;
+    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Pact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
+    out.contactMine = contactMine;
     // Your own post's event is yours; another post's is the captain's.
     G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
     st.hired.post = 'engineer'; G.dialog = null; t.event = null; openEvent(coolant); out.coolantEngineer = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
@@ -476,7 +476,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
   });
   assert.deepEqual(r.shown.labels, ['See how it goes']); assert.match(r.shown.text, /takes the call/); assert.ok(r.shown.decided);
   assert.equal(r.mine.minePaid, 0, 'none of it came out of, or went into, your savings'); assert.ok(r.mine.fundMoved, 'it was the ship\'s money');
-  assert.ok(r.contact.decided); assert.equal(r.contactMine, 0); assert.ok(r.contactFund, 'a fight and a bounty or a fine, in the ship\'s purse');
+  assert.ok(r.contact.decided); assert.equal(r.contactMine, 0, 'the contact leaves your savings alone');  // with the heave-to gone (#993) the captain fights a patrol, so the fund need not move
   assert.deepEqual(r.coolantPilot, { decided: true, n: 1 }, 'the engineer\'s leak is not the pilot\'s to decide');
   assert.equal(r.coolantEngineer.decided, false, 'but it is yours when you are the engineer'); assert.ok(r.coolantEngineer.n >= 2);
   await done();
@@ -689,23 +689,20 @@ const ladderHelpers = () => {
   window.ladderBurn = (to = 'mars') => { const prev = G.transit; G.transit = { to, total: 100, left: 100, times: [] }; planIntercept(); const spec = G.transit.intercept && JSON.parse(JSON.stringify(G.transit.intercept.spec)); G.transit = prev; return spec; };
 };
 
-test('a ladder step that is due waits for a burn with no other intercept', async () => {
+test('a ladder step that is due takes the burn, bad standing or not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(hiredHelpers); await ev(ladderHelpers);
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired(); h.runsDone = 1; st.flags.classicCombat = true;
     const out = {};
-    st.rep['Dome Concord'] = -40;
+    st.rep['Dome Pact'] = -40;
     const hostile = []; for (let i = 0; i < 30; i++) hostile.push(ladderBurn('mars'));
-    out.patrolFirst = hostile.some(s => s && s.kind === 'patrol' && !s.ladder);
-    out.laddered = hostile.filter(s => s && s.ladder).length;
-    st.rep['Dome Concord'] = 0;
-    out.step = ladderBurn('mars');
+    out.patrol = hostile.some(s => s && s.kind === 'patrol');
+    out.step = hostile[0];
     out.doneBefore = (h.fights || { done: [] }).done.slice();
     return out;
   });
-  assert.ok(r.patrolFirst, 'a wanted patrol still takes the burn');
-  assert.ok(r.laddered > 0, 'the ladder takes the burns the patrol did not');
+  assert.equal(r.patrol, false, 'bad standing brings no patrol on a burn: the port inspects (#993)');
   assert.equal(r.step.ladder, 'raider'); assert.equal(r.step.shipId, 'raider'); assert.equal(r.step.kind, 'pirate');
   assert.deepEqual(r.doneBefore, [], 'planned is not met');
   await done();
@@ -717,7 +714,7 @@ test('the ladder contact is marked done when its fight starts, not when its scen
   const r = await ev(() => {
     startHired('gunner'); const h = hired(); h.runsDone = 1; G.state.flags.classicCombat = true;
     uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.interceptPlanned = false; planIntercept(); const spec = JSON.parse(JSON.stringify(t.intercept.spec));
-    t.intercept.at = 0; t.left = 50;
+    t.intercept.at = 0; t.left = 50; t.lifeBlock = shipDay(t.elapsed).block;  // no change of the ship's day this frame: the downtime scene (shiplife.js) is not due
     const real = Math.random; Math.random = () => 0;  // the drive is seen
     try { Mods.emit('frame', 0.01); } finally { Math.random = real; }
     const shown = (h.fights || { done: [] }).done.slice(), before = ladderBurn('pallas');
@@ -734,10 +731,10 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired();
-    const vars = { cap: 'Captain Vance', patrol: 'Compact cutter', price: '1,000' };  // the narrow build's captain, the patrol of Earth's space (the burn leaves it), the deal below
+    const vars = { cap: 'Captain Vance', price: '1,000' };  // the narrow build's captain, the deal below
     const labels = e => e.choices.map(c => String(c.label));
-    // each step's condition made to hold in turn, so the walk meets the four of chapter one in the ladder's order (the pair is parked for chapter two)
-    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
+    // each step's condition made to hold in turn, so the walk meets the three of chapter one in the ladder's order (the pair is parked for chapter two)
+    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; },
       () => { h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; st.credits = Math.max(st.credits, 1000); }];
     const steps = preps.map(prep => {
       prep(); const step = ladderNext(h, st, 'mars');
@@ -746,21 +743,21 @@ test('a ladder fight opens with its own entry line, and a random one with the se
       ladderDone(h, step.id);  // the scene does not meet it (the fight does, startShipFight); the walk moves on to the next step
       return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars), labels: labels(e), plainLabels: labels(plain) };
     });
-    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
+    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Pact', shipId: 'cutter' }).text };
   });
-  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'cutter', 'setpiece'], 'the four, in order');
-  assert.deepEqual(r.done, ['raider', 'corsair', 'cutter', 'setpiece']);
+  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'setpiece'], 'the three, in order');
+  assert.deepEqual(r.done, ['raider', 'corsair', 'setpiece']);
   for (const s of r.steps) {
     assert.match(s.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. /, `${s.id}: the range is kept`);
     assert.ok(s.text.endsWith(` ${s.want}`), `${s.id} opens with its own line: ${s.text}`);
     assert.doesNotMatch(s.text, /No transponder\. The plume signature says pirate\.|You are wanted in their space\.|\{\w+\}/, `${s.id}: no sensor line and no slot left unfilled`);
     assert.deepEqual(s.labels, s.plainLabels, `${s.id}: the choices are the contact's own`);
   }
-  assert.equal(new Set(r.steps.map(s => s.want)).size, 4, 'four different lines');
+  assert.equal(new Set(r.steps.map(s => s.want)).size, 3, 'three different lines');
   const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
-  assert.ok(by.cutter.includes('Transponder: Compact cutter, with'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
+  assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
   assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
-  assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
+  assert.ok(r.patrol.endsWith('Transponder: Dome Pact navy. You are wanted in their space.'), r.patrol);
   await done();
 });
 
@@ -773,7 +770,7 @@ test('random contacts for a hand come only once a type is met, and only of the t
     const draws = n => { const out = []; for (let i = 0; i < n; i++) { const s = ladderBurn('mars'); if (s) out.push(s); } return out; };
     const none = draws(300).filter(s => s.kind === 'pirate').length;
     h.runsDone = 1; h.fights = { done: ['raider'] };
-    st.rep['Dome Concord'] = 0;
+    st.rep['Dome Pact'] = 0;
     const met = draws(600).filter(s => s.kind === 'pirate'), scene = scenePirate().pack;
     h.fights.done.push('corsair', 'cutter', 'pair');  // the ladder's pair met: the lane rolls a random raider's pack again
     const after = draws(600).filter(s => s.kind === 'pirate');

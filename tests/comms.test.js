@@ -53,10 +53,10 @@ test('a letter about a crewmate links to them, and what arrived since the last d
     const st = G.state, wim = st.crew.map(person).find(p => p && !p.cast);  // a generated crewmate (the seed's Wim went with the bible's smaller crew, #879)
     st.inbox = []; st.inboxN = 0; st.dockMark = null;
     noteInbox('station', 'Old news. (Mars)');
-    Mods.emit('landed', currentPlanet());                       // docking: everything so far is old
+    Mods.emit('arrived', currentPlanet());                      // docking: everything so far is old (comms reads the notes once the landing's handlers have run, #1096)
     noteInbox('ship', 'Hail from the Mercy: short of water.');  // arrived in transit
     UI.notes = [noteFor(`A message for ${wim.first} at Earth: all is well.`, wim.id)];
-    Mods.emit('landed', currentPlanet());                       // the next dock brings the letter
+    Mods.emit('arrived', currentPlanet());                      // the next dock brings the letter
     const d = document.createElement('div'); d.innerHTML = commsPanel();
     const msgs = [...d.querySelectorAll('.con-msg')].map(m => ({ text: m.querySelector('div').textContent, isNew: !!m.querySelector('.char-tag'), who: (m.querySelector('button[data-action=person]') || {}).dataset && m.querySelector('button[data-action=person]').dataset.arg }));
     return { msgs, wim: wim.id, wimName: wim.first, stored: st.inbox.map(m => [m.n, !!m.pid]), mark: st.dockMark };

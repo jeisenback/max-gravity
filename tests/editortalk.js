@@ -1,8 +1,9 @@
 'use strict';
 
-// The talk scenes in the editor (#457): every row is lines in a burn, and each plays in the preview with the shipmate it is about. Played in four parts,
-// tests/editortalk-1..4.test.js, each the rows whose place in the list leaves k over by four: one test of all 413 filled most of a CI shard on its own
-// (#950), and --test-shard deals out whole files in their sorted order, so four files with neighbouring names go to four shards.
+// The talk scenes in the editor (#457): every row is lines in a burn, and each plays in the preview with the shipmate it is about. Played in six parts,
+// tests/editortalk-1..6.test.js, each the rows whose place in the list leaves k over by six: one test of all 413 filled most of a CI shard on its own
+// (#950), and --test-shard deals out whole files in their sorted order, one to each shard in turn, so six files with neighbouring names go to the six
+// shards (.github/workflows/test.yml). In four parts a part took up to three minutes and its shard ran past five.
 
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -12,7 +13,7 @@ const { chromium } = require('playwright');
 const { watch, closeBrowser } = require('./helpers');
 
 const URL = 'file://' + path.resolve(__dirname, '..', 'editor.html');
-const PARTS = 4;
+const PARTS = 6;
 const SHARED = { 'family:visit-home': 'kind.label', 'family:room-offer': 'c0.label', 'family:room-return': 'c0.label' };
 
 function talkPart(k) {

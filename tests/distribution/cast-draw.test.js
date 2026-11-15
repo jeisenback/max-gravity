@@ -4,6 +4,7 @@
 // over many random draws, so a new random draw anywhere can move them. The pins (a draw is two different people, the pair drawn
 // is the pair aboard and is kept) are in tests/castpool.test.js.
 //
+// Profiles:  none: the draws and the fresh games here use no soak player (tools/soak.js SOAK_PROFILES, #1199).
 // Sample:    300 draws for the first check; 12 seeded games (seeds 1 to 12) for the second.
 // Tolerance: every character in the pool comes up more than 20 times in 300 draws (the expected count is about 100 or more, so
 //            this only catches a character who can no longer be drawn); 12 games give at least 4 different pairs, and not
