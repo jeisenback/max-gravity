@@ -198,7 +198,7 @@ const SCENE_LINES = {
     'cause.good': 'The junior counts {tons}t of {good} against the manifest and reads the next line off the slate. "Import licence for that?" There isn\'t one on file. The duty is {duty} cr.',
     'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
-    known: '{official} reads the name off the slate before the junior has the manifest up. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14)
+    known: '{official} looks at the name on the slate a second time. "We had your name already," {official} says, and does not say from where.',  // a patrol knew the hand before the run (the papers, spec 2026-11-14)
     'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
     'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)
@@ -1266,7 +1266,7 @@ const SCENE_LINES = {
   'scene:sign-on': {  // a captain's own introduction (their entry's `intro`), and the line on the dock a put-ashore hand carries, are not here
     title: 'Signing On',
     // the papers (menu.js papersForm, spec 2026-11-14): where you are from, the two questions and their answers, the note on a trade that changes nothing
-    'home.earth': 'An arcology on Earth. Everyone you know is still in it, and the service charge went up in March.',
+    'home.earth': 'An arcology on Earth. Everyone you know is still in it, two rooms on a lower tier, and your brother takes your nights on the wall rota now.',
     'home.mars': 'The domes at Tharsis. Your mother still pays the Pact for the air, and asks when you are coming back.',
     'home.belt': 'The Ceres Warren. A water share was the first thing you owned, and the first thing you sold.',
     sheet: 'The sheet', 'question.before': 'What you were before the ship', 'question.known': 'Who knows your name',
@@ -1280,8 +1280,8 @@ const SCENE_LINES = {
     'before.dock': 'Before the ship you worked the docks: loading, three shifts in four, and the hands to show for it.',
     'before.clerk': 'Before the ship you kept a shipper\'s office: the manifests, the day book, and who owed what to whom.',
     'before.ferry': 'Before the ship you stood watches on a short-haul ferry, where a rating does what the master says and learns to say it back.',
-    'known.shipper': 'The freight office at home knows your name, and gives the ship its board the way it gives it to one it trusts.',
-    'known.patrol': 'A patrol has your name too, from a stop that ended in a fine. The navy keeps its files.',
+    'known.shipper': 'The freight office at home knows your name. The clerk on the late desk was at school with you.',
+    'known.patrol': 'A patrol has your name too, from a stop that ended in a fine you paid off over a year.',
     'known.shipmate': '{first} knows you from before: a short-haul boat, a season of watches, and no quarrel.',
     'known.shipmate.someone': 'Someone aboard',
     'text.earth': 'The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency\'s list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, {ship}, an ice hauler out of {sys}, took you for what you could do.{who}',

@@ -253,7 +253,7 @@ const Menu = {
       return `<h2>New game</h2>
         <div class="menu-form">
           <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="${f.mode === 'hired' ? 'The name on your papers' : 'Captain\'s name'}" value="${esc(f.captain || '')}"></label>
-          <h3>${narrow ? 'Your post' : 'How you start'}</h3>
+          <h3>${narrow ? 'Signing on' : 'How you start'}</h3>
           ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
           ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work ${scopeOff('posts') ? 'the guns' : 'one post'}. The captain picks where she goes; you save toward a ship of your own.</p>
           ${this.views.papersForm(f)}`
@@ -445,7 +445,7 @@ Mods.register({
     act('menuBefore', id => { keepForm(); Menu.form.before = id; });
     act('menuKnown', id => { keepForm(); Menu.form.known = id; });
     act('menuSlotPick', n => { keepForm(); Menu.form.slot = Number(n); });
-    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial, origin: { home: f.home || 'earth', before: f.before || 'none', known: f.known || 'none' } }); Menu.form = { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' }; });
+    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, ...(f.mode === 'hired' ? { background: 'earth' } : {}), tutorial: f.tutorial,  /* a hand signs on at Earth, whatever an owner's start was left on (the owner, #1252, #1258) */ origin: { home: f.home || 'earth', before: f.before || 'none', known: f.known || 'none' } }); Menu.form = { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' }; });
     act('menuSlotLoad', n => loadSlot(Number(n)));
     act('menuSlotDelete', arg => {
       const [n, yes] = String(arg).split(':');

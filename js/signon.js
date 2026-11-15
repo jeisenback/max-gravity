@@ -31,7 +31,7 @@ function signOnEvent() {
   // The papers at the sign-on (spec 2026-11-14, h.origin): how a hand from Mars or the Belt came to Earth, before the queue; and what they were and who knows
   // their name, read back one line each in a paragraph of their own after the post's. Nothing for an answer declined, and nothing for a save from before.
   const origin = h.origin || {}, came = origin.home && origin.home !== 'earth' && bg === 'earth' ? `${say(`came.${origin.home}`)} ` : '';
-  const mate = st.crew.map(person).find(c => c && !c.cast && (c.memories || []).some(m => m.includes(say('known.shipmate.memory'))));
+  const mate = h.oldMate ? person(h.oldMate) : null;  // the shipmate the papers gave (hired.js applyPapers)
   const back = [origin.before && origin.before !== 'none' ? say(`before.${origin.before}`) : '', origin.known && origin.known !== 'none' ? say(`known.${origin.known}`, { first: mate ? mate.first : say('known.shipmate.someone') }) : ''].filter(Boolean).join(' ');
   const event = {
     title: say('title'), place: 'yard',  // at the hiring boards, on a port's view (portview.js, #1103)

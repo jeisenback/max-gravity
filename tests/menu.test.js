@@ -203,6 +203,9 @@ test('the new-game form is the hand\'s papers: the home, the post, the sheet as 
     return out;
   });
   assert.deepEqual(full, [], 'the form and the game agree on every home, post and trade in the full build');
+  await owner.ev(() => { Menu.form.background = 'mars'; });  // an owner's start left on Mars, then the hand chosen (#1258)
+  await owner.page.fill('#ngCaptain', 'Rin Adeyemi'); await owner.page.click('[data-action=menuStart]');
+  assert.equal(await owner.ev(() => G.state.background), 'earth', 'a hand signs on at Earth, whatever the owner\'s start was left on (#1252)');
   await owner.done();
 });
 

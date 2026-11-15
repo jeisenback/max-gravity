@@ -41,7 +41,8 @@ function inspectionScene(cause, planet) {
   const cap = role().captain === 'npc' ? hiredCaptain() : null, post = role().hatch && career() && career().post;  // the hand argues by their post, past the captain or on their own bridge (#1045); an owner, even one who kept a post, only pays
   const off = dockOfficial(planet);
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), official: officialName(planet), ...vars });
-  const h = hired(), known = !!h && (h.origin || {}).known === 'patrol' && ((h.record || {}).fines || 0) === 1;  // the papers (spec 2026-11-14): a patrol had the name before the run, and this is its first fine
+  const h = hired(), known = !!h && (h.origin || {}).known === 'patrol' && !(h.record || {}).patrolKnown;  // the papers (spec 2026-11-14): a patrol had the name before the run; said at the first inspection of a berth, paid or not, whatever fine came first (#1258)
+  if (known) h.record.patrolKnown = true;
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
