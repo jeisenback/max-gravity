@@ -71,18 +71,66 @@ const BARS = {
 
 
 const OPENERS = {
-  talkative: ['They are already halfway through a story when you sit down.', 'They start talking before you have finished sitting. They do not stop for breath.', '"You have a kind face," they say. "I have to tell you something." They do.'],
-  nervous: ['They keep one eye on the door.', 'They jump when you sit down, laugh, and apologize.', 'They have shredded a bar napkin into strips and have started on a second.'],
-  generous: ['They push a bowl of salted beans toward you.', 'They have already ordered you a drink, and say the barman got it wrong.', 'They slide over on the bench and press a warm roll into your hand.'],
-  greedy: ['They ask what a ship like yours clears in a month before they ask your name.', 'They are doing sums on a napkin. When they see you looking, they keep going.', 'They look at your boots, your jacket, and the transponder on the bar, and name a higher price.'],
-  pious: ['There is a prayer cord around their wrist, worn smooth.', 'They murmur a short blessing over their cup before they drink. They see you watching and say sorry.', 'A small charm hangs from a chain at their throat. Twice they touch it.'],
-  rude: ['"You\'re in my light."', '"Do you mind? I was here first, and I was enjoying the silence."', 'They look you up and down and sigh.'],
-  curious: ['They want to know everything about your ship.', 'They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath.', '"Tell me about your ship," they say. "All of it. Take your time."'],
-  drunk: ['They are several drinks ahead of you.', 'They greet you like a cousin and lose their train of thought in the same breath.', 'They are explaining something to a coaster. They hold up a finger for you to wait.'],
-  secretive: ['They angle their terminal away from you.', 'They look at you one second longer than is comfortable, and smile.', 'They answer every question with a question.'],
-  kind: ['They ask if you have eaten.', 'They push a glass of water toward you before they say anything.', 'They make room for you on the bench without a word.'],
-  brave: ['They have a fresh scar and a story about it.', 'They sit with their back to the door.', 'They roll up one sleeve to show a long healing burn. "You should see the other guy," they say. "He is a wall."'],
-  homesick: ['They are showing the bartender pictures of home.', 'They hold a creased photograph in both hands and set it down on the table as you sit.', 'They say the name of a place twice, under their breath, and check whether you heard.'],
+  talkative: [
+    'They\'re halfway through a story when you sit down, and start it again for you from the top.',
+    '"You\'re off a ship? Which?" They don\'t wait. "I did six years on a bulk carrier. Don\'t, ever."',
+    'They\'ve been talking to the bartender, and turn to you without stopping.'
+  ],
+  nervous: [
+    'They keep looking at the departures board behind the bar.',
+    'They move their bag off the stool for you, and then hold it on their lap.',
+    'They\'ve torn the label off their bottle in strips and started on the coaster.'
+  ],
+  generous: [
+    'They push the bowl of nuts your way.',
+    '"I ordered two by mistake," they say, and slide one over.',
+    'They\'re splitting a plate of dumplings with whoever sits down, which is you.'
+  ],
+  greedy: [
+    'They\'re going down a pay slip line by line, with a pen.',
+    '"What\'s the day rate on your ship?" they ask, before your name.',
+    'They ask the bartender what the second round costs before they\'ve finished the first.'
+  ],
+  pious: [
+    'There\'s a prayer cord round their wrist, worn smooth.',
+    'They say a few words over the glass before they drink.',
+    'They have a small book open on the bar, and close it on a finger to keep the place.'
+  ],
+  rude: [
+    '"That one\'s taken." It isn\'t.',
+    'They look at you, and then at the empty stools further down.',
+    '"If you\'re selling something, no."'
+  ],
+  curious: [
+    '"What are you on? What\'s she burn?" they ask, before you\'ve sat down.',
+    'They want to know where you came in from, how long it took, and what the dock charged.',
+    'They read the patch on your jacket and ask what it\'s for.'
+  ],
+  drunk: [
+    'They\'re a few drinks ahead of you, and pleased about it.',
+    'They call you by someone else\'s name, and then decide that\'s fine.',
+    'They hold up a finger for you to wait, finish telling the bartender something, and lose it.'
+  ],
+  secretive: [
+    'They turn their terminal face down when you sit.',
+    'They ask where you\'re in from, and when you ask back, they say "Around."',
+    'They pay for each drink as it comes, in cash.'
+  ],
+  kind: [
+    '"Have you eaten?" they ask. "The soup\'s all right here."',
+    'They pour you a glass of water from their jug before they say anything.',
+    'They move along the bench to make room, and move their coat.'
+  ],
+  brave: [
+    'There\'s a new burn scar up one forearm, still pink.',
+    'They did an outside job on a hull this morning and are still in the undersuit.',
+    'They have a fresh dressing on one hand. "Clamp," they say. "My fault. I\'d do it the same."'
+  ],
+  homesick: [
+    'They\'re watching a message on their terminal, an old woman talking in a kitchen. They play it again.',
+    'They have a photo taped inside the lid of their lunch tin, and the lid is open.',
+    '"Where\'s home?" they ask, and tell you theirs before you can answer.'
+  ]
 };
 
 const SECRET_TALK = {
@@ -148,32 +196,40 @@ const CREW_AT_BAR = {
 // their name, so no random draw) where they are about who someone is, and at random where they are about the night.
 const WORK_GROUP = [[/dock|rigger|salvag|miner|ore |ice |haul|crane|freight/i, 'hands'], [/engineer|tech|weld|chemist|hydro|model|architect|mechanic/i, 'tech'], [/navy|veteran|pilot|guard|officer/i, 'service']];
 const BAR_WORK = {
-  hands: [('{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes.'), (
-      '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They say it as a joke.'), (
-      '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give ' +
-      'the supervisor\'s name.')],
-  tech: [('{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not.'), ('"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you ' +
-          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.'],
-  service: [('{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they ' +
-      'have left.'), ('"They taught me to count exits," {n} says. "I still do it. There ' +
-          'are three." They glance at each one, in order, without moving their head.'), '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
-  other: [('{n} talks about the work: the hours, the people, the small politics.'), (
-      '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be."'), (
-      '{n} tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to ' +
-      'everyone\'s surprise, accepting.')],
+  hands: [
+    '"Twelve hours. Two on the crane, ten waiting for the crane," {n} says. "They pay the waiting at half." They hold up their terminal with the pay slip on it.',
+    '{n} shows you a hand with two fingers that don\'t close all the way. "Clamp," they say. "Supervisor signed it off as checked." They don\'t say his name.',
+    '"There\'s a union on the next dock over," {n} says. "Not on ours. Ours pays a bit more, so there won\'t be."'
+  ],
+  tech: [
+    '"The board wants four hundred to renew my licence," {n} says. "Every three years. It\'s the same exam I passed."',
+    '{n} puts a pump seal on the bar. "Rated for two years. That came out at eight months." They put it back in their pocket.',
+    '"Half the job\'s the log," {n} says. "If it isn\'t in the log you didn\'t do it. If it is, you did it wrong."'
+  ],
+  service: [
+    '{n} did nine years in the navy and won\'t say where. They\'ll say the food was better than this.',
+    '"Guard contract. Ninety days, renewable," {n} says. "It\'s been renewed four times. Every time it\'s ninety days."',
+    '"They keep your record," {n} says. "Every posting, every mark. I\'ve got one mark, from my second year. It\'s still the first thing anyone reads."'
+  ],
+  other: [
+    '"It\'s the hours, mostly," {n} says. "And the people. Mostly the hours."',
+    '"I wasn\'t going to do this for long," {n} says. "That was nine years ago."',
+    '{n} tells you about a shipment logged to the wrong bay, and who got the mark for it, which was them. "It was the system\'s mistake," they say. "The system doesn\'t have a record."'
+  ]
 };
-const BAR_SILENCE = [('You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an ' +
-    'inch toward you, and that is all.'), ('You share the table. {n} reads something on a terminal and you watch the room. Twenty ' +
-        'minutes go by without a word.'), ('{n} turns the glass a quarter turn on the bar, and again, and you do not ask. The drink ' +
-            'goes down slowly.'), (
-            'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking ' +
-            'up.')];
-const BAR_PLACE = [('"{bar}," {n} says, "has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you ' +
-    'do not ask."'), (
-    '{n} points out the table by the wall. "A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, ' +
-    'and then it was a table again."'), '"The bartender knows everyone\'s business," {n} says, "and has never repeated any of it. That is why anyone trusts this place."', (
-    '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short ' +
-    'list.'), '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
+const BAR_SILENCE = [
+  'You sit with {n} and neither of you says anything. After a while {n} pushes the bowl along the bar toward you.',
+  'You share the table. {n} reads something on their terminal, and you watch the room. Twenty minutes go by.',
+  '{n} turns the glass a quarter turn on the bar, and again. You don\'t ask.',
+  'Neither of you has anywhere to be. When you stand to go, {n} lifts a hand without looking up.'
+];
+const BAR_PLACE = [
+  '"{bar}\'s been here longer than the owners," {n} says. "They\'re the third lot. It\'s the same bartender."',
+  '"Don\'t have the fish," {n} says. "The bartender says it\'s from a tank. Ask which tank."',
+  '{n} points out the table where the agency man sits on Fridays, when he does the sign-ons.',
+  '"They put the prices up when a big ship\'s in," {n} says. "There\'s a board. Look, they\'ve changed it since you sat down."',
+  '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'
+];
 const BAR_CARD_WIN = [
   'Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.',
   '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.',
@@ -186,33 +242,30 @@ const BAR_CARD_LOSE = [
   'You have the better hand for most of the evening and none of it at the end. {n} says sorry. {cr} cr.',
   '{n} fans the last cards with a flourish you have seen before, in another port. {cr} cr.'
 ];
-const BAR_HOME_TALK = [('{n} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried ' +
-    'dough on the corner, and a sister who writes every week. They talk until the bar is nearly empty.'), (
-    '"You will think I am making it up," {n} says, and then tells you about a festival on {home} where the whole district eats at one long table, and ' +
-    'the oldest person gets the first plate and the last word.'), (
-    '{n} draws {home} on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. "That is the street," ' +
-    '{n} says. "That is where I will be, one day."'), (
-    '{n} says the name of a street on {home} and then says nothing for a while. When they start again it is about a dog, and it is a happy story, and ' +
-    'then it is not.')];
+const BAR_HOME_TALK = [
+  '"{home}?" {n} shrugs. "My mum\'s still there. My sister. She sends a message every week, and every week it\'s the lease." They drink. "It went up again."',
+  '"I send most of it home," {n} says. "My kids are with my mother. The little one thinks I live in the terminal."',
+  '{n} plays you a message from {home}: an old man in a kitchen, reading out the football scores. "My dad. He records them twice, in case the first one doesn\'t go."',
+  '"I\'ll go back when the lease comes up," {n} says. "If they renew it. They don\'t renew many."'
+];
 const BAR_BLESS = [('{n} closes their eyes and lays two fingers on the transponder. They say a few words over your ship\'s name, in a cadence you do ' +
     'not know. The bar goes quiet. When they are done they open their eyes and touch your hand.'), (
     '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. ' +
     '"It is not for rocks."'), (
     '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.')];
 const BAR_LEAVE = [
-  'You get up and leave them to their drink. You go back to the bar and the noise of the room.',
-  'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.',
-  '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.',
-  'You finish what is in your glass and stand. {n} has already gone back to their own business.'
+  'You leave {n} to their drink.',
+  'You nod, and {n} nods.',
+  '"Safe burn," {n} says, to your back.',
+  'You finish what\'s in your glass. {n} has already turned back to the bar.'
 ];
-const BAR_DRINK_TALK = [('{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no ' +
-    'rumor in it, and no secret, and no angle. It takes an hour.'), (
-    '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. The bar laughs at ' +
-    'the end of it, twice. Nothing in it is a job, a price or a name.'), '{n} asks about you, and listens. They offer no tip and no advice, and the drink is gone before the hour is.', (
-    '{n} complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every ' +
-    'figure is exact.'), (
-    '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. They tell it from start to end, ' +
-    'and there is no tip in it.')];
+const BAR_DRINK_TALK = [
+  '"{home}\'s all right," {n} says. "My dad\'s still in the same flat. The agency had my first eleven months before I saw a credit, so that\'s where the first year went." They order another.',
+  '{n} shows you the deductions on their last pay slip: agency, berth, air, kit hire. "Kit hire," they say. "It\'s a pair of boots."',
+  '{n} asks which agency you came through, and makes a face. "They held my pay for three ports once. Said the ship hadn\'t paid them yet."',
+  '"Last ship paid us two weeks late," {n} says, "and took berth off us for the two weeks."',
+  '{n} tells you about a captain they had who paid for the crew\'s relay slot on birthdays. "Only one I\'ve had who did."'
+];
 
 // What the person is like colors what they say: a line for each of their first two traits (70% of the time, else the shared pool),
 // for the kinds of thing that used to be the same for everyone.
@@ -303,14 +356,14 @@ const BAR_TRAIT = {
   }
 };
 const BAR_GOAL = {
-  home: '{n} is going home, and keeps looking at the clock. "Three more ports," they say, to nobody in particular.',
-  family: '{n} is going to see family, and has brought the wrong present, and knows it. "What do you give a niece?" they ask.',
-  job: '{n} has an interview, and is rehearsing it under their breath, and stops when they see you looking.',
-  fresh: '{n} says, flatly, that they are starting again, and that they would rather not say from what.',
-  research: '{n} has a posting waiting at the end of the trip, and mentions the instruments for it before the name.',
-  pilgrim: '{n} touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy.',
-  medical: '{n} presses a hand to their side and asks, quietly, whether your ship carries a medic.',
-  vague: '{n} says they are traveling for reasons, and leaves it there, and orders another.',
+  home: '{n} has the route home written on the back of a ticket: three more ports, maybe four.',
+  family: '{n} has a present for a niece in a bag on the bar. "Do twelve-year-olds still like these?"',
+  job: '{n} has an interview at the end of the trip, and the questions they think they\'ll get open on their terminal.',
+  fresh: '{n} is starting again somewhere else. They don\'t say from what.',
+  research: '{n} has an instrument case between their feet, and keeps a foot against it.',
+  pilgrim: '{n} is travelling to a shrine a long way out, on the cheapest berth every leg.',
+  medical: '{n} is going to see a specialist a long way out. They sit carefully, one hand at their side.',
+  vague: '{n} is travelling. Asked where, they name the next port and no further.'
 };
 const barTrait = (kind, p, generic) => {
   const trait = barLines('trait'), own = p.traits.slice(0, 2).map(t => (trait[t] || {})[kind]).filter(Boolean);
@@ -390,13 +443,10 @@ function talkEvent(pat) {
   if (pat.cast) return castBarEvent(pat);
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0], opener = barLines('openers');
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
+  const who = `${p.first} ${p.last}, ${/^[aeiou]/i.test(p.job) ? 'an' : 'a'} ${p.job} from ${p.home}.`, rest = `${pick(opener[t0])} ${barSays(barLines('goal')[p.goal] || '', p)}`.trim();
   const text = pat.known
     ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
-    : [
-      `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(opener[t0])}`,
-      `${pick(opener[t0])} It is ${p.first} ${p.last}, ${GOALS[p.goal]}: a ${p.job} from ${p.home}, and ${TRAITS[p.traits[1]].adj}, you would say, if you had to.`,
-      `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(opener[t0])}`,
-    ][byName(p, 'intro', 3)];
+    : `${byName(p, 'intro', 2) ? 'Somebody has taken the stool next to yours: ' : ''}${who} ${rest}`;  // who they are, an opener that shows their first trait, and what they are travelling for (#1278)
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices, place: 'bar' };  // at the counter, at a port drawn as a place (portview.js, #1103)

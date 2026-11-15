@@ -23928,9 +23928,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
       "Ask Kwame about their work",
       "Ask what they've heard",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -23938,28 +23938,25 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "9 Jul 2214: The captain asked about the place and listened."
-      ]
-     },
-     {
-      "j": 1,
-      "roll": 0.5,
       "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
        "9 Jul 2214: The captain bought me a drink at The Heat Sink."
       ]
      },
      {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Kwame thinks about it. \"A rumor that Food on Ironheart is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\" \"And,\" Kwame says, before you can answer, \"A big contract on Mars has swallowed the whole local supply of Electronics, and the bidding has gone wild.\""
+     },
+     {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Kwame thinks about it, then says: \"A big contract on Ganymede has swallowed the whole local supply of Luxury Goods, and the bidding has gone wild.\" Kwame adds, before you can answer: \"A ceremonial feast on Pallas Refinery has drained every last ounce of Refined Metals, and the cooks are frantic.\""
+      "text": "Kwame lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Kwame talks over the answer and goes back to the story about the tug."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -24002,9 +23999,9 @@
      "title": "The Gravity Well: Grace Obi-Hartmann",
      "text": "Grace Obi-Hartmann nods at you. Since you were last here, Grace has the clinic's tender papers spread on the end of the bar and is reading every clause.",
      "labels": [
-      "Ask Grace about their work",
-      "Sit with Grace and say nothing",
-      "Play Grace at cards (2000 cr) [50%]",
+      "Ask what they've heard",
+      "Ask about Hermes Foundry",
+      "Buy Grace a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -24012,7 +24009,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Grace says. \"But I am better at it than I thought I would be.\"",
+      "text": "\"I wasn't going to do this for long,\" Grace says. \"That was nine years ago.\"",
       "mem": [
        "9 Jul 2214: The captain asked about my work and listened."
       ]
@@ -24020,12 +24017,15 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Grace puts down the glass."
+      "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Grace draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Grace says. \"That is where I will be, one day.\"",
+      "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
        "9 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
@@ -24076,8 +24076,8 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
-      "Ask about Hermes Foundry",
+      "Ask about the posting",
+      "Sit with Kwame and say nothing",
       "Ask Kwame about their work",
       "Leave them to their drink"
      ]
@@ -24086,20 +24086,20 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "9 Jul 2214: The captain asked about the place and listened."
-      ]
+      "text": "Kwame lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Kwame talks over the answer and goes back to the story about the tug."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Kwame thinks about it, then says: \"A corporate buying spree on Triton Outpost has cleared the shelves of Food.\" Kwame adds, before you can answer: \"A fire in a warehouse on Europa took most of the local stock of Machine Parts, and nobody's saying how it started.\""
+      "text": "Kwame thinks about it. \"A ship carrying Medical Supplies to Juno Commons was hijacked two weeks ago, and the shelves are getting bare.\" \"And,\" Kwame says, before you can answer, \"A warehouse on The Hollows has been cleared out in a hurry, and the Water is going, quite literally, for whatever anyone will pay.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Kwame talks over the answer and goes back to the story about the tug."
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
@@ -24147,9 +24147,9 @@
      "title": "The Heat Sink: Ravi Achebe",
      "text": "Ravi Achebe nods at you.",
      "labels": [
-      "Ask Ravi about their work",
       "Play Ravi at cards (2000 cr) [50%]",
-      "Ask Ravi about this place",
+      "Buy Ravi a drink (200 cr)",
+      "Sit with Ravi and say nothing",
       "Leave them to their drink"
      ]
     },
@@ -24157,15 +24157,15 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Ravi says. \"But I am better at it than I thought I would be.\" Ravi asks the next question, and then the one after it, about the burn profile.",
-      "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
-      ]
+      "text": "Ravi plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn. 2,000 cr. You finish the glass."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Ravi says they are traveling for reasons, and leaves it there, and orders another. Ravi thinks about it, then says: \"A ship carrying Medical Supplies to Juno Commons was hijacked two weeks ago, and the shelves are getting bare.\" Ravi adds, before you can answer: \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\""
+      "text": "\"I wasn't going to do this for long,\" Ravi says. \"That was nine years ago.\" Ravi asks the next question, and then the one after it, about the burn profile.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
      },
      {
       "j": 2,
@@ -24178,7 +24178,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Ravi half rises when you stand, and sits again, and says goodbye to the table. They have counted the exits twice."
+      "text": "\"Which lane next?\" Ravi asks, at the door, and writes it on their hand."
      }
     ]
    },
@@ -24221,9 +24221,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
+      "Ask about the posting",
       "Sit with Kwame and say nothing",
-      "Ask what they've heard",
+      "Ask about Hermes Foundry",
       "Leave them to their drink"
      ]
     },
@@ -24231,25 +24231,25 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "12 Jul 2214: The captain asked about the place and listened."
+       "12 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "Kwame thinks about it. \"A warehouse on Boneyard has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" \"And,\" Kwame says, before you can answer, \"A big contract on The Hollows has swallowed the whole local supply of Water, and the bidding has gone wild.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame talks about the pilotage fee on Hermes Foundry, you talk back, and somewhere in it 2,000 cr leaves your pocket. You finish the glass."
+      "text": "Kwame plays well, for someone whose mind is on Hermes Foundry. 2,000 cr, and a smile. You finish the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -24321,9 +24321,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
       "Ask about the posting",
-      "Ask about Hermes Foundry",
+      "Ask Kwame about this place",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -24331,23 +24331,23 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about the place and listened."
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
-      "mem": [
-       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
-      ]
+      "text": "Kwame plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
      },
      {
       "j": 3,
@@ -24424,9 +24424,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
-      "Sit with Kwame and say nothing",
-      "Play Kwame at cards (2000 cr) [50%]",
+      "Ask about the posting",
+      "Ask about Hermes Foundry",
+      "Buy Kwame a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -24434,25 +24434,31 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "20 Jul 2214: The captain asked about the place and listened."
+       "20 Jul 2214: The captain bought me a drink at The Heat Sink."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Kwame talks over the answer and goes back to the story about the tug."
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "20 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "20 Jul 2214: The captain bought me a drink at The Heat Sink."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -24502,9 +24508,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
-      "Sit with Kwame and say nothing",
-      "Ask about the posting",
+      "Ask about Hermes Foundry",
+      "Ask what they've heard",
+      "Ask Kwame about their work",
       "Leave them to their drink"
      ]
     },
@@ -24512,15 +24518,15 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about the place and listened."
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Kwame says. \"But I am better at it than I thought I would be.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
        "9 Jul 2214: The captain asked about my work and listened."
       ]
@@ -24528,7 +24534,10 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Kwame thinks about it, then says: \"Dockworkers on Enceladus have gone on strike. Refined Metals is suddenly scarce there.\" Kwame adds, before you can answer: \"Warehouses on Enceladus are overflowing with Food. Sellers are dumping it cheap.\""
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
@@ -24578,7 +24587,7 @@
      "labels": [
       "Ask Kwame about this place",
       "Sit with Kwame and say nothing",
-      "Ask about the posting",
+      "Play Kwame at cards (2000 cr) [50%]",
       "Leave them to their drink"
      ]
     },
@@ -24586,17 +24595,17 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
-       "6 Jan 2215: The captain asked about the place and listened."
+       "6 Jan 2215: The captain asked about my work and listened."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
-       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
+       "6 Jan 2215: The captain asked about my work and listened."
       ]
      },
      {
@@ -24654,7 +24663,7 @@
      "text": "Kwame Haddad nods at you.",
      "labels": [
       "Ask Kwame about this place",
-      "Play Kwame at cards (2000 cr) [50%]",
+      "Sit with Kwame and say nothing",
       "Buy Kwame a drink (200 cr)",
       "Leave them to their drink"
      ]
@@ -24663,28 +24672,28 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "16 Aug 2214: The captain asked about the place and listened."
-      ]
+      "text": "Kwame thinks about it. \"A ceremonial feast on Ironheart has drained every last ounce of Machine Parts, and the cooks are frantic.\" \"And,\" Kwame says, before you can answer, \"A rumor that Electronics on Juno Commons is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense.\""
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Kwame says. \"That is where I will be, one day.\"",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
-       "16 Aug 2214: The captain let me talk about Hermes Foundry."
+       "16 Aug 2214: The captain asked about my work and listened."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Kwame thinks about it, then says: \"Word is that the governor of Pallas Refinery is stockpiling Electronics for a party, and will pay well over the odds.\" Kwame adds, before you can answer: \"A cold snap on Juno Commons has made Food the only thing anyone wants to talk about.\""
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "16 Aug 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -24727,7 +24736,7 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
+      "Play Kwame at cards (2000 cr) [50%]",
       "Sit with Kwame and say nothing",
       "Ask about the posting",
       "Leave them to their drink"
@@ -24737,31 +24746,25 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"The bartender knows everyone's business,\" Kwame says, \"and has never repeated any of it. That is why anyone trusts this place.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "9 Jul 2214: The captain asked about the place and listened."
-      ]
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Kwame says. \"But I am better at it than I thought I would be.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Kwame says. \"But I am better at it than I thought I would be.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
-      ]
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -25059,7 +25062,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Leila, comes aboard with the hiring slip still in hand and has to step over the bucket.",
+    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Ravi, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -25080,7 +25083,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new deckhand, Oliver, comes aboard with the hiring slip still in hand and has to step over the bucket.",
+    "text": "Hana signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new deckhand, Arjun, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "10 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -25127,7 +25130,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Sofia, has signed on for the berth.",
+    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Daniel, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -25148,7 +25151,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Nadia, has signed on for the berth.",
+    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Leila, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -27105,10 +27108,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 10.",
+    "log": "Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 10.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -27118,14 +27121,14 @@
     ]
    },
    {
-    "log": "Turn 1: your word is not taken, you hit her drive for 3, you hit her hull for 7, she hits your hull for 10.",
+    "log": "Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 10, she hits your hull for 10.",
     "next": null,
     "mem": []
    },
    {
     "title": "Battle Stations",
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 3, you hit her hull for 7, she hits your hull for 10.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 10, she hits your hull for 10.",
     "labels": [
      "Gun 1: a hit does 2 to 3: Hull",
      "Weapons",
@@ -28211,247 +28214,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 0,
-    "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.99,
-    "text": "Mate1 runs, but the Pirate \"Bitter Knife\" gets a burst in first. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0,
-    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Hungry Debt\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0,
-    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.99,
-    "text": "The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations.",
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
-  "labels": [
-   "Battle stations (you take the guns)",
-   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
-   "Pay them off (10% of your credits, at least 5,000)",
-   "[{crew}] Spoof a pirate transponder",
-   "[Gunner] Put a burst across her bow [65%; opens the range]"
-  ]
- },
- {
-  "id": "scene:contact:pirate:pilot",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0,
-    "text": "Battle stations. The Pirate \"Hungry Tooth\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 0,
-    "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Hungry Hook\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.99,
-    "text": "Mate1 runs, but the Pirate \"Hungry Knife\" gets a burst in first. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0,
-    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Rusted Tooth\" made the intercept. Her crew have done this before.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0,
-    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.99,
-    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
-  "labels": [
-   "Battle stations (you take the guns)",
-   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
-   "Pay them off (10% of your credits, at least 5,000)",
-   "[{crew}] Spoof a pirate transponder",
-   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
-  ]
- },
- {
-  "id": "scene:contact:pirate:engineer",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0,
-    "text": "Battle stations. The Pirate \"Black Tooth\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 0,
-    "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Black Grin\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.99,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0,
-    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0,
-    "text": "You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.99,
-    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
-  "labels": [
-   "Battle stations (you take the guns)",
-   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
-   "Pay them off (10% of your credits, at least 5,000)",
-   "[{crew}] Spoof a pirate transponder",
-   "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
-  ]
- },
- {
-  "id": "scene:contact:pirate:comms",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0,
-    "text": "Battle stations. The Pirate \"Rusted Hook\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Rusted Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
@@ -28493,13 +28256,253 @@
    {
     "i": 3,
     "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Black Debt\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations. Her crew have done this before.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Gunner] Put a burst across her bow [65%; opens the range]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Silent Grin\" gets a burst in first. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Crimson Hook\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Rusted Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Silent Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Crimson Knife\" gets a burst in first. Battle stations. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Silent Vulture\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:comms",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Black Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Silent Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Hungry Debt\" gets a burst in first. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
     "text": "Your fake transponder reads as one of their own. The plume swings away.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Crimson Widow\" made the intercept.",
+    "text": "They see through it. Battle stations. The Pirate \"Crimson Tooth\" made the intercept.",
     "next": null
    }
   ],
@@ -28518,7 +28521,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Arcology Pact cutter \"Brave Lantern\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Patient Wager\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -28534,7 +28537,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Arcology Pact cutter \"Brave Ember\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Lucky Anvil\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -28550,7 +28553,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Ines runs, but the Arcology Pact cutter \"Distant Ember\" gets a burst in first. Battle stations.",
+    "text": "Ines runs, but the Arcology Pact cutter \"Stubborn Comet\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -28593,25 +28596,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Rusted Hook\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Hook\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Black Vulture\" made the intercept. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept. There are two of them, running in company.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Bitter Debt\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Crimson Grin\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
     "next": null
    }
   ],
@@ -28992,9 +28995,9 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 22,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
+    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 28,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
     "fx": {
-     "credits": 22000
+     "credits": 28000
     },
     "next": {
      "title": "The Drawing",
@@ -29727,7 +29730,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
     ],
@@ -29805,7 +29808,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
     ],
@@ -29829,7 +29832,7 @@
    {
     "i": 2,
     "roll": 0.99,
-    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
     ],
@@ -29871,7 +29874,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 90. The fund pays 1,080 cr for the used one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You talked me into the used one for the fire control."
     ],
@@ -29883,7 +29886,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
     ],
@@ -30724,7 +30727,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You talked me into the printed one for the fire control.",
      "9 Jul 2214: You argued for the fire control part, and it broke down."

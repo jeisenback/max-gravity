@@ -136,9 +136,8 @@ const BAR_TOPICS = [
   { id: 'heard', sample: { traits: ['talkative', 'kind'], goal: 'home' }, w: p => (barHas(p, 'secretive') ? 1 : 3), make: (p, pat, c) => { const say = barSay('heard', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.asked, say('gate'))), run() {
     pat.asked = true; met(pat);
     if (barHas(p, 'secretive') && p.opinion < OPINION.FRIEND) return say('secretive');
-    const aside = barSays(barLines('goal')[p.goal] || '', p), more = barHas(p, 'talkative', 'drunk', 'curious');
-    const heard = `${say('heard', { rumor: addRumor() })}${more ? ` ${say('more', { rumor: addRumor() })}` : ''}`;
-    return aside ? `${aside} ${heard}` : heard;
+    const more = barHas(p, 'talkative', 'drunk', 'curious');  // what they are travelling for is in the intro (bar.js talkEvent, #1278)
+    return `${say('heard', { rumor: addRumor() })}${more ? ` ${say('more', { rumor: addRumor() })}` : ''}`;
   } }); } },
   { id: 'passage', sample: { traits: ['kind', 'brave'] }, w: (p, pat) => (!hired() && (!pat.known || p.opinion >= 0) && p.goal !== 'fresh' ? 2 : 0), make: (p, pat, c) => { const say = barSay('passage', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.offered, say('gate')), needBerth), run() {
     pat.offered = true; met(pat);

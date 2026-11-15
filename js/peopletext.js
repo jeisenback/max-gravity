@@ -689,16 +689,16 @@ const PEOPLE_LINES = {
   'bar:drink': {
     label: 'Buy {first} a drink ({cost} cr)',
     gate: 'You have bought them a drink already.',
-    generous: '{first} won\'t hear of it, and slides the credits back across the bar, and buys the next one too. {react}',
-    rumor: '{first} looks around and leans in. "Here\'s something you can use," they say, low and fast: "{rumor}" Then they sit back and finish their drink. {react}',
+    generous: '{first} won\'t hear of it. They push the credits back and get the next one too. {react}',
+    rumor: '{first} leans in. "Here\'s one for you," they say: "{rumor}" {react}',
     'memory': 'The captain bought me a drink at {bar}.',
   },
   'bar:heard': {
     label: 'Ask what they\'ve heard',
     gate: 'You\'ve done that already tonight.',
-    secretive: '"Nothing worth repeating," {first} says, and smiles. "And you? How long have you had the ship?"',
-    heard: '{first} thinks about it, then says: "{rumor}"',
-    more: '{first} adds, before you can answer: "{rumor}"',
+    secretive: '"Nothing worth repeating," {first} says. "How long have you been on your ship?"',
+    heard: '{first} thinks about it. "{rumor}"',
+    more: '"And," {first} says, before you can answer, "{rumor}"',
   },
   'bar:passage': {
     label: 'Offer {first} passage',
@@ -720,7 +720,7 @@ const PEOPLE_LINES = {
     label: 'Ask {first} about their work',
     gate: 'You\'ve done that already tonight.',
     post: 'You come away knowing something new about the {post}. (Experience gained.)',
-    hands: 'Then {first} tells you what they\'re hearing on the docks: "{rumor}"',
+    hands: '"Word on the dock," {first} says: "{rumor}"',
     'memory': 'The captain asked about my work and listened.',
   },
   'bar:place': {
