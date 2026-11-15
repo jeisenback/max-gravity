@@ -2047,7 +2047,7 @@ test('a main character\'s beat drawn on a burn is an offer: taken, it plays; let
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    burn(); const t = G.transit, st = G.state; st.day += 120; t.offers = [];
+    burn(); const t = G.transit, st = G.state; st.day += 120; t.offers = []; t.left = t.total * 0.7;  // off the couches, where no offer is made (#1195)
     const key = castAboard()[0].cast, rec = castRec(key), real = Mods.filter, call = (...a) => real.apply(Mods, a), out = {};
     Mods.filter = (n, v, ...a) => (n === 'happenings' ? call(n, v, ...a).filter(c => c.offer && c.offer.kind === 'cast' && c.offer.key === `cast:${key}`) : call(n, v, ...a));
     try {

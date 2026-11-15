@@ -228,10 +228,11 @@ test('the phase weights: all burn at the ends, all cruise between, all flip at t
   assert.deepEqual(phaseWeights(0.98), { burn: 1, cruise: 0, flip: 0 });
   for (let p = 0; p <= 1; p += 0.001) { const w = phaseWeights(p); assert.ok(Math.abs(w.burn + w.cruise + w.flip - 1) < 1e-9 && Math.min(w.burn, w.cruise, w.flip) >= 0); }
 });
-test('the g reading: three times the thrust in the hard burn, the thrust in cruise, nothing at the flip, and no jumps', () => {
-  assert.equal(gReading(0.02, 0.9), 2.7); assert.equal(gReading(0.3, 0.9), 0.9); assert.equal(gReading(0.5, 0.9), 0); assert.equal(gReading(0.99, 0.9), 2.7);
+test('the g reading: the hard burn\'s g on the couches, the cruise\'s between, nothing at the flip, and no jumps (#1195)', () => {
+  const sh = { hardG: 1, cruiseG: 0.2 };
+  assert.equal(gReading(0.02, sh), 1); assert.equal(gReading(0.3, sh), 0.2); assert.equal(gReading(0.5, sh), 0); assert.equal(gReading(0.99, sh), 1);
   assert.equal(phaseWeights(0.06).burn, 0, 'the burn has ramped down by the time the couches empty'); assert.equal(phaseWeights(0.94).burn, 0);
-  for (let p = 0; p < 1; p += 0.001) assert.ok(Math.abs(gReading(p + 0.001, 0.9) - gReading(p, 0.9)) < 0.1, `a jump at ${p.toFixed(3)}`);
+  for (let p = 0; p < 1; p += 0.001) assert.ok(Math.abs(gReading(p + 0.001, sh) - gReading(p, sh)) < 0.1, `a jump at ${p.toFixed(3)}`);
 });
 test('the phases of a run, with the crew securing either side of the flip', () => {
   const at = pr => { G.transit = { total: 100, left: 100 * (1 - pr), days: 0.05 }; return phase(); };  // a burn so short its stages are held to the old shares (burnspeed.js, #992)

@@ -12,19 +12,34 @@ const BURN_SPEEDS = [0, 1, 2, 16, RUN_AHEAD];  // paused, normal, the two fast-f
 const COUCH_HOURS = 6, STRAP_MIN = 20, FLOAT_MIN = 6;  // ship time on the couches at each end; strapped in either side of the float; weightless
 const FLIP_REAL = 25;  // real seconds for the whole flip, strap to strap, at any speed
 
-// The stages as shares of the burn: `couch` at each end, `secure` and `float` as half-widths round the midpoint (`secure` the whole flip, strap and
-// float). A span longer than today's share of the burn is held to it.
-function burnStages(days) {
+// The burn's shape (#1195, docs/bible/burn.md, The burn's shape): hard on the couches at HARD_G up to the hull's cruise speed (its `cruise`, or
+// CRUISE_KMS), the easy cruise to the flip at whatever g makes the trip its days, and the same back. A trip too short to reach the speed has
+// the hard burn it can, keeping the cruise at CRUISE_MIN_G or more; the hard burn is at most HARD_MAX of the trip at each end. `dist` in km.
+// Returns { hard (the share of the trip on the couches at each end), hardG, cruiseG, vHard (km/s at the end of the hard burn), peak (km/s
+// at the flip) }. Pure.
+const HARD_G = 1, CRUISE_KMS = 210, CRUISE_MIN_G = 0.03, HARD_MAX = 0.06, COUCH_SPEED = 16;  // COUCH_SPEED: the pace the clock runs on by itself on the couches
+function burnShape(dist, days, vc = CRUISE_KMS) {
+  const half = Math.max(1, days) * 86400 / 2, ah = HARD_G * G_KMS2, floor = CRUISE_MIN_G * G_KMS2;
+  const cruise = th => { const tc = half - th; return 2 * (dist / 2 - ah * th * th / 2 - ah * th * tc) / (tc * tc); };  // the cruise's acceleration after a hard burn of th seconds
+  let th = Math.min(vc / ah, HARD_MAX * 2 * half);
+  if (cruise(th) < floor) { let lo = 0, hi = th; for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (cruise(m) >= floor) lo = m; else hi = m; } th = lo; }
+  const ac = Math.max(0, cruise(th));
+  return { hard: th / (2 * half), hardG: HARD_G, cruiseG: ac / G_KMS2, vHard: ah * th, peak: ah * th + ac * (half - th) };
+}
+
+// The stages as shares of the burn: `couch` at each end (the shape's hard burn, `hard`; six hours on a burn with none, as before #1195), `secure`
+// and `float` as half-widths round the midpoint (`secure` the whole flip, strap and float). A span longer than today's share of the burn is held to it.
+function burnStages(days, hard) {
   return {
-    couch: Math.min(0.06, COUCH_HOURS / (24 * days)),
+    couch: hard !== undefined ? hard : Math.min(HARD_MAX, COUCH_HOURS / (24 * days)),
     secure: Math.min(0.06, (FLOAT_MIN / 2 + STRAP_MIN) / (1440 * days)),
     float: Math.min(0.03, FLOAT_MIN / 2 / (1440 * days)),
   };
 }
 
 // The stage at a share `pr` of the burn: on the couches, strapped in, weightless, or free to move.
-function stageAt(days, pr) {
-  const s = burnStages(days), off = Math.abs(pr - 0.5);
+function stageAt(days, pr, hard) {
+  const s = burnStages(days, hard), off = Math.abs(pr - 0.5);
   return pr < s.couch || pr > 1 - s.couch ? 'couch' : off < s.float ? 'float' : off < s.secure ? 'secure' : 'move';
 }
 
@@ -36,26 +51,31 @@ function streakHush(days, pr) {
   return off <= sec ? STREAK_HUSH : off >= 2 * sec ? 1 : STREAK_HUSH + (1 - STREAK_HUSH) * (off - sec) / sec;
 }
 
-// Burn seconds per real second, with `speed` from BURN_SPEEDS and `drive` the drive's rate (engineering.js burnSpeed): the speed, or none paused,
-// and in the flip the rate that makes it last FLIP_REAL.
+// Burn seconds per real second, with `speed` from BURN_SPEEDS and `drive` the drive's rate (engineering.js burnSpeed): the speed, or none paused;
+// in the flip the rate that makes it last FLIP_REAL; on the couches at least COUCH_SPEED, the clock running on by itself (#1195).
 function burnRate(t, speed, drive) {
   if (!speed) return 0;
-  const sec = burnStages(t.days).secure;
-  return Math.abs(1 - t.left / t.total - 0.5) <= sec + 1e-9 ? 2 * sec * t.total / (FLIP_REAL * drive) : speed;  // the first instant in, give or take a float
+  const st = burnStages(t.days, t.hard), pr = 1 - t.left / t.total;
+  if (Math.abs(pr - 0.5) <= st.secure + 1e-9) return 2 * st.secure * t.total / (FLIP_REAL * drive);  // the first instant in, give or take a float
+  return pr < st.couch || pr > 1 - st.couch ? Math.max(speed, COUCH_SPEED) : speed;
 }
 
 // Burn seconds a frame of `dt` real seconds moves the burn on: dt at its rate, except that a step from before the flip stops at its first
-// instant, so none of the flip goes by at speed. The burn's `left` falls by this times `drive`.
+// instant, so none of the flip goes by at speed, and a step on the hard burn out stops at its end, so none of the cruise goes by at its pace
+// (#1195). The burn's `left` falls by this times `drive`.
 function burnStep(t, speed, drive, dt) {
-  const step = dt * burnRate(t, speed, drive), start = (0.5 - burnStages(t.days).secure) * t.total, done = t.total - t.left;
-  return done < start ? Math.min(step, (start - done) / drive) : step;
+  const st = burnStages(t.days, t.hard), step = dt * burnRate(t, speed, drive), start = (0.5 - st.secure) * t.total, done = t.total - t.left, up = st.couch * t.total;
+  const stop = done < up ? up + 1e-6 : done < start ? start : Infinity;  // a hair past the couches' end, so rounding does not leave it short of it
+  return Math.min(step, Math.max(0, stop - done) / drive);
 }
 
-// Real seconds to arrival at `speed` (the time at 1x when paused): the cruise at the speed, and what is still ahead of the flip at FLIP_REAL.
+// Real seconds to arrival at `speed` (the time at 1x when paused): the cruise at the speed, the couches still ahead at COUCH_SPEED or more, and
+// what is still ahead of the flip at FLIP_REAL.
 function realLeft(t, speed, drive) {
-  const sec = burnStages(t.days).secure, pr = 1 - t.left / t.total;
-  const ahead = Math.max(0, 0.5 + sec - Math.max(pr, 0.5 - sec)), cruise = Math.max(0, t.left - ahead * t.total);
-  return cruise / ((speed || 1) * drive) + ahead / (2 * sec) * FLIP_REAL;
+  const st = burnStages(t.days, t.hard), sec = st.secure, pr = 1 - t.left / t.total, s = speed || 1;
+  const ahead = Math.max(0, 0.5 + sec - Math.max(pr, 0.5 - sec)), couch = Math.max(0, st.couch - Math.max(0, pr - (1 - st.couch))) + Math.max(0, st.couch - pr);
+  const cruise = Math.max(0, t.left - (ahead + couch) * t.total);
+  return cruise / (s * drive) + couch * t.total / (Math.max(s, COUCH_SPEED) * drive) + ahead / (2 * sec) * FLIP_REAL;
 }
 
 // Today's length of a burn, before #992: what the number of scenes and the ship's wear, heat and projects per trip are kept at.

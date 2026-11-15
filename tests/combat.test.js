@@ -22,7 +22,7 @@ const burnSetup = () => {
 test('a pirate intercepts a burn, and the duel plays to an end and back to the burn', async () => {
   const { page, ev, done } = await open();
   await ev(burnSetup);
-  await ev(() => { G.transit.times = []; G.transit.interceptPlanned = true; G.transit.intercept = { spec: { kind: 'pirate' }, at: 0 }; });
+  await ev(() => { G.transit.times = []; G.transit.interceptPlanned = true; G.transit.intercept = { spec: { kind: 'pirate' }, at: 0 }; setPower('drive', POWER_MAX); });  // the hottest drive: always seen, whatever the random stream (engage.js)
   await page.waitForFunction(() => G.dialog && G.dialog.event.title === 'Contact');
   const label = await ev(() => G.dialog.choices[0].label);
   await page.click('[data-action=choose][data-arg="0"]');
