@@ -1,6 +1,6 @@
 # The hand's papers: minors from the review (#1258)
 
-Status: approved by the owner, 2026-11-15. Follows the papers (#1251, `2026-11-14-papers-design.md`).
+Status: approved by the owner and built, 2026-11-15 (#1258). Follows the papers (#1251, `2026-11-14-papers-design.md`).
 
 ## Intent
 
