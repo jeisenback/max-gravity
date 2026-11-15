@@ -50,7 +50,8 @@ for (const profile of ['attentive', 'hurried']) test(`about twenty runs reach th
   const rates = Object.entries(perDay).map(([k, v]) => v / rate[k]), spread = Math.max(...rates) / Math.min(...rates);
   // Measured against each captain's day rate less the kit: 0.95 to 1.01 over 20 seeds (2026-11-06); five seeds swing more, so this
   // guards against something other than the rate skewing a captain's pay, not against the rates themselves (the owner sets those).
-  assert.ok(spread <= 1.25, `pay per day against each captain's day rate: ${JSON.stringify(Object.fromEntries(Object.entries(perDay).map(([k, v]) => [k, `${Math.round(v)} of ${rate[k]}`])))}`);
+  // With downtime taken each slot (#1187): a spread of 1.18 over 10 seeds (main 1.04), 1.31 over these five; the cap 1.35 (the owner, 2026-11-15).
+  assert.ok(spread <= 1.35, `pay per day against each captain's day rate: ${JSON.stringify(Object.fromEntries(Object.entries(perDay).map(([k, v]) => [k, `${Math.round(v)} of ${rate[k]}`])))}`);
 });
 
 // Chapter two (#891): the co-op's Ore Runner on the board's contracts for 60 days (tools/soaktwo.js), the pay a day into the co-op's fund.

@@ -33,8 +33,8 @@ const { answerDeck } = require('./answer');
 const SOAK_STALL = 900000;
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 // The player's profile (#1199): what they do with what is optional on a burn, the offers on the ship (#1183) and downtime. `attentive` takes every
-// offer at once and spends downtime, as a player at 1x would; `hurried` runs ahead and takes nothing optional; `between` takes every other offer
-// and spends downtime. Which offers `between` takes is by count, not a roll. A distribution test says which profiles its bands hold for.
+// offer at once and one of downtime's offers each slot (#1185), as a player at 1x would; `hurried` runs ahead and takes nothing optional; `between`
+// takes every other offer, downtime's among them. Which offers `between` takes is by count, not a roll. A distribution test says which profiles its bands hold for.
 // At a port with a view, a landing's business is taken by every profile, as a player takes the yard and the agent; its people and the port's own
 // are offers like the burn's (#1192).
 const SOAK_PROFILES = ['attentive', 'hurried', 'between'];
@@ -201,8 +201,15 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
           const name = CAPTAIN_BEATS[beatDays.length];
           beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name] || 1);  // due and played in the same burn: one burn
         }
-        const acts = Object.values(ACTIVITIES).filter(a => a.can());
-        if (acts.length && profile !== 'hurried') pick(acts).run();  // downtime is optional: a hurried player spends none (#1199)
+        // Downtime (#1185): each of the burn's slots puts up its activities as offers; the profile takes one a slot, at random among them, or lets them go
+        // (a hurried player spends none, #1199). The slot is the burn's at its middle; the burn is put back after.
+        { const t = G.transit, was = { left: t.left, flipped: t.flipped }, n = t.slots || 2;
+          for (let k = 0; k < n && profile !== 'hurried' && G.transit === t; k++) {
+            t.left = t.total * (1 - (k + 0.5) / n); t.flipped = (k + 0.5) / n >= 0.5;
+            const e = downtimeScene(), able = e.choices.filter(c => !c.can || c.can());
+            if (able.length && (profile === 'attentive' || offersSeen++ % 2 === 0)) { openEvent({ ...e, choices: able }); await answer(); }
+          }
+          if (G.transit === t) Object.assign(t, was); }
         const rs = relationshipScene(); if (rs) { openEvent(rs); await answer(); }
         if (play) {  // the whole burn, in the game's own transit update: speed, heat and reaction mass tick as the frame loop would, the comms talk, and she arrives when the burn is done
           const t = G.transit, fuel0 = st.fuel, dt = 0.25;
