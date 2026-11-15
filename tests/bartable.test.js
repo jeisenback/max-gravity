@@ -138,10 +138,10 @@ test('what someone says at the table is theirs: their traits, their goal, and ho
     } finally { Math.random = real; }
     return out;
   });
-  assert.match(r.greedy, /counts the pot twice/); assert.match(r.pious, /Fair winds/);
+  assert.match(r.greedy, /back of a pay slip/); assert.match(r.pious, /Go safe/);
   assert.match(r.medical, /specialist/); assert.match(r.pilgrim, /shrine/);
   assert.match(r.friend, /Same again, next port/); assert.doesNotMatch(r.stranger, /Same again/);
-  assert.doesNotMatch(r.shared, /bigger purse/, 'a shared goodbye some of the time');
+  assert.doesNotMatch(r.shared, /Your round next time/, 'a shared goodbye some of the time');
   await done();
 });
 

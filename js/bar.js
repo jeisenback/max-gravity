@@ -271,88 +271,88 @@ const BAR_DRINK_TALK = [
 // for the kinds of thing that used to be the same for everyone.
 const BAR_TRAIT = {
   talkative: {
-    win: '{n} talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take {cr} cr off them while they are still on the tug.',
-    lose: '{n} talks about the pilotage fee on {home}, you talk back, and somewhere in it {cr} cr leaves your pocket.',
-    drink: '{n} starts a story about a bad berth, stops it for a better one about a worse cargo, and starts the first again at the end. You learn the names of eleven people.',
-    leave: '"Wait, one more thing," {n} says, and then three more things about the lock timings, and you are at the door before the last of them.',
-    quiet: '{n} lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them.'
+    win: '{n} talks all through the hand, mostly about their last captain, and bets without looking at their cards. You take {cr} cr.',
+    lose: '{n} keeps talking, and keeps winning. "Sorry, was that a raise? That\'s {cr}, then."',
+    drink: '{n} had the berth next to the recycler on their last ship. "Every forty minutes. You could set your watch by it." They think. "I did, actually."',
+    leave: '"Oh, one more thing," {n} says, and it\'s three more things, and you\'re at the door before the last one.',
+    quiet: '{n} lasts about a minute. "Sorry. Is this a quiet thing? I can do quiet." They last another minute.'
   },
   nervous: {
-    win: '{n} watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take {cr} cr off them, and they thank you for it.',
-    lose: '{n} plays carefully and with tiny, exact movements, and wins, and looks at the pressure door before they pick up the {cr} cr.',
-    drink: '{n} holds the glass in both hands and talks to it, and checks the seal on the nearest hatch. By the end they have told you where every exit is.',
-    leave: '{n} half rises when you stand, and sits again, and says goodbye to the table. They have counted the exits twice.',
-    quiet: '{n} sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving.'
+    win: '{n} plays small, folds early, and checks the time twice. You take {cr} cr.',
+    lose: '{n} plays every hand the same careful way, and it works. They count the {cr} cr twice before they put it away.',
+    drink: '{n} holds the glass in both hands. "My contract\'s up at the next port," they say. "They said they\'d tell me by now."',
+    leave: '{n} half stands when you do, and sits again. "Right. Yes. Safe burn."',
+    quiet: '{n} sits with their hands flat on the bar. After a while they stop checking the board.'
   },
   generous: {
-    win: '{n} insists on shuffling for you and sends a plate of dumplings over from the dock stall between hands. You take {cr} cr off them and they would not hear of taking it back.',
-    lose: '{n} wins {cr} cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them.',
-    drink: '{n} will not let you pay for anything and tells you about the first hand who shared a ration with them on a ship, and what they did with it.',
-    leave: '{n} slips two ration bars into your coat pocket at the door and says the galley will not miss them.',
-    quiet: '{n} pushes the bowl of beans across, and then the bread, and then a second glass of water from their own ration, without a word.'
+    win: 'You take {cr} cr off {n}, who laughs and orders a round anyway.',
+    lose: '{n} wins {cr} cr and tries to give half of it back. You won\'t take it, so they buy the drinks.',
+    drink: '{n} won\'t let you pay. "I had a bosun who stood me drinks for a year while I was paying off the agency," they say. "I\'m still working through it."',
+    leave: '{n} wraps the rest of the dumplings in a napkin and pushes them at you. "Take them. I\'ll only eat them."',
+    quiet: '{n} slides the bowl across, and then their water.'
   },
   greedy: {
-    win: '{n} counts the pot twice, then your {cr} cr, then the margin on the tug fee they could have saved, and counts it again as you take it. "Beginner\'s luck," {n} says.',
-    lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose. "A pleasure," {n} says, and writes the figure on the back of a freight slip.',
-    drink: '{n} has a price for everything: the drink, the stool, the berth fee, the gossip about the pilot two tables over. By the end you have heard the price of the stool, the drink and your berth.',
-    leave: '"Next time, bring a bigger hold," {n} says, "and a bigger purse."',
-    quiet: '{n} does sums on a freight slip for twenty minutes, in silence, and at the end turns it round for you to see. It is your ship\'s price, within a few percent.'
+    win: '{n} watches the {cr} cr go across the table, and writes the figure on the back of a pay slip.',
+    lose: '{n} takes the {cr} cr and counts it. "A pleasure," they say.',
+    drink: '{n} knows the price of everything in here, and what it was last month. "The drinks went up four percent when the new berth fees came in," they say.',
+    leave: '"Your round next time," {n} says.',
+    quiet: '{n} does sums on a pay slip for twenty minutes, and at the end underlines one figure twice.'
   },
   pious: {
-    win: '{n} says a short word over each card, as at the turn of the watch, and loses, and says one over the {cr} cr as it leaves. "What is lost is returned in another form," {n} says.',
-    lose: '{n} says a word over each card. You lose {cr} cr, and {n} touches the cord at their wrist and says it was not their doing.',
-    drink: '{n} says what they say at the turn of the watch, quietly, and asks if you would rather not hear it. You stay.',
-    leave: '"Fair winds and a soft landing," {n} says, and touches the lock frame.',
-    quiet: '{n} bows their head at the hour of the watch change, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.'
+    win: '{n} touches the cord at their wrist before each hand, and loses {cr} cr to you anyway. "It isn\'t for cards," they say.',
+    lose: '{n} wins {cr} cr and puts some of it in a separate pocket. "For the shrine."',
+    drink: '{n} says a few words over the glass. "My mother says it over the water ration every day," they say. "I do the drinks."',
+    leave: '"Go safe," {n} says, and touches two fingers to the bar.',
+    quiet: '{n} bows their head at the watch change, and you sit with them, and after a while they lift it again.'
   },
   rude: {
-    win: '{n} puts down the last card and says, in a level voice, that it was a dishonest deck, and that a tug crew would have been ashamed of it. You take {cr} cr off them anyway.',
-    lose: '{n} wins {cr} cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue.',
-    drink: '{n} insults the drink, the bar, the bartender, and the dock fees, in that order, from a list.',
-    leave: '"Don\'t come back," {n} says, to the berth schedule on the board.',
-    quiet: '{n} says nothing for a long time, and then says, "You are not as bad as the last hand I flew with."'
+    win: '{n} loses {cr} cr and says the deck\'s marked. It isn\'t. They pay.',
+    lose: '{n} takes the {cr} cr. "That wasn\'t close," they say.',
+    drink: '"This is the worst bar on the dock," {n} says, "and I\'ve been in all of them." They order another.',
+    leave: '"Don\'t let me keep you," {n} says.',
+    quiet: '{n} says nothing for a long time. "You\'re all right," they say in the end. "For a hand."'
   },
   curious: {
-    win: '{n} asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time. You take {cr} cr while they are still asking.',
-    lose: '{n} plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn. {cr} cr.',
-    drink: '{n} asks about your ship, your cargo, your last port and the best thing you have eaten on a long burn, and writes none of it down, and does not forget any of it.',
-    leave: '"Which lane next?" {n} asks, at the door, and writes it on their hand.',
-    quiet: '{n} watches you not talking with open interest, and then tries it. They last four minutes.'
+    win: '{n} wants to know how you knew, and plays the next hand to find out. You take {cr} cr.',
+    lose: '{n} wins {cr} cr and asks you to show them where you went wrong. You can\'t.',
+    drink: '{n} asks about your ship: the drive, the crew, the run, what the captain pays. When you tell them what a hand clears after deductions, they work it out again on a napkin.',
+    leave: '"Which way are you headed?" {n} asks, as you go.',
+    quiet: '{n} tries saying nothing too. They last four minutes, and then ask what you were thinking about.'
   },
   drunk: {
-    win: '{n} deals you a hand and forgets which one they kept, and holds their own cards upright like a candle. You take {cr} cr, and {n} cheers for you, orders another, and asks which watch it is.',
-    lose: '{n} wins {cr} cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was.',
-    drink: '{n} tells you the same story three times, and each time it is about a different ship.',
-    leave: '{n} waves, to the left of where you are, and says something warm that is not quite "safe burn."',
-    quiet: '{n} falls asleep with a cheek on the bar and a hand still round the glass. The bartender takes the glass out, a finger at a time.'
+    win: '{n} forgets which cards they kept, and laughs when you show them. You take {cr} cr. They order another.',
+    lose: '{n} wins {cr} cr and can\'t tell you what the game was.',
+    drink: '{n} tells you the same story twice, about a captain who paid them in fuel vouchers, and it ends differently each time.',
+    leave: '{n} waves, a little to your left. "Safe burn."',
+    quiet: '{n} falls asleep with their head on their arm. The bartender takes the glass away.'
   },
   secretive: {
-    win: '{n} plays with an expression you cannot read and a hand you cannot guess. You take {cr} cr, and {n} gives nothing away, and the only change is that they turn their terminal face down.',
-    lose: '{n} wins {cr} cr without a word, counts it without looking, and asks what your ship carries, and for whom.',
-    drink: '{n} answers every question with a question, even where your cargo is bound, and gives you, as far as you can tell, nothing. You have told them your whole manifest.',
-    leave: '"I never saw you, and you were never at this dock," {n} says, without a smile.',
-    quiet: '{n} relaxes in the silence, closes the manifest on their terminal, and does not ask you anything.'
+    win: '{n} loses {cr} cr without a word, and turns their terminal face down.',
+    lose: '{n} wins {cr} cr, and asks what your ship\'s carrying, and who for.',
+    drink: '{n} asks most of the questions. By the end of the drink they know your ship, your run and your captain, and you know they came in on the last shuttle.',
+    leave: '"We didn\'t talk," {n} says.',
+    quiet: '{n} puts the terminal away. They don\'t ask you anything.'
   },
   kind: {
-    win: '{n} loses gracefully, and as you take {cr} cr they ask if you are all right, because you looked tired after the long burn.',
-    lose: '{n} wins {cr} cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing.',
-    drink: '{n} asks about you, and means it. By the end of the glass you have told them about your last watch.',
-    leave: '"Look after yourself," {n} says, and walks you down the dock to your lock, and waits until the seal light goes green.',
-    quiet: '{n} makes room on the bench by the lock, and slides the tea from the dock urn along it, and then nothing else.'
+    win: '{n} loses {cr} cr, and asks if you\'ve slept. "You look like you came off a long watch."',
+    lose: '{n} wins {cr} cr and spends some of it on soup for you.',
+    drink: '{n} asks about you, and waits for the answer. By the end of the glass you\'ve told them about your last watch.',
+    leave: '"Look after yourself," {n} says.',
+    quiet: '{n} moves along the bench and pours you a cup from their pot of tea.'
   },
   brave: {
-    win: '{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers double or nothing before the cards are down.',
-    lose: '{n} wins {cr} cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass.',
-    drink: '{n} tells you about a bad moment on a hull, and what they did in it, and does not make it sound better than it was.',
-    leave: '"Any time," {n} says, "any lane." It is an offer.',
-    quiet: '{n} sits with their back to the pressure door, as always, and does not watch it.'
+    win: '{n} puts everything on the last hand and loses {cr} cr to you. "Again?"',
+    lose: '{n} wins {cr} cr on a bluff, and shows you the hand: nothing.',
+    drink: '{n} tells you about a hull job that went wrong: a tether clip that wasn\'t seated, and four seconds before they got a hand on the rail. "I check the clip twice now," they say.',
+    leave: '"If you need a hand outside," {n} says, "I\'m on the board here till the tenth."',
+    quiet: '{n} sits easy, with their back to the room.'
   },
   homesick: {
-    win: '{n} plays absent-mindedly, thinking of {home}, and loses {cr} cr to you without noticing.',
-    lose: '{n} plays well, for someone whose mind is on {home}. {cr} cr, and a smile.',
-    drink: '{n} talks about {home} and the day they signed the ship\'s articles, and then stops, and then talks about it again, and by the third time you could draw the street.',
-    leave: '{n} looks at the lock, and then at you, and says, "Say hello to somewhere nice for me."',
-    quiet: '{n} takes out a creased photograph of {home} and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while.'
+    win: '{n} isn\'t watching the cards. You take {cr} cr off them, and it\'s a moment before they notice.',
+    lose: '{n} wins {cr} cr, and puts it in an envelope with a name on it.',
+    drink: '{n} plays you a message from {home}: a kid reading a school report out loud. {n} knows the words.',
+    leave: '"If you\'re ever on {home}," {n} says, and doesn\'t finish.',
+    quiet: '{n} sets a photo on the bar between you, and you both look at it.'
   }
 };
 const BAR_GOAL = {

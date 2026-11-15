@@ -722,7 +722,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester asks if your ship's taking on hands. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -737,13 +737,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what that cost you, and makes a face at the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester asks what that cost you, and makes a face at the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -755,13 +755,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what that cost you, and makes a face at the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester asks what that cost you, and makes a face at the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -814,13 +814,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist and doesn't say anything. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't look at the figure. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't look at the figure. Hester touches the cord at their wrist and doesn't say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -847,7 +847,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester says a short word over you, as at the turn of the watch. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester says a short word for you. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -862,13 +862,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist and doesn't say anything. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't take the bait. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't take the bait. Hester touches the cord at their wrist and doesn't say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -921,7 +921,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester claps you on the shoulder, hard. You'll have a bruise. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester claps you on the shoulder, hard. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -936,7 +936,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester claps you on the shoulder, hard. You'll have a bruise. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester claps you on the shoulder, hard. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -951,7 +951,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester laughs, short and sharp, and lets it stand. Hester claps you on the shoulder, hard. You'll have a bruise. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester laughs, short and sharp, and lets it stand. Hester claps you on the shoulder, hard. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -992,13 +992,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester waves it away, and asks whether you ate at the watch change. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester says it's nothing, and changes the subject. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't look at the figure. Hester waves it away, and asks whether you ate at the watch change. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't look at the figure. Hester says it's nothing, and changes the subject. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1010,7 +1010,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester says to have the rest, and means a ration case and a bottle at the next port. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester orders you another. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1096,13 +1096,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"Is that it?\" Hester says. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. \"Is that it?\" Hester says. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1114,13 +1114,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"Is that it?\" Hester says. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. \"Is that it?\" Hester says. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1218,13 +1218,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester flinches, and checks the seal on the nearest hatch. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester looks at the departures board again. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester doesn't take the bait. Hester flinches, and checks the seal on the nearest hatch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester doesn't take the bait. Hester looks at the departures board again. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1277,7 +1277,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester takes your hand for a moment and doesn't say anything. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it's true. Hester puts a hand on your arm for a moment. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1292,7 +1292,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester takes your hand for a moment and doesn't say anything. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester hears it out, and doesn't look away. Hester puts a hand on your arm for a moment. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1348,7 +1348,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester asks which port you cleared last, and this time wants the answer. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester tells you their ship's name. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1401,7 +1401,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester asks which port you cleared last, and this time wants the answer. \"All right,\" Hester says. \"Eros, then. Don't make me regret it.\" The run is set for Eros Old Town.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester tells you their ship's name. \"All right,\" Hester says. \"Eros, then. Don't make me regret it.\" The run is set for Eros Old Town.",
     "next": null
    },
    {
@@ -11530,7 +11530,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You find the port's chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays. Mate0 says a short word over you, as at the turn of the watch. Mate1 goes quiet, and then smiles, the first since the last burn.",
+    "text": "You find the port's chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays. Mate0 says a short word for you. Mate1 smiles, the first time tonight.",
     "mem": [
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11549,7 +11549,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet. Mate1 goes quiet, and then smiles, the first since the last burn. Mate3 says to have the rest, and means a ration case and a bottle at the next port.",
+    "text": "It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet. Mate1 smiles, the first time tonight. Mate3 orders you another.",
     "mem": [
      "9 Jul 2214: You wrote to Mara's family.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11568,7 +11568,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table. Mate2 is off again, and tells it to the next table too, tug pilots and all, and you're in it. Mate4 is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+    "text": "You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table. Mate2 tells the next table about it, and you're in the story. Mate4 tells the next table about it, and you're in the story.",
     "mem": [
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11584,7 +11584,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 touches the cord at their wrist, once for each leg of the trip, and says nothing. Mate1 looks at the photograph taped inside their locker door, not at you.",
+    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 touches the cord at their wrist and doesn't say anything. Mate1 looks at the photo in their tin, not at you.",
     "mem": [
      "9 Jul 2214: The captain didn't give Mara their due.",
      "9 Jul 2214: The captain didn't give Mara their due.",
@@ -23951,12 +23951,12 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Kwame talks over the answer and goes back to the story about the tug."
+      "text": "Kwame lasts about a minute. \"Sorry. Is this a quiet thing? I can do quiet.\" They last another minute. Kwame talks over the end of it."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24033,7 +24033,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Grace looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Grace says, and doesn't finish."
      }
     ]
    },
@@ -24086,7 +24086,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Kwame talks over the answer and goes back to the story about the tug."
+      "text": "Kwame lasts about a minute. \"Sorry. Is this a quiet thing? I can do quiet.\" They last another minute. Kwame talks over the end of it."
      },
      {
       "j": 1,
@@ -24104,7 +24104,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24157,12 +24157,12 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Ravi plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn. 2,000 cr. You finish the glass."
+      "text": "Ravi wins 2,000 cr and asks you to show them where you went wrong. You can't. You finish the glass."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Ravi says. \"That was nine years ago.\" Ravi asks the next question, and then the one after it, about the burn profile.",
+      "text": "\"I wasn't going to do this for long,\" Ravi says. \"That was nine years ago.\" Ravi asks a question about it, and then another.",
       "mem": [
        "9 Jul 2214: The captain asked about my work and listened."
       ]
@@ -24170,7 +24170,7 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Ravi sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Ravi lets out a breath, and for the first time since the lock sits back.",
+      "text": "Ravi sits with their hands flat on the bar. After a while they stop checking the board. Ravi sits back on the stool for the first time.",
       "mem": [
        "9 Jul 2214: The captain sat with me and didn't make me talk."
       ]
@@ -24178,7 +24178,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Which lane next?\" Ravi asks, at the door, and writes it on their hand."
+      "text": "\"Which way are you headed?\" Ravi asks, as you go."
      }
     ]
    },
@@ -24244,12 +24244,12 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame plays well, for someone whose mind is on Hermes Foundry. 2,000 cr, and a smile. You finish the glass."
+      "text": "Kwame wins 2,000 cr, and puts it in an envelope with a name on it. You finish the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24344,7 +24344,7 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
        "9 Jul 2214: The captain asked about my work and listened."
       ]
@@ -24352,7 +24352,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24458,7 +24458,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24526,7 +24526,7 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
        "9 Jul 2214: The captain asked about my work and listened."
       ]
@@ -24542,7 +24542,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24595,7 +24595,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
        "6 Jan 2215: The captain asked about my work and listened."
       ]
@@ -24603,7 +24603,7 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
        "6 Jan 2215: The captain asked about my work and listened."
       ]
@@ -24619,7 +24619,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24677,7 +24677,7 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
        "16 Aug 2214: The captain asked about my work and listened."
       ]
@@ -24693,7 +24693,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24764,7 +24764,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Kwame says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },

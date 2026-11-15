@@ -10,18 +10,54 @@ const BAR_MENU = 3, BAR_REPEAT = 45;  // topics offered at a table; days before 
 
 // What they feel about it: a line for each trait that loves it, or hates it.
 const BAR_REACT = {
-  talkative: ['{n} is off again, and tells it to the next table too, tug pilots and all, and you\'re in it.', '{n} talks over the answer and goes back to the story about the tug.'],
-  nervous: ['{n} lets out a breath, and for the first time since the lock sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
-  generous: ['{n} says to have the rest, and means a ration case and a bottle at the next port.', '{n} waves it away, and asks whether you ate at the watch change.'],
-  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and asks if you want a cut of the manifest.', '{n} asks what it\'d fetch at the next port, per ton, less the pilotage, and doesn\'t like the figure.'],
-  pious: ['{n} says a short word over you, as at the turn of the watch.', '{n} touches the cord at their wrist, once for each leg of the trip, and says nothing.'],
-  rude: ['{n} says the coffee here\'s almost as bad as the recycler\'s.', '{n} says what they think of that, in order, the way they read out a fuel invoice, and doesn\'t raise their voice.'],
-  curious: ['{n} asks the next question, and then the one after it, about the burn profile.', '{n} says "Ah," and turns to see how the pressure door seals.'],
-  drunk: ['{n} hugs you, a long hug, and holds the grab rail with the other hand.', '{n} agrees at once, and orders another round for the whole watch.'],
-  secretive: ['{n} asks which port you cleared last, and this time wants the answer.', '{n} asks which port you cleared last, and the rest of the glass is polite.'],
-  kind: ['{n} takes your hand for a moment and doesn\'t say anything.', '{n} says it\'s all right, and finds something on the booth to fix.'],
-  brave: ['{n} claps you on the shoulder, hard. You\'ll have a bruise.', '{n} looks at you, and then at the pressure door, and finishes the drink.'],
-  homesick: ['{n} goes quiet, and then smiles, the first since the last burn.', '{n} looks at the photograph taped inside their locker door, not at you.'],
+  talkative: [
+    '{n} tells the next table about it, and you\'re in the story.',
+    '{n} talks over the end of it.'
+  ],
+  nervous: [
+    '{n} sits back on the stool for the first time.',
+    '{n} looks at the departures board again.'
+  ],
+  generous: [
+    '{n} orders you another.',
+    '{n} says it\'s nothing, and changes the subject.'
+  ],
+  greedy: [
+    '{n} asks if your ship\'s taking on hands.',
+    '{n} asks what that cost you, and makes a face at the figure.'
+  ],
+  pious: [
+    '{n} says a short word for you.',
+    '{n} touches the cord at their wrist and doesn\'t say anything.'
+  ],
+  rude: [
+    '"Huh," {n} says, and pushes the bowl your way.',
+    '"Is that it?" {n} says.'
+  ],
+  curious: [
+    '{n} asks a question about it, and then another.',
+    '{n} looks past you at the room.'
+  ],
+  drunk: [
+    '{n} hugs you with one arm, and keeps the other on the glass.',
+    '{n} orders another and doesn\'t offer.'
+  ],
+  secretive: [
+    '{n} tells you their ship\'s name.',
+    '{n} goes back to their terminal.'
+  ],
+  kind: [
+    '{n} puts a hand on your arm for a moment.',
+    '{n} says it\'s all right, and looks at their drink.'
+  ],
+  brave: [
+    '{n} claps you on the shoulder, hard.',
+    '{n} finishes the drink.'
+  ],
+  homesick: [
+    '{n} smiles, the first time tonight.',
+    '{n} looks at the photo in their tin, not at you.'
+  ]
 };
 const barHas = (p, ...ts) => ts.some(t => p.traits.includes(t));
 function barReact(p, loves = [], hates = []) {
