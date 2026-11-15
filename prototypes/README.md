@@ -10,6 +10,8 @@ Each is one self-contained page. Open it in a desktop browser.
   tracks with closest approach and torpedo paths, fire control with honest error bands (accuracy and resilience upgrades,
   sensor condition), the PDC arc, and posts: the captain sets the intent, the gunner works the geometry, and pilot, engineer
   and comms carry it out with skill checks and make suggestions. Mode A plots on the radar; mode B gives the post's orders.
+  Time runs in turns, or in real time with pause (1x, 2x, 16x), pausing itself at events: a salvo armed or launched, a
+  torpedo nearing the PDC's range, a hit, a call to you, a new order, the gun locked with heat.
 - `boarding-spike.html`: a corsair's marines boarding the Ice Hauler, fought spot by spot through her real decks (the
   layout in `js/layouts.js`). Two waves, breaching charges with their setters, hatches in the well, Hester's standing intent,
   one order a turn to a named crewmate, and every side's intent drawn before the turn is committed.

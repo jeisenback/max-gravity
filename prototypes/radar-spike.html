@@ -116,7 +116,7 @@ function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Ma
 function move(b, a, dt) { b.p = V(b.p.x + b.v.x * dt + 0.5 * a.x * dt * dt, b.p.y + b.v.y * dt + 0.5 * a.y * dt * dt); b.v = V(b.v.x + a.x * dt, b.v.y + a.y * dt); }
 function segDist(a, b) { const d = sub(b, a), l2 = d.x * d.x + d.y * d.y; const t = l2 ? clamp(-(a.x * d.x + a.y * d.y) / l2, 0, 1) : 0; return len(add(a, mul(d, t))); }
 
-const UI = { setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
+const UI = { time: 'turns', speed: 2, setupOpen: false, mode: 'A', post: 'gunner', trust: 0.5, tool: 'aim', seed: 7, accurate: false, hardened: false, sensors: 100, nerve: 0.5, level: 2 };  // nerve: the captain's; level: yours at your post  // the fire-control suite's two upgrades, and the sensors' condition
 let S;
 
 function newGame(seed) {
@@ -124,7 +124,7 @@ function newGame(seed) {
   const s = { seed, r, r2: mulberry(seed * 31 + 5), turn: 0, phase: 'plan', comms: 'watch', nextId: 1,
     me: { p: V(0, 0), v: V(0, -1), hull: 100, heat: 0, locked: false, nose: -Math.PI / 2, lastVent: -99 },
     foe: { p: V(24, -30), v: V(-2.4, 3.4), hull: 60, max: 60, torps: 4, armed: false, bias: r() < 0.5 ? -1 : 1 },
-    torps: [], tracers: [], fx: [], slug: null, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
+    torps: [], tracers: [], fx: [], slug: null, paused: false, pauseWhy: '', nearSaid: new Set(), lastIntent: 'hold', hull0: 100, log: [], asks: {}, warned: new Set(), incoming: [], used: {}, noBear: false, over: null, turnLines: [],
     ui: { face: 'her', thrust: { dir: -Math.PI / 2, thr: 0 }, aim: null, fire: true, pdcDir: 0, pdcW: 90, power: { drive: 2, guns: 2, pdc: 2 }, vent: false, comms: 'watch',
       b: { pilot: 'order', fire: true, pdc: 'forward', eng: 'book', comms: 'watch' } }, order: null, lastPower: { drive: 2, guns: 2, pdc: 2 }, ov: {} };
   s.ui.pdcDir = ang(sub(s.foe.p, s.me.p));
@@ -325,7 +325,7 @@ function buildOrders(s) {
   o.thrust = ov.thrust ? { ...ov.thrust } : P === 'pilot' && A ? clampBurn(ui.thrust, o.ordered) : { ...o.ordered, thr: o.ordered.thr * (P === 'pilot' && ui.b.pilot === 'steady' ? 0.6 : 1) };
   o.face = P === 'pilot' && UI.mode === 'A' ? ui.face : o.ordered.face || 'her';
   const locked = s.me.locked && !o.vent;
-  if (P === 'gunner' && A) { o.aim = ui.aim; o.fire = ui.fire && !!ui.aim; o.pdcIntent = 'manual'; o.pdcDir = ui.pdcDir; o.pdcW = ui.pdcW; }
+  if (P === 'gunner' && A) { o.aim = ui.aim || (UI.time === 'real' && ui.aimRel ? add(add(seenFoe(s, o.comms).p, seenFoe(s, o.comms).v), ui.aimRel) : null); o.fire = ui.fire && !!ui.aim; o.pdcIntent = 'manual'; o.pdcDir = ui.pdcDir; o.pdcW = ui.pdcW; }
   else {
     o.aim = autoAim(s, o.comms);
     const bears0 = adiff(turnToward(s.me.nose, wantNose(s, o), K.TURN), ang(sub(o.aim, s.me.p))) <= K.BEAR;
@@ -367,7 +367,7 @@ const CALLS = {
 };
 function logCall(s, from, to, text, kind = 'call') { s.log.unshift({ t: clock(s.turn), from, to, text, kind }); if (s.log.length > 60) s.log.pop(); }
 function playerCall(id) {
-  const s = S, P = UI.post, c = CALLS[P].find(x => x.id === id); if (!c || s.used[id] || s.phase !== 'plan') return;
+  const s = S, P = UI.post, c = CALLS[P].find(x => x.id === id); if (!c || s.used[id] || (s.phase !== 'plan' && !(UI.time === 'real' && s.paused))) return;
   s.used[id] = true; logCall(s, P, c.to, c.text(s));
   if (c.to === 'all') { c.apply(s); logCall(s, 'gunner', P, c.yes, 'reply'); return render(); }
   if (c.to === 'captain') {
@@ -427,21 +427,50 @@ function commit() {
     const los = norm(sub(s.me.p, f.p)), perp = V(-los.y, los.x);
     for (const side of [-1, 1]) s.torps.push({ id: s.nextId++, p: { ...f.p }, v: add(add(f.v, mul(los, 3)), mul(perp, 6 * side)), age: 0, trail: [] });
     f.torps -= 2; f.armed = false; s.turnLines.push('She launches two torpedoes.');
+    if (UI.time === 'real') { s.paused = true; s.pauseWhy = 'She launches two torpedoes.'; }
   }
   s.slug = o.canFire ? { from: { ...s.me.p }, to: add(o.aim, dirv(s.r2() * TAU, Math.sqrt(s.r2()) * o.R)), R: o.R } : null;
   if (o.fire && !o.canFire) s.turnLines.push(o.locked ? 'The gun is locked with heat.' : !o.bears ? "The gun can't bear: the ship's nose is off her." : 'No power to the gun.');
-  s.phase = 'exec'; render();
-  const dur = reduce ? 0 : 1400, t0 = performance.now();
+  s.hull0 = s.me.hull; s.phase = 'exec'; render();
+  // Turns: the turn plays out in 1.4 s. Real time: a turn is one order cycle of 20 s, played at the chosen speed, paused at events;
+  // at its end the next cycle is committed at once with the orders as they stand.
+  let last = performance.now();
   const step = now => {
-    const target = dur ? Math.min(K.SUB, Math.floor((now - t0) / dur * K.SUB)) : K.SUB;
-    while (s.exec.k < target) { substep(s); s.exec.k++; }
-    if (s.exec.k < K.SUB) requestAnimationFrame(step); else { resolveEnd(s); render(); }
+    if (S !== s) return;
+    const dt = Math.min(100, now - last), real = UI.time === 'real', dur = real ? K.TURN_S * 1000 / UI.speed : (reduce ? 0 : 1400); last = now;
+    if (!(real && s.paused)) s.exec.acc = dur ? (s.exec.acc || 0) + dt / dur * K.SUB : K.SUB;
+    while (s.exec.k < Math.min(K.SUB, Math.floor(s.exec.acc || 0))) { substep(s); s.exec.k++;
+      if (real) { const why = midEvent(s); if (why) { s.paused = true; s.pauseWhy = why; s.exec.acc = s.exec.k; render(); break; } } }
+    if (s.exec.k < K.SUB) return requestAnimationFrame(step);
+    resolveEnd(s);
+    if (real && !s.over) { const why = boundaryEvent(s); if (why) { s.paused = true; s.pauseWhy = why; } }
+    render();
+    if (real && !s.over && !s.paused) commit();
   };
   requestAnimationFrame(step);
 }
+// What pauses real time: in the middle of a cycle, and at its end.
+function midEvent(s) {
+  if (s.me.hull < s.hull0) { s.hull0 = s.me.hull; return 'We are hit.'; }
+  for (const t of s.torps) if (!s.nearSaid.has(t.id) && len(sub(t.p, s.me.p)) < K.PDC_R + 4 && (s.comms === 'watch' || near(s, t))) { s.nearSaid.add(t.id); return "A torpedo is closing on the PDC's range."; }
+  return null;
+}
+function boundaryEvent(s) {
+  if (s.me.hull < s.hull0) { s.hull0 = s.me.hull; return 'We are hit.'; }
+  if (s.incoming.some(m => m.suggest)) return 'A call for you.';
+  if (s.foe.armed && s.comms === 'watch') return 'She is arming a salvo. It comes next cycle.';
+  if (s.lastIntent !== orderOf(s).intent) { s.lastIntent = orderOf(s).intent; return "The captain's order changes."; }
+  if (s.me.locked) return 'The gun is locked with heat.';
+  return null;
+}
+function playPause() {
+  const s = S; if (s.over) return;
+  if (s.phase === 'plan') { s.paused = false; s.pauseWhy = ''; commit(); return; }
+  s.paused = !s.paused; s.pauseWhy = s.paused ? 'Paused.' : ''; render();
+}
 function substep(s) {
   const dt = 1 / K.SUB, o = s.exec.o, me = s.me, now = performance.now(), mePrev = { ...me.p };
-  const bn = burnAt(s.exec.nose0, o.want, o.thrust, o.acc, (s.exec.k + 1) / K.SUB); me.nose = bn.nose; move(me, bn.a, dt);
+  const bn = burnAt(s.exec.nose0, o.want, o.thrust, o.acc, (s.exec.k + 1 - (s.exec.k0 || 0)) / K.SUB); me.nose = bn.nose; move(me, bn.a, dt);
   move(s.foe, s.exec.fa, dt);
   const cap = K.TORP_ACC * (o.comms === 'spoof' ? 0.45 : 1);
   for (const t of s.torps) {
@@ -491,7 +520,7 @@ function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const s = S, cx = W / 2, cy = W / 2, sc = (W / 2 - 54) / K.REACH; geo = { cx, cy, sc, W };
   const me = s.me.p, P = w => [cx + (w.x - me.x) * sc, cy + (w.y - me.y) * sc], now = performance.now();
-  const o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, plan = s.phase === 'plan' && !s.over;
+  const o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, plan = (s.phase === 'plan' || UI.time === 'real') && !s.over;
   ctx.fillStyle = '#050a11'; ctx.fillRect(0, 0, W, W);
   ctx.lineWidth = 1; ctx.font = '11px "IBM Plex Mono", monospace';
   for (let k = 10; k <= K.REACH; k += 10) { ctx.strokeStyle = k % 20 ? '#13233a' : '#1d3350'; ctx.beginPath(); ctx.arc(cx, cy, k * sc, 0, TAU); ctx.stroke(); ctx.fillStyle = '#3e5674'; ctx.fillText(String(k), cx + 3, cy - k * sc + 12); }
@@ -569,6 +598,7 @@ function draw() {
   ctx.fillText(`RANGE ${range(s).toFixed(1)} km   ${closing >= 0 ? 'CLOSING' : 'OPENING'} ${Math.abs(closing).toFixed(1)} km/turn   BRG ${pad3(brg(sub(f.p, me)))}   ${clock(s.turn)}`, 12, 20);
   const alerts = []; if (f.armed && s.comms === 'watch') alerts.push('SALVO ARMING'); const n = inbound(s).length; if (n) alerts.push(`${n} TORP${n > 1 ? 'S' : ''} INBOUND`); if (o.locked) alerts.push('GUN LOCKED'); if (s.comms !== 'watch') alerts.push(s.comms === 'lock' ? 'COMMS ON LOCK: BLIND PAST 12 km' : 'SPOOFING: BLIND PAST 12 km');
   ctx.fillStyle = '#ff6a4a'; ctx.fillText(alerts.join('   '), 12, 38);
+  if (UI.time === 'real' && !s.over) { ctx.textAlign = 'right'; ctx.fillStyle = s.paused || s.phase === 'plan' ? '#ffd27f' : '#7bd59d'; ctx.fillText(s.paused || s.phase === 'plan' ? `PAUSED${s.pauseWhy ? ': ' + s.pauseWhy.toUpperCase() : ''}` : `RUNNING ${UI.speed}x`, W - 12, 20); ctx.textAlign = 'left'; }
   ctx.fillStyle = '#cfe3ff'; ctx.fillText(`YOU  FACING ${pad3(brg(dirv(s.me.nose)))}${plan && adiff(s.me.nose, o.nose) > 0.05 ? ` > ${pad3(brg(dirv(o.nose)))}` : ''}   COURSE ${pad3(brg(s.me.v))} at ${len(s.me.v).toFixed(1)} km/turn`, 12, W - 12);
   /* the course, drawn as three turns of travel */ { const v = s.me.v, L = len(v) * sc * 3; if (L > 6) { const u = norm(v), tx = cx + u.x * L, ty = cy + u.y * L; ctx.strokeStyle = 'rgba(207,227,255,0.8)'; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 - u.y * 4, ty - u.y * 6 + u.x * 4); ctx.moveTo(tx, ty); ctx.lineTo(tx - u.x * 6 + u.y * 4, ty - u.y * 6 - u.x * 4); ctx.stroke(); ctx.fillStyle = 'rgba(207,227,255,0.8)'; if (L > 30) ctx.fillText('course', tx + 6, ty - 6); } }
   if (s.over) { ctx.fillStyle = 'rgba(5,10,17,0.75)'; ctx.fillRect(0, cy - 30, W, 60); ctx.fillStyle = s.over.win ? '#7bd59d' : '#ff6a4a'; ctx.font = '600 16px "IBM Plex Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText(s.over.text.toUpperCase(), cx, cy + 6); ctx.textAlign = 'left'; }
@@ -579,10 +609,13 @@ function draw() {
 let dragging = false;
 function radarAt(e) {
   const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, s = S;
-  if (UI.mode !== 'A' || s.phase !== 'plan' || s.over) return;
+  if (UI.mode !== 'A' || s.over || (s.phase !== 'plan' && UI.time !== 'real')) return;
   const dx = mx - geo.cx, dy = my - geo.cy, world = V(s.me.p.x + dx / geo.sc, s.me.p.y + dy / geo.sc);
   if (UI.post === 'pilot') { const d = Math.hypot(dx, dy); s.ui.thrust = d < 10 ? { dir: s.me.nose, thr: 0 } : { dir: Math.atan2(dy, dx), thr: clamp((d - 10) / 60, 0, 1) }; }
-  else if (UI.post === 'gunner') { if (UI.tool === 'aim') s.ui.aim = world; else s.ui.pdcDir = Math.atan2(dy, dx); }
+  else if (UI.post === 'gunner') { if (UI.tool === 'aim') { s.ui.aim = world; const sf = seenFoe(s, s.comms); s.ui.aimRel = sub(world, add(sf.p, sf.v)); } else s.ui.pdcDir = Math.atan2(dy, dx); }
+  if (s.phase === 'exec') { const o = s.exec.o;   // real time: the burn and the PDC take effect at once
+    if (UI.post === 'pilot') { o.thrust = clampBurn(s.ui.thrust, o.ordered); o.want = wantNose(s, o); s.exec.nose0 = s.me.nose; s.exec.k0 = s.exec.k; }
+    if (UI.post === 'gunner' && UI.tool === 'pdc') o.pdcDir = s.ui.pdcDir; }
 }
 cv.addEventListener('pointerdown', e => { dragging = true; radarAt(e); });
 cv.addEventListener('pointermove', e => { if (dragging) radarAt(e); });
@@ -646,8 +679,8 @@ function gunCost(s, intent) {
 const gunTag = (s, intent) => { const c = gunCost(s, intent); return c.bears ? ' <span class="good">gun bears</span>' : ' <span class="bad">no gun</span>'; };
 function gunWords(s, intent) {
   const c = gunCost(s, intent);
-  if (c.bears) return `<span class="good">The gun bears this turn${c.burn ? ': the burn is toward her' : ': coasting, nose on her'}.</span>`;
-  return `<span class="bad">The hull ends ${c.off} degrees off her: no gun this turn.</span>${c.burn ? ' The drive points away from her to do this.' : ''}`;
+  if (c.bears) return `<span class="good">Flown as ordered, the gun bears this turn${c.burn ? ': the burn is toward her' : ': coasting, nose on her'}.</span>`;
+  return `<span class="bad">Flown as ordered, the hull ends ${c.off} degrees off her: no gun this turn.</span>${c.burn ? ' The drive points away from her to do this.' : ''}`;
 }
 function orderCard(s) {
   const i = orderOf(s).intent, d = ORDER[i], by = s.order && s.order.by;
@@ -660,13 +693,15 @@ function crewPanel(s, o) {
   return POSTS.filter(p => p !== UI.post).map(p => `<div><span class="p-${p}">${NAME[p]}</span><span>${rows[p]}</span></div>`).join('');
 }
 function render() {
-  const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = s.phase === 'plan' && !s.over;
+  const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = (s.phase === 'plan' || (UI.time === 'real' && s.paused)) && !s.over;
   const strip = s.log.map(e => e.kind === 'event' ? `<div><time>${e.t}</time><span class="ev">${e.text}</span></div>`
     : `<div class="${e.kind === 'reply' ? 'reply' : ''}"><time>${e.kind === 'reply' ? '' : e.t}</time><span><span class="who p-${e.from}">${e.from === P ? 'You' : NAME[e.from]}</span>${e.kind === 'call' ? ` to ${e.to === P ? 'you' : NAME[e.to]}` : ''}: ${e.text}</span></div>`).join('');
   side.innerHTML = `
   <div class="card"><h1>Radar fight spike</h1><p class="sub">Throwaway. The hauler against a corsair with four torpedoes. Same seed in both modes, so you can play it twice and compare.</p>
     <div class="row"><span class="lab">Mode</span>${seg('mode', [['A', 'A: you plot'], ['B', 'B: you order']], UI.mode)}</div>
     <div class="row"><span class="lab">Post</span>${seg('post', POSTS.map(p => [p, NAME[p]]), P)}</div>
+    <div class="row"><span class="lab">Time</span>${seg('time', [['turns', 'Turns'], ['real', 'Real time with pause']], UI.time)}</div>
+    ${UI.time === 'real' ? `<div class="row"><span class="lab">Speed</span>${seg('speed', [[1, '1x'], [2, '2x'], [16, '16x']], UI.speed)}</div>` : ''}
     <details id="setup" ${UI.setupOpen ? 'open' : ''}><summary>Setup: trust, captain, your level, fire control, sensors, seed</summary><div>
     <div class="row"><span class="lab">Trust</span><input id="trust" type="range" min="0" max="1" step="0.05" value="${UI.trust}" aria-label="How much the crew trusts you"><span class="read" id="trustv">${Math.round(UI.trust * 100)}%</span></div>
     <div class="row"><span class="lab">Captain</span><input id="nerve" type="range" min="0" max="1" step="0.05" value="${UI.nerve}" aria-label="The captain's nerve"><span class="read" id="nervev">${nerveWord()}</span></div>
@@ -679,7 +714,7 @@ function render() {
     </div></details></div>
   ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="flip">Again in ${UI.mode === 'A' ? 'B' : 'A'}</button></div></div>` : ''}
   <div class="card"><h2>Your post: <em>${NAME[P]}</em>${(P === 'engineer' || P === 'comms') ? '   (A and B the same here)' : ''}</h2>${orderCard(s)}${turnSummary(s, o)}${postPanel(s, o)}
-    <button class="go" data-act="go" ${plan ? '' : 'disabled'}>${s.phase === 'exec' ? 'Burning...' : 'End turn'}</button><p class="note">Or press <kbd>Space</kbd>.</p></div>
+    ${UI.time === 'real' ? `${s.paused && s.pauseWhy ? `<p class="read warm">Paused: ${s.pauseWhy}</p>` : ''}<button class="go" data-act="pause" ${s.over ? 'disabled' : ''}>${s.paused || s.phase === 'plan' ? 'Play' : 'Pause'}</button><p class="note"><kbd>Space</kbd> plays and pauses. The burn and the PDC change at once; power, comms and the next shot at the next order cycle, ${clock(s.phase === 'exec' ? s.turn + 1 : s.turn)}.</p>` : `<button class="go" data-act="go" ${plan ? '' : 'disabled'}>${s.phase === 'exec' ? 'Burning...' : 'End turn'}</button><p class="note">Or press <kbd>Space</kbd>.</p>`}</div>
   <div class="card"><h2>${clock(s.turn)}   turn ${s.turn + 1} of ${K.TURNS}</h2>
     <div class="bars"><span>Our hull</span><span class="bar"><i style="width:${s.me.hull}%"></i></span><span>${s.me.hull}</span>
     <span>Her hull</span><span class="bar foe"><i style="width:${s.foe.hull / s.foe.max * 100}%"></i></span><span>${s.foe.hull}</span>
@@ -701,6 +736,9 @@ side.addEventListener('click', e => {
   else if (act === 'asorder') ui.thrust = { ...buildOrders(s).ordered };
   else if (act === 'hard') UI.hardened = bool;
   else if (act === 'post') { UI.post = v; s.incoming = []; }
+  else if (act === 'pause') return playPause();
+  else if (act === 'time') { UI.time = v; S.paused = false; S.pauseWhy = ''; }
+  else if (act === 'speed') UI.speed = +v;
   else if (act === 'restart') { S = newGame(UI.seed); aiCalls(S); }
   else if (act === 'newseed') { UI.seed = 1 + Math.floor(Math.random() * 9999); S = newGame(UI.seed); aiCalls(S); }
   else if (act === 'flip') { UI.mode = UI.mode === 'A' ? 'B' : 'A'; S = newGame(UI.seed); aiCalls(S); }
@@ -725,11 +763,11 @@ side.addEventListener('input', e => {
   if (e.target.id === 'trust') { UI.trust = +e.target.value; document.getElementById('trustv').textContent = `${Math.round(UI.trust * 100)}%`; }
   if (e.target.id === 'nerve') { UI.nerve = +e.target.value; document.getElementById('nervev').textContent = nerveWord(); }
   if (e.target.id === 'sens') { UI.sensors = +e.target.value; document.getElementById('sensv').textContent = `${UI.sensors}%`; }
-  if (e.target.id === 'pdcw') { S.ui.pdcW = +e.target.value; document.getElementById('pdcwv').textContent = `${S.ui.pdcW} deg`; }
+  if (e.target.id === 'pdcw') { S.ui.pdcW = +e.target.value; if (S.phase === 'exec') S.exec.o.pdcW = S.ui.pdcW; document.getElementById('pdcwv').textContent = `${S.ui.pdcW} deg`; }
 });
 side.addEventListener('toggle', e => { if (e.target.id === 'setup') UI.setupOpen = e.target.open; }, true);
 side.addEventListener('change', e => { if (e.target.id === 'pdcw' || e.target.id === 'sens') render(); if (e.target.id === 'nerve') { if (S.phase === 'plan' && !S.over && !(S.order && S.order.by)) S.order = { intent: captainPick(S), until: -1 }; render(); } });
-document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON', 'INPUT'].includes(e.target.tagName)) { e.preventDefault(); commit(); } });
+document.addEventListener('keydown', e => { if (e.code === 'Space' && !['BUTTON', 'INPUT'].includes(e.target.tagName)) { e.preventDefault(); if (UI.time === 'real') playPause(); else commit(); } });
 
 S = newGame(UI.seed); aiCalls(S); render(); requestAnimationFrame(draw);
 </script>
