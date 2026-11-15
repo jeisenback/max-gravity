@@ -104,14 +104,19 @@ function endRunAhead() {
   if (G.mode === 'transit' && G.transit && (G.speed === RUN_AHEAD || G.speedBefore === RUN_AHEAD)) { const back = G.transit.aheadFrom || 1; G.speedBefore = back; if (G.speed) G.speed = back; }
 }
 const toggleBurnPause = () => setBurnSpeed(G.speed ? 0 : G.speedBefore || 1);
-// Shown when the burn's station keys are (bridge.js syncBridge), at the right end of the burn bar and under it; the chosen speed lit.
+// Shown when the burn's station keys are (bridge.js syncBridge), at the right end of the burn bar and under it; and on a port's view (portview.js),
+// which runs at the same speeds but for running ahead, in the view's bottom right corner over the open space below the rooms. The chosen speed lit.
+const portClockShown = () => { const c = G.mode === 'landed' && G.portHour !== null && G.portHour !== undefined && document.getElementById('vs'); return c && c.classList.contains('view') && c.clientWidth ? c : null; };
 function syncBurnSpeed() {
   const el = document.getElementById('bspeed');
   if (!el) return;
-  const box = G.burnBoxes && G.burnBoxes.bar, show = G.mode === 'transit' && !!G.transit && !G.transit.event && !G.dialog && !G.paused && !!box;
+  const box = G.burnBoxes && G.burnBoxes.bar, burn = G.mode === 'transit' && !!G.transit && !G.transit.event && !!box, port = !burn && portClockShown();
+  const show = (burn || !!port) && !G.dialog && !G.paused;
   el.hidden = !show;
   if (!show) return;
-  el.style.top = `${box.y + box.h + 6}px`; el.style.left = `${box.x + box.w - el.offsetWidth}px`;
+  el.classList.toggle('port', !!port);  // no running ahead in port (style.css)
+  if (burn) { el.style.top = `${box.y + box.h + 6}px`; el.style.left = `${box.x + box.w - el.offsetWidth}px`; }
+  else { const r = port.getBoundingClientRect(); el.style.top = `${r.bottom - el.offsetHeight - 8}px`; el.style.left = `${r.right - el.offsetWidth - 8}px`; }
   el.querySelectorAll('button').forEach(b => b.classList.toggle('active', Number(b.dataset.speed) === G.speed));
 }
 

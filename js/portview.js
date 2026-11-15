@@ -808,7 +808,7 @@ function portOfferTake(o) {
 Mods.register({
   id: 'portview', name: 'The port view', builtin: true,
   init(M) {
-    M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; G.state.portArrived = G.state.day; });  // everyone in place as the view opens; the day of the visit, for what is once a visit
+    M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; G.state.portArrived = G.state.day; if (G.portHour !== null) G.speed = G.speedBefore = 1; });  // each landing's clock starts at normal speed, as a burn does  // everyone in place as the view opens; the day of the visit, for what is once a visit
     M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; portOffersLapse(); });  // a night passed in port; the day's offers lapse (#1192)
     // A click on a room with a page opens it, as its entry on the rail does, and only when the rail would (a shut entry stays shut); the pointer shows where.
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
@@ -821,10 +821,11 @@ Mods.register({
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
       if (G.mode !== 'landed' || G.portHour === null) return;
       const st = G.state, planet = currentPlanet(), layout = portLayout(planet, st), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
-      if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY);
+      const pace = (dt || 0) * (G.speed === undefined ? 1 : G.speed);  // at the speed chosen, as a burn's (burnspeed.js): paused, nothing moves but a scene's people
+      if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + pace * 24 / SHIP_DAY);
       if (!layout) return;
       const cast = portCast(layout, G.portHour, patrons, crew, st.day);
-      G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout, ev.place) : cast, layout, dt || 0, Settings.reduceMotion);
+      G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout, ev.place) : cast, layout, ev ? dt || 0 : pace, Settings.reduceMotion);
     });
   },
 });

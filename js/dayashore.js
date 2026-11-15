@@ -64,7 +64,7 @@ function matchToday(st) {
 // whatever is on, one tag on the bar. Each is { key, label, who | room, take }: the view's standing offers (portview.js portOffersNow).
 function ashoreOffers(st, planet) {
   if (!hired() || G.mode !== 'landed' || !ashoreOpen(st) || !planet || !portLayout(planet)) return [];
-  const day = st.day, v = { port: planet.name, bar: barOf(planet).name };
+  const day = st.day, v = { port: portLayout(planet).place || planet.name, bar: barOf(planet).name };  // the port by its own name, Lagos Ring, not the planet's
   const regular = G.barState && G.barState.planet === planet.name ? (G.patrons || []).find(x => x.regular) : null;
   const rumored = (st.rumors || []).some(x => x.planet === planet.name && x.until >= day);
   const mate = errandDue(st), keeper = st.room && roomDue(st.room, planet.name, day) ? st.people[st.room.pid] : null;
