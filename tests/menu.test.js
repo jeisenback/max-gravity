@@ -225,3 +225,22 @@ test('the papers\' sheet line has a heading and four words apart, the moved poin
   assert.equal(r.html + '\n', fs.readFileSync(file, 'utf8'), `papers form: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await hand.done();
 });
+
+// #1258: the full build hides "Where you start" for a hand, so a background an owner clicked must not carry into a hand's start; the narrow build has one start and one post, so no heading over the hint.
+test('a hand starts at Earth whatever background an owner clicked first, and the narrow form\'s headings read in order (#1258)', async () => {
+  const owner = await open({ title: true, scope: 'full' });
+  await owner.page.click('[data-action=menuView][data-arg=new]');
+  await owner.page.click('[data-action=menuBackground][data-arg=mars]');
+  await owner.page.click('[data-action=menuMode][data-arg=hired]');
+  const heads = await owner.page.$$eval('h3', h => h.map(x => x.textContent));
+  assert.equal(heads[0], 'How you start', 'the full build keeps its heading');
+  await owner.page.fill('#ngCaptain', 'Rin Adeyemi');
+  await owner.ev(() => { const real = window.startGame; window.startGame = o => { window.startGame = real; window.__start = o; return real(o); }; return true; });
+  await owner.page.click('[data-action=menuStart]');
+  assert.equal(await owner.ev(() => window.__start.background), 'earth', 'the hand starts at Earth, not where the owner clicked');
+  await owner.done();
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  assert.deepEqual((await hand.page.$$eval('h3', h => h.map(x => x.textContent))).slice(0, 2), ['Where you are from', 'The sheet'], 'no heading over the hint alone');
+  await hand.done();
+});

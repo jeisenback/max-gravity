@@ -253,8 +253,7 @@ const Menu = {
       return `<h2>New game</h2>
         <div class="menu-form">
           <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="${f.mode === 'hired' ? 'The name on your papers' : 'Captain\'s name'}" value="${esc(f.captain || '')}"></label>
-          <h3>${narrow ? 'Your post' : 'How you start'}</h3>
-          ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
+          ${narrow ? '' : `<h3>How you start</h3><div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
           ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work ${scopeOff('posts') ? 'the guns' : 'one post'}. The captain picks where she goes; you save toward a ship of your own.</p>
           ${this.views.papersForm(f)}`
             : `<label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>`}
@@ -439,7 +438,7 @@ Mods.register({
     act('menuReport', () => { const el = document.querySelector('textarea[data-report-note]'); window.open(reportUrl(el ? el.value : '', reportSnapshot(G.state, G, BUILD)), '_blank'); });
     act('menuContinue', () => loadSlot(Saves.latest()));
     act('menuBackground', id => { keepForm(); Menu.form.background = id; });
-    act('menuMode', id => { keepForm(); Menu.form.mode = id; });
+    act('menuMode', id => { keepForm(); Menu.form.mode = id; if (id === 'hired') Menu.form.background = 'earth'; });  // a hand's start row is hidden (#1251), so a background clicked for an owner must not carry (#1258)
     act('menuPost', id => { keepForm(); Menu.form.post = id; });
     act('menuHome', id => { keepForm(); Menu.form.home = id; });
     act('menuBefore', id => { keepForm(); Menu.form.before = id; });
