@@ -409,8 +409,8 @@ const SCENE_LINES = {
     'visit.result.1': 'You go from bunk to bunk and sit on the edge of each mattress, ten minutes at a time, because standing in a berth doorway makes it a visit from an officer and sitting makes it a visit. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence between the watch changes, when the only thing to hear is the air handler. You promise to look into it. You write recycler on your wrist in marker, and coffee under it.',
   },
   'scene:bar-round': {  // the round for the house on the bar page (bar.js): the button, before and after, what each patron remembers, and what you are told (the room's note is drawn as typed)
-    label: 'Buy a round for the house ({cost} cr)', 'label.done': 'You bought a round', memory: 'The captain bought a round at {bar}.',
-    note: 'You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: "{rumor}"',
+    label: 'Buy a round for the house ({cost} cr)', 'label.done': 'You bought a round', memory: 'You bought the room a round at {bar}.',
+    note: 'You buy a round for the house. Someone at the bar lifts a glass to you, and leans over: "{rumor}"',
   },
   'scene:cast-join': {  // a main character or first officer signs on (cast.js)
     memory: 'I signed on with {ship}.', log: '{first} {last} came aboard as {article} {role}.',

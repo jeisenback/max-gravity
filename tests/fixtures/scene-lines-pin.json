@@ -9961,10 +9961,10 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Buy a round for the house (2,000 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"Dockworkers on Mars have gone on strike. Refined Metals is suddenly scarce there.\" | You bought a round",
+    "text": "Buy a round for the house (2,000 cr) | You buy a round for the house. Someone at the bar lifts a glass to you, and leans over: \"Dockworkers on Mars have gone on strike. Refined Metals is suddenly scarce there.\" | You bought a round",
     "mem": [
-     "9 Jul 2214: The captain bought a round at The Warren.",
-     "9 Jul 2214: The captain bought a round at The Warren."
+     "9 Jul 2214: You bought the room a round at The Warren.",
+     "9 Jul 2214: You bought the room a round at The Warren."
     ],
     "fx": {
      "credits": -2000,
@@ -11360,7 +11360,7 @@
     "roll": 0.5,
     "text": "Kwame looks at your face, and at the dressing, and finds something to do at the other end of the bar.",
     "mem": [
-     "9 Jul 2214: The captain started a fight with me."
+     "9 Jul 2214: You started a fight with me."
     ],
     "fx": {
      "p6": -2
@@ -23940,7 +23940,7 @@
       "roll": 0.5,
       "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
+       "9 Jul 2214: You bought me a drink at The Heat Sink."
       ]
      },
      {
@@ -24011,7 +24011,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Grace says. \"That was nine years ago.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: You asked about my work, and listened."
       ]
      },
      {
@@ -24019,7 +24019,7 @@
       "roll": 0.5,
       "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24027,7 +24027,7 @@
       "roll": 0.5,
       "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24098,7 +24098,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24164,7 +24164,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Ravi says. \"That was nine years ago.\" Ravi asks a question about it, and then another.",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: You asked about my work, and listened."
       ]
      },
      {
@@ -24172,7 +24172,7 @@
       "roll": 0.5,
       "text": "Ravi sits with their hands flat on the bar. After a while they stop checking the board. Ravi sits back on the stool for the first time.",
       "mem": [
-       "9 Jul 2214: The captain sat with me and didn't make me talk."
+       "9 Jul 2214: You sat with me and didn't make me talk."
       ]
      },
      {
@@ -24233,7 +24233,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "12 Jul 2214: The captain let me talk about Hermes Foundry."
+       "12 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24333,7 +24333,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24346,7 +24346,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: You asked about my work, and listened."
       ]
      },
      {
@@ -24436,7 +24436,7 @@
       "roll": 0.5,
       "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "20 Jul 2214: The captain bought me a drink at The Heat Sink."
+       "20 Jul 2214: You bought me a drink at The Heat Sink."
       ]
      },
      {
@@ -24444,7 +24444,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "20 Jul 2214: The captain let me talk about Hermes Foundry."
+       "20 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24452,7 +24452,7 @@
       "roll": 0.5,
       "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "20 Jul 2214: The captain bought me a drink at The Heat Sink."
+       "20 Jul 2214: You bought me a drink at The Heat Sink."
       ]
      },
      {
@@ -24520,7 +24520,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24528,7 +24528,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: You asked about my work, and listened."
       ]
      },
      {
@@ -24536,7 +24536,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24597,7 +24597,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "6 Jan 2215: The captain asked about my work and listened."
+       "6 Jan 2215: You asked about my work, and listened."
       ]
      },
      {
@@ -24605,7 +24605,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "6 Jan 2215: The captain asked about my work and listened."
+       "6 Jan 2215: You asked about my work, and listened."
       ]
      },
      {
@@ -24613,7 +24613,7 @@
       "roll": 0.5,
       "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
+       "6 Jan 2215: You bought me a drink at The Heat Sink."
       ]
      },
      {
@@ -24679,7 +24679,7 @@
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "16 Aug 2214: The captain asked about my work and listened."
+       "16 Aug 2214: You asked about my work, and listened."
       ]
      },
      {
@@ -24687,7 +24687,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "16 Aug 2214: The captain let me talk about Hermes Foundry."
+       "16 Aug 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
@@ -24753,7 +24753,7 @@
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {

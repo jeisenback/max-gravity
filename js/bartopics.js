@@ -90,7 +90,7 @@ const GOAL_HELP = {
 function helpScene(p, pat, ctx) {
   const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
   const act = (kind, label, line) => ({ label, ...(kind === 'gift' ? gated(needCr(HELP_TASTE.gift.cost)) : {}), run() {
-    const t = HELP_TASTE[kind], r = barWarm(p, t, say(`${kind}.memory`, { goal: GOALS[p.goal] }));
+    const t = HELP_TASTE[kind], r = barWarm(p, t, say(`${kind}.memory`));
     if (t.cost) ctx.st.credits -= t.cost;
     let extra = '';
     if (kind === 'gift' && r.n >= 2) extra = ` ${say('thanks', { rumor: addRumor() })}`;
@@ -148,7 +148,7 @@ const SECRET_HELP = {
 function secretScene(p, pat, ctx) {
   const d = barLines('secret-help')[p.secret], say = barSay('secret-help', p);
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(d.text, p), choices: [
-    ...d.opts.map(({ label, cost, n, line }) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? `The captain stood by me when I told them my trouble (${p.secret}).` : null); return barSays(line, p); } })),
+    ...d.opts.map(({ label, cost, n, line }) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? say('memory') : null); return barSays(line, p); } })),
     { label: say('close.label'), run: () => say('close.result') },
   ] };
 }

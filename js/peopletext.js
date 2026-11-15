@@ -691,7 +691,7 @@ const PEOPLE_LINES = {
     gate: 'You have bought them a drink already.',
     generous: '{first} won\'t hear of it. They push the credits back and get the next one too. {react}',
     rumor: '{first} leans in. "Here\'s one for you," they say: "{rumor}" {react}',
-    'memory': 'The captain bought me a drink at {bar}.',
+    'memory': 'You bought me a drink at {bar}.',
   },
   'bar:heard': {
     label: 'Ask what they\'ve heard',
@@ -714,24 +714,24 @@ const PEOPLE_LINES = {
     'win.end.1': '{first} shakes your hand and means it.',
     'win.end.2': '{first} tells the story of it to the next table, with you as the villain.',
     'lose.end': 'You finish the glass.',
-    'memory': 'The captain took my money at cards.',
+    'memory': 'You took my money at cards.',
   },
   'bar:work': {
     label: 'Ask {first} about their work',
     gate: 'You\'ve done that already tonight.',
     post: 'You come away knowing something new about the {post}. (Experience gained.)',
     hands: '"Word on the dock," {first} says: "{rumor}"',
-    'memory': 'The captain asked about my work and listened.',
+    'memory': 'You asked about my work, and listened.',
   },
   'bar:place': {
     label: 'Ask {first} about this place',
     gate: 'You\'ve done that already tonight.',
-    'memory': 'The captain asked about the place and listened.',
+    'memory': 'You asked about the place.',
   },
   'bar:quiet': {
     label: 'Sit with {first} and say nothing',
     gate: 'You\'ve done that already tonight.',
-    'memory': 'The captain sat with me and didn\'t make me talk.',
+    'memory': 'You sat with me and didn\'t make me talk.',
   },
   'bar:goal': {
     gate: 'You\'ve done that already tonight.',
@@ -745,13 +745,13 @@ const PEOPLE_LINES = {
   'bar:home': {
     label: 'Ask about {home}',
     gate: 'You\'ve done that already tonight.',
-    'memory': 'The captain let me talk about {home}.',
+    'memory': 'You let me go on about {home}.',
   },
   'bar:bless': {
     label: 'Ask for a blessing on your ship',
     'label.hired': 'Ask for a blessing on the ship',
     gate: 'You\'ve done that already tonight.',
-    'memory': 'I blessed the captain\'s ship.',
+    'memory': 'I said the words over your ship.',
   },
   'bar:fight': {
     label: 'Tell them what you think of their manners',
@@ -759,13 +759,13 @@ const PEOPLE_LINES = {
     win: 'It\'s short and loud. {step}{first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.',
     'win.step': '{gunner} steps in and',
     lose: 'It\'s short, and it doesn\'t go your way. There\'s a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.',
-    'memory': 'The captain started a fight with me.',
+    'memory': 'You started a fight with me.',
   },
   'bar:peace': {
     label: 'Make peace (buy them a bottle, 3,000 cr)',
     gate: 'You\'ve made peace already tonight.',
     result: '{first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It\'s a start," they say.',
-    'memory': 'The captain bought me a bottle and apologized.',
+    'memory': 'You bought me a bottle and said sorry.',
   },
   'bar:goal-help': {
     'gift.result': 'You put it on the table and push it across.',
@@ -775,13 +775,14 @@ const PEOPLE_LINES = {
     quiet: 'In the quiet after, {first} {slip}',
     'close.label': 'Say you hope it goes well',
     'close.result': '{first} thanks you, and that\'s the end of it.',
-    'gift.memory': 'The captain helped me on my way ({goal}).',
-    'advice.memory': 'The captain gave me good advice.',
-    'listen.memory': 'The captain let me talk it through.',
+    'gift.memory': 'You helped me on my way.',
+    'advice.memory': 'You told me what you knew.',
+    'listen.memory': 'You let me talk it through.',
   },
   'bar:secret-help': {
     'close.label': 'Let it be',
     'close.result': 'You let it be, and the talk goes somewhere easier.',
+    'memory': 'You stood by me when I told you my trouble.',
   },
   'social:handover': {
     title: 'The Handover',
