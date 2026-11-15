@@ -808,18 +808,13 @@ function lifeTick(dt) {
     if (line) comm(`[Ship] ${line}`);
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
-  const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock, prevPh = t.lifePh;  // the downtime scene, once a slot at a change of the ship's day
+  const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock, prevPh = t.lifePh;  // downtime's offers, once a slot at a change of the ship's day
   t.lifeBlock = now; t.lifePh = ph;
   const free = !isDark() && ph === 'move' && !t.event && !G.dialog && G.speed !== RUN_AHEAD;  // an offer is let go while running ahead (burnspeed.js, #1186)
-  if (prev !== undefined && !t.lifeWait && downtimeDue(t, now, prev, ph, prevPh) && free) t.lifeWait = { slot: lifeSlotOf(t) };  // a burn just loaded (no block seen yet) waits for a real change
-  if (t.lifeWait && (t.lifeWait.slot !== lifeSlotOf(t) || !lifeFree(t))) t.lifeWait = null;  // its slot is gone, or spent another way
+  if (t.offers && t.offers.some(o => o.slot)) t.offers = t.offers.filter(o => !o.slot || (o.slot === lifeSlotOf(t) && lifeFree(t)));  // a slot spent, or gone: the rest of its activities lapse (#1185)
+  if (prev !== undefined && downtimeDue(t, now, prev, ph, prevPh) && free) downtimeOffers(t);  // a burn just loaded (no block seen yet) waits for a real change
   { const now = { burn: t.elapsed || 0, real: G.time }, last = t.offerClock || now; t.offerClock = now;  // the offers on the ship age while shown (#1183)
     if (t.offers && t.offers.length) t.offers = offersTick(t.offers, people, Math.max(0, now.burn - last.burn), G.dialog ? 0 : Math.max(0, now.real - last.real)); }
-  if (t.lifeWait && free) {  // due: it opens once those it tags are where they are going (#1168)
-    const e = downtimeScene();
-    if (!e.able) t.lifeWait = null;
-    else if ((t.lifeWait.calm = downtimeSettled(e.tags, people) ? (t.lifeWait.calm || 0) + dt : 0) >= DOWNTIME_CALM || downtimeLeft(t, burnSpeed()) <= DOWNTIME_LAST) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; t.lifeWait = null; openEvent(e); }
-  }
   const was = [...(G.transit.marks || [])], block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
   mendHull(G.state, was, state.marks);  // a mark the armor came back over leaves its patch (#935)
   state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
@@ -1000,7 +995,7 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // windows and the thrusters.
 // Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view), G.cutRack (the comms rack in view) and
 // G.cutOutline for a tap (game.js).
-// The downtime scene's tags (docs/superpowers/specs/2026-11-12-downtime-scene-design.md), in screen space: a place's on its room, in the top right
+// Offers' tags (#1183; the downtime scene's first, docs/superpowers/specs/2026-11-12-downtime-scene-design.md), in screen space: a place's on its room, in the top right
 // corner opposite the room's name; a person's over their head, when they are drawn in view (`hits`). Returns the boxes drawn, with what each tags.
 const TAG_COLOR = '#e8b84a';
 
@@ -1040,6 +1035,7 @@ function offerClick(box) {
   if (!t || !o) return;
   if (box.mark) { if (o.who) camFollow(o.who); else { G.camView.follow = null; G.camView.y = camTarget(LAYOUTS.freighter, roomAt(o.room).deck); } return; }
   t.offers = (t.offers || []).filter(x => x !== o);
+  if (o.take) return o.take();  // downtime's, which say what taking them does (#1185)
   const ev = o.make && o.make();
   if (ev) openEvent(ev);
 }
@@ -1288,7 +1284,6 @@ function drawCutaway(box, clear = box, dock = null) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
-  const ev = G.dialog && G.dialog.event, tagged = ev && ev.downtime && !ev.chosen ? drawDowntimeTags(ev.tags || [], G.cutRooms, G.cutHits, { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 }) : [];  // the downtime scene's places (2026-11-12)
   // The offers on the ship, with no scene open (#1183): a tag where each is, or a marker at the edge for one out of view.
   const shown = !dock && !G.dialog && t.offers ? t.offers.filter(o => o.shown) : [], clearPart = { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 };
   const tags = shown.length ? drawDowntimeTags(shown.map(o => (o.who ? { label: o.label, id: o.who, offer: o } : { label: o.label, room: o.room, offer: o })), G.cutRooms, G.cutHits, clearPart) : [];
@@ -1300,7 +1295,6 @@ function drawCutaway(box, clear = box, dock = null) {
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
   G.cutOutline = { ...ol, ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
   drawOutline(ctx, G.cutOutline, dots, seenPart.y, seenPart.span, lay);
-  return tagged;
 }
 
 // Who has which bunk (#934): the ship's company in its standing order, the hand first, then the captain, the crew in the order they signed on
@@ -1378,29 +1372,12 @@ const lifeSlot = () => lifeSlotOf(G.transit);
 const lifeFree = t => !(t.lifeUsed || {})[lifeSlotOf(t)];
 const spendLife = (t, key = lifeSlotOf(t)) => { (t.lifeUsed = t.lifeUsed || {})[key] = true; };
 
-// Downtime as a scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md). The scene opens once a slot, at a change of the ship's day to
+// Downtime as offers (#1185, docs/bible/burn.md, Offers on the ship). A slot's activities are offered once a slot, at a change of the ship's day to
 // one of these blocks, or as the crew come off the couches (phase `ph` back to 'move' from `prevPh`: after the flip, the only moment a one-day
 // burn's second slot can have), while the slot is free and not yet offered (t.lifeOffered). The caller checks the lights and any open scene.
 const DOWNTIME_BLOCKS = ['breakfast', 'shift', 'meal', 'supper'];
 const downtimeDue = (t, block, prevBlock, ph, prevPh) => ((block !== prevBlock && DOWNTIME_BLOCKS.includes(block)) || (ph === 'move' && prevPh !== undefined && prevPh !== 'move'))
   && lifeFree(t) && !(t.lifeOffered || {})[lifeSlotOf(t)];
-// The scene waits, once due, until everyone it tags is where they are going: arrived, and not on the ladder (#1168), so what it says someone is doing
-// is what the cutaway shows. `tags` are the scene's (onDeck), `people` the cutaway's. A tag on a room, or on someone not drawn, does not wait. They
-// must stay settled for DOWNTIME_CALM burn seconds: on the frame the crew come off the couches nobody has been sent anywhere yet. It opens anyway,
-// settled or not, when no more than DOWNTIME_LAST burn seconds are left in which it could open (downtimeLeft), so no slot loses its scene: a one-day
-// burn's second slot on a tuned drive has only the moment the crew come off the couches after the flip before the lights go down.
-const DOWNTIME_CALM = 2, DOWNTIME_LAST = 3;
-// The burn seconds left in which the downtime scene could still open: up to the last moment with the lights up (nightLevel under 0.3: not from 0.58
-// to 0.97 of the ship's day) before the slot the burn is in ends (lifeSlotOf) or the crew strap in for the flip or the end of the burn (stageAt). A
-// night inside the slot is waited out: the lights come back in it. Takes the transit and the drive's pace, so it runs in plain Node.
-function downtimeLeft(t, drive = 1) {
-  const n = t.slots || 2, p = t.total ? 1 - t.left / t.total : 0, k = Math.min(n - 1, Math.floor(Math.max(p, t.flipped ? 0.5 : 0) * n));
-  const s = burnStages(t.days || t.total / SHIP_DAY), stop = Math.min(k === n - 1 ? 1 : (k + 1) / n, p < 0.5 ? 0.5 - s.secure : 1 - s.couch);
-  const end = (t.elapsed || 0) + Math.max(0, stop - p) * t.total / drive, f = ((end + 6) / SHIP_DAY) % 1;
-  const lit = f >= 0.58 && f < 0.97 ? end - (f - 0.58) * SHIP_DAY : end;  // the slot ends in the dark: its last light is when they went down
-  return Math.max(0, lit - (t.elapsed || 0));
-}
-const downtimeSettled = (tags, people) => (tags || []).filter(g => g.id).every(g => { const p = people.find(q => q.id === g.id); return !p || (p.tx === null && p.dk === p.tdk); });
 // Whether a choice's line matches the cutaway: an activity with `at` (the room its line puts the one it names in: a room id, or a function giving one)
 // is offered only when that person is there. `people` are the cutaway's (a person's `room` is where they are, or where they are going). With no `at`,
 // no person, or one not drawn, it is offered.
@@ -1418,7 +1395,7 @@ function onDeck(acts, people) {
   for (const a of acts) {
     const label = activityLabel(a);
     if (typeof a.where === 'string') out.push({ label, room: a.where });
-    else if (typeof a.where === 'function') { const id = a.where(people); if (id) out.push({ label, id }); }
+    else if (typeof a.where === 'function') { const id = a.where(people); if (id) out.push({ label, id, at: a.at }); }  // at: where its line puts them, which its offer keeps to (offerThere)
   }
   return out;
 }
@@ -1451,10 +1428,9 @@ function downtimeFive() {
   return out;
 }
 
-// The downtime scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md): what's on in the ship, one line for each of the slot's five that
-// can run, the five as its choices and then Not now. A choice spends the slot, logs it and sends the hand where it happens; Not now spends nothing.
-// `tags` are where each is happening, for the cutaway; `able` how many can run (none: the scene is not opened). `all` lists every option instead of
-// five (for tests and the editor).
+// The downtime scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md), no longer opened as a menu: the slot's five, each a choice that
+// downtimeOffers makes an offer of (#1185), with one line for each that can run. A choice spends the slot, logs it and sends the hand where it
+// happens. `tags` are where each is happening; `able` how many can run. `all` lists every option instead of five (for tests and the editor).
 function downtimeScene(all) {
   const t = G.transit, people = shipPeople(), block = shipDay(t.elapsed).block, cap = hired() && hired().captain, named = new Set();
   // A choice that would name a shipmate an earlier choice names is left out, so nobody is offered twice (the captain may be: advice and the figures).
@@ -1478,7 +1454,6 @@ function downtimeScene(all) {
       ...five.map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (moves.js)
         label: what, can: a.can && (() => a.can(what)),
         run() {
-          scene.chosen = true;  // the result page: the tags go (#1086)
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const you = people.find(p => p.role === 'you'), room = placeOf(what);
@@ -1490,10 +1465,21 @@ function downtimeScene(all) {
           return text;
         },
       }))(activityLabel(a))),
-      { label: lifeSay('none.label'), run: () => { scene.chosen = true; return lifeSay('none.result'); } },
     ],
   };
   return scene;
+}
+
+// The slot's activities as offers on the ship (#1185): each that can run is its own tag, where the scene's choice is tagged, kept to the slot
+// (lifeTick lets the rest go once one is taken or the slot ends). Taken, it runs as its choice did, its result page after. Returns how many.
+function downtimeOffers(t) {
+  const e = downtimeScene(), slot = lifeSlotOf(t);
+  (t.lifeOffered = t.lifeOffered || {})[slot] = true;
+  const take = c => () => { t.offers = (t.offers || []).filter(o => o.slot !== slot); openEvent({ ...e, choices: [c] }); UI.act('choose', 0); };
+  return e.choices.filter(c => !c.can || c.can()).map(c => {
+    const g = e.tags.find(x => x.label === c.label);
+    return g && offerOnShip(t, { key: `down:${slot}:${c.label}`, slot, label: c.label, who: g.id, room: g.room, at: g.at, take: take(c) });
+  }).filter(Boolean).length;
 }
 
 Mods.register({

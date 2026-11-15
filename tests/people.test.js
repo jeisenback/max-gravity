@@ -53,7 +53,7 @@ test('hiring crew, their perks, and every crew and passenger scene', async () =>
   await done();
 });
 
-test('downtime comes to the transit screen as a scene', async () => {
+test('downtime comes to the transit screen as tags on the ship, and a click on one takes it', async () => {
   const { page, ev, done } = await open({});
   await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
@@ -64,11 +64,12 @@ test('downtime comes to the transit screen as a scene', async () => {
   });
   await page.waitForFunction(() => G.mode === 'transit');
   await ev(() => { G.transit.times = []; G.transit.left = G.transit.total * 0.9; });  // off the couches, which take six ship hours (#992)
-  await page.waitForFunction(() => G.dialog && G.dialog.event.downtime, null, { timeout: 30000 });  // downtime comes as a scene at a change of the ship's day (shiplife.js)
-  const labels = await page.$$eval('[data-action=choose]', b => b.map(x => x.textContent));
-  assert.ok(labels.length >= 3, `downtime scene (${labels})`);
-  const pick = labels.findIndex(l => !/^Sit with /.test(l));  // one that ends in a result, not a sitting
-  await page.click(`[data-action=choose][data-arg="${pick}"]`);
+  // downtime's activities come as tags at a change of the ship's day (shiplife.js, #1185): one that ends in a result, not a sitting, drawn on the ship
+  const tag = () => (G.cutOffers || []).find(b => !b.mark && b.offer.slot && !/^Sit with /.test(b.offer.label));
+  await page.waitForFunction(tag, null, { timeout: 30000 });
+  assert.ok(await ev(() => !G.dialog && G.transit.offers.filter(o => o.slot).length >= 2), 'more than one activity, and no scene');
+  const at = await ev(() => { const b = (G.cutOffers || []).find(b => !b.mark && b.offer.slot && !/^Sit with /.test(b.offer.label)); return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; });
+  await page.mouse.click(at.x, at.y);
   await page.click('[data-action=continue]');
   assert.ok(await ev(() => G.transit.lifeUsed), 'downtime used up for this leg');
   await ev(() => { G.transit.left = 0.05; });

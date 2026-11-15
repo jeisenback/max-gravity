@@ -65,15 +65,15 @@ test('the downtime a hired hand can add has its lines in the form and plays in t
   assert.ok(seen.includes('Ask for advice') && seen.includes('Swap stories in the galley'), seen.slice(0, 300));
 });
 
-test('the downtime menu and the ship\'s own activities have their lines in the form and play in the preview (#508)', async () => {
+test('downtime and the ship\'s own activities have their lines in the form and play in the preview (#508)', async () => {
   await reload(); await select('scene:shiplife');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.title', 'part.title.supper', 'part.meal.on', 'part.none.result', 'part.meal.result.1', 'part.repair.skilled', 'part.visit.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['part.title', 'part.title.supper', 'part.meal.on', 'part.log', 'part.meal.result.1', 'part.repair.skilled', 'part.visit.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
   for (const k of ['title', 'title.breakfast', 'title.shift', 'title.meal', 'title.supper']) await page.fill(`textarea[data-path="part.${k}"]`, 'Time Off');  // the scene's title is the time of day's
-  await page.fill('textarea[data-path="part.none.label"]', 'Skip it');
+  await page.fill('textarea[data-path="part.meal.label"]', 'Eat together');
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
-  assert.ok(seen.includes('Time Off') && seen.includes('Skip it'), seen.slice(0, 300));
+  assert.ok(seen.includes('Time Off') && seen.includes('Eat together'), seen.slice(0, 300));
 });
 
 test('the round for the house and a main character coming aboard have their lines in the form and play in the preview (#508)', async () => {

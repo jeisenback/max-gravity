@@ -14,15 +14,15 @@ const helpers = () => { window.setup = () => {
   uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
 }; };
 
-test('five at a time, and Not now is always last', async () => {
+test('five at a time, each its own, with no Not now (#1185: letting the tags go is not now)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => { setup(); const out = {}, labels = e => e.choices.map(c => c.label);
-    const every = downtimeScene(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).length;
+    const every = downtimeScene(true).choices.filter(c => !c.can || c.can()).length;
     const menu = labels(downtimeScene());
     out.every = every; out.menu = menu; return out; });
   assert.ok(r.every > 5, `there are more than five to choose from (${r.every})`);
-  assert.equal(r.menu.length, 6, 'five and Not now'); assert.equal(r.menu[5], 'Not now'); assert.equal(new Set(r.menu).size, 6);
+  assert.equal(r.menu.length, 5, 'five'); assert.ok(!r.menu.includes('Not now')); assert.equal(new Set(r.menu).size, 5);
   await done();
 });
 
@@ -43,7 +43,7 @@ test('everything comes round, and each five is a mix of the three kinds', async 
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => { setup(); const out = {}, label = a => (typeof a.label === 'function' ? a.label() : a.label);
-    const all = downtimeScene(true).choices.filter(c => c.label !== 'Not now' && (!c.can || c.can())).map(c => c.label), seen = new Set(), kinds = [];
+    const all = downtimeScene(true).choices.filter(c => !c.can || c.can()).map(c => c.label), seen = new Set(), kinds = [];
     const lanes = [baseActivities().filter(a => !a.can || a.can()).map(label), handDowntime().filter(a => !a.can || a.can()).map(label), onNow().filter(a => !a.can || a.can()).map(label)];
     // the rotation, not where people stand: each one a line puts in a place is there (a line about someone elsewhere is not offered, downtimeThere)
     const people = shipPeople();
@@ -73,7 +73,7 @@ test('with five or fewer, all of them show', async () => {
     try { const few = baseActivities().filter(a => !a.can || a.can()).length, menu = downtimeScene().choices.map(c => c.label); return { few, menu: menu.length }; }
     finally { [window.onNow, window.handDowntime] = keep; } });
   assert.ok(r.few <= 5, `the ship's own are ${r.few}`);
-  assert.equal(r.menu, r.few + 1, 'every one, and Not now');
+  assert.equal(r.menu, r.few, 'every one');
   await done();
 });
 

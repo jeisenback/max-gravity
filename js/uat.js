@@ -66,7 +66,7 @@ const UAT_ITEMS = [
     setup() { G.dialog = null; newGame(); G.state.uat = true; } },
   { group: 'Basics', id: 'company', title: 'Company ships, escorts, stakes', check: 'Buy a company ship at the shipyard, set a route, fly with an escort, buy a stake from the Port page.',
     setup() { uatFresh({ credits: 4000000 }); uatLand('Earth'); UI.tab = 'shipyard'; UI.render(); } },
-  { group: 'Life aboard', id: 'transit', title: 'Transit screen and downtime', check: 'Cutaway, route strip, star streaks, feed chatter. The downtime menu lists every activity and each one works.',
+  { group: 'Life aboard', id: 'transit', title: 'Transit screen and downtime', check: 'Cutaway, route strip, star streaks, feed chatter. Each downtime activity is a tag on the ship where it happens, and each one works.',
     setup() { uatFresh(); uatCrew(2, 2); uatPassenger(); uatBurn('Earth', 'mars'); G.transit.left = G.transit.total * 0.7; } },
   { group: 'Life aboard', id: 'relationships', title: 'Relationship scene', check: 'A scene between two crew opens and reads naturally. Afterwards the Crew page shows their bond.',
     setup() { uatFresh(); const [a, b] = uatCrew(2, 3); addBond({ id: a.id }, { id: b.id }, 6); uatBurn('Earth', 'mars'); const ev = relationshipScene(); if (ev) openEvent(ev); } },
