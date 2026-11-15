@@ -57,6 +57,25 @@ const WRITTEN_REGULARS = {
     pell: { first: 'Pell', last: 'Sorensen', job: 'gambler', end: 'gone' },
     nadia: { first: 'Nadia', last: 'Ruiz', job: 'Guild steward', end: 'stays' },
   },
+  'Pallas Refinery': {
+    teodor: { first: 'Teodor', last: 'Wills', job: 'shift supervisor', end: 'gone' },
+    amara: { first: 'Amara', last: 'Quist', job: 'assayer', end: 'stays' },
+    jem: { first: 'Jem', last: 'Hallgren', job: 'crane driver', end: 'gone' },
+    vey: { first: 'Sister', last: 'Vey', job: 'keeper of the works\' shrine', end: 'stays' },
+    cass: { first: 'Cass', last: 'Oduya', job: 'organiser', end: 'gone' },
+  },
+  'The Hollows': {
+    lio: { first: 'Lio', last: 'Brandvold', job: 'smelter', end: 'gone' },
+    ezra: { first: 'Ezra', last: 'Kahananui', job: 'assembly delegate', end: 'stays' },
+    lunds: { first: 'Pim', last: 'Lund', job: 'smelter', end: 'gone' },  // with his twin Petra in his arc: a regular is one person, so the bar's lines read
+    tamsin: { first: 'Tamsin', last: 'Achebe-Holt', job: 'water-ration clerk', end: 'stays' },
+  },
+  'Eros Old Town': {
+    hesper: { first: 'Hesper', last: 'Moraes', job: 'the Old Town\'s memory', end: 'stays' },
+    ottilie: { first: 'Ottilie', last: 'Szabo', job: 'fixer', end: 'gone' },
+    ray: { first: 'Ray', last: 'Bastian', job: 'recycler mechanic', end: 'stays' },
+    benedetta: { first: 'Benedetta', last: 'Iyer', job: 'archivist', end: 'stays' },
+  },
 };
 const WRITTEN_LINES = {  // lines:written-regulars: each one's beats, and for one who goes, the return line's words for it
   Earth: {
@@ -99,6 +118,65 @@ const WRITTEN_LINES = {  // lines:written-regulars: each one's beats, and for on
       'has a list of names from the ice house, and adds one while you\'re there.',
       'says the owner sacked two of the names. She has their pictures on the bar beside her drink.',
       'says the ice house is organised. She drinks to the two who were sacked, and doesn\'t say anything else.'] },
+  },
+  'Pallas Refinery': {
+    teodor: { beats: [
+      'says the quota\'s up eight percent from the first of the month. He\'s working out on a napkin who on his line can carry it.',
+      'had a man burned on his line on Tuesday. He\'s been in every night since, and doesn\'t drink much.',
+      'met the quota. He\'s put in for a transfer, and won\'t say where.'],
+      left: 'Teodor got his transfer, and nobody at the Slag Heap knows where to' },
+    amara: { beats: [
+      'has the break fee for her contract written on the inside of her wrist, and adds to the savings every payday.',
+      'says the company raised the break fee. She\'s crossed out the old number on her wrist and written the new one under it.',
+      'signed again, for five years. She doesn\'t talk about it, and the number on her wrist is gone.'] },
+    jem: { beats: [
+      'wants to marry a woman in the Hollows, and has put in for a married berth.',
+      'was refused the married berth. The company doesn\'t house anyone from the Hollows.'],
+      left: 'Jem has moved to the Hollows to marry, and the company has docked his pay for the berth he left' },
+    vey: { beats: [
+      'asked the company to read the line\'s dead out at the shift change, and was told no.',
+      'reads the names herself now, here, at the end of each shift. The bar goes quiet for it.',
+      'says the company has allowed a minute at shift change. She reads faster, to get them all in.'] },
+    cass: { beats: [
+      'asks you what the pay is like on your ship, and writes down the answer.',
+      'says there\'s a man from company security at the far table who\'s been there every night she has.'],
+      left: 'Cass left on a hauler, and someone else at the Slag Heap has started asking the same questions' },
+  },
+  'The Hollows': {
+    lio: { beats: [
+      'has been offered an apprenticeship on a hauler, and hasn\'t told his mother.',
+      'told his mother. She\'s against it, and he\'s still thinking.'],
+      left: 'Lio went on the hauler, and his mother keeps his stool at the Chute' },
+    ezra: { beats: [
+      'lost the assembly\'s vote to take the air plant\'s lease off the company, by two votes.',
+      'won the vote the second time. The air plant is the assembly\'s from next month.',
+      'has the assembly\'s first air bill in his hand. It\'s higher than the company\'s was.'] },
+    lunds: { beats: [
+      'and his twin sister Petra are arguing over which of them gets off the line first. They\'ve been arguing about it for a year.',
+      'says he was burned on the line, a forearm. Petra has stopped arguing.'],
+      left: 'Petra has left the Hollows, and Pim is at the Chute on his own' },
+    tamsin: { beats: [
+      'says the refinery has cut the Hollows\' water again, and she has to make it go round.',
+      'says the queue for water turned into a fight on Tuesday. She has a cut over one eye.',
+      'has a rota that\'s held for three weeks, posted on the shrine door. She checks it on her way past.'] },
+  },
+  'Eros Old Town': {
+    hesper: { beats: [
+      'says the air fund is short this year, and tells you exactly how short.',
+      'says a shipper\'s gift came in, enough to see the fund through the winter.',
+      'tells you about the last winter the fund ran out. It takes most of an evening, and she doesn\'t leave anything out.'] },
+    ottilie: { beats: [
+      'owes money to people she won\'t name, and is doing them favours to pay it down.',
+      'did one favour too many, she says, and sits facing the door.'],
+      left: 'Ottilie is gone from Eros, and the people she owed have been in asking where' },
+    ray: { beats: [
+      'needs a part for the town\'s old air plant, and nobody sells it any more.',
+      'had the part printed. It\'s not the real one, and he knows it.',
+      'checks the printed part every hour, and comes back to his drink each time looking relieved.'] },
+    benedetta: { beats: [
+      'had an offer from the Dome Pact for the Old Town\'s founding papers, and said no.',
+      'says someone broke into the archive on Thursday. Nothing was taken, which worries her more.',
+      'has given a copy of the founding papers to every ship that will take one. One of them is yours.'] },
   },
 };
 const writtenLines = () => linedText('lines:written-regulars', WRITTEN_LINES);
