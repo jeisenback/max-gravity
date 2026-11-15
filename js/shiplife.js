@@ -1066,12 +1066,12 @@ function drawOfferMarks(out, clear) {
   ctx.restore();
   return boxes;
 }
-function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the ship box a scene's dialog leaves clear, which a person's tag keeps inside
+function drawDowntimeTags(tags, rooms, hits, clear, c = ctx) {  // clear: the part of the ship box a scene's dialog leaves clear, which a person's tag keeps inside; c: the canvas drawn on (the port view draws on its own, #1192)
   const out = [], fs = 12, pad = 4, h = fs + pad * 2, step = h + 3;
   const meets = (x, y, w) => out.some(o => x < o.x + o.w && o.x < x + w && y < o.y + o.h && o.y < y + h);  // one drawn already: the next steps past it
-  ctx.save(); ctx.font = `600 ${fs}px ${roomFont}`; ctx.textBaseline = 'middle';
+  c.save(); c.font = `600 ${fs}px ${roomFont}`; c.textBaseline = 'middle';
   for (const g of tags) {
-    const w = ctx.measureText(g.label).width + pad * 2;
+    const w = c.measureText(g.label).width + pad * 2;
     let x, y;
     if (g.room) {  // stepping down the room, while it fits
       const b = rooms.find(r => r.id === g.room); if (!b || b.w < w + 12) continue;
@@ -1088,12 +1088,12 @@ function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the
         if (meets(x, y, w)) continue;
       }
     }
-    ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(x, y, w, h);
-    ctx.strokeStyle = TAG_COLOR; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-    ctx.fillStyle = TAG_COLOR; ctx.fillText(g.label, x + pad, y + h / 2);
+    c.fillStyle = 'rgba(6,13,22,0.85)'; c.fillRect(x, y, w, h);
+    c.strokeStyle = TAG_COLOR; c.lineWidth = 1; c.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    c.fillStyle = TAG_COLOR; c.fillText(g.label, x + pad, y + h / 2);
     out.push({ ...g, x, y, w, h });
   }
-  ctx.restore();
+  c.restore();
   return out;
 }
 

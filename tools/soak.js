@@ -35,6 +35,8 @@ const SOAK_STALL = 900000;
 // The player's profile (#1199): what they do with what is optional on a burn, the offers on the ship (#1183) and downtime. `attentive` takes every
 // offer at once and spends downtime, as a player at 1x would; `hurried` runs ahead and takes nothing optional; `between` takes every other offer
 // and spends downtime. Which offers `between` takes is by count, not a roll. A distribution test says which profiles its bands hold for.
+// At a port with a view, a landing's business is taken by every profile, as a player takes the yard and the agent; its people and the port's own
+// are offers like the burn's (#1192).
 const SOAK_PROFILES = ['attentive', 'hurried', 'between'];
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false, profile = 'attentive' } = {}) {
   if (!SOAK_PROFILES.includes(profile)) throw new Error(`no soak profile '${profile}': ${SOAK_PROFILES.join(', ')}`);
@@ -70,6 +72,8 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
       const oe = window.openEvent; window.openEvent = function (e) { if (landed.on) landed.opened++; return oe.apply(this, arguments); };
       // a scene queued behind an open one (transit.js queueScene) is counted when it is queued; one with nothing open is counted by openEvent
       const qs = window.queueScene; window.queueScene = function (e) { if (landed.on && e && G.dialog) landed.opened++; return qs.apply(this, arguments); };
+      // a scene that waits as an offer on a port's view (#1192) is still the landing's: it is counted when it is put
+      const pp = window.portOfferPut; window.portOfferPut = function (kind, e) { if (landed.on && e) landed.opened++; return pp.apply(this, arguments); };
       // the whole of landAt, not only the 'landed' emit: its handlers offer their scenes, which open after the emit, in rank order (landingScenesPlay, #1096, #1160)
       const la = window.landAt; window.landAt = function () { const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return la.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
     // The jobs (--jobs): how many were worked at the station and played at the far end of a job elsewhere, what each kind paid the hand (applyJob moves the credits, and a
@@ -152,6 +156,15 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
       try {
         UI.tab = atSite(st) ? 'site' : 'bar'; UI.render();  // on station at a rock there is no bar (sites.js)
         const talk = async () => { if (!atSite(st) && G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
+        // a landing's scenes at a port with a view wait as offers (#1192): the yard's and the run's business is taken as a player would take it, the
+        // people's and the port's own by the profile, as the burn's offers are
+        const takePortOffers = async () => {
+          while (!G.dialog && (G.portOffers || []).length) {
+            const o = G.portOffers[0], take = o.kind === 'business' || profile === 'attentive' || (profile === 'between' && offersSeen++ % 2 === 0);
+            if (take) { portOfferTake(o); await answer(); } else G.portOffers = G.portOffers.filter(x => x !== o);
+          }
+        };
+        await takePortOffers();
         await talk();
         while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market) or the shifts on a rock (icerun.js)  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail

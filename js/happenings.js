@@ -45,7 +45,7 @@ function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
   const s = pickStorylet(where, keep);  // the one roll of its chance: the scene offered is the scene played
   if (!s) return [];
-  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => storyletEvent(s) }];
+  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => (story ? { ...storyletEvent(s), turn: true } : storyletEvent(s)) }];  // turn: a main story's scene, which opens at once at a port with a view (transit.js, #1192)
 }
 
 Mods.register({
@@ -91,7 +91,8 @@ Mods.register({
     });
     M.on('landed', planet => {
       if (landingSceneCount() >= 2) return;  // a landing with two scenes already has its share: none is drawn, and none used up (#1096)
-      offerScene('ambient', pickHappening('port', planet));
+      const ev = pickHappening('port', planet);
+      offerScene(ev && ev.turn ? 'turn' : 'ambient', ev);
     });
   },
 });

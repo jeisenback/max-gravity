@@ -119,7 +119,7 @@ function startGame(o) {
   if (scopeOff('starts')) o = { ...o, mode: 'hired', background: 'earth' };  // the one start this build has
   Saves.use(o.slot);
   G.paused = false;
-  G.dialog = null; G.transit = null;
+  G.dialog = null; G.transit = null; G.portOffers = []; G.portLater = [];  // a port's offers are a game's own (#1192)
   G.state = newState();
   const st = G.state, b = BACKGROUNDS[o.background] || BACKGROUNDS.earth;
   st.systemId = b.at[0]; st.planet = b.at[1]; st.credits = b.credits;
@@ -141,7 +141,7 @@ function startGame(o) {
 
 function loadSlot(n) {
   Saves.use(n);
-  G.paused = false; G.dialog = null; G.transit = null;
+  G.paused = false; G.dialog = null; G.transit = null; G.portOffers = []; G.portLater = [];
   loadGame();
 }
 

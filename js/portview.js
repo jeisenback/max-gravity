@@ -494,6 +494,7 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
     return { id: rm.id, page: rm.page || null, x: X(rm.x0), y: top, w: (rm.x1 - rm.x0) * zoom, h: floor - top };
   });
   for (const c of cast) if (c.kind === 'folk') boxes.push({ who: c.who, x: X(c.x) - 14 * zoom, y: oy + (portFloor(layout, c.lv) - 88 - sag(c.x)) * zoom, w: 28 * zoom, h: 88 * zoom });  // and the port's own people, for a click on one
+  for (const c of cast) boxes.push({ head: { id: c.who, x: X(c.x), y: oy + (portFloor(layout, c.lv) - 92 - sag(c.x)) * zoom } });  // and where everyone's head is, for an offer's tag over them (#1192)
   // the room names on their plates, and the frame's bar, at screen size
   g.font = `600 12px ${roomFont}`; g.textBaseline = 'alphabetic';
   for (const rm of layout.rooms) {
@@ -541,18 +542,75 @@ function portViewNow(planet, layout) {
   return { hour, cast, look };
 }
 
+// ---------- a landing's scenes as offers on the view (#1192, ports.md, A landing's scenes at a port with a view) ----------
+// At a port with a view, a landing's scenes after the customs, the settling up and the mourning (transit.js landingScenesPlay) wait here as offers: a tag
+// on the view over the one they are about, or on their room, taken with a click. At most four show; one about someone shows only while the view has them
+// in it, in their hours. They lapse when the port's day turns at a night, or when the ship sails: a people scene comes round at a later landing at the same
+// port, business and the port's happenings do not. Each is { kind (offerScene's rank), ev (the scene, made at the landing), planet, label }. Not saved,
+// as the burn's offers are not (game.js save).
+const PORT_OFFERS_SHOWN = 4;
+const PORT_OFFER_ROOM = { business: 'yard' };  // business is at the yard office; anything else with nobody the view has, where its scene happens or the market
+function portOfferPut(kind, ev, planet) {
+  if (!ev) return;
+  G.portOffers = G.portOffers || [];
+  G.portOffers.push({ kind, ev, planet: planet && planet.name, label: ev.title });
+}
+// The people scenes that lapsed at this port, taken out to come round again at this landing.
+function portOffersBack(planet) {
+  const here = (G.portLater || []).filter(o => planet && o.planet === planet.name);
+  G.portLater = (G.portLater || []).filter(o => !here.includes(o));
+  return here;
+}
+// The port's day turns, or the ship sails: every offer goes, the people's kept to come round again.
+function portOffersLapse() {
+  G.portLater = [...(G.portLater || []), ...(G.portOffers || []).filter(o => o.kind === 'people')];
+  G.portOffers = [];
+}
+// Where an offer shows (pure): over one of its people the view has in it now (`castIds`, the cast's ids, portSceneWho's terms); not at all while its
+// people are ones the view can have (`castable`) but has not now, outside their hours; else on its room (`rooms`, the layout's room ids): where its
+// scene happens, business at the yard office, the rest in the market.
+function portOfferWhere(o, ids, castIds, castable, rooms) {
+  const on = ids.find(id => castIds.includes(id));
+  if (on) return { id: on };
+  if (ids.some(id => castable.includes(id))) return null;
+  const room = [o.ev.place, PORT_OFFER_ROOM[o.kind], 'market'].find(r => r && rooms.includes(r));
+  return room ? { room } : null;
+}
+// The offers that show (pure): the first PORT_OFFERS_SHOWN, in the order made, of those that can show; `whoOf` gives an offer's people's ids.
+function portOffersShown(offers, whoOf, castIds, castable, rooms) {
+  const out = [];
+  for (const o of offers || []) {
+    if (out.length >= PORT_OFFERS_SHOWN) break;
+    const at = portOfferWhere(o, whoOf(o), castIds, castable, rooms);
+    if (at) out.push({ offer: o, label: o.label, ...at });
+  }
+  return out;
+}
+// The view's offers now, from the game: who each is about, who the view has and can have.
+function portOffersNow(planet, layout, cast) {
+  const st = G.state, castIds = cast.map(c => c.who);
+  const castable = [...layout.folk.map(f => f.key), ...st.crew, ...(G.patrons || []).filter(x => !x.cast).map(x => `patron:${x.p.id || x.p.first}`)];
+  return portOffersShown(G.portOffers, o => portSceneWho(planet, scenePeople(o.ev)), castIds, castable, layout.rooms.map(r => r.id));
+}
+// A click on an offer's tag takes it: it leaves the queue and its scene opens, its people walked to it (#1103).
+function portOfferTake(o) {
+  G.portOffers = (G.portOffers || []).filter(x => x !== o);
+  if (o.ev) openEvent(o.ev);
+}
+
 Mods.register({
   id: 'portview', name: 'The port view', builtin: true,
   init(M) {
     M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; G.state.portArrived = G.state.day; });  // everyone in place as the view opens; the day of the visit, for what is once a visit
-    M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; });  // a night passed in port
+    M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; portOffersLapse(); });  // a night passed in port; the day's offers lapse (#1192)
     // A click on a room with a page opens it, as its entry on the rail does, and only when the rail would (a shut entry stays shut); the pointer shows where.
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
     const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
     const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet, G.state), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // nothing hit, nothing read (the title screen has no game)
-    document.addEventListener('click', e => { const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
-    document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
+    const tag = (boxes, x, y) => (boxes || []).find(b => b.offer && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;  // an offer's tag (#1192)
+    document.addEventListener('click', e => { const t = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)); if (t) return portOfferTake(t.offer); const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
+    document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, (b, x, y) => tag(G.portOfferBoxes, x, y)) || point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
       if (G.mode !== 'landed' || G.portHour === null) return;
       const st = G.state, planet = currentPlanet(), layout = portLayout(planet, st), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
