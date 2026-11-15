@@ -59,6 +59,12 @@ Status of this section: draft for the owner's review, 2026-11-15 (#1247). The pl
 
 Ceres Station is the Guild Council's (`ceres.md`): the yard and the docks on a crater floor, at a thirtieth of a g, and the town dug into the crater wall, in caverns with a drum turning in each for weight, the rings. The view is a cut through the crater wall: the surface at the top, the shaft down through the rock on the left, and a slice of an upper ring and of the lower ring below it, each a turning drum shown as its floor and its rooms, the rock between them.
 
+### The reference frame
+
+![A cut through Ceres's crater wall: the co-op's office and the lock on the crater floor, the ship on her pad outside under the floodlights, the shaft, the upper ring's market, Kaur's buying office, the Guild and the clinic, and the lower ring's renters' rooms and the Warren with its shrine](ceres-target.png)
+
+`ceres-target.png` is the cut at 1280x800, drawn with the game's own room and figure drawing in a throwaway mockup, two rounds with the owner (2026-11-15), as `ports-target.png` is for the Ring. What it gets right: the surface as outside, with the ship's lower hull on her pad, her legs and bell, cut by the frame, and the walkway to the lock; the co-op's office with its stall, counter, board of hulls and back room; Kaur's counter and the Guild's room side by side, the strike's two sides; the Warren widest, with its counter, the ration over the taps and the shrine at its end. What it leaves for the real drawing: the rings' curve, stronger than the surface's, which stays flat; the low weight on the crater floor in how people walk; signs a figure stands in front of; the renters' rooms at their own scale.
+
 ### What the view cuts through
 
 From the ship's pad down to the Warren, in the order a hand walks it:
