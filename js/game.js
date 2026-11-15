@@ -24,6 +24,9 @@ const G = {
   portHour: null,     // the port view's clock (portview.js, #1102): the local hour at a port drawn as a place, null elsewhere
   portWalkers: null,  // the port view's people where they are now, walking to where the hour puts them (portview.js portWalk, #1124); null puts them in place
   portRooms: null,    // where the port view drew its rooms, in the view's px, for a click on one to open its page (portview.js, #1132)
+  portOffers: [],     // a landing's scenes waiting on the port view as offers (portview.js, #1192): { kind, ev, planet, label }, in the order made
+  portLater: [],      // the people's offers that lapsed at a port, to come round again at a later landing there (portview.js portOffersBack, #1192)
+  portOfferBoxes: null,  // where the port view drew the offers' tags, in the view's px, for a click on one (portview.js, #1192)
   revenge: null,      // someone who hates you has hired a gun, see people.js
   mode: 'landed',     // title | landed | flight | departing | transit | hail | map | dead
   dialog: null,       // open choice dialog (transit event or hail), see transit.js
@@ -555,6 +558,7 @@ function landAt(planet, notes) {
 }
 
 function takeOff() {
+  portOffersLapse();  // the port's offers go as the ship sails; a people scene's comes round at a later landing here (portview.js, #1192)
   sceneQueue = [];  // a port's scenes stay at the port: none can be waiting in play, as the dock's buttons wait for them, but a scripted takeoff can leave some (#1096)
   const pl = currentPlanet();
   const a = rand(0, Math.PI * 2);

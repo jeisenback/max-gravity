@@ -1,7 +1,8 @@
 'use strict';
 
 // A landing's scenes (#1096, js/transit.js offerScene): every landed handler hands its scene over with a rank, and when they have all run the
-// scenes play in rank order (customs, the settling up, the run's business, people, what the port brings), none dropped and none written over.
+// scenes play in rank order (customs, the settling up, the run's business, people, what the port brings), none dropped and none written over,
+// at a port with no view (at one with a view, most wait there as offers: portoffers.test.js).
 // The inbox reads the notes once every handler has added its own.
 
 const { test, after } = require('node:test');
@@ -12,6 +13,7 @@ after(closeBrowser);
 
 const helpers = () => {
   window.hand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; G.state.tutorial = null; G.dialog = null; G.nextEvent = null; return G.state; };
+  window.away = () => { const st = G.state; st.systemId = 'mars'; st.planet = 'Mars'; };  // a port with no view: the landing plays in turn (#1192)
   window.scene = t => ({ title: t, text: t, choices: [{ label: 'A', run: () => 'a' }] });
   window.playAll = () => { const seen = []; for (let g = 10; G.dialog && g--;) { seen.push(G.dialog.event.title); chooseEvent(0); G.nextEvent = null; finishEvent(); } return seen; };
 };
@@ -20,7 +22,7 @@ const run = async fn => { const t = await open(); await t.ev(helpers); const r =
 test('the freight agent and the yard both play at a landing that has the settling up, after it, and the delivery is settled once', async () => {
   const r = await run(() => {
     const st = hand(), h = hired();
-    st.armor = Math.round(ship().armor * 0.5);  // the yard's: the hull well down
+    away(); st.armor = Math.round(ship().armor * 0.5);  // the yard's: the hull well down
     h.off = { kind: 'late', shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 90, got: 90, late: 2, due: st.day - 2, cut: 0, owed: 0 };
     landingScenesOpen();
     offerScene('settle', scene('Settling Up'));
@@ -44,7 +46,7 @@ test('a scene offered while another is open waits behind the open one and its ow
 
 test('the ranks hold whatever order the handlers offer in, and the order offered within a rank', async () => {
   const r = await run(() => {
-    hand(); landingScenesOpen();
+    hand(); away(); landingScenesOpen();
     offerScene('ambient', scene('Port')); offerScene('people', scene('Visit')); offerScene('business', scene('Yard')); offerScene('people', scene('Mourning'));
     offerScene('customs', scene('Customs')); offerScene('settle', scene('Settling'));
     const count = landingSceneCount();

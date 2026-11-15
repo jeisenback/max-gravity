@@ -414,13 +414,23 @@ function openEvent(ev) {
 // Scenes waiting their turn (#1096). A landing's handlers hand their scenes to offerScene with a rank instead of opening them; when every handler has
 // run (landAt), they play in rank order, the order offered within a rank, none dropped and none written over. A scene offered while another is open
 // waits in sceneQueue, which finishEvent opens after a scene's own follow-on (G.nextEvent). Not saved, as G.nextEvent is not.
-const SCENE_RANK = { customs: 0, settle: 1, business: 2, people: 3, ambient: 4 };  // the lock first; the run's settling up; the run's own business; people; what the port brings
+const SCENE_RANK = { customs: 0, settle: 1, mourn: 2, business: 3, people: 4, ambient: 5 };  // the lock first; the run's settling up; a crewmate mourned; the run's own business; people; what the port brings
+// At a port with a view (portview.js), a landing's scenes up to the mourning open at once; the rest wait on the view as offers (#1192, ports.md, A landing's
+// scenes at a port with a view). Elsewhere they all open in turn, as before.
+const SCENE_AT_ONCE = SCENE_RANK.mourn;
 let sceneQueue = [], landingScenes = null;
 function queueScene(ev) { if (!ev) return; if (G.dialog) sceneQueue.push(ev); else openEvent(ev); }
-function offerScene(rank, ev) { if (!ev) return; if (landingScenes) landingScenes.push({ rank: SCENE_RANK[rank], ev }); else queueScene(ev); }
+function offerScene(rank, ev) { if (!ev) return; if (landingScenes) landingScenes.push({ rank: SCENE_RANK[rank], kind: rank, ev }); else queueScene(ev); }
 const landingSceneCount = () => (landingScenes ? landingScenes.length : 0);
 function landingScenesOpen() { if (!G.dialog) sceneQueue = []; landingScenes = []; }  // with nothing open, anything still queued is a game before this one's
-function landingScenesPlay() { const list = (landingScenes || []).sort((a, b) => a.rank - b.rank); landingScenes = null; for (const x of list) queueScene(x.ev); }
+function landingScenesPlay() {
+  const planet = currentPlanet(), view = !!portLayout(planet), back = portOffersBack(planet);  // people's offers that lapsed here before come round again (portview.js)
+  // without a view the mourning is among the people, in its handler's turn, as before (#1096); with one it opens at once, after the settling up
+  const key = x => (!view && x.kind === 'mourn' ? SCENE_RANK.people : x.rank);
+  const list = [...(landingScenes || []), ...back.map(o => ({ rank: SCENE_RANK.people, kind: 'people', ev: o.ev }))].sort((a, b) => key(a) - key(b));
+  landingScenes = null;
+  for (const x of list) if (view && x.rank > SCENE_AT_ONCE) portOfferPut(x.kind, x.ev, planet); else queueScene(x.ev);
+}
 
 function chooseEvent(i) {
   if (dockShown()) G.dock = dockChose(G.dock, G.dialog.choices[i].dock);  // the dock's result page (dock.js, #940)
