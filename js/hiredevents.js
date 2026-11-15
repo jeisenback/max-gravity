@@ -522,7 +522,10 @@ function handContext() {
 
 // An event of the group the hand has not had lately, and that has what it needs (a shipmate, the
 // main character it is about being aboard).
-function hiredEvent(group) {
+// Split (#1198) so an offer on the ship can say who it is about without using the event up: hiredPeek chooses the event and who it is about,
+// hiredPlay marks it seen and makes it.
+const HIRED_OFFERS = ['crew', 'money'];  // the groups that are offers on a burn (burn.md, What stops the burn)
+function hiredPeek(group) {
   const h = hired(), st = G.state, seen = st.eventSeen = st.eventSeen || {}, c = handContext();
   const fresh = HAND_EVENTS.filter(d => d.group === group && (!d.post || d.post === h.post) && !(seen[d.id] > st.day - WORK_SEEN_DAYS)
     && (!d.when || d.when(c)) && (!d.mate || c.mate));
@@ -531,10 +534,16 @@ function hiredEvent(group) {
   // days would otherwise come round to the same one after the thirty-day gap while others had not come up at all.
   const shown = st.handShown = st.handShown || {}, least = Math.min(...fresh.map(d => shown[d.id] || 0));
   const d = pick(fresh.filter(x => (shown[x.id] || 0) === least));
+  const key = d.id.startsWith('crew-') && !d.mate && CAST[d.id.slice(5)] ? d.id.slice(5) : null, p = key ? castPerson(key) : d.mate ? c.mate : c.cap;  // a main character's own, a shipmate's, else the captain's
+  return { key: d.id, who: p && p.id, vars: { first: (p && p.first) || '', last: (p && p.last) || '' }, play: () => hiredPlay(d, c) };
+}
+function hiredPlay(d, c) {
+  const st = G.state, seen = st.eventSeen = st.eventSeen || {}, shown = st.handShown = st.handShown || {};
   seen[d.id] = st.day;
   shown[d.id] = (shown[d.id] || 0) + 1;
   return d.make(c);
 }
+function hiredEvent(group) { const p = hiredPeek(group); return p ? p.play() : null; }
 
 // ---------- downtime ----------
 // What a hired hand can add to the downtime menu (shiplife.js): at most four are offered at a time, the

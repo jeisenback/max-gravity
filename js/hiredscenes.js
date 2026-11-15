@@ -381,6 +381,8 @@ const SCENE_LINES = {
     'title.breakfast': 'At Breakfast', 'title.shift': 'On Shift', 'title.meal': 'At the Meal', 'title.supper': 'At Supper',
     'none.label': 'Not now', 'none.result': 'Everyone goes back to their own business.', log: 'Downtime: {what}.',
     'offer.cast': '{first} has a minute', 'offer.captain': 'Captain {last} wants a word', 'offer.passenger': '{first} would like to talk',  // an offer's tag on the ship, before its scene is made (happenings.js, #1184)
+    'offer.crew': '{first} has something to ask', 'offer.money': 'A word about money', 'offer.pair': '{first} and {other}', 'offer.trait': '{first} is about',  // the rest of the people's scenes (#1198)
+    'offer.tradition': '{first} has an idea', 'offer.colour': 'Something in the galley', 'offer.arc': '{first} wants to talk',
     'meal.label': 'Share a meal', 'meal.crew.memory': 'We shared a meal on a long burn.', 'meal.pax.memory': 'The captain shared a meal with us.',
     'meal.on': 'There\'s a pot on in the galley, and somebody has laid the table.',
     'meal.result.0': 'You cook something real out of the good stores: garlic, rice in the pressure pot, and the block of butter that has been missing a corner for a week. "Who had the butter?" "Nobody had the butter." "The butter has teeth marks." Everyone off watch comes to the galley, which seats five, and the rest eat standing with bowls passed over shoulders. The engineer eats in the doorway with one foot in the corridor, in case. Seconds run out before the last two get any, and the crust in the pot goes to whoever has the next watch.',

@@ -21,10 +21,11 @@ function pickHappening(where, planet) {
     let r = Math.random() * level.reduce((n, c) => n + c.weight, 0), c = level[0];
     for (const x of level) { if ((r -= x.weight) < 0) { c = x; break; } }
     if (c.quiet) return null;
-    if (c.offer && where === 'transit' && G.transit) {  // one of the people's scenes: an offer on the ship, its scene made only if it is taken (shiplife.js, #1184)
-      const o = c.offer;
-      if (offerOnShip(G.transit, { key: o.key, who: o.who, label: lifeSay(`offer.${o.kind}`, o.vars), make: c.make })) { G.handled = true; return null; }
-      pool = pool.filter(x => x !== c); continue;  // the same one is already up: draw another
+    if ((c.offer || c.offerOf) && where === 'transit' && G.transit) {  // one of the people's scenes: an offer on the ship, its scene made only if it is taken (shiplife.js, #1184)
+      // `offerOf`: who it is about, chosen now without using it up, and the scene made from that if it is taken (#1198); `offer`: who is known already
+      const o = c.offerOf ? c.offerOf() : { ...c.offer, make: c.make };
+      if (o && offerOnShip(G.transit, { key: o.key, who: o.who, room: o.room, label: lifeSay(`offer.${o.kind}`, o.vars), make: o.make })) { G.handled = true; return null; }
+      pool = pool.filter(x => x !== c); continue;  // nothing to offer, or the same one is already up: draw another
     }
     const ev = c.make();
     if (ev && ev.auto && where === 'transit' && postMode('comms') === 'crewed') {  // a routine hail the comms officer takes
@@ -40,12 +41,16 @@ function pickHappening(where, planet) {
   return null;
 }
 
+// An offer from a peek (#1198): a peek is { who, vars, key, play } or null, chosen without using anything up; `play` makes the scene if the offer is taken.
+const offerOf = (peek, kind) => (peek ? { kind: peek.kind || kind, key: `${peek.kind || kind}:${peek.key}`, who: peek.who, vars: peek.vars, make: peek.play } : null);
+
 // A storylet as a candidate; `story` picks the main-story ones, otherwise the color ones.
 function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
   const s = pickStorylet(where, keep);  // the one roll of its chance: the scene offered is the scene played
   if (!s) return [];
-  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => (story ? { ...storyletEvent(s), turn: true } : storyletEvent(s)) }];  // turn: a main story's scene, which opens at once at a port with a view (transit.js, #1192)
+  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => (story ? { ...storyletEvent(s), turn: true } : storyletEvent(s)),
+    ...(story || where !== 'transit' ? {} : { offer: { kind: 'colour', key: `story:${s.id}`, room: 'galley' } }) }];  // a colour storylet on a burn is an offer in the galley, used up only if taken (#1198)  // turn: a main story's scene, which opens at once at a port with a view (transit.js, #1192)
 }
 
 Mods.register({
@@ -68,15 +73,20 @@ Mods.register({
         if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); },
           ...(pax.pid && G.state.people[pax.pid] ? { offer: { kind: 'passenger', key: `pax:${pax.pid}`, who: pax.pid, vars: { first: G.state.people[pax.pid].first } } } : {}) });  // an offer, #1184
         const arcs = st.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
-        if (arcs.length) out.push({ tier: 2, weight: BURN_WEIGHTS.crewArc, via: 'crew', make() { const id = pick(arcs), step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; } });
-        out.push({ tier: 2, weight: BURN_WEIGHTS.trait, via: 'crew', make: crewTraitEvent });
-        out.push({ tier: 2, weight: BURN_WEIGHTS.relationship, via: 'crew', make: relationshipScene });
-        if (home().burns >= 2) out.push({ tier: 2, weight: BURN_WEIGHTS.tradition, via: 'crew', make: traditionEvent });
+        // The people's scenes are offers on the ship (#1198): who each is about is chosen when it is offered (offerOf), and the scene is made, and used
+        // up, only if it is taken; let lapse, it comes round again.
+        const arcStep = id => { const step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; };
+        if (arcs.length) out.push({ tier: 2, weight: BURN_WEIGHTS.crewArc, via: 'crew', make() { return arcStep(pick(arcs)); },
+          offerOf() { const id = pick(arcs), p = person(id); return { kind: 'arc', key: `arc:${id}`, who: id, vars: { first: (p && p.first) || id }, make: () => arcStep(id) }; } });
+        out.push({ tier: 2, weight: BURN_WEIGHTS.trait, via: 'crew', group: 'trait', make: crewTraitEvent, offerOf: () => offerOf(crewTraitPeek(), 'trait') });
+        out.push({ tier: 2, weight: BURN_WEIGHTS.relationship, via: 'crew', group: 'pair', make: relationshipScene, offerOf: () => offerOf(relationshipPeek(), 'pair') });
+        if (home().burns >= 2) out.push({ tier: 2, weight: BURN_WEIGHTS.tradition, via: 'crew', group: 'tradition', make: traditionEvent, offerOf: () => offerOf(traditionPeek(), 'tradition') });
         out.push(...storyletCandidate(where, false));
         // Not one seen in the last SHIP_INCIDENT_WAIT days, on this burn or an earlier one.
         const met = st.eventSeen = st.eventSeen || {}, seenAs = e => (e.id ? SCENE_LINES[`scene:${e.id}`].title : e.title);  // kept by its shipped title, which the editor's words do not change (transit.js)
         const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[seenAs(e)] > st.day - SHIP_INCIDENT_WAIT) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)) && !(e.id === 'pirates' && quality('due:pi-safe') > st.day));
-        if (hand) for (const g of HIRED_GROUPS.filter(g => g !== 'money' || chapterOf(st) === 1)) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', make: () => hiredEvent(g) });
+        if (hand) for (const g of HIRED_GROUPS.filter(g => g !== 'money' || chapterOf(st) === 1)) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', group: g, make: () => hiredEvent(g),
+          ...(HIRED_OFFERS.includes(g) ? { offerOf: () => offerOf(hiredPeek(g), g) } : {}) });  // the crew's and the money's are offers (#1198); the work, the captain's and the road's stay urgent
         if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship * (1 + HAND_LANE_WEIGHT * Math.max(danger(t.to), danger(st.systemId))) : BURN_WEIGHTS.ship, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[seenAs(ev)] = st.day; return ev; } });
         out.push({ tier: 2, weight: BURN_WEIGHTS.quiet, quiet: true });
       } else {

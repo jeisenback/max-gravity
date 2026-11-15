@@ -514,11 +514,13 @@ const CREW_EVENTS = {
     ] }); },
 };
 
-function crewTraitEvent() {
+function crewTraitEvent() { const p = crewTraitPeek(); return p ? p.play() : null; }
+// Who a trait event is about and which trait, chosen without playing it (#1198): an offer on the ship.
+function crewTraitPeek() {
   const mine = G.state.crew.map(id => G.state.people[id]).filter(Boolean);
   if (!mine.length) return null;
-  const c = pick(mine);
-  return CREW_EVENTS[pick(c.traits)](c);
+  const c = pick(mine), trait = pick(c.traits);
+  return { key: `${c.id}:${trait}`, who: c.id, vars: { first: c.first }, play: () => CREW_EVENTS[trait](c) };
 }
 
 // ---------- reunions ----------
