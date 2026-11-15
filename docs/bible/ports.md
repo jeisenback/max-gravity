@@ -117,7 +117,7 @@ The rules the port's people and scenes keep (for #1102 and #1103). Draft for the
 
 ### The port's clock
 
-The game's day turns only as it does now: by passing a night in port or by sailing. Inside that day the port has its own hours. A landing comes in at the hour the burn ended, by the port's local time (Lagos time on the Ring), and the view runs on from there at the burn view's pace: a day of the port's hours in 80 seconds (`SHIP_DAY`, `js/shiplife.js`). It runs through the evening and stops at the night: the rim's lights down, the bays shut, the bar the last thing open. It waits there until the player passes the night (the next morning) or sails. A scene stops the clock while it is open, as it stops the burn.
+The game's day turns by passing a night in port, by the port's clock reaching midnight, or by sailing. Inside that day the port has its own hours. A landing comes in at the hour the burn ended, by the port's local time (Lagos time on the Ring), and the view runs on from there at the burn view's pace: a day of the port's hours in 80 seconds (`SHIP_DAY`, `js/shiplife.js`). It runs through the evening and on through the night (the owner, 2026-11-15, #1275): the rim's lights down, the bays shut, the bar the last thing open. At midnight the day turns, as a night passed does: the date moves on (and the ship's contract counts it), the bar fills again, and the night can bring something to the dock; with a stay on, it is a night of the stay. The speed buttons run it faster, or pause it. A scene stops the clock while it is open, as it stops the burn.
 
 ### Who is there
 

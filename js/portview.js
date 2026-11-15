@@ -93,7 +93,7 @@ const PORT_LAYOUTS = {
     },
   },
 };
-const PORT_NIGHT = 22, PORT_MORNING = 7;  // the view's clock stops at night (ports.md, The port's clock), and a night passed in port wakes at seven
+const PORT_MORNING = 7;  // a night passed in port by its button or key wakes at seven (ports.md, The port's clock); the view's own clock runs on through the night
 const portOpen = (hours, hour) => { const [a, b] = hours, h = b > 24 && hour < a ? hour + 24 : hour; return h >= a && h < b; };
 const portDark = hour => hour >= 21 || hour < 6;  // the rim's lights down: Lagos's night
 // The hour at a landing (ports.md): the port's own dice, from the port and the day, so it moves no other system's rolls; a morning, a day or an evening.
@@ -798,6 +798,16 @@ function portOffersNow(planet, layout, cast) {
   const standing = [...ashoreOffers(st, planet), ...downOffers(st, planet)];  // the day ashore's and the day down's, after the landing's (#1193)
   return portOffersShown([...(G.portOffers || []), ...standing], o => (o.ev ? portSceneWho(planet, scenePeople(o.ev)) : o.who ? [o.who] : []), castIds, castable, layout.rooms.map(r => r.id));
 }
+// Midnight on a port's view (#1275): the day turns as a night passed does. With a stay on, it is a night of the stay (stay.js passNight); without one the
+// date moves on, the bar fills again and the night can bring something to the dock, and the ship's contract counts the day. The view's clock runs on after.
+function portMidnight() {
+  if (passNight()) return;
+  const st = G.state, planet = currentPlanet();
+  st.day++; Mods.emit('newDay', st.day);
+  fillBar(planet);
+  const ev = pickHappening('port', planet);
+  if (ev) openEvent(ev);
+}
 // A click on an offer's tag takes it: it leaves the queue and its scene opens, its people walked to it (#1103).
 function portOfferTake(o) {
   if (o.take) return o.take();  // the day ashore's and the day down's, which say what taking them does (#1193)
@@ -822,7 +832,10 @@ Mods.register({
       if (G.mode !== 'landed' || G.portHour === null) return;
       const st = G.state, planet = currentPlanet(), layout = portLayout(planet, st), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
       const pace = (dt || 0) * (G.speed === undefined ? 1 : G.speed);  // at the speed chosen, as a burn's (burnspeed.js): paused, nothing moves but a scene's people
-      if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + pace * 24 / SHIP_DAY);
+      if (!G.dialog) {
+        G.portHour += pace * 24 / SHIP_DAY;
+        if (G.portHour >= 24) { const h = G.portHour - 24; portMidnight(); G.portHour = h; }  // the night runs on, and the day turns at midnight (the owner, 2026-11-15, #1275)
+      }
       if (!layout) return;
       const cast = portCast(layout, G.portHour, patrons, crew, st.day);
       G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout, ev.place) : cast, layout, ev ? dt || 0 : pace, Settings.reduceMotion);
