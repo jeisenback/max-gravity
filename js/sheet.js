@@ -27,6 +27,20 @@ function newSheet(background, post) {
   return sheet;
 }
 
+// The papers' trade (docs/superpowers/specs/2026-11-14-papers-design.md): what the hand was before the ship moves a point up and a point down. All or nothing: when the
+// point up would pass STAT_MAX the answer changes nothing (papersTrades says so, for the form's note); a stat never goes below PAPERS_FLOOR, a rule the base and the
+// points added cannot reach. Pure, and shared by the new-game form (menu.js) and the sign-on (hired.js), so the sheet the form shows is the sheet the hand gets.
+const PAPERS_BEFORE = { dock: { up: 'hands', down: 'wit' }, clerk: { up: 'wit', down: 'nerve' }, ferry: { up: 'nerve', down: 'hands' } };
+const PAPERS_FLOOR = 2;
+const papersTrades = (sheet, before) => { const t = PAPERS_BEFORE[before]; return !!t && sheet[t.up] < STAT_MAX; };
+function papersSheet(sheet, before) {
+  const out = { ...sheet };
+  if (!papersTrades(sheet, before)) return out;
+  const t = PAPERS_BEFORE[before];
+  out[t.up] += 1; out[t.down] = Math.max(PAPERS_FLOOR, out[t.down] - 1);
+  return out;
+}
+
 const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.min(CHECK_MAX, 0.5 + STAT_STEP * (stat - STAT_BASE) + SKILL_STEP * skill - difficulty + edge));
 
 // The kit (#683): things the hand carries, each adding to a kind of check (the keys of DIFFICULTY). They come from arcs and scenes (arcs.js), never from a shop; the
