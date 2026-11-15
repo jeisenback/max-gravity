@@ -1,6 +1,6 @@
 # The Hand's Papers: A Character Creation Screen
 
-Status: draft for the owner's review, 2026-11-14 (#1251). Agreed in conversation from three options; the patrol answer's reach to Marked kept by the owner on 2026-11-15, and the intro added. Builds on the new-game form (`js/menu.js`), the sheet (`js/sheet.js` `newSheet`, the one check rule), the sign-on scene (`js/signon.js`, `scene:sign-on` in `js/hiredscenes.js`), the record and the traits (`js/traits.js`, #964), the shippers' standing (`js/contracts.js`), the people's opinions (`js/people.js`), and the Record card (`js/character.js`).
+Status: approved by the owner and built, 2026-11-15 (#1251). As built: the hand's record of the sign-on is `st.hired.origin` (not `papers`, which main gave to the licences of layer 5, #1045), the start option is `o.origin`, and the factions are the Arcology Pact, the Dome Pact and the Guild Federation; the patrol's fine is paid at the port inspection (`js/inspection.js`), so the officer's line is the inspector's. Agreed in conversation from three options; the patrol answer's reach to Marked kept by the owner on 2026-11-15, and the intro added. Builds on the new-game form (`js/menu.js`), the sheet (`js/sheet.js` `newSheet`, the one check rule), the sign-on scene (`js/signon.js`, `scene:sign-on` in `js/hiredscenes.js`), the record and the traits (`js/traits.js`, #964), the shippers' standing (`js/contracts.js`), the people's opinions (`js/people.js`), and the Record card (`js/character.js`).
 
 ## Why
 
