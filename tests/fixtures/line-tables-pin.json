@@ -2901,7 +2901,7 @@
  },
  {
   "key": "life:engine:engineer:1",
-  "text": "Cass is lying on their back under the coolant manifold, telling a gasket a joke."
+  "text": "Cass is lying on their back under the coolant manifold with a torch and a mirror."
  },
  {
   "key": "life:engine:engineer:2",
@@ -2937,7 +2937,7 @@
  },
  {
   "key": "life:engine:any:0",
-  "text": "Cass is watching the reactor telltales like they owe money."
+  "text": "Cass is watching the reactor telltales."
  },
  {
   "key": "life:engine:any:1",
@@ -3041,11 +3041,11 @@
  },
  {
   "key": "life:hold:gunner:0",
-  "text": "Cass is dry-firing at shadows in the hold."
+  "text": "Cass is dry-firing at a chalk mark on the far bulkhead."
  },
  {
   "key": "life:hold:gunner:1",
-  "text": "Cass has set up a target on a crate and is losing to it."
+  "text": "Cass has a paper target taped to a crate and is counting the holes."
  },
  {
   "key": "life:hold:gunner:2",
@@ -3329,11 +3329,11 @@
  },
  {
   "key": "life:galley:any:0",
-  "text": "Cass is making coffee that could strip paint."
+  "text": "Cass is making coffee from the cheap tin, a scoop more than the sheet says."
  },
  {
   "key": "life:galley:any:1",
-  "text": "Cass is telling Ana a story that's only partly true."
+  "text": "Cass is telling Ana about the last ship they were on, over a bowl of rice."
  },
  {
   "key": "life:galley:any:2",
@@ -3341,11 +3341,11 @@
  },
  {
   "key": "life:galley:any:3",
-  "text": "Cass is cooking something unlabeled in a pan."
+  "text": "Cass is frying something from a tin with the label gone."
  },
  {
   "key": "life:galley:any:4",
-  "text": "Cass is leaning on the counter with a mug, watching Ana argue with the recycler."
+  "text": "Cass is leaning on the counter with a mug while Ana resets the water recycler."
  },
  {
   "key": "life:galley:any:5",
@@ -3677,7 +3677,7 @@
  },
  {
   "key": "life:bridge:slicer:2",
-  "text": "Cass is writing a filter for the dock chatter and arguing with it aloud."
+  "text": "Cass is writing a filter for the dock chatter and testing it on last night's log."
  },
  {
   "key": "life:bridge:slicer:3",
