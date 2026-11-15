@@ -92,3 +92,65 @@ test('a regular\'s life moves a beat a visit when you are back a week or more la
   assert.ok(typeof r.after.newArc === 'string', 'the new regular has a life of their own');
   await done();
 });
+
+test('a port with a written pool seats its written regulars first, in the run\'s own order, with their own arcs; one who goes is said in their own words, and the next written one takes the stool (#1242)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, planet = currentPlanet(), out = {};
+    const names = () => regs().map(x => `${x.p.first} ${x.p.last}`);
+    out.earth = names(); out.order = writtenOrder('Earth', `${captain().name} ${(st.castPair || []).join(' ')}`);
+    out.other = writtenOrder('Earth', 'Somebody Else');
+    // move the lives a week at a time until a written regular who goes has gone
+    const rec = st.bars[planet.name]; out.beats = {}; out.notes = [];
+    for (let w = 0; w < 6; w++) {
+      st.visited = { [planet.name]: { day: st.day, snap: revisitSnap(st, planet) } };
+      st.day += 7; const now = regs(); now.forEach(x => { (out.beats[x.p.first] = out.beats[x.p.first] || []).push(x.p.gossip); });
+      const line = revisitLine(st, planet); if (line) out.notes.push(line);
+    }
+    out.seated = rec.written.slice(); out.final = names();
+    return out;
+  });
+  const pool = ['Biodun Okafor-Lane', 'Chidinma Eze-Walters', 'Segun Adeyinka', 'Grace Obi-Hartmann'];
+  assert.equal(r.earth.length, 2); assert.ok(r.earth.every(n => pool.includes(n)), `Lagos Ring's written regulars: ${r.earth}`);
+  assert.deepEqual(r.earth.map(n => n.split(' ')[0].toLowerCase()), r.order.slice(0, 2), 'the first two of the run\'s order');
+  assert.deepEqual([...r.order].sort(), [...r.other].sort()); assert.notDeepEqual(r.order, r.other, 'another run deals them in another order');
+  const told = Object.values(r.beats).flat().filter(Boolean).join(' ');
+  assert.ok(/hiring board|deposit for a tug lease|first contract|tender papers/.test(told), 'their own arcs as their news');
+  if (r.seated.includes('biodun') && !r.final.includes('Biodun Okafor-Lane')) assert.ok(r.notes.some(n => /keeper says he went up on the Thursday spaceplane/.test(n)), `Biodun's own words for going: ${r.notes}`);
+  assert.ok(r.seated.length >= 2 && r.seated.length <= 4);
+  await done();
+});
+
+test('written regulars at Ceres Station, and a port with no pool keeps generated ones (#1242)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, out = {};
+    uatLand('Ceres Station'); G.dialog = null; out.ceres = regs().map(x => x.p.first);
+    uatLand('Ironheart'); G.dialog = null; out.ironheart = regs().map(x => x.p.arc && x.p.arc.key);
+    return out;
+  });
+  assert.equal(r.ceres.length, 2); assert.ok(r.ceres.every(n => ['Dunya', 'Kofi', 'Ilka', 'Pell', 'Nadia'].includes(n)), `${r.ceres}`);
+  assert.ok(r.ironheart.every(k => k && !k.includes('|')), 'generated, with the arc library');
+  await done();
+});
+
+test('a written regular who goes leaves at the visit after their last beat, the return line says it in their words, and the next of the pool sits (#1242)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, planet = currentPlanet(), rec = (regs(), st.bars[planet.name]);
+    const p = st.people[rec.ids[0]];
+    Object.assign(p, { first: 'Biodun', last: 'Okafor-Lane', arc: { key: 'Earth|biodun', beat: 2 } });
+    st.visited = { [planet.name]: { day: st.day, snap: revisitSnap(st, planet) } };
+    st.day += 7; const now = regs().map(x => x.p);
+    return { gone: !now.includes(p) && p.regular === null, line: revisitLine(st, planet), seated: rec.written.slice(), firsts: now.map(x => x.first) };
+  });
+  assert.equal(r.gone, true, 'gone from the bar');
+  assert.match(r.line, /Biodun's stool is someone else's, and the keeper says he went up on the Thursday spaceplane/);
+  assert.doesNotMatch(r.line, /Biodun is gone from the bar/);
+  assert.equal(r.seated.length, 3, 'a third of the pool sits');
+  assert.ok(r.firsts.every(n => ['Biodun', 'Chidinma', 'Segun', 'Grace'].includes(n) && n !== 'Biodun'));
+  await done();
+});

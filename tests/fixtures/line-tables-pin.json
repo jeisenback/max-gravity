@@ -4244,6 +4244,54 @@
   "text": "owes money to a man who comes in on Fridays, and leaves before he does. | has stopped leaving on Fridays, and sits with their back to the door. | paid the man in front of everyone, counted out, and is on the first drink bought with their own money in a year, and reading the ships on the board."
  },
  {
+  "key": "written:Earth|biodun",
+  "text": "has read the hiring board twice since he sat down, and it hasn't changed. \"They want them under forty,\" he says. \"They don't put it on the board.\" | has a contract: a refit at Luna, three months, rigging. He shows you the stamp on it as if you might doubt it."
+ },
+ {
+  "key": "written-left:Earth|biodun",
+  "text": "Biodun's stool is someone else's, and the keeper says he went up on the Thursday spaceplane"
+ },
+ {
+  "key": "written:Earth|chidinma",
+  "text": "has the deposit for a tug lease saved, all of it, in a scrip account she checks between drinks. | has a new letter from the holding company: the lease terms changed, and the deposit is now a third short. | has a tug, an old one, with \"EZE-WALTERS\" painted on the hatch in letters a hand high. She'll show you the picture if you ask."
+ },
+ {
+  "key": "written:Earth|segun",
+  "text": "has six days left on his first contract and doesn't want to talk about the seventh. | has been on the board a week. He eats one meal a day at Ngozi's and makes it last. | has another contract, eight months, and bought Ngozi's whole pot for his shift. The shift is still talking about it."
+ },
+ {
+  "key": "written:Earth|grace",
+  "text": "has the clinic's tender papers spread on the end of the bar and is reading every clause. | says the contract's gone to a firm on the mainland. \"They've never worked in half a g,\" she says. \"They'll learn.\" | has two of the new nurses at her end of the bar, and is showing them how to splint a wrist with a menu card."
+ },
+ {
+  "key": "written:Ceres Station|dunya",
+  "text": "has a letter from the station's owner turning down her pension again, and has stuck it to the bar with her glass. | has a Guild lawyer who'll take the case for nothing. \"Nothing,\" she says. \"I asked twice.\" | got the first payment this morning, and the round on the bar is hers."
+ },
+ {
+  "key": "written:Ceres Station|kofi",
+  "text": "was turned down at the co-op's meeting, eleven votes to nine. He knows who the eleven were. | is working a cousin's claim rock between shifts, and has the dust in his cuffs to show for it. | has the buy-in saved, and asks if you'd speak for him at the meeting."
+ },
+ {
+  "key": "written-left:Ceres Station|kofi",
+  "text": "Kofi is on a co-op hull now"
+ },
+ {
+  "key": "written:Ceres Station|ilka",
+  "text": "comes in straight off her shift. Her brother is on the ice crews, and she says that's the trouble. | says her brother was hurt on the ice: a hand, not the worst. The clinic has a training course, and she's put his name down. | says her brother is on a co-op hull now. It's her first night off in a year, and she doesn't know what to do with it."
+ },
+ {
+  "key": "written:Ceres Station|pell",
+  "text": "is ahead tonight and buying, and tells you the debt will be gone by the end of the week. | is behind, and asks if you could lend him a hundred until Friday."
+ },
+ {
+  "key": "written-left:Ceres Station|pell",
+  "text": "Pell has gone on a hauler to Pallas, owing the bar, and the keeper has his name on the slate"
+ },
+ {
+  "key": "written:Ceres Station|nadia",
+  "text": "has a list of names from the ice house, and adds one while you're there. | says the owner sacked two of the names. She has their pictures on the bar beside her drink. | says the ice house is organised. She drinks to the two who were sacked, and doesn't say anything else."
+ },
+ {
   "key": "revisit:war.on",
   "text": "Dome Pact and Mars Republic have gone to war"
  },

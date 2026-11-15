@@ -110,6 +110,11 @@ const playLines = () => {
   for (const kind of Object.keys(PORT_OFFERS)) for (const key of ['label', 'eaten', 'memory', 'result.0', 'result.1', 'result.2']) if (PORT_OFFERS[kind][key.split('.')[0]]) note(`port-offers:${kind}.${key}`, portOfferSay(kind, key.split('.')[0], { first: 'Sam' }, Number(key.split('.')[1] || 0)));
   // the regulars' lives: every beat of every arc, as a regular's news reads it
   for (const key of Object.keys(ARCS)) note(`regular-arc:${key}`, regularArc(key).join(' | '));
+  // the written regulars by port (#1242): every beat, and the return line's words for one who goes
+  for (const [port, ks] of Object.entries(WRITTEN_REGULARS)) for (const k of Object.keys(ks)) {
+    note(`written:${port}|${k}`, writtenArc(`${port}|${k}`).beats.join(' | '));
+    const left = writtenLeft({ arc: { key: `${port}|${k}` } }); if (left) note(`written-left:${port}|${k}`, left);
+  }
   // returning to a port: each fact the line can state, from two snapshots, and the framing with facts and without
   { const name = id => ({ r1: 'Ana', r2: 'Ben' })[id];
     const calm = { eco: null, war: null, lanes: false, regs: ['r1', 'r2'] };

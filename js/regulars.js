@@ -37,12 +37,83 @@ const ARCS = {  // lines:regular-arcs
     'paid the man in front of everyone, counted out, and is on the first drink bought with their own money in a year, and reading the ships on the board.'] },
 };
 const regularArc = key => linedText('lines:regular-arcs', ARCS[key].beats, key);
+
+// Written regulars (#1242, docs/bible/regulars.md): a port's own pool of people at its bar, each with an arc of their own, three beats told as
+// their news as ARCS are, ending 'gone' or 'stays'. Each run deals the pool in an order of its own (writtenOrder), seeded by the run and the port,
+// so a port's faces differ between runs and stay the same within one; they take the bar's stools first, and generated regulars fill what is left.
+// A regular written for somewhere other than the bar (a stall, a bench, a desk) waits for that place (the owner, 2026-11-15). `left`, for one who
+// goes: what the dock's return line says of them (revisit.js), in place of "is gone from the bar". By the port's planet: Earth's is Lagos Ring.
+const WRITTEN_REGULARS = {
+  Earth: {
+    biodun: { first: 'Biodun', last: 'Okafor-Lane', job: 'rigger', end: 'gone' },
+    chidinma: { first: 'Chidinma', last: 'Eze-Walters', job: 'tug pilot', end: 'stays' },
+    segun: { first: 'Segun', last: 'Adeyinka', job: 'welder', end: 'stays' },
+    grace: { first: 'Grace', last: 'Obi-Hartmann', job: 'clinic nurse, retired', end: 'stays' },
+  },
+  'Ceres Station': {
+    dunya: { first: 'Dunya', last: 'Achterberg', job: 'ice-house foreman, retired', end: 'stays' },
+    kofi: { first: 'Kofi', last: 'Lenz', job: 'dock rigger', end: 'gone' },
+    ilka: { first: 'Ilka', last: 'Ferrante', job: 'clinic orderly', end: 'stays' },
+    pell: { first: 'Pell', last: 'Sorensen', job: 'gambler', end: 'gone' },
+    nadia: { first: 'Nadia', last: 'Ruiz', job: 'Guild steward', end: 'stays' },
+  },
+};
+const WRITTEN_LINES = {  // lines:written-regulars: each one's beats, and for one who goes, the return line's words for it
+  Earth: {
+    biodun: { beats: [
+      'has read the hiring board twice since he sat down, and it hasn\'t changed. "They want them under forty," he says. "They don\'t put it on the board."',
+      'has a contract: a refit at Luna, three months, rigging. He shows you the stamp on it as if you might doubt it.'],
+      left: 'Biodun\'s stool is someone else\'s, and the keeper says he went up on the Thursday spaceplane' },
+    chidinma: { beats: [
+      'has the deposit for a tug lease saved, all of it, in a scrip account she checks between drinks.',
+      'has a new letter from the holding company: the lease terms changed, and the deposit is now a third short.',
+      'has a tug, an old one, with "EZE-WALTERS" painted on the hatch in letters a hand high. She\'ll show you the picture if you ask.'] },
+    segun: { beats: [
+      'has six days left on his first contract and doesn\'t want to talk about the seventh.',
+      'has been on the board a week. He eats one meal a day at Ngozi\'s and makes it last.',
+      'has another contract, eight months, and bought Ngozi\'s whole pot for his shift. The shift is still talking about it.'] },
+    grace: { beats: [
+      'has the clinic\'s tender papers spread on the end of the bar and is reading every clause.',
+      'says the contract\'s gone to a firm on the mainland. "They\'ve never worked in half a g," she says. "They\'ll learn."',
+      'has two of the new nurses at her end of the bar, and is showing them how to splint a wrist with a menu card.'] },
+  },
+  'Ceres Station': {
+    dunya: { beats: [
+      'has a letter from the station\'s owner turning down her pension again, and has stuck it to the bar with her glass.',
+      'has a Guild lawyer who\'ll take the case for nothing. "Nothing," she says. "I asked twice."',
+      'got the first payment this morning, and the round on the bar is hers.'] },
+    kofi: { beats: [
+      'was turned down at the co-op\'s meeting, eleven votes to nine. He knows who the eleven were.',
+      'is working a cousin\'s claim rock between shifts, and has the dust in his cuffs to show for it.',
+      'has the buy-in saved, and asks if you\'d speak for him at the meeting.'],
+      left: 'Kofi is on a co-op hull now' },
+    ilka: { beats: [
+      'comes in straight off her shift. Her brother is on the ice crews, and she says that\'s the trouble.',
+      'says her brother was hurt on the ice: a hand, not the worst. The clinic has a training course, and she\'s put his name down.',
+      'says her brother is on a co-op hull now. It\'s her first night off in a year, and she doesn\'t know what to do with it.'] },
+    pell: { beats: [
+      'is ahead tonight and buying, and tells you the debt will be gone by the end of the week.',
+      'is behind, and asks if you could lend him a hundred until Friday.'],
+      left: 'Pell has gone on a hauler to Pallas, owing the bar, and the keeper has his name on the slate' },
+    nadia: { beats: [
+      'has a list of names from the ice house, and adds one while you\'re there.',
+      'says the owner sacked two of the names. She has their pictures on the bar beside her drink.',
+      'says the ice house is organised. She drinks to the two who were sacked, and doesn\'t say anything else.'] },
+  },
+};
+const writtenLines = () => linedText('lines:written-regulars', WRITTEN_LINES);
+// A written regular's arc key is `port|key`; its beats and how it ends, or null for one of ARCS.
+const writtenArc = key => { const [port, k] = String(key).split('|'), w = (WRITTEN_REGULARS[port] || {})[k]; return w ? { end: w.end, beats: writtenLines()[port][k].beats } : null; };
+// What the return line says of a regular who left (revisit.js), or null for the plain words.
+const writtenLeft = p => { const [port, k] = String((p && p.arc && p.arc.key) || '').split('|'), l = ((writtenLines()[port] || {})[k] || {}).left; return l || null; };
+// The run's order of a port's pool: by the run (the hand's name and the run's main characters) and the port, not the game's dice.
+const writtenOrder = (port, run) => Object.keys(WRITTEN_REGULARS[port] || {}).sort((a, b) => hash(`${run} ${port} ${a}`) - hash(`${run} ${port} ${b}`));
 // A beat of the arc a week on: the next line is their news, or, past the last, the arc is done and a 'gone' regular leaves. Returns true when they leave.
 function arcStep(p) {
-  const a = p.arc, def = ARCS[a.key];
+  const a = p.arc, def = ARCS[a.key] || writtenArc(a.key);
   if (!def) { p.arc = null; return false; }
   if (a.beat >= def.beats.length) { a.done = true; return def.end === 'gone'; }
-  p.gossip = regularArc(a.key)[a.beat++];
+  p.gossip = (ARCS[a.key] ? regularArc(a.key) : def.beats)[a.beat++];
   return false;
 }
 const NEWS = [
@@ -71,9 +142,12 @@ function barRegulars(planet) {
     if (left) { rec.ids = rec.ids.filter(x => x !== id); p.regular = null; p.location = null; }
     else if (fresh && !told) p.gossip = news;
   }
+  rec.written = rec.written || [];  // the port's written regulars this run has seated, in or gone
+  const run = `${captain().name} ${(st.castPair || []).join(' ')}`;
   while (rec.ids.length < REGULARS) {
-    const p = registerPerson(makePerson(cultureOf(sid)));
+    const p = registerPerson(makePerson(cultureOf(sid))), next = writtenOrder(planet.name, run).find(k => !rec.written.includes(k));
     p.regular = planet.name; p.location = planet.name; p.arc = { key: Object.keys(ARCS)[Math.abs(hash(p.id + 'arc')) % Object.keys(ARCS).length], beat: 0 };  // by the person, not the dice: the pins' draws stay as they were
+    if (next) { const w = WRITTEN_REGULARS[planet.name][next]; Object.assign(p, { first: w.first, last: w.last, job: w.job }); p.arc = { key: `${planet.name}|${next}`, beat: 0 }; rec.written.push(next); }  // a written one first (#1242)
     rec.ids.push(p.id);
   }
   rec.seen = rec.seen === null || fresh ? st.day : rec.seen;

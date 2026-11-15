@@ -131,6 +131,8 @@ The ice rocks are sites, with no inner places (`places.md`), so no regulars: wha
 
 After the owner's review: the pools as data by port; the draw, seeded by the run and the port; written regulars taking their places before generated ones (`fillBar`, `js/bar.js`); their arcs in the regulars' arc library; and each port's official's manner in their lines. A follow-up issue, filed with this page.
 
+Built in parts (#1242). Only the regulars written for the bar are seated: the game's live places are the bar's two stools, and one written for a stall, a bench, a desk, the hiring board, the shrine or the lock waits for that place (the owner, 2026-11-15). Part 1: the draw and Lagos Ring's and Ceres's bar regulars (`WRITTEN_REGULARS`, `js/regulars.js`); a regular who goes has the dock's return line in their own words. Then Pallas, the Hollows and Eros; Luna and Mars; and the officials' manners.
+
 ## Assumptions to confirm
 
 - A port's pool is about twice its live places; each run draws a share, seeded by the run and the port.

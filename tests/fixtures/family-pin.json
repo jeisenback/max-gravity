@@ -13,7 +13,7 @@
  },
  {
   "key": "story:3",
-  "text": "[\"the morning queue at the yard gate, and the days it took nobody\",\"a licence of any kind, or the family out of Luna's dust\",\"grandmother\",\"Mika\",\"visit\",19000]"
+  "text": "[\"the morning queue at the yard gate, and the days it took nobody\",\"a licence of any kind, or the family out of Luna's dust\",\"grandmother\",\"Lolo\",\"visit\",19000]"
  },
  {
   "key": "story:4",
@@ -45,7 +45,7 @@
  },
  {
   "key": "story:11",
-  "text": "[\"the company offering them a post, and wanting to know whether anyone else would\",\"a post they got on their own, or to go back to Pallas Refinery as staff on their own terms\",\"mother\",\"Grace\",\"visit\",20000]"
+  "text": "[\"the company offering them a post, and wanting to know whether anyone else would\",\"a post they got on their own, or to go back to Pallas Refinery as staff on their own terms\",\"mother\",\"Ravi\",\"visit\",20000]"
  },
  {
   "key": "story:12",
@@ -57,11 +57,11 @@
  },
  {
   "key": "story:14",
-  "text": "[\"a share of a salvage being good money in a good year, and there not being many good years\",\"a family hull of their own in the Boneyard, or a berth on a ship that pays a wage\",\"mother\",\"Grace\",\"visit\",21000]"
+  "text": "[\"a share of a salvage being good money in a good year, and there not being many good years\",\"a family hull of their own in the Boneyard, or a berth on a ship that pays a wage\",\"mother\",\"Ravi\",\"visit\",21000]"
  },
  {
   "key": "story:15",
-  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Ruo\",\"visit\",9000]"
+  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Nim\",\"visit\",9000]"
  },
  {
   "key": "story:16",
@@ -93,7 +93,7 @@
  },
  {
   "key": "story:23",
-  "text": "[\"a rationed winter when the share board in the square went down twice\",\"a full air share for the family at the edge, or a lake there of its own\",\"mother\",\"Chen\",\"visit\",20000]"
+  "text": "[\"a rationed winter when the share board in the square went down twice\",\"a full air share for the family at the edge, or a lake there of its own\",\"mother\",\"Mateo\",\"visit\",20000]"
  },
  {
   "key": "story:24",
@@ -189,7 +189,7 @@
  },
  {
   "key": "story:47",
-  "text": "[\"the outpost needing what only money from outside can buy, and someone in every family going to earn it\",\"to send home enough for the next supply contract, or to see one place where the sky isn't dark\",\"mother\",\"Chen\",\"visit\",20000]"
+  "text": "[\"the outpost needing what only money from outside can buy, and someone in every family going to earn it\",\"to send home enough for the next supply contract, or to see one place where the sky isn't dark\",\"mother\",\"Mateo\",\"visit\",20000]"
  },
  {
   "key": "story:48",
@@ -225,7 +225,7 @@
  },
  {
   "key": "story:56",
-  "text": "[\"there being nobody their age on the surface, and the contract only having room for the families on it\",\"to find out what it's like where it's loud, or to go home to the quiet on Enceladus and keep the dock\",\"father\",\"Samuel\",\"visit\",17000]"
+  "text": "[\"there being nobody their age on the surface, and the contract only having room for the families on it\",\"to find out what it's like where it's loud, or to go home to the quiet on Enceladus and keep the dock\",\"father\",\"Aiko\",\"visit\",17000]"
  },
  {
   "key": "story:57",
@@ -237,7 +237,7 @@
  },
  {
   "key": "story:59",
-  "text": "[\"a career on the fins that was waiting for them, and wanting to choose one\",\"to come back to Hermes Foundry and run a fin crew of their own, after they've seen a sky that isn't the Sun's\",\"grandmother\",\"Samuel\",\"visit\",12000]"
+  "text": "[\"a career on the fins that was waiting for them, and wanting to choose one\",\"to come back to Hermes Foundry and run a fin crew of their own, after they've seen a sky that isn't the Sun's\",\"grandmother\",\"Aiko\",\"visit\",12000]"
  },
  {
   "key": "story:60",
@@ -289,7 +289,7 @@
  },
  {
   "key": "story:72",
-  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Mika\",\"visit\",20000]"
+  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Lolo\",\"visit\",20000]"
  },
  {
   "key": "story:73",
@@ -297,7 +297,7 @@
  },
  {
   "key": "story:74",
-  "text": "[\"the support crews being a cost on Titan, and the agency's contract never going up\",\"work where the person who keeps it running gets counted, or a seat at the other end of the long table on Titan\",\"father\",\"Samuel\",\"visit\",13000]"
+  "text": "[\"the support crews being a cost on Titan, and the agency's contract never going up\",\"work where the person who keeps it running gets counted, or a seat at the other end of the long table on Titan\",\"father\",\"Aiko\",\"visit\",13000]"
  },
  {
   "key": "story:75",
@@ -385,11 +385,11 @@
  },
  {
   "key": "letter:good:1",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Mika had a baby, a girl, healthy and loud.\"],\"their mother Mika had a baby, a girl, healthy and loud\",{\"good\":true,\"text\":\"their mother Mika had a baby, a girl, healthy and loud\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Lolo had a baby, a girl, healthy and loud.\"],\"their mother Lolo had a baby, a girl, healthy and loud\",{\"good\":true,\"text\":\"their mother Lolo had a baby, a girl, healthy and loud\"}]"
  },
  {
   "key": "news:good:1",
-  "text": "[\"Good News\",\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their mother Mika had a baby\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their mother Lolo had a baby\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:2",
@@ -417,11 +417,11 @@
  },
  {
   "key": "letter:good:5",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Mika planted the first real tomatoes in the family's section, and they came up red.\"],\"their mother Mika planted the first real tomatoes in the family's section, and they came up red\",{\"good\":true,\"text\":\"their mother Mika planted the first real tomatoes in the family's section, and they came up red\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Lolo planted the first real tomatoes in the family's section, and they came up red.\"],\"their mother Lolo planted the first real tomatoes in the family's section, and they came up red\",{\"good\":true,\"text\":\"their mother Lolo planted the first real tomatoes in the family's section, and they came up red\"}]"
  },
  {
   "key": "news:good:5",
-  "text": "[\"Good News\",\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their mother Mika planted the\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their mother Lolo planted the\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:6",
@@ -465,11 +465,11 @@
  },
  {
   "key": "letter:good:11",
-  "text": "[[\"A message for Sam at Ceres Station: their father Ruo moved into a bigger section, with a window.\"],\"their father Ruo moved into a bigger section, with a window\",{\"good\":true,\"text\":\"their father Ruo moved into a bigger section, with a window\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Nim moved into a bigger section, with a window.\"],\"their father Nim moved into a bigger section, with a window\",{\"good\":true,\"text\":\"their father Nim moved into a bigger section, with a window\"}]"
  },
  {
   "key": "news:good:11",
-  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Ruo moved into a bigger section, with a window. Sam sta\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Nim moved into a bigger section, with a window. Sam sta\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:12",
@@ -513,7 +513,7 @@
  },
  {
   "key": "letter:bad:1",
-  "text": "[[\"A message for Sam at Ceres Station: their father Mika lost their job when the mine cut shifts.\"],\"their father Mika lost their job when the mine cut shifts\",{\"good\":false,\"text\":\"their father Mika lost their job when the mine cut shifts\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Lolo lost their job when the mine cut shifts.\"],\"their father Lolo lost their job when the mine cut shifts\",{\"good\":false,\"text\":\"their father Lolo lost their job when the mine cut shifts\"}]"
  },
  {
   "key": "news:bad:1",
@@ -593,7 +593,7 @@
  },
  {
   "key": "letter:bad:11",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Ruo broke a leg in the market and can't work for six weeks.\"],\"their mother Ruo broke a leg in the market and can't work for six weeks\",{\"good\":false,\"text\":\"their mother Ruo broke a leg in the market and can't work for six weeks\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Nim broke a leg in the market and can't work for six weeks.\"],\"their mother Nim broke a leg in the market and can't work for six weeks\",{\"good\":false,\"text\":\"their mother Nim broke a leg in the market and can't work for six weeks\"}]"
  },
  {
   "key": "news:bad:11",
