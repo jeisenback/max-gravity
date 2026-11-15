@@ -416,7 +416,7 @@ Mods.register({
     act('menuBefore', id => { keepForm(); Menu.form.before = id; });
     act('menuKnown', id => { keepForm(); Menu.form.known = id; });
     act('menuSlotPick', n => { keepForm(); Menu.form.slot = Number(n); });
-    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial, papers: { home: f.home || 'earth', before: f.before || 'none', known: f.known || 'none' } }); Menu.form = { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' }; });
+    act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial, origin: { home: f.home || 'earth', before: f.before || 'none', known: f.known || 'none' } }); Menu.form = { background: 'earth', tutorial: true, home: 'earth', before: 'none', known: 'none' }; });
     act('menuSlotLoad', n => loadSlot(Number(n)));
     act('menuSlotDelete', arg => {
       const [n, yes] = String(arg).split(':');

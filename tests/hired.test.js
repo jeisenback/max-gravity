@@ -969,17 +969,17 @@ test('a perk counts only at the post of its pick: a pilot\'s trim stops at the g
 test('the papers are kept on the hand and applied once: the sheet with the trade, the home\'s office at standing 2, a fine on the record, a shipmate\'s opinion, and the affiliation', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
-    const start = papers => { startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', papers }); while (G.dialog) finishEvent(); return hired(); };
+    const start = papers => { startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', origin: papers }); while (G.dialog) finishEvent(); return hired(); };
     const out = {}, generated = () => G.state.crew.map(person).filter(c => c && !c.cast);
     let h = start({ home: 'mars', before: 'ferry', known: 'shipper' });
-    out.mars = { papers: { ...h.papers }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
+    out.mars = { papers: { ...h.origin }, sheet: { ...h.sheet }, standing: standingOf(h, 'the Dome Pact Freight Office'), aff: youTies().aff, background: G.state.background };
     h = start({ home: 'earth', before: 'none', known: 'patrol' }); out.patrol = { fines: h.record.fines, told: [...h.traitsTold], marked: hasTrait(h, 'marked'), standing: Object.keys(h.standing).length };
     h = start({ home: 'belt', before: 'dock', known: 'shipmate' });
     const liked = generated().filter(c => c.opinion === 1);
     out.mate = { liked: liked.length, others: generated().filter(c => c.opinion !== 1 && c.opinion !== 0).length, memory: liked.length ? liked[0].memories.length : 0, aff: youTies().aff, sheet: { ...h.sheet } };
     h = start({ home: 'earth', before: 'none', known: 'none' }); out.none = { standing: Object.keys(h.standing).length, fines: h.record.fines || 0, liked: generated().filter(c => c.opinion !== 0).length };
-    h = start(undefined); out.absent = { ...h.papers };
-    const st = G.state; h.papers = { home: 'earth', before: 'none', known: 'shipmate' }; st.crew = st.crew.filter(id => person(id).cast);
+    h = start(undefined); out.absent = { ...h.origin };
+    const st = G.state; h.origin = { home: 'earth', before: 'none', known: 'shipmate' }; st.crew = st.crew.filter(id => person(id).cast);
     let threw = null; try { applyPapers(st, h); } catch (e) { threw = String(e); } out.noCrew = { threw, liked: st.crew.map(person).filter(c => c.opinion === 1).length };
     return out;
   });

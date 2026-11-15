@@ -340,10 +340,10 @@ test('customs meets the ship once a landing: a crewmate the port\'s owner wants 
 test('the affiliation is the papers\' home\'s, the start\'s when a hand has no papers, and the start\'s for an owner', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
-    startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', papers: { home: 'belt', before: 'none', known: 'none' } }); while (G.dialog) finishEvent();
+    startGame({ slot: 1, background: 'earth', captain: 'Rin Adeyemi', mode: 'hired', post: 'gunner', captainKey: 'hester', origin: { home: 'belt', before: 'none', known: 'none' } }); while (G.dialog) finishEvent();
     const out = { belt: youTies().aff, background: G.state.background };
-    hired().papers.home = 'mars'; out.mars = youTies().aff;
-    delete hired().papers; out.none = youTies().aff;
+    hired().origin.home = 'mars'; out.mars = youTies().aff;
+    delete hired().origin; out.none = youTies().aff;
     const h = G.state.hired; G.state.hired = null; out.owner = youTies().aff; G.state.hired = h;
     return out;
   });

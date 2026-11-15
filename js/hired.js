@@ -117,8 +117,8 @@ function restockTorps(st, h, planet, launcher) {
 }
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : scopeOff('posts') ? 'gunner' : 'pilot';
-  const papers = { home: 'earth', before: 'none', known: 'none', ...(o.papers || {}) };  // the hand's papers (menu.js papersForm, spec 2026-11-14): the home, what they were, who knows the name
-  if (!BACKGROUNDS[papers.home]) papers.home = 'earth';
+  const origin = { home: 'earth', before: 'none', known: 'none', ...(o.origin || {}) };  // the hand's papers at the sign-on (menu.js papersForm, spec 2026-11-14): the home, what they were, who knows the name; `papers` is the licences they hold (#1045)
+  if (!BACKGROUNDS[origin.home]) origin.home = 'earth';
   st.shipId = 'freighter';
   st.outfits = { pdc: 1, launcher: 1 }; st.torpedoes = HAND_TORPS;  // a close-defense turret and a launcher with two torpedoes
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
@@ -166,8 +166,8 @@ function setupHired(o) {
     ...(o.skill || {}),
     [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1])
   },
-    papers,
-    sheet: papersSheet(newSheet(papers.home, post), papers.before),  // the hand's stats (sheet.js): the home's point, the post's, and the papers' trade
+    origin,
+    sheet: papersSheet(newSheet(origin.home, post), origin.before),  // the hand's stats (sheet.js): the home's point, the post's, and the papers' trade
     standing: {},  // each shipper's regard for the ship, by name (shippers.js)
     record: {},  // the counts a trait is earned from (traits.js), and the traits whose moment has played
     traitsTold: [],
@@ -185,11 +185,11 @@ function setupHired(o) {
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 
-// Who knows the hand's name (the papers' second answer), applied once at the sign-on: the home's freight office trusts the ship (contracts.js), a patrol has a fine
+// Who knows the hand's name (the second answer on the papers at the sign-on, h.origin), applied once at the sign-on: the home's freight office trusts the ship (contracts.js), a patrol has a fine
 // on the record already (traits.js), or one of the generated crew shipped with the hand before and starts warm. Nothing for 'none', and nothing when no generated crew is aboard.
 function applyPapers(st, h) {
-  const known = (h.papers || {}).known;
-  if (known === 'shipper') h.standing[SHIPPERS.gov[CULTURE_FACTION[h.papers.home]]] = STANDING_GOOD;
+  const known = (h.origin || {}).known;
+  if (known === 'shipper') h.standing[SHIPPERS.gov[CULTURE_FACTION[h.origin.home]]] = STANDING_GOOD;
   else if (known === 'patrol') recordAdd(h, 'fines');
   else if (known === 'shipmate') { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) like(pick(mates), 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); }
 }

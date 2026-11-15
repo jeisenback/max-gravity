@@ -178,7 +178,7 @@ test('the new-game form is the hand\'s papers: the home, the post, the sheet as 
   assert.deepEqual(all, [], 'the form and the game agree on every home, post and trade');
   await hand.page.click('[data-action=menuKnown][data-arg=shipper]');
   await hand.page.fill('#ngCaptain', 'Rin Adeyemi');
-  const got = await hand.ev(() => { const real = window.startGame; window.startGame = o => { window.startGame = real; window.__papers = o.papers; return real(o); }; return true; });
+  const got = await hand.ev(() => { const real = window.startGame; window.startGame = o => { window.startGame = real; window.__papers = o.origin; return real(o); }; return true; });
   assert.ok(got);
   await hand.page.click('[data-action=menuStart]');
   assert.deepEqual(await hand.ev(() => window.__papers), { home: 'earth', before: 'clerk', known: 'shipper' });
