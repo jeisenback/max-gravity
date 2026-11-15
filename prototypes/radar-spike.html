@@ -81,6 +81,23 @@ details > summary { cursor: pointer; font: 600 11px var(--mono); letter-spacing:
 input[type=range] { accent-color: var(--accent); flex: 1; min-width: 100px; }
 .over { border-color: var(--accent); } .over p { margin: 0; font: 500 14px var(--mono); }
 ul.q { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13px; display: grid; gap: 4px; }
+.need { display: grid; gap: 6px; }
+.need .it { display: grid; gap: 6px; padding: 7px 9px; border-left: 3px solid var(--dim); background: var(--raised); border-radius: 2px; font: 13px/1.4 var(--mono); }
+.need .it.bad { border-left-color: var(--hot); } .need .it.warm { border-left-color: var(--warm); } .need .it.info { border-left-color: var(--accent); }
+.need .it .fx { display: flex; flex-wrap: wrap; gap: 6px; }
+.need .it .fx button { background: #16304f; border-color: var(--accent); }
+.need .quiet { font: 13px var(--mono); color: var(--dim); }
+.card.needs { border-color: var(--hot); } .card.calm { border-color: var(--line); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
+.tiles button { padding: 10px 6px; font: 600 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; background: var(--raised); color: var(--dim); }
+.tiles button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #06101c; }
+.tiles button::before { display: none; }
+.grp-l { font: 10px var(--mono); color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: -2px; }
+.meters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.meters .m { background: var(--raised); border-radius: 3px; padding: 6px 9px; min-width: 0; }
+.meters .m span { display: block; font: 10px var(--mono); color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; }
+.meters .m b { font: 600 18px var(--mono); font-variant-numeric: tabular-nums; }
+.meters .m b.bad { color: var(--hot); } .meters .m b.good { color: var(--ok); } .meters .m b.warm { color: var(--warm); }
 kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; color: var(--dim); }
 </style>
 </head>
@@ -158,7 +175,7 @@ function ask(s, key, val, n) { s.asks[key] = { val, until: s.turn + n - 1 }; }
 function asked(s, key) { const a = s.asks[key]; return a && a.until >= s.turn ? a.val : undefined; }
 function biasVec(s) { const los = norm(sub(s.me.p, s.foe.p)); return mul(V(-los.y, los.x), s.foe.bias); }
 function sideWord(s) { const l = losMe(s), b = biasVec(s); return l.x * b.y - l.y * b.x > 0 ? 'right' : 'left'; }
-function torpWarn(s) { const t = nearestOf(s, inbound(s)); return t ? `Torps inbound, bearing ${pad3(brg(sub(t.p, s.me.p)))}, impact in about ${Math.max(1, Math.round(eta(s, t)))} turn${Math.round(eta(s, t)) > 1 ? 's' : ''}.` : 'Torps inbound.'; }
+function torpWarn(s) { const t = nearestOf(s, inbound(s)); return t ? `Torps inbound, bearing ${pad3(brg(sub(t.p, s.me.p)))}, ${eta(s, t) < 20 ? `impact in about ${Math.max(1, Math.round(eta(s, t)))} turn${Math.round(eta(s, t)) > 1 ? 's' : ''}` : 'not closing on us yet'}.` : 'Torps inbound.'; }
 
 // ---------- the board's error ----------
 // Stock fire control sees everything, with error. Her contact is drawn off her true place by an error that is fixed for the turn, and it
@@ -648,7 +665,7 @@ window.addEventListener('pointerup', () => { if (dragging) { dragging = false; r
 
 // ---------- the console ----------
 const side = document.getElementById('side'), topEl = document.getElementById('top'), sit = document.getElementById('sit'), tl = document.getElementById('tl');
-const seg = (act, opts, cur) => `<div class="seg">${opts.map(([v, l]) => `<button data-act="${act}" data-v="${v}" aria-pressed="${String(v) === String(cur)}">${l}</button>`).join('')}</div>`;
+const seg = (act, opts, cur, cls = 'seg') => `<div class="${cls}">${opts.map(([v, l]) => `<button data-act="${act}" data-v="${v}" aria-pressed="${String(v) === String(cur)}">${l}</button>`).join('')}</div>`;
 const pips = (n, max = 3, cls = 'on') => `<span class="pips">${Array.from({ length: max }, (_, i) => `<span class="${i < n ? cls : ''}"></span>`).join('')}</span>`;
 const PILOT_WORD = { engage: 'closing to 12 km', break: 'breaking off', hold: 'holding 20 km', close: 'closing', open: 'opening the range', evade: 'evading torps', nose: 'nose on her', coast: 'coasting', manual: 'your burn' };
 const PDC_WORD = { forward: 'on her bow', threat: 'on the threat', wide: 'wide', manual: 'your arc' };
@@ -746,6 +763,68 @@ function tlHTML(s) {
     <div class="evs">${recent || '<div><time></time><span class="note">Nothing has happened yet.</span></div>'}</div>
     <details id="fulllog" ${UI.logOpen ? 'open' : ''}><summary>Full log and the crew's talk</summary><div class="strip">${strip}</div></details>`;
 }
+// ---------- what needs the hand this cycle: each item with a one-click fix ----------
+function attention(s, o, plan) {
+  const P = UI.post, A = UI.mode === 'A', items = [], ui = s.ui;
+  const fix = (label, act, v, extra = '') => `<button data-act="${act}"${v !== undefined ? ` data-v="${v}"` : ''} ${extra}>${label}</button>`;
+  const call = id => { const c = CALLS[P].find(x => x.id === id); return c && plan && !s.used[id] && (!c.avail || c.avail(s)) ? `<button data-act="call" data-id="${id}">${c.to === 'captain' ? `Suggest: ${c.label.toLowerCase()} ${pct(takeOdds(s, P, c.intent))}%` : c.label}</button>` : ''; };
+  const add = (lvl, text, fixes = '') => items.push(`<div class="it ${lvl}"><span>${text}</span>${fixes ? `<div class="fx">${fixes}</div>` : ''}</div>`);
+  s.incoming.forEach((m, i) => add(m.suggest ? 'warm' : 'info', `<span class="p-${m.from}">${NAME[m.from]}</span>: ${m.text}`,
+    m.suggest ? fix('Do it', 'ans', undefined, `data-i="${i}" data-y="1"`) + fix('No', 'ans', undefined, `data-i="${i}" data-y="0"`) : fix('Heard', 'ans', undefined, `data-i="${i}" data-y="0"`)));
+  if (s.over) return items;
+  const soon = inbound(s).filter(t => eta(s, t) < 1.6), near2 = known(s).filter(t => eta(s, t) < 2.5), roleAct = A ? 'role' : 'brole';
+  if (P === 'gunner') {
+    if (soon.length && o.role !== 'pd') add('bad', `${soon.length > 1 ? 'Torpedoes reach' : 'A torpedo reaches'} the PDC's range this cycle, and the PDC is stowed.`, fix('Run the PDC', roleAct, 'pd'));
+    else if (o.role === 'pd' && !inbound(s).some(t => eta(s, t) < 2.5)) add('warm', 'The PDC runs with nothing in reach, so the gun is silent.', fix('Run the gun', roleAct, 'attack'));
+    if (o.role === 'attack' && (A ? ui.fire : ui.b.fire)) {   // the hand wants the gun to fire
+      if (o.locked) add('bad', 'The gun is locked with heat this cycle.');
+      else if (A && !o.aim) add('warm', 'No shot placed. Click the radar where she will be, or take the fire control\'s lead.', fix('Use the lead', 'autoaim'));
+      else if (!o.bears) add('bad', `The nose is ${offHer(s, o)} degrees off her: the gun won't bear.`, call('nose'));
+      else if (s.me.heat >= K.HEAT_CAP - K.GUN_HEAT[o.power.guns]) add('warm', `Heat ${s.me.heat} of ${K.HEAT_CAP}: this shot locks the gun next cycle.`, fix('Hold fire', A ? 'afire' : 'bfire', false));
+    }
+  }
+  if (P === 'pilot') {
+    if (near2.length && orderOf(s).intent !== 'evade') add('bad', `Torpedoes in about ${Math.min(...near2.map(t => eta(s, t))).toFixed(1)} cycles, and the order is not to evade.`, call('s-evade'));
+    if (A && o.ordered.thr >= 0.1 && o.thrust.thr < 0.05) add('warm', `The order is to ${({ evade: 'evade', open: 'open the range', break: 'break off', engage: 'close to twelve', hold: 'hold at twenty' })[orderOf(s).intent] || 'burn'}, and you are coasting.`, fix('Burn as ordered', 'asorder'));
+    if (o.thrust.thr > 0.05 && adiff(s.me.nose, o.thrust.dir) >= K.GATE) add('warm', adiff(o.nose, o.thrust.dir) < K.GATE ? 'The nose is coming round: the drive lights late this cycle.' : "The drive won't light this cycle: the nose won't come round in time.");
+    if (!o.bears && ['hold', 'engage'].includes(orderOf(s).intent)) add('info', `This burn leaves the gun ${offHer(s, o)} degrees off her.`, A ? fix('Point at her and coast', 'nosefoe') : '');
+  }
+  if (P === 'engineer') {
+    if (s.me.heat >= K.HEAT_CAP - 1 && ventReady(s) && !ui.vent) add('bad', `Gun heat ${s.me.heat} of ${K.HEAT_CAP}.`, fix(`Vent the gun ${pct(ventOdds())}%`, 'vent'));
+    if (JSON.stringify(PRESETS[o.engIntent]) !== JSON.stringify(s.lastPower) && ui.b.eng === 'book') add('info', `The order moves the power to ${o.engIntent}: the switch-over lands ${pct(engOdds(false))}% of the time.`);
+    if (s.me.hull < 70) add('warm', `Our hull is at ${s.me.hull}.`, call('s-break'));
+  }
+  if (P === 'comms') {
+    if (inbound(s).some(t => !s.warned.has(t.id))) add('bad', 'Torpedoes on the board the crew have not been told about.', call('warn'));
+    if (near2.length && orderOf(s).intent !== 'evade') add('warm', 'Torpedoes are close and the order is not to evade.', call('s-evade'));
+    if (s.comms !== 'watch' && s.foe.torps > 0) add('info', `You are ${COMMS_WORD[s.comms]}: blind past 12 km, so a salvo will come without warning.`, fix('Watch her tubes', 'comms', 'watch'));
+  }
+  return items;
+}
+// ---------- the post's console: its choices as tiles, its state as meters ----------
+function consolePanel(s, o) {
+  const P = UI.post, A = UI.mode === 'A', ui = s.ui;
+  const m = (label, val, cls = '') => `<div class="m"><span>${label}</span><b class="${cls}">${val}</b></div>`, g = label => `<div class="grp-l">${label}</div>`;
+  if (P === 'gunner') return `${g('Fire control, this cycle')}${seg(A ? 'role' : 'brole', [['attack', 'The gun'], ['pd', 'The PDC']], A ? ui.role : ui.b.role, 'tiles')}
+    ${g('Gun')}${seg(A ? 'afire' : 'bfire', [[true, 'Fire'], [false, 'Hold']], A ? ui.fire : ui.b.fire, 'tiles')}
+    ${A ? `${g('Clicks on the radar')}${seg('tool', [['aim', 'Place the shot'], ['pdc', 'Point the PDC']], UI.tool, 'tiles')}<div class="row"><span class="lab">PDC arc</span><input id="pdcw" type="range" min="30" max="160" step="5" value="${ui.pdcW}" aria-label="PDC arc width"><span class="read" id="pdcwv">${ui.pdcW} deg</span></div>`
+      : `${g('PDC looks')}${seg('bpdc', [['forward', 'Her bow'], ['threat', 'The threat'], ['wide', 'Wide']], ui.b.pdc, 'tiles')}`}
+    <div class="meters">${m('Solution', o.aim && o.role === 'attack' ? `${pct(o.solLo)}-${pct(o.solHi)}%` : '--', o.canFire ? 'good' : '')}${m('Heat', `${s.me.heat} / ${K.HEAT_CAP}`, s.me.locked ? 'bad' : s.me.heat >= K.HEAT_CAP - 1 ? 'warm' : '')}
+      ${m('Spread', `${o.R.toFixed(1)} km`)}${m('Damage', `${Math.round(K.GUN_DMG[o.power.guns] * falloff(range(s)))} a hit`)}</div>`;
+  if (P === 'pilot') { const steady = !A && ui.b.pilot === 'steady', pr = project(s, o), c = pr.cpa;
+    return `${A ? `${g('Burn')}<div class="tiles"><button data-act="asorder">As ordered</button><button data-act="coast">Coast</button></div>${g('Coasting, the nose')}${seg('face', [['her', 'Turns to her'], ['hold', 'Holds']], ui.face, 'tiles')}`
+      : `${g('Burn')}${seg('bpilot', [['order', 'As ordered'], ['steady', 'Steady']], ui.b.pilot, 'tiles')}`}
+    <div class="meters">${m('Burn', o.thrust.thr > 0.02 ? `${pct(o.thrust.thr)}% ${pad3(brg(dirv(o.thrust.dir)))}` : 'coast')}${m('Facing', `${pad3(brg(dirv(s.me.nose)))}${adiff(s.me.nose, o.nose) > 0.05 ? ` > ${pad3(brg(dirv(o.nose)))}` : ''}`)}
+      ${m('Gun', o.bears ? 'bears' : `${offHer(s, o)} off`, o.bears ? 'good' : 'bad')}${m('Closest', c.i === 0 ? 'opening' : c.i === pr.last ? '4+ cyc' : `${c.d.toFixed(0)} km`)}
+      ${m('Scatter', `+/- ${Math.round(scatterDeg(steady) * 2)} deg`)}${m('Course', `${pad3(brg(s.me.v))} at ${len(s.me.v).toFixed(1)}`)}</div>`; }
+  if (P === 'engineer') return `${g('Carry out the order')}${seg('beng', [['book', `By the book ${pct(engOdds(false))}%`], ['push', `Push it ${pct(engOdds(true))}%`]], ui.b.eng, 'tiles')}
+    ${g('The gun')}<div class="tiles"><button class="toggle" data-act="vent" aria-pressed="${ui.vent}" ${ventReady(s) ? '' : 'disabled'}>${ventReady(s) ? `Vent ${pct(ventOdds())}%` : `Vent in ${K.VENT_EVERY - (s.turn - s.me.lastVent)}`}</button></div>
+    <div class="meters">${m('Drive', o.power.drive)}${m('Gun', o.power.guns)}${m('PDC', o.power.pdc)}${m('Heat', `${s.me.heat} / ${K.HEAT_CAP}`, s.me.locked ? 'bad' : s.me.heat >= K.HEAT_CAP - 1 ? 'warm' : '')}</div>`;
+  const nt = nearestOf(s, inbound(s));
+  return `${g('Mode')}${seg('comms', [['watch', 'Watch'], ['lock', `Lock ${pct(commsOdds('lock'))}%`], ['spoof', `Spoof ${pct(commsOdds('spoof'))}%`]], ui.comms, 'tiles')}
+    <div class="meters">${m('Torpedoes', inbound(s).length || 'none', inbound(s).length ? 'bad' : '')}${m('First impact', nt ? `${eta(s, nt).toFixed(1)} cyc` : '--')}
+      ${m('Board error', `${sigmaOf(o.comms).toFixed(2)} km`)}${m('Captain wants', ORDER[orderOf(s).intent].comms)}</div>`;
+}
 function render() {
   const s = S, o = s.phase === 'plan' ? buildOrders(s) : s.exec.o, P = UI.post, plan = (s.phase === 'plan' || (UI.time === 'real' && s.paused)) && !s.over;
   // the post's panel: its explanations fold into one "how this post works"
@@ -772,9 +851,9 @@ function render() {
     <div class="play">${playBtn}<kbd>Space</kbd></div>`;
   side.innerHTML = `
   ${s.over ? `<div class="card over"><p style="color:${s.over.win ? 'var(--ok)' : 'var(--hot)'}">${s.over.text}</p><div class="row"><button data-act="restart">Play it again</button><button data-act="flip">Again in ${UI.mode === 'A' ? 'B' : 'A'}</button></div></div>` : ''}
-  <div class="card"><h2>Your post: <em>${NAME[P]}</em></h2>${turnSummary(s, o)}${P === 'gunner' || P === 'pilot' ? `<p class="read">${gunWords(s, orderOf(s).intent)}</p>` : ''}${pp}
+  ${(() => { const need = attention(s, o, plan); return `<div class="card ${need.length ? 'needs' : 'calm'}"><h2>Needs you</h2><div class="need">${need.length ? need.join('') : '<span class="quiet">Nothing. The crew have it.</span>'}</div></div>`; })()}
+  <div class="card"><h2>Your post: <em>${NAME[P]}</em></h2>${consolePanel(s, o)}
     ${notes.length ? `<details class="how"><summary>How this post works</summary><div>${notes.map(n => `<p class="note">${n}</p>`).join('')}</div></details>` : ''}</div>
-  ${s.incoming.length ? `<div class="card incoming"><h2>Calls to you</h2>${s.incoming.map((m, i) => `<div class="msg"><p><span class="who p-${m.from}">${NAME[m.from]}</span>: ${m.text}</p><div class="row">${m.suggest ? `<button data-act="ans" data-i="${i}" data-y="1">Do it</button><button data-act="ans" data-i="${i}" data-y="0">No</button>` : `<button data-act="ans" data-i="${i}" data-y="0">Heard</button>`}</div></div>`).join('')}</div>` : ''}
   <div class="card"><h2>Your calls</h2><div class="acts">${CALLS[P].map(c => `<button data-act="call" data-id="${c.id}" title="${P === 'gunner' ? 'The posts weigh it against the captain\'s order and how far they trust you.' : 'The odds: your trust, your level, what the board shows, and the captain\'s nerve.'}" ${!plan || s.used[c.id] || (c.avail && !c.avail(s)) ? 'disabled' : ''}>${c.label} <span class="p-${c.to === 'all' ? 'ship' : c.to}">to ${NAME[c.to]}</span>${c.to === 'captain' ? ` ${pct(takeOdds(s, P, c.intent))}%${gunTag(s, c.intent)}` : ''}</button>`).join('')}</div></div>
   <div class="card"><h2>The crew this cycle</h2><div class="crew">${crewPanel(s, o)}</div></div>`;
   refresh(true);
@@ -793,6 +872,7 @@ document.addEventListener('click', e => {
   else if (act === 'acc') UI.accurate = bool;
   else if (act === 'level') UI.level = +v;
   else if (act === 'asorder') ui.thrust = { ...buildOrders(s).ordered };
+  else if (act === 'autoaim') { const sf = seenFoe(s, s.comms); ui.aim = autoAim(s, s.comms); ui.aimRel = sub(ui.aim, add(sf.p, sf.v)); }
   else if (act === 'hard') UI.hardened = bool;
   else if (act === 'post') { UI.post = v; s.incoming = []; }
   else if (act === 'pause') return playPause();
