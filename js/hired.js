@@ -169,7 +169,8 @@ function setupHired(o) {
     origin,
     sheet: papersSheet(newSheet(origin.home, post), origin.before),  // the hand's stats (sheet.js): the home's point, the post's, and the papers' trade
     standing: {},  // each shipper's regard for the ship, by name (shippers.js)
-    record: {},  // the counts a trait is earned from (traits.js), and the traits whose moment has played
+    record: {},  // the counts a trait is earned from (traits.js), and the traits whose moment has played; `patrolKnown`, the inspector has said the patrol had the name (inspection.js)
+    oldMate: null,  // the generated shipmate who shipped with the hand before, when the papers say so (applyPapers, signon.js)
     traitsTold: [],
     kit: [],  // what the hand carries, by id (KIT_ITEMS, sheet.js)
     off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
@@ -193,7 +194,7 @@ function applyPapers(st, h, again = false) {
   const known = (h.origin || {}).known;
   if (known === 'shipper') h.standing[SHIPPERS.gov[CULTURE_FACTION[h.origin.home]]] = STANDING_GOOD;
   else if (known === 'patrol') recordAdd(h, 'fines');
-  else if (known === 'shipmate' && !again) { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) like(pick(mates), 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); }
+  else if (known === 'shipmate' && !again) { const mates = st.crew.map(person).filter(c => c && !c.cast); if (mates.length) { const mate = pick(mates); like(mate, 1, sceneSay('scene:sign-on', 'known.shipmate.memory')); h.oldMate = mate.id; } }  // h.oldMate: who, for the sign-on's words (signon.js, #1258)
 }
 
 // ---------- burn events ----------

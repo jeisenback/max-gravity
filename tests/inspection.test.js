@@ -277,11 +277,15 @@ test('the first inspector knows a hand whose papers say a patrol has their name:
     handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); const h = hired(); h.origin = { home: 'earth', before: 'none', known: 'patrol' }; h.record = { fines: 1 };
     out.first = stop(); out.after = { fines: finesOf(), marked: hasTrait(h, 'marked') };
     G.state.cargo = { water: 50 }; out.second = stop();
+    // said once whatever fine came first (the ice run's search, say) and whether or not the fund could pay (#1258)
+    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); hired().origin = { home: 'earth', before: 'none', known: 'patrol' }; hired().record = { fines: 3 }; out.laterFine = stop();
+    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 0 }); hired().origin = { home: 'earth', before: 'none', known: 'patrol' }; hired().record = { fines: 1 }; out.broke = stop(); G.state.cargo = { water: 50 }; out.brokeAgain = stop();
     handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); out.plain = stop();
     handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); delete hired().origin; let threw = null; try { out.old = stop(); } catch (e) { threw = String(e); } out.threw = threw;
     return out;
   });
   assert.equal(r.first, true, 'the officer has the name'); assert.deepEqual(r.after, { fines: 2, marked: true });
-  assert.equal(r.second, false, 'said once'); assert.equal(r.plain, false); assert.deepEqual([r.old, r.threw], [false, null]);
+  assert.equal(r.second, false, 'said once'); assert.equal(r.plain, false);
+  assert.equal(r.laterFine, true, 'said though another fine came first (#1258)'); assert.deepEqual([r.broke, r.brokeAgain], [true, false], 'said once though the fund paid nothing (#1258)'); assert.deepEqual([r.old, r.threw], [false, null]);
   await done();
 });
