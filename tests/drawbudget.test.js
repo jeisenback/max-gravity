@@ -28,7 +28,7 @@ test('a burn frame stays within its budget of canvas calls, in the burn, at the 
       return n;
     };
     const at = (f, elapsed) => { t.left = t.total * (1 - f); if (elapsed !== undefined) t.elapsed = elapsed; for (let i = 0; i < 30; i++) update(1 / 60); render(); return { phase: phase(), dark: isDark(), calls: count() }; };
-    return { move: at(0.3), flip: at(0.5), couch: at(0.05), night: at(0.3, SHIP_DAY * 0.75 - 6) };
+    return { move: at(0.3), flip: at(0.5), couch: at(t.hard / 4),  /* on the hard burn out: the frames run on at its own pace (#1195) */ night: at(0.3, SHIP_DAY * 0.75 - 6) };
   });
   await done();
   assert.equal(r.move.phase, 'move'); assert.equal(r.flip.phase, 'float'); assert.equal(r.couch.phase, 'couch'); assert.equal(r.night.dark, true);

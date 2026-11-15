@@ -110,7 +110,7 @@ function loseCargo(frac) {
 }
 
 function delay(seconds) {
-  const t = G.transit, sec = burnStages(t.days).secure;
+  const t = G.transit, sec = burnStages(t.days, t.hard).secure;
   seconds = seconds / (t.pace || 1);  // seconds of today's burn, the same share of the longer one (burnspeed.js, #992)
   const q = 0.5 - sec - 1e-6;  // the share left at the flip's last instant, a hair past it
   if (t.flipped && seconds > 0) seconds = Math.min(seconds, Math.max(0, (q * t.total - t.left) / (1 - q)));  // past the flip it stays past it
@@ -313,9 +313,10 @@ function enterTransit() {
   const days = travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
   st.fuel -= fuelCost;
   st.dest = null;
-  const count = burnSceneCount(days) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, as many as on today's shorter burn (#992), one more for the first officer's walk-through (captains.js)
+  const count = burnSceneCount(days) + (walkPending() ? 1 : 0);
+  const dist = burnDist(st.systemId, to), shape = burnShape(dist, days, ship().cruise);  // hard to the hull's cruise speed, easy between (burnspeed.js, #1195)  // 2 to 4 happenings per burn, as many as on today's shorter burn (#992), one more for the first officer's walk-through (captains.js)
   G.transit = {
-    to, days, total, pace: oldBurnSeconds(days) / total, fuelCost, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
+    to, days, total, pace: oldBurnSeconds(days) / total, fuelCost, dist, shape, hard: shape.hard, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
     chatter: rand(5, 10), chattered: 0,
   };

@@ -21,9 +21,10 @@ const helpers = () => {
     openEvent(contactEvent({ kind }));
   };
   // One burn's worth of frames, at the current power and wear setting.
-  window.wearBurn = () => { const t = G.transit; for (let i = 0; i < 90; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
-  // Frames of a burn that can see projects.
-  window.burnFrames = n => { const t = G.transit; for (let i = 0; i < n; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1 / t.pace); } };  // a second of today's burn a frame (#992)
+  window.wearBurn = () => { const t = G.transit; t.left = t.total * 0.7; for (let i = 0; i < 90; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
+  // Frames of a burn that can see projects. These emit frames only, which do not move the burn on: each is put in the cruise, off the couches,
+  // which run at their own pace (#1195).
+  window.burnFrames = n => { const t = G.transit; t.left = Math.min(t.left, t.total * 0.7); for (let i = 0; i < n; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1 / t.pace); } };  // a second of today's burn a frame (#992)
   // Runs the game a frame at a time, with nobody else in the sky.
   window.fly = (until, max = 6000) => { let i = 0; while (!until() && i++ < max) { G.npcs = []; G.spawnTimer = 99; update(1 / 30); } return i; };
 };
@@ -323,7 +324,7 @@ test('engineer: a manual engineer can scram the reactor; a crewed one keeps it c
   const r = await ev(() => {
     const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); } };  // seconds of today's burn (#992)
     st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
-    const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', 80); G.transit.comms = []; };
+    const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = G.transit.total * 0.7;  /* in the cruise: the frames below do not move the burn on (#1195) */ st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, pd: 30 }); setPower('drive', 80); G.transit.comms = []; };
     go(); run(30); const warm = st.heat;
     run(40); const scrammed = { drive: power().drive, heat: st.heat, armor: st.armor < ship().armor, comm: G.transit.comms.some(c => /Reactor scram/.test(c)) };
     const cool = (skill) => { go(); st.crew = []; hire('engineer', skill); let peak = 0; for (let i = 0; i < 200; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); peak = Math.max(peak, st.heat); } return { peak, drive: power().drive, armor: st.armor === ship().armor, comm: G.transit.comms.some(c => /eases the drive/.test(c)) }; };

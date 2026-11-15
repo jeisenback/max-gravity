@@ -7,8 +7,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const B = load(['js/burnspeed.js'], { Mods: { register() {} }, SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
-  ['BURN_SPEEDS', 'FLIP_REAL', 'STREAK_HUSH', 'streakHush', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
+const B = load(['js/burnspeed.js'], { Mods: { register() {} }, SHIP_DAY: 80, G_KMS2: 0.00981, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
+  ['BURN_SPEEDS', 'FLIP_REAL', 'STREAK_HUSH', 'streakHush', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount', 'burnShape', 'HARD_G', 'CRUISE_KMS', 'CRUISE_MIN_G', 'COUCH_SPEED']);
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} against ${b}`);
 const burnAt = (days, pr) => { const total = days * 80; return { days, total, left: total * (1 - pr) }; };
 
@@ -40,12 +40,48 @@ test('the flip lasts FLIP_REAL real seconds on any trip and with any drive', () 
   }
 });
 
-test('the clock counts the real time left at the chosen speed, the flip ahead at its slow rate', () => {
-  const t = burnAt(11, 0), w = 2 * B.burnStages(11).secure * t.total;
-  near(B.realLeft(t, 1, 1), t.total - w + 25, 'at 1x');
-  near(B.realLeft(t, 2, 1), (t.total - w) / 2 + 25, 'at 2x');
+test('the clock counts the real time left at the chosen speed, the couches ahead at their own pace and the flip at its slow rate', () => {
+  const t = burnAt(11, 0), w = 2 * B.burnStages(11).secure * t.total, c = B.burnStages(11).couch * t.total;
+  near(B.realLeft(t, 1, 1), t.total - w - 2 * c + 2 * c / 16 + 25, 'at 1x');
+  near(B.realLeft(t, 2, 1), (t.total - w - 2 * c) / 2 + 2 * c / 16 + 25, 'at 2x');
   near(B.realLeft(t, 0, 1), B.realLeft(t, 1, 1), 'paused, the time at 1x');
-  const late = burnAt(11, 0.7); near(B.realLeft(late, 1, 1), late.left, 'the flip behind it');
+  const late = burnAt(11, 0.7); near(B.realLeft(late, 1, 1), late.left - c + c / 16, 'the flip behind it');
+});
+
+// ---------- the burn's shape (#1195, docs/bible/burn.md) ----------
+
+const AU = 149.6e6, G = 0.00981;
+// The distance a shape covers to the flip, in km, and its speed there: the hard burn, then the cruise.
+const half = (sh, days) => { const h = days * 43200, th = sh.hard * days * 86400, tc = h - th; return sh.hardG * G * th * th / 2 + sh.vHard * tc + sh.cruiseG * G * tc * tc / 2; };
+
+test('a burn is hard at a g to the cruise speed, then easy to the flip, and covers its distance in its days', () => {
+  assert.deepEqual([B.HARD_G, B.CRUISE_KMS, B.COUCH_SPEED], [1, 210, 16]);
+  for (const [au, days] of [[1, 5], [2, 7], [5, 11]]) {
+    const sh = B.burnShape(au * AU, days);
+    assert.ok(Math.abs(sh.vHard - 210) < 1e-6, `${au} AU: hard to 210 km/s (${sh.vHard})`);
+    near(sh.hard * days * 24, 210 / G / 3600, `${au} AU: the hours it takes at a g`);
+    assert.ok(sh.cruiseG > 0.03 && sh.cruiseG < sh.hardG, `${au} AU: an easy cruise (${sh.cruiseG})`);
+    assert.ok(Math.abs(half(sh, days) - au * AU / 2) < 1, `${au} AU: half the way at the flip`);
+    assert.ok(sh.peak > sh.vHard, 'the speed still rises in the cruise');
+  }
+});
+
+test('a trip too short to reach the cruise speed has the hard burn it can, and the cruise keeps its floor', () => {
+  const sh = B.burnShape(0.15 * AU, 3);
+  assert.ok(sh.vHard < 210 && sh.hard > 0, `stops short (${sh.vHard} km/s)`);
+  assert.ok(Math.abs(sh.cruiseG - B.CRUISE_MIN_G) < 1e-6, `the cruise at its floor (${sh.cruiseG})`);
+  assert.ok(Math.abs(half(sh, 3) - 0.15 * AU / 2) < 1, 'half the way at the flip');
+  assert.ok(B.burnShape(1 * AU, 1).hard <= 0.06 + 1e-12, 'no more than the old couches\' share of a one-day trip');
+  assert.ok(B.burnShape(1 * AU, 5, 150).vHard < B.burnShape(1 * AU, 5).vHard, 'a hull of its own cruise speed');
+});
+
+test('the couches are the shape\'s hard burn, and the clock runs on through them at sixteen times or more by itself', () => {
+  const sh = B.burnShape(1 * AU, 5), t = { ...burnAt(5, 0.01), hard: sh.hard };
+  near(B.burnStages(5, sh.hard).couch, sh.hard, 'the couches');
+  assert.equal(B.stageAt(5, sh.hard / 2, sh.hard), 'couch'); assert.equal(B.stageAt(5, sh.hard * 1.5, sh.hard), 'move');
+  assert.deepEqual([1, 2, 16, 256].map(s => B.burnRate(t, s, 1)), [16, 16, 16, 256], 'at 16x, or faster run ahead');
+  assert.equal(B.burnRate(t, 0, 1), 0, 'paused, still paused');
+  assert.equal(B.burnRate({ ...burnAt(5, 1 - sh.hard / 2), hard: sh.hard }, 1, 1), 16, 'and the hard brake');
 });
 
 test('a burn keeps today\'s number of scenes', () => {

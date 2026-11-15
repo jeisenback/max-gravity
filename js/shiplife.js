@@ -713,7 +713,7 @@ function weighted(table, rnd = Math.random) {
 // otherwise.
 function phase() {
   const t = G.transit;
-  return stageAt(t.days, 1 - t.left / t.total);  // the stages in ship time (burnspeed.js, #992)
+  return stageAt(t.days, 1 - t.left / t.total, t.hard);  // the stages in ship time (burnspeed.js, #992)
 }
 
 // A patient lying in the medbay bed: they stay on the cot through the hard burn and are strapped down on it at the flip, as sleepers are in
@@ -814,7 +814,10 @@ function lifeTick(dt) {
   if (t.offers && t.offers.some(o => o.slot)) t.offers = t.offers.filter(o => !o.slot || (o.slot === lifeSlotOf(t) && lifeFree(t)));  // a slot spent, or gone: the rest of its activities lapse (#1185)
   if (prev !== undefined && downtimeDue(t, now, prev, ph, prevPh) && free) downtimeOffers(t);  // a burn just loaded (no block seen yet) waits for a real change
   { const now = { burn: t.elapsed || 0, real: G.time }, last = t.offerClock || now; t.offerClock = now;  // the offers on the ship age while shown (#1183)
-    if (t.offers && t.offers.length) t.offers = offersTick(t.offers, people, Math.max(0, now.burn - last.burn), G.dialog ? 0 : Math.max(0, now.real - last.real)); }
+    if (t.offers && t.offers.length) {
+      if (ph === 'couch') for (const o of t.offers) o.shown = false;  // none shown or ageing on the couches: the hard burns run on by themselves, and what is drawn there waits for the cruise (#1195)
+      else t.offers = offersTick(t.offers, people, Math.max(0, now.burn - last.burn), G.dialog ? 0 : Math.max(0, now.real - last.real));
+    } }
   const was = [...(G.transit.marks || [])], block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
   mendHull(G.state, was, state.marks);  // a mark the armor came back over leaves its patch (#935)
   state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
@@ -1099,7 +1102,7 @@ function drawDowntimeTags(tags, rooms, hits, clear, c = ctx) {  // clear: the pa
 function drawCutaway(box, clear = box, dock = null) {
   const t = dock ? dock.t : G.transit, st = G.state, people = dock ? dock.people : shipPeople(), ph = dock ? 'move' : phase(), still = Settings.reduceMotion, now = dock ? dock.clock : G.time, time = still ? 0 : now;
   const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), ol = outlineLayout(box, lay), left = outlineLeft(box, ol), view = viewOf(box, lay, left), zoom = view.zoom, half = view.span / 2;
-  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = dock ? { burn: 0, cruise: 1, flip: 0 } : phaseWeights(pr, burnStages(t.days));  // the stages in ship time (#992)
+  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = dock ? { burn: 0, cruise: 1, flip: 0 } : phaseWeights(pr, burnStages(t.days, t.hard));  // the stages in ship time (#992)
   // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none) right of the outline's
   // strip, and the camera pans up and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
@@ -1218,7 +1221,7 @@ function drawCutaway(box, clear = box, dock = null) {
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
   const berths = layoutBox(lay, 'berths'), labels = [], racked = [], dots = [], hits = [];
-  const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
+  const fl = burnStages(t.days, t.hard).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
   figSprites = FIG_SPRITE_CACHE;  // each figure in a pose seen before copied from an image (figures.js figKept)
   try {

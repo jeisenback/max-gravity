@@ -14,17 +14,17 @@ After this change the burn is a place the player browses. What is going on aboar
 
 ## The burn's shape
 
-Status of this section: the owner's direction of 2026-11-14 (a fixed hard burn up to a set speed; harder burns later, with a cost); the figures are proposed.
+Status of this section: the owner's direction of 2026-11-14 (a fixed hard burn up to a set speed; harder burns later, with a cost); the figures the owner's, 2026-11-15 (#1195): a g to 210 km/s, the couches at 16x.
 
 A torch ship short of money burns the way Hester's does: hard at each end, easy in the middle, so the reaction mass goes where it buys the most. A burn has five parts:
 
-1. **The hard burn out.** On the couches, at the drive's hard rating (`technology.md`, The drive: about 1.5 g on Hester's patched drive), until the ship reaches her cruise speed. Nobody walks; there is nothing to do but lie there, so the burn's clock runs on through it at speed by itself, and no offer is made.
-2. **The easy cruise.** The drive throttled down to a fraction of a g (about a quarter, the reading the bridge shows now), enough to keep weight aboard. The speed still rises a little. This is the long part, where the crew are on their feet and the hand lives aboard: the offers, the sittings, the post.
+1. **The hard burn out.** On the couches, at a g, until the ship reaches her cruise speed (about six hours to 210 km/s). Nobody walks; there is nothing to do but lie there, so the burn's clock runs on through it at 16x by itself (faster if the player runs ahead), and no offer is shown: one drawn there waits for the cruise.
+2. **The easy cruise.** The drive throttled down to a fraction of a g, whatever makes the trip its days: about a twentieth on a short hop, up to about a third on a long run. The speed still rises a little. This is the long part, where the crew are on their feet and the hand lives aboard: the offers, the sittings, the post.
 3. **The flip.** At the midpoint, as now: strapped in, weightless while she turns, strapped in again (#992), in its slow motion.
 4. **The easy brake.** The cruise again, braking at the same fraction of a g.
 5. **The hard brake in.** Back on the couches from the cruise speed down onto the port, the clock running on by itself as on the way out. It ends at the approach, where the arrival's business begins (the inspection, the dock).
 
-**The cruise speed is fixed.** Each hull has one set speed it burns hard to; Hester's Ice Hauler has hers. A trip's length in days is what it is now, so the hard burns are as long as reaching that speed takes, and the cruise is the rest. On a trip too short to reach it, the hard burn stops at the share of the trip it can have, and the cruise is short.
+**The cruise speed is fixed.** Each hull has one set speed it burns hard to (its `cruise` in `js/data.js`; 210 km/s for every hull until one is given its own, `CRUISE_KMS`, `js/burnspeed.js`). A trip's length in days is what it is now, so the hard burns are as long as reaching that speed takes, and the cruise is the rest. On a trip too short to reach it, the hard burn stops at the share of the trip it can have, and the cruise keeps at least three hundredths of a g (`burnShape`).
 
 **The instruments** follow the shape: the speed climbs steeply on the couches, rises slowly through the cruise to its peak at the flip, falls slowly, and drops steeply into the port. The g reading is high on the couches and low in the cruise (`gReading`, `js/burnpanel.js`, already reads three times the cruise on the couches).
 
