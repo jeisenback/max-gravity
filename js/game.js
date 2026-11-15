@@ -53,7 +53,7 @@ const G = {
   duel: null,         // the console fight in progress, see duel.js
   torps: [],          // torpedoes in flight, see torpedoes.js
   bridgeOpen: null,   // which sheet of the burn view is open ('person', a station), see bridge.js
-  speed: 1,           // the burn's chosen speed, one of BURN_SPEEDS (0 is paused); a new burn starts at 1, see burnspeed.js
+  speed: 1,           // the chosen speed, one of BURN_SPEEDS (0 is paused), of a burn and of a port view's clock (portview.js); each burn and each landing starts at 1, see burnspeed.js
   speedBefore: 1,     // the speed a pause will resume at, see burnspeed.js
   barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
@@ -1299,6 +1299,9 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Space' && !G.dialog) { e.preventDefault(); toggleBurnPause(); }  // the burn's speed (burnspeed.js, #992); under a scene Space presses its choice
     else if (BURN_KEYS[e.code] !== undefined && !G.dialog) setBurnSpeed(BURN_KEYS[e.code]);
     else if (e.code === 'KeyH') camFollow(shipPeople()[0].id);  // the camera back on the hand, following them (shiplife.js, #1182)
+  } else if (G.mode === 'landed' && (e.code === 'Space' || BURN_KEYS[e.code] !== undefined) && portClockShown() && !G.dialog && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || '')) {  // a port's view: its clock at the burn's speeds, but for running ahead
+    if (e.code === 'Space') { e.preventDefault(); toggleBurnPause(); }
+    else if (BURN_KEYS[e.code] !== RUN_AHEAD) setBurnSpeed(BURN_KEYS[e.code]);
   } else if (G.mode === 'hail') {
     if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {

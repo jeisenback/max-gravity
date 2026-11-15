@@ -118,6 +118,30 @@ test('the Ring\'s clock: a landing comes in at an hour of its own, runs while th
   assert.equal(r.morning, 7); assert.deepEqual(r.ngozi, ['Ngozi', 'Achebe', true, 'Earth']); assert.equal(r.onStools, false); assert.equal(r.mars, null, 'a port with no view has no clock');
 });
 
+test('the port\'s clock has the burn\'s speeds: the row in the view\'s corner without running ahead, paused nothing walks and the clock holds, 16x runs it sixteen times as fast, and Space and the keys set it', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 1440, height: 900 } });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); UI.act('closePage'); });
+  await frames(page, 3);
+  const r = await ev(() => {
+    const out = {}, el = document.getElementById('bspeed'), vs = document.getElementById('vs').getBoundingClientRect(), b = el.getBoundingClientRect();
+    out.landed = G.speed; out.shown = !el.hidden; out.inView = b.right <= vs.right && b.bottom <= vs.bottom && b.left >= vs.left;
+    out.ahead = getComputedStyle(el.querySelector('[data-speed="256"]')).display;
+    G.portHour = 10; setBurnSpeed(0); Mods.emit('frame', 1); const at = JSON.stringify((G.portWalkers || []).map(w => [w.x, w.lv])); Mods.emit('frame', 8);
+    out.paused = { hour: G.portHour, still: JSON.stringify((G.portWalkers || []).map(w => [w.x, w.lv])) === at };
+    setBurnSpeed(16); G.portHour = 10; Mods.emit('frame', 0.5); out.fast = +(G.portHour - 10).toFixed(3);
+    setBurnSpeed(1); G.portHour = 10; Mods.emit('frame', 0.5); out.normal = +(G.portHour - 10).toFixed(3);
+    return out;
+  });
+  await page.keyboard.press('Space'); const spaced = await ev(() => G.speed);
+  await page.keyboard.press('Digit3'); const three = await ev(() => G.speed);
+  await page.keyboard.press('Digit4'); const four = await ev(() => G.speed);
+  await done();
+  assert.equal(r.landed, 1, 'a landing starts at 1x'); assert.equal(r.shown, true); assert.equal(r.inView, true, 'the row in the view'); assert.equal(r.ahead, 'none', 'no running ahead in port');
+  assert.deepEqual(r.paused, { hour: 10, still: true }, 'paused, the clock holds and nobody walks');
+  assert.equal(r.fast, +(16 * r.normal).toFixed(3), `16x is sixteen times 1x (${r.fast}, ${r.normal})`);
+  assert.equal(spaced, 0, 'Space pauses'); assert.equal(three, 16, '3 is 16x'); assert.equal(four, 16, '4, running ahead, does nothing in port');
+});
+
 // Walk the cast from `from` to `to` (each a list of cast entries) a frame at a time until nobody moves, keeping every position on the way.
 function walkOut(lay, from, to, frames = 4000) {
   let w = portWalk(null, from, lay, 0, true);
