@@ -49,10 +49,44 @@ function dayAshoreEvent(all) {
   };
 }
 
-// The Port page's button, open once a landing.
+// A live league's match played today or yesterday, read without starting a season or a year (season, culture: social.js), which the view must not do as
+// it asks every frame (#1193): the league, or null. matchNight gives its words when the tag is taken.
+function matchToday(st) {
+  const c = st.culture;
+  if (!c || c.v !== 2 || !c.lg) return null;
+  return LEAGUES.find(l => {
+    const rec = c.lg[l.id], m = rec && rec.key === leagueSeason(l, st.day).key && rec.last;
+    return ['regular', 'playoffs', 'final'].includes(leaguePhase(l, st.day)) && m && st.day - m.day <= 1;
+  }) || null;
+}
+// At a port with a view (#1193): each entry is its own tag where it happens, in place of the menu, and taking one spends the hour. The regulars' table
+// over the regular at the bar, a walk on the market, a crewmate's errand over them, the room's return over its keeper (or on the bunkrooms), and
+// whatever is on, one tag on the bar. Each is { key, label, who | room, take }: the view's standing offers (portview.js portOffersNow).
+function ashoreOffers(st, planet) {
+  if (!hired() || G.mode !== 'landed' || !ashoreOpen(st) || !planet || !portLayout(planet)) return [];
+  const day = st.day, v = { port: planet.name, bar: barOf(planet).name };
+  const regular = G.barState && G.barState.planet === planet.name ? (G.patrons || []).find(x => x.regular) : null;
+  const rumored = (st.rumors || []).some(x => x.planet === planet.name && x.until >= day);
+  const mate = errandDue(st), keeper = st.room && roomDue(st.room, planet.name, day) ? st.people[st.room.pid] : null;
+  const match = matchToday(st), cast = broadcastsOn(day)[0], show = airing(day)[0];
+  const spend = () => { st.dayAshore = { used: true }; };
+  const scene = ev => () => { spend(); openEvent(ev()); };
+  const line = text => () => { spend(); openEvent({ title: daySay('title'), text: text(), personal: true, place: 'market', choices: [{ label: daySay('done.label'), keep: true, run: () => null }] }); };
+  const now = match ? { what: match.name, text: () => matchNight().text } : cast ? { what: cast.title, text: () => daySay('broadcast.result', { title: cast.title, blurb: cast.blurb }) }
+    : show ? { what: show.title, text: () => daySay('show.result', { title: show.title, genre: GENRES[show.genre], when: daySay(show.premiere ? 'show.when.premiere' : show.finale ? 'show.when.finale' : 'show.when', { ep: show.ep }) }) } : null;
+  return [
+    ...(regular ? [{ key: 'ashore:table', label: daySay('tag.table'), who: `patron:${regular.p.id || regular.p.first}`, take: scene(() => talkEvent(regular)) }] : []),
+    { key: 'ashore:walk', label: daySay('tag.walk', v), room: 'market', take: line(() => daySay(`walk.${walkKind(planet, rumored)}`, v)) },
+    ...(mate ? [{ key: 'ashore:errand', label: daySay('tag.errand', { n: mate.first }), who: mate.id, take: scene(() => { mate.errandAt = day; return errandEvent(mate); }) }] : []),
+    ...(keeper ? [{ key: 'ashore:room', label: daySay('tag.room'), who: keeper.id, room: 'bunks', take: scene(() => roomReturn(keeper)) }] : []),
+    ...(now ? [{ key: 'ashore:now', label: daySay('tag.now', { what: now.what }), room: 'bar', take: line(now.text) }] : []),
+  ];
+}
+
+// The Port page's button, open once a landing; at a port with a view its entries are tags on the view instead (ashoreOffers).
 function dayAshoreHtml() {
   const st = G.state, open = ashoreOpen(st);
-  if (!hired() || G.mode !== 'landed') return '';
+  if (!hired() || G.mode !== 'landed' || portLayout(currentPlanet())) return '';
   return String(h`<div class="row"><button data-action="dayAshore" ${open ? '' : 'disabled'}>${daySay('button')}</button> <span class="hint">${daySay(open ? 'hint.open' : 'hint.spent')}</span></div>`);
 }
 

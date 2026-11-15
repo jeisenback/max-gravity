@@ -631,6 +631,9 @@ const SCENE_LINES = {
   'scene:day-down': {  // a day down in Lagos from the Ring (daydown.js, #1162; docs/bible/ports.md, lagos.md): the button, its shut line, the opening, and each lane's three lines by the day
     title: 'A Day Down',
     button: 'Go down to Lagos ({fare} cr)', shut: 'You\'ve been down today.',
+    // the day's lanes as tags on the spoke lift (#1193), each the day down on its own, and the line that brings the hand back up
+    'tag.tiers': 'Down to the tiers ({fare} cr)', 'tag.market': 'Down to the mainland market ({fare} cr)', 'tag.hall': 'Down to the departure hall ({fare} cr)', 'tag.work': 'Down to look for work ({fare} cr)',
+    'tag.below': 'Down to see {first} ({fare} cr)', 'tag.parcel': '{first} has a bag for his parents', 'up.label': 'Back up the spoke',
     text: 'The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.',
     'tiers.label': 'Walk the arcology\'s tiers',
     'tiers.0': 'The lower tiers are by the wall, and the lifts there take a long time. A notice in the lobby says the service charge goes up in March. Two floors up a man is mending a fan in a shop doorway, with the parts laid out on a towel, and he tells you the rent on the shop before you\'ve asked.',
@@ -688,6 +691,8 @@ const SCENE_LINES = {
     title: 'A Day Ashore',
     text: 'The ship will keep. {port} is out there, and the hour is yours.',
     button: 'Spend a day ashore', 'hint.open': 'One hour of your own at each landing.', 'hint.spent': 'You have had your hour here.',
+    // its entries as tags on a port's view (#1193), each taken in place of the menu, and the line that closes one that ends in a line
+    'tag.table': 'The regulars\' table', 'tag.walk': 'A walk round {port}', 'tag.errand': '{n} has an errand', 'tag.room': 'Your room', 'tag.now': 'On at the bar: {what}', 'done.label': 'Go on',
     'none.label': 'Not now', 'none.result': 'You stay by the ramp and watch the dock go by.',
     'table.label': 'Sit at the regulars\' table at {bar}',
     'walk.label': 'Walk through {port}',

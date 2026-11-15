@@ -83,10 +83,38 @@ function tomasParentsEvent(t) {
   return { title: lagosSay('parents.title'), text: lagosSay('parents.text'), personal: true, choices: [told('kind', 1), told('true', 2)] };
 }
 
-// The Port page's button, under the day ashore's: at the Ring in a stay only.
+// At a port with a view (#1193): the day's lanes as tags on the spoke lift, each the day down on its own and paid for when it is taken, in place of the
+// menu; the crayfish is a choice in the market's day, and the day's lane into a life below its own tag. Tomas's parcel is a tag over him while he is
+// on the view, and nothing is paid unless it is taken. Each is { key, label, who | room, lift, take }: the view's standing offers (portview.js).
+function downOffers(st, planet) {
+  const h = hired(), o = G.mode === 'landed' && downOffer(st, h, planet);
+  if (!o || o.why || !portLayout(planet)) return [];
+  const fare = fmt(DOWN_FARE), day = st.day, pay = () => { st.credits -= DOWN_FARE; h.downDay = day; };
+  const up = { label: lagosSay('up.label'), keep: true, run: () => null };
+  const dayOf = (text, more = []) => ({ title: lagosSay('title'), text, personal: true, place: 'well', choices: [...more, up] });
+  const lane = k => ({ key: `down:${k}`, label: lagosSay(`tag.${k}`, { fare }), room: 'well', lift: true, take() {
+    pay();
+    if (k === 'market' && day % 3 === 0) st.metSeller = true;  // as the menu's market (dayDownEvent)
+    if (k === 'market' && day % 3 === 2 && st.metBoy === undefined) st.metBoy = day;
+    openEvent(dayOf(lagosSay(`${k}.${day % 3}`), k === 'market' ? crayfishLane(st) : []));
+  } });
+  const below = belowLane(st, planet)[0], key = BELOW[Math.floor(day / BELOW_EVERY) % BELOW.length], f = below && portLayout(planet).folk.find(x => x.key === key);
+  const t = tomasAboard(), parcel = parcelDue(st, t);
+  return [
+    ...(parcel ? [{ key: 'down:parcel', label: lagosSay('tag.parcel', { first: t.first }), who: t.id, take() {
+      const ev = tomasParcelEvent(t);
+      openEvent({ ...ev, choices: [{ ...ev.choices[0], run() { pay(); return ev.choices[0].run(); } }, { label: ev.choices[1].label, keep: true, run: () => null }] });  // the fare when it is taken
+    } }] : []),
+    ...DOWN_LANES.map(lane),
+    { key: 'down:work', label: lagosSay('tag.work', { fare }), room: 'well', lift: true, take() { pay(); openEvent(jobStage(downJob(day), 0)); } },
+    ...(below ? [{ key: 'down:below', label: lagosSay('tag.below', { first: portFolkPerson(planet, f).first, fare }), room: 'well', lift: true, take() { pay(); openEvent(dayOf(below.run())); } }] : []),
+  ];
+}
+
+// The Port page's button, under the day ashore's: at the Ring in a stay only, when the view is not up; with it, the lanes are tags (downOffers).
 function dayDownHtml() {
   const o = G.mode === 'landed' && downOffer(G.state, hired(), currentPlanet());
-  if (!o) return '';
+  if (!o || portLayout(currentPlanet())) return '';
   return String(h`<div class="row"><button data-action="goDown" ${o.why ? 'disabled' : ''}>${lagosSay('button', { fare: fmt(DOWN_FARE) })}</button>${o.why ? h` <span class="hint">${o.why}</span>` : ''}</div>`);
 }
 

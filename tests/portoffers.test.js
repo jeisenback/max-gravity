@@ -30,6 +30,12 @@ test('at most four show, in the order made, skipping one that cannot show now', 
   assert.deepEqual(plain(portOffersShown(offers, whoOf, castIds, castable, ['market']).map(s => s.label)), ['a', 'c', 'd', 'e'], 'b is out of the view: the next takes its place');
 });
 
+test('the day down\'s lanes on the spoke lift count as one against the four', () => {
+  const lift = ['t', 'm', 'h', 'w'].map(k => ({ key: k, label: k, room: 'well', lift: true }));
+  const offers = [...['a', 'b', 'c'].map(k => ({ key: k, label: k, room: 'market' })), ...lift, { key: 'z', label: 'z', room: 'bar' }];
+  assert.deepEqual(plain(portOffersShown(offers, () => [], [], [], ['market', 'well', 'bar']).map(s => s.label)), ['a', 'b', 'c', 't', 'm', 'h', 'w'], 'three and the lift make four; the fifth waits');
+});
+
 const helpers = () => {
   window.hand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; G.state.tutorial = null; G.dialog = null; G.nextEvent = null; G.portOffers = []; G.portLater = []; return G.state; };
   window.scene = (t, extra = {}) => ({ title: t, text: t, choices: [{ label: 'A', run: () => 'a' }], ...extra });
@@ -97,6 +103,52 @@ test('a story\'s turn opens at once at the Ring, after the mourning and before t
   });
   assert.deepEqual(r.ring, [['Mourning', 'Turn'], ['Port']]);
   assert.deepEqual(r.mars, ['Visit', 'Port', 'Turn'], 'in the order offered among what the port brings');
+});
+
+test('at the Ring the day ashore is tags, not a button: a walk on the market, whatever is on at the bar, a regular over them; taking one spends the hour', async () => {
+  const r = await run(() => {
+    const st = hand(), out = {}, planet = currentPlanet();
+    Mods.emit('landed', planet); G.dialog = null; G.nextEvent = null; fillBar(planet);
+    out.tags = ashoreOffers(st, planet).map(o => [o.key, o.room || null, !!o.who]);
+    UI.tab = 'port'; UI.render(); out.button = !!document.querySelector('button[data-action="dayAshore"]');
+    ashoreOffers(st, planet).find(o => o.key === 'ashore:walk').take();
+    out.scene = [G.dialog.event.title, G.dialog.event.text.length > 40, G.dialog.choices.map(c => c.label)];
+    finishEvent(); out.after = ashoreOffers(st, planet).length;
+    return out;
+  });
+  assert.ok(r.tags.some(t => t[0] === 'ashore:walk' && t[1] === 'market'));
+  const table = r.tags.find(t => t[0] === 'ashore:table'); assert.ok(!table || table[2], 'the regulars\' table over a regular');
+  assert.equal(r.button, false, 'no button on the Port page at the Ring');
+  assert.deepEqual(r.scene, ['A Day Ashore', true, ['Go on']]);
+  assert.equal(r.after, 0, 'the hour is spent');
+});
+
+test('the day down\'s tags: the crayfish is a choice in the market\'s day; Tomas\'s parcel is a tag over him, paid for only when it is taken', async () => {
+  const r = await run(() => {
+    const st = hand(), h = hired(), planet = currentPlanet(), out = {}, t = tomasAboard();
+    delete h.stay; beginStay(h, 9, 'market'); st.credits = 5000; st.portAte = st.day - 1; st.belowSeen = BELOW.slice();
+    downOffers(st, planet).find(o => o.key === 'down:market').take(); out.market = G.dialog.choices.map(c => c.label); finishEvent();
+    if (t) { delete h.downDay; st.credits = 5000; t.opinion = OPINION.TRUSTED; delete t.parentsAt;
+      const p = downOffers(st, planet).find(o => o.key === 'down:parcel'); out.parcel = p && [p.who === t.id, p.label];
+      p.take(); const c = G.dialog.choices; out.not = [c.map(x => x.label)]; chooseEvent(1); finishEvent(); out.notPaid = st.credits;
+      downOffers(st, planet).find(o => o.key === 'down:parcel').take(); chooseEvent(0); out.paid = st.credits; while (G.dialog) finishEvent(); }
+    return out;
+  });
+  assert.ok(r.market.some(l => /crayfish/i.test(l)), 'the crayfish, in the market\'s day'); assert.equal(r.market[r.market.length - 1], 'Back up the spoke');
+  if (r.parcel) { assert.equal(r.parcel[0], true); assert.match(r.parcel[1], /bag for his parents/); assert.equal(r.notPaid, 5000, 'not taken, nothing paid'); assert.equal(r.paid, 4100, 'taken, the fare'); }
+});
+
+test('the view asks for its tags every frame without drawing a die or changing the game', async () => {
+  const r = await run(() => {
+    const st = hand(), h = hired(), planet = currentPlanet();
+    delete h.stay; beginStay(h, 9, 'market'); st.credits = 5000; Mods.emit('landed', planet); G.dialog = null; G.nextEvent = null;
+    portViewNow(planet, portLayout(planet, st));  // the view is drawn first, as the game draws it: its own people are made then
+    const before = JSON.stringify(st), real = Math.random; let rolls = 0;
+    Math.random = () => { rolls++; return real(); };
+    try { for (let i = 0; i < 20; i++) { ashoreOffers(st, planet); downOffers(st, planet); portOffersNow(planet, portLayout(planet, st), []); } } finally { Math.random = real; }
+    return { rolls, same: JSON.stringify(st) === before };
+  });
+  assert.deepEqual(r, { rolls: 0, same: true });
 });
 
 test('a port with no view plays its landing as before: nothing waits', async () => {
