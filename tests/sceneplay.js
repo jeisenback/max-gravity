@@ -711,6 +711,10 @@ const playScenes = () => {
   run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
   // ---------- work below Lagos on a day down (#1162, part 3): each of the two jobs, last, since the skill a job gives the hand carries into the next game this file starts ----------
   for (const d of [0, 1]) run(`scene:day-down:work:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 2) * 2 + d; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[3]] }; });
+  // the port's official's manner at a landing, at each port that has one (#1242), and the plain note at a Guild port with none: notes, played here as
+  // pages; last, as the landings leave the legacy log and the ship's life moved for the cases after them
+  for (const [port, key] of Object.entries(OFFICIAL_MANNER)) run(`scene:inspection:manner:${key}`, {}, () => { uatLand(port); G.dialog = null; G.nextEvent = null; return { title: 'Landing', text: officialManner(currentPlanet()), choices: [] }; });
+  run('scene:inspection:clean', {}, () => { uatLand('Ring Nine'); G.dialog = null; G.nextEvent = null; G.state.cargo = {}; const notes = []; inspectAtLanding(currentPlanet(), t => notes.push(t), {}); return { title: 'Landing', text: notes.join(' '), choices: [] }; });
   return out;
 };
 

@@ -9055,7 +9055,7 @@
      "9 Jul 2214: The captain shared a meal with us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    },
@@ -9079,7 +9079,7 @@
      "9 Jul 2214: The captain came to check on us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    }
@@ -9105,8 +9105,8 @@
      "9 Jul 2214: We shared a meal on a long burn."
     ],
     "fx": {
-     "p5": 1,
-     "p6": 1
+     "p6": 1,
+     "p7": 1
     },
     "next": null
    },
@@ -9130,7 +9130,7 @@
      "9 Jul 2214: The captain came to check on us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    }
@@ -9155,7 +9155,7 @@
      "9 Jul 2214: The captain shared a meal with us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    },
@@ -9179,7 +9179,7 @@
      "9 Jul 2214: The captain came to check on us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    }
@@ -9205,8 +9205,8 @@
      "9 Jul 2214: We shared a meal on a long burn."
     ],
     "fx": {
-     "p5": 1,
-     "p6": 1
+     "p6": 1,
+     "p7": 1
     },
     "next": null
    },
@@ -9230,7 +9230,7 @@
      "9 Jul 2214: The captain came to check on us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    }
@@ -9333,7 +9333,7 @@
      "9 Jul 2214: The captain shared a meal with us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    },
@@ -9362,7 +9362,7 @@
      "9 Jul 2214: The captain shared a meal with us."
     ],
     "fx": {
-     "p5": 1
+     "p6": 1
     },
     "next": null
    },
@@ -10118,7 +10118,8 @@
     "text": "",
     "fx": {
      "credits": -15000,
-     "p6": 0
+     "p6": 0,
+     "p7": 0
     },
     "x": [
      {
@@ -10144,7 +10145,8 @@
     "text": "",
     "fx": {
      "credits": -25000,
-     "p6": 0
+     "p6": 0,
+     "p7": 0
     },
     "x": [
      {
@@ -10169,7 +10171,8 @@
     "roll": 0.5,
     "text": "",
     "fx": {
-     "credits": -25000
+     "credits": -25000,
+     "p8": 0
     },
     "x": [
      {
@@ -11362,7 +11365,8 @@
     ],
     "fx": {
      "credits": 20000,
-     "p3": 1
+     "p3": 1,
+     "p4": 0
     },
     "next": null
    }
@@ -32100,5 +32104,61 @@
   "labels": [
    "Look for work"
   ]
+ },
+ {
+  "id": "scene:inspection:manner:lagos",
+  "plays": [],
+  "title": "Landing",
+  "text": "Officer Ferreira goes through the manifest a line at a time, politely, and asks twice about the water tanks before logging the ship through.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:luna",
+  "plays": [],
+  "title": "Landing",
+  "text": "Officer Novak goes through the manifest a line at a time, politely, and asks twice about the water tanks before logging the ship through.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:ceres",
+  "plays": [],
+  "title": "Landing",
+  "text": "Dockmaster Lindo has the queue to the minute, and when nobody is looking waves a co-op hull through ahead of you.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:pallas",
+  "plays": [],
+  "title": "Landing",
+  "text": "Dockmaster Pike reads the manifest twice, against the company's rules, and logs the ship through without a word.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:hollows",
+  "plays": [],
+  "title": "Landing",
+  "text": "Dockmaster Jansen-Ruiz, on the warden's rota this week, takes a long time over the paperwork and wants to know who the cargo is for.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:eros",
+  "plays": [],
+  "title": "Landing",
+  "text": "Dockmaster Ashford-Kamau sells you the berth, the water and the news, and knocks a little off the berth if you bring the news first.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:manner:mars",
+  "plays": [],
+  "title": "Landing",
+  "text": "Officer Valenti counts the water in the manifest first, and the rest after, and logs the ship through.",
+  "labels": []
+ },
+ {
+  "id": "scene:inspection:clean",
+  "plays": [],
+  "title": "Landing",
+  "text": "Customs logs the ship through.",
+  "labels": []
  }
 ]

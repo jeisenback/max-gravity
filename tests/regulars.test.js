@@ -122,18 +122,18 @@ test('a port with a written pool seats its written regulars first, in the run\'s
   await done();
 });
 
-test('written regulars at Ceres Station, Pallas Refinery, the Hollows and Eros Old Town, and a port with no pool keeps generated ones (#1242)', async () => {
+test('written regulars at Ceres Station, Pallas Refinery, the Hollows, Eros Old Town, Luna and Mars, and a port with no pool keeps generated ones (#1242)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
     uatLand('Ceres Station'); G.dialog = null; out.ceres = regs().map(x => x.p.first);
-    for (const port of ['Pallas Refinery', 'The Hollows', 'Eros Old Town']) { uatLand(port); G.dialog = null; out[port] = regs().map(x => x.p.first); }
+    for (const port of ['Pallas Refinery', 'The Hollows', 'Eros Old Town', 'Luna', 'Mars']) { uatLand(port); G.dialog = null; out[port] = regs().map(x => x.p.first); }
     uatLand('Ironheart'); G.dialog = null; out.ironheart = regs().map(x => x.p.arc && x.p.arc.key);
     return out;
   });
   assert.equal(r.ceres.length, 2); assert.ok(r.ceres.every(n => ['Dunya', 'Kofi', 'Ilka', 'Pell', 'Nadia'].includes(n)), `${r.ceres}`);
-  const pools = { 'Pallas Refinery': ['Teodor', 'Amara', 'Jem', 'Sister', 'Cass'], 'The Hollows': ['Lio', 'Ezra', 'Pim', 'Tamsin'], 'Eros Old Town': ['Hesper', 'Ottilie', 'Ray', 'Benedetta'] };
+  const pools = { 'Pallas Refinery': ['Teodor', 'Amara', 'Jem', 'Sister', 'Cass'], 'The Hollows': ['Lio', 'Ezra', 'Pim', 'Tamsin'], 'Eros Old Town': ['Hesper', 'Ottilie', 'Ray', 'Benedetta'], Luna: ['Calla', 'Viktor', 'Sunny', 'Orla'], Mars: ['Anika', 'Grigor', 'Lena', 'Teo', 'Halima'] };
   for (const [port, names] of Object.entries(pools)) { assert.equal(r[port].length, 2); assert.ok(r[port].every(n => names.includes(n)), `${port}: ${r[port]}`); }
   assert.ok(r.ironheart.every(k => k && !k.includes('|')), 'generated, with the arc library');
   await done();

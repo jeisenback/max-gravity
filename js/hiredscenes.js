@@ -215,6 +215,14 @@ const SCENE_LINES = {
     'keep.result': 'You stay out of it. The ship pays {paid} cr, the junior seals the hold, and the clamps come off.',
     'pay.result': 'You pay {paid} cr. The junior seals the hold, and the clamps come off.',
     clean: 'Customs logs the ship through.',
+    // The port's official at a landing, in the manner its page gives them (docs/bible/regulars.md, #1242): in place of `clean` where it inspects, and on its own where it does not
+    'manner.lagos': '{official} goes through the manifest a line at a time, politely, and asks twice about the water tanks before logging the ship through.',
+    'manner.luna': '{official} goes through the manifest a line at a time, politely, and asks twice about the water tanks before logging the ship through.',
+    'manner.ceres': '{official} has the queue to the minute, and when nobody is looking waves a co-op hull through ahead of you.',
+    'manner.pallas': '{official} reads the manifest twice, against the company\'s rules, and logs the ship through without a word.',
+    'manner.hollows': '{official}, on the warden\'s rota this week, takes a long time over the paperwork and wants to know who the cargo is for.',
+    'manner.eros': '{official} sells you the berth, the water and the news, and knocks a little off the berth if you bring the news first.',
+    'manner.mars': '{official} counts the water in the manifest first, and the rest after, and logs the ship through.',
   },
   'scene:watch-bill': {  // the rotating watch bill (shiplife.js watchBill, #1034): the handover line, and the card on the hand's page
     tonight: 'The watch tonight: {bridge} on the bridge, {engine} in the engine room.',

@@ -4368,6 +4368,58 @@
   "text": "had an offer from the Dome Pact for the Old Town's founding papers, and said no. | says someone broke into the archive on Thursday. Nothing was taken, which worries her more. | has given a copy of the founding papers to every ship that will take one. One of them is yours."
  },
  {
+  "key": "written:Luna|calla",
+  "text": "has the yards' promise of a lung clinic for the dust towns in writing, and keeps the paper folded in her pocket. | says the yards have put the clinic off another year. The paper is still in her pocket. | runs the clinic now, in a shipping container behind the hiring board. She's on her own there four nights a week."
+ },
+ {
+  "key": "written:Luna|viktor",
+  "text": "tells you how the drydocks were run when he ran one. Nobody else at the table is listening. | was asked for his advice by a young yard master in trouble with a refit. He's been working it out on a napkin all evening."
+ },
+ {
+  "key": "written-left:Luna|viktor",
+  "text": "Viktor has gone to the young master's yard to advise on the refit, and he took the napkin"
+ },
+ {
+  "key": "written:Luna|sunny",
+  "text": "is saving for a seat down to Lagos to see her mother, and counts the savings twice a week. | says the fare's gone up. She's back to counting from the start."
+ },
+ {
+  "key": "written-left:Luna|sunny",
+  "text": "Sunny went down the well on a cheap seat to see her mother"
+ },
+ {
+  "key": "written:Luna|orla",
+  "text": "has a petition for her riggers' overtime, which the yard calls voluntary. Half the dust towns have signed it. | says the yard locked her riggers out for three days over it. | got the riggers paid, half of it, and says the yard knows her name now."
+ },
+ {
+  "key": "written:Mars|anika",
+  "text": "surveyed the old lake pumps on her own time, and says three of them would run with new seals. | says the council turned down the pumps. Too costly, they said, for a lake nobody's seen in forty years. | has one of the pumps running, on a weekend shift she doesn't get paid for. She has water under her fingernails to prove it."
+ },
+ {
+  "key": "written:Mars|grigor",
+  "text": "is in town for the council's water hearing, and has his dome's figures in a folder on the bar. | says the council cut his dome's share of the water. He's angry, and quiet with it."
+ },
+ {
+  "key": "written-left:Mars|grigor",
+  "text": "Grigor went home to the outer domes, and a month later his dome's water share was the news"
+ },
+ {
+  "key": "written:Mars|lena",
+  "text": "sends out the domes' air bills, and doesn't like to say how many come back unpaid. | had to send the bill to a family that can't pay it. She hasn't slept much since."
+ },
+ {
+  "key": "written-left:Mars|lena",
+  "text": "Lena has taken a job in the outer domes, at less pay, and someone else sends the bills"
+ },
+ {
+  "key": "written:Mars|teo",
+  "text": "writes to his sister every week. She works on Ballast's books, and he wants her off them. | hasn't had an answer from his sister in a month, and checks his messages between drinks. | had an answer from his sister: two lines. He reads it to you, and doesn't say what he thinks of it."
+ },
+ {
+  "key": "written:Mars|halima",
+  "text": "says the council has voted to put the new share board up over the lake mural in the square. She's asked them to put it somewhere else, and they said there isn't anywhere else. | is painting the lake again at night, on the wall beside the board. She has paint on her sleeves and a council notice in her pocket. | finished it. The council fined her for it, and left it up."
+ },
+ {
   "key": "revisit:war.on",
   "text": "Dome Pact and Mars Republic have gone to war"
  },

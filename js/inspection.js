@@ -62,13 +62,17 @@ function inspectionScene(cause, planet) {
 // The landed hook's body (`note` is the hook's M.note; a test reads UI.notes; `cargo` is the hold as the ship came in, read on 'landing'): at an inspecting
 // port, customs meets the ship once (#1097): a crewmate the port's owner wants (ties.js customsScene) if one is due, else the inspector's scene, either as the
 // landing's first (transit.js offerScene); a clean ship gets one note line.
+// The port's official's manner at a landing (#1242): chapter 1's ports each have one (OFFICIAL_MANNER, the line's key by the port), else null.
+const OFFICIAL_MANNER = { Earth: 'lagos', Luna: 'luna', 'Ceres Station': 'ceres', 'Pallas Refinery': 'pallas', 'The Hollows': 'hollows', 'Eros Old Town': 'eros', Mars: 'mars' };
+const officialManner = planet => (OFFICIAL_MANNER[planet.name] ? sceneSay('scene:inspection', `manner.${OFFICIAL_MANNER[planet.name]}`, { official: officialName(planet) }) : null);
 function inspectAtLanding(planet, note = text => UI.notes.push(text), cargo = G.state.cargo) {
   const st = G.state, gov = system().gov;
-  if (atSite(st) || !INSPECTING.includes(gov)) return;
+  if (atSite(st)) return;
+  if (!INSPECTING.includes(gov)) { const m = officialManner(planet); if (m) note(m); return; }  // a port that does not inspect: its official's manner, where it has one
   const h = hired(), crew = h && st.day - h.since >= 3 && customsDue() && wantedAboard(gov) ? customsScene(gov, planet) : null;
   if (crew) { offerScene('customs', crew); return; }  // a crewmate this owner wants is the lock's business first, and the only stop this landing (ties.js, #1097)
   const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'), planet.services.includes('shipyard'));
-  if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
+  if (!cause) { note(officialManner(planet) || sceneSay('scene:inspection', 'clean')); return; }  // a clean ship: the official's manner, where the port has one
   const scene = inspectionScene(cause, planet);
   offerScene('customs', scene);  // the landing's first scene (#1096)
 }

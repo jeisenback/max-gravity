@@ -107,19 +107,22 @@ test('a sum larger than the purse takes what is there (#1015)', async () => {
   assert.equal(left, 0);
 });
 
-test('a clean ship at an inspecting port gets one note and no scene; an independent port, neither (#1015)', async () => {
+test('a clean ship at an inspecting port gets one note and no scene, in its official\'s manner where the port has one; an independent port, no scene, and its official\'s manner where it has one (#1015, #1242)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    handAt('comms', 'Ceres Station', { rep: 0 }); inspectAtLanding(currentPlanet());
-    const league = { dialog: !!G.dialog, notes: [...UI.notes] };
-    const indie = SYSTEMS[Object.keys(SYSTEMS).find(id => SYSTEMS[id].gov === 'Independent')].planets[0].name;
-    handAt('comms', indie, { cargo: { water: 50 }, rep: -40 }); inspectAtLanding(currentPlanet());
-    return { league, indie: { dialog: !!G.dialog, notes: [...UI.notes] } };
+    const at = (port, o) => { handAt('comms', port, o); inspectAtLanding(currentPlanet()); return { dialog: !!G.dialog, notes: [...UI.notes], official: officialName(currentPlanet()) }; };
+    const ceres = at('Ceres Station', { rep: 0 }), mars = at('Mars', { rep: 0 }), eros = at('Eros Old Town', { cargo: { water: 50 }, rep: -40 });
+    const plainLeague = SYSTEMS[Object.keys(SYSTEMS).find(id => SYSTEMS[id].gov === 'Guild Federation' && SYSTEMS[id].planets.some(p => !OFFICIAL_MANNER[p.name]))].planets.find(p => !OFFICIAL_MANNER[p.name]).name;
+    const plainIndie = Object.values(SYSTEMS).filter(x => x.gov === 'Independent').flatMap(x => x.planets).find(p => !OFFICIAL_MANNER[p.name]);
+    return { ceres, mars, eros, league: at(plainLeague, { rep: 0 }), indie: plainIndie ? at(plainIndie.name, { rep: 0 }) : null };
   });
   await done();
-  assert.equal(r.league.dialog, false); assert.ok(r.league.notes.includes('Customs logs the ship through.'), r.league.notes.join(' | '));
-  assert.equal(r.indie.dialog, false); assert.ok(!r.indie.notes.includes('Customs logs the ship through.'));
+  assert.equal(r.ceres.dialog, false); assert.deepEqual(r.ceres.notes, [`${r.ceres.official} has the queue to the minute, and when nobody is looking waves a co-op hull through ahead of you.`]);
+  assert.deepEqual(r.mars.notes, [`${r.mars.official} counts the water in the manifest first, and the rest after, and logs the ship through.`]);
+  assert.equal(r.eros.dialog, false, 'no inspection at an independent port'); assert.deepEqual(r.eros.notes, [`${r.eros.official} sells you the berth, the water and the news, and knocks a little off the berth if you bring the news first.`]);
+  assert.ok(r.league.notes.includes('Customs logs the ship through.'), `a port with no written manner keeps the plain note: ${r.league.notes}`);
+  if (r.indie) { assert.equal(r.indie.dialog, false); assert.deepEqual(r.indie.notes, [], 'an independent port with no written manner: no note'); }
 });
 
 test('landing with machine parts: the inspector at Ceres Station, a Guild yard; customs logs the ship through at Ring Nine, a Guild port without one (#1205)', async () => {
