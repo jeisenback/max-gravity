@@ -413,8 +413,8 @@ the run that wrote this section (after the final review's tune, #808):
   then her weapons; `lock`, her lock then her weapons; `hull`, every gun at her hull; `hullhold`, the same with the turret held
   back on her salvo) fire the turret and the torpedoes at her hull; `answer` reads her shown move: it holds the turret back when
   she fires a salvo, aims at her lock while she closes or pins with it whole, sends a torpedo at the foe with the least armor
-  left, and else aims at her hull. (Until #1208 it held its torpedoes until her shields were down, and overcharged every gun at a
-  ship whose shields came back.) Good ends are crippled, broken off and escaped; a lost fight is the captain running
+  left, against a navy ship runs every gun the heat allows overcharged at her hull, and else aims at her hull. (Until #1208 it held
+  its torpedoes until her shields were down, and the overcharge was for a ship whose shields came back.) Good ends are crippled, broken off and escaped; a lost fight is the captain running
   or the hull gone.
 
   | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |

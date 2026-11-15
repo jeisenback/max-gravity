@@ -16,7 +16,7 @@ const { answerOrders } = require('./answer');
 
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
 // - Ship fight: the orders that read her shown move (tools/answer.js, the fight tool's `answer`): the turret held back against her salvo, her lock while she
-//   closes or pins with it, a torpedo at the foe with the least armor left, else her hull; the gunner move it chooses, if the hand knows one;
+//   closes or pins with it, a torpedo at the foe with the least armor left, overcharged guns at a navy ship, else her hull; the gunner move it chooses, if the hand knows one;
 //   then Fire, each turn.
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
