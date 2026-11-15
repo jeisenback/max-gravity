@@ -15,8 +15,10 @@ const hiredHelpers = () => {
     const titles = new Set(), work = [];
     for (let i = 0; i < n; i++) {
       G.state.eventSeen = {}; G.transit.seen = []; G.dialog = null; G.transit.event = null;
+      G.transit.offers = [];
       const e = pickHappening('transit');
       if (e) { titles.add(e.title); if (e.workId) work.push(e); }
+      for (const o of G.transit.offers || []) { const ev = o.make && o.make(); if (ev) titles.add(ev.title); }  // the people's scenes wait as offers (#1198): taken, as a player takes them
     }
     return { titles: [...titles], work };
   };

@@ -481,12 +481,19 @@ const TRADITIONS = {  // the name of each is here; its proposal and the line it 
   'docking-song': { get name() { return familyLines('names').traditions['docking-song']; }, moment: 'end', line: () => familySay('tradition')(`docking-song.line.${pick([0, 1, 2])}`) },
 };
 
-function traditionEvent() {
+function traditionEvent() { const p = traditionPeek(); return p ? p.play() : null; }
+// The tradition next to be proposed and who proposes it, chosen without proposing it (#1198): an offer on the ship.
+function traditionPeek() {
   const h = home(), crew = procedural().length ? procedural() : crewPeople();
   const id = Object.keys(TRADITIONS).find(k => !h.proposed.includes(k));
   if (!id || !crew.length) return null;
+  const f = pick(crew);
+  return { key: id, who: f.id, vars: { first: f.p.first }, play: () => traditionProposed(id, f) };
+}
+function traditionProposed(id, f) {
+  const h = home();
   h.proposed.push(id);
-  const say = familySay('tradition'), T = TRADITIONS[id], f = pick(crew);
+  const say = familySay('tradition'), T = TRADITIONS[id];
   return {
     title: say('title'), text: say(`${id}.propose`, { n: f.p.first, home: f.p.home, b: pick(familyLines('names').burns) }),
     choices: [

@@ -588,15 +588,17 @@ const SOCIAL_SCENES = {
 };
 const activityEvent = act => ({ title: 'Downtime', text: 'The crew have an evening.', choices: [{ label: typeof act.label === 'function' ? act.label() : act.label, run: act.run }] });
 
-function relationshipScene() {
+// The scenes that could play between the people aboard now, each a function that plays it (or finds it has nothing to say) with its pair on it (`pair`),
+// the friends who could ask the hand to cover a watch, and the wrapper that makes the crew's affairs personal. Nothing is used up until a scene is played.
+function relationshipOptions() {
   const list = folk(), st = G.state;
   if (list.length < 2) return null;
-  const all = pairs(list), scenes = [];
+  const all = pairs(list), scenes = [], pushFor = (x, y, f) => { f.pair = [x, y]; scenes.push(f); };
   for (const [a, b] of all) {
     const n = bond(a, b), A = a.p.first, B = b.p.first;
-    if (!hired() && n >= 6 && a.crew && b.crew) scenes.push(() => !stamped(a, b, 'together') && shipsRules(a, b, A, B));
-    else if (!hired() && n >= 3 && !isCooled(a, b, 'close', 40)) scenes.push(() => cool(a, b, 'close') || closeQuarters(a, b, A, B));
-    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
+    if (!hired() && n >= 6 && a.crew && b.crew) pushFor(a, b, () => !stamped(a, b, 'together') && shipsRules(a, b, A, B));
+    else if (!hired() && n >= 3 && !isCooled(a, b, 'close', 40)) pushFor(a, b, () => cool(a, b, 'close') || closeQuarters(a, b, A, B));
+    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) pushFor(a, b, () => {
       cool(a, b, 'feud'); relMark('feud');
       const fk = bondKey(a, b); (st.feuds = st.feuds || {})[fk] = (st.feuds[fk] || 0) + 1;  // a feud that is seen can split the ship (stakes.js)
       const shape = pick(['galley', 'handover', 'shoulders']);
@@ -604,22 +606,22 @@ function relationshipScene() {
       if (shape === 'shoulders') return feudShoulders(a, b, A, B);
       return smallShip(a, b, A, B);
     });
-    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), Math.random() < 0.4 ? rootsRecipe(a, b, A, B) : smallSystem(a, b, A, B)));
+    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) pushFor(a, b, () => !stamped(a, b, 'roots') && (relMark('roots'), Math.random() < 0.4 ? rootsRecipe(a, b, A, B) : smallSystem(a, b, A, B)));
     if (a.crew !== b.crew) {
       const [c, p] = a.crew ? [a, b] : [b, a];
-      scenes.push(() => !stamped(a, b, 'tour') && grandTour(c, p));
+      pushFor(a, b, () => !stamped(a, b, 'tour') && grandTour(c, p));
     }
   }
   const crew = list.filter(f => f.crew);
   if (crew.length >= 2) {
     const [a, b] = pick(pairs(crew)), n = bond(a, b);
-    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30) && relReady('word')) scenes.push(() => (cool(a, b, 'word'), relMark('word'), wordScene(a, b, n)));
+    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30) && relReady('word')) pushFor(a, b, () => (cool(a, b, 'word'), relMark('word'), wordScene(a, b, n)));
   }
   // A friend asks you to cover their watch: you learn their post for a night, and they owe you one.
   const askers = hired() && relReady('cover') ? crew.filter(f => f.p.opinion >= OPINION.CLOSE && postOfRole(f.p.role) && postOfRole(f.p.role) !== hired().post && !f.p.owes) : [];
   // Two fans of different teams, and a match coming up.
   const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && leagueOf(tastes(a).team) === leagueOf(tastes(b).team) && !isCooled(a, b, 'match', 25));
-  if (fans && relReady('match')) scenes.push(() => {
+  if (fans && relReady('match')) pushFor(fans[0], fans[1], () => {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
     cool(a, b, 'match'); relMark('match');
     if (Math.random() < 0.4) return matchReplay(a, b, ta, tb);
@@ -627,10 +629,20 @@ function relationshipScene() {
   });
   // The crew's own affairs: what the hand puts in (a gift, a bet) comes out of their savings, not the ship's fund (transit.js chooseEvent).
   const yours = ev => ev && Object.assign(ev, { personal: true });
-  if (askers.length && Math.random() < 0.4) return yours(coverWatchScene(pick(askers).p));  // a friend's ask is not one among a hundred pairs' scenes
+  return { askers, scenes, yours };
+}
+function relationshipScene() { const p = relationshipPeek(); return p ? p.play() : null; }
+// The scene a burn's draw would play between two people, chosen without playing it (#1198): an offer over the first of them. A friend's ask is not one
+// among a hundred pairs' scenes; otherwise the pairs' scenes in a shuffled order, the first that has something to say when it is played.
+function relationshipPeek() {
+  const o = relationshipOptions();
+  if (!o) return null;
+  const { askers, scenes, yours } = o;
+  if (askers.length && Math.random() < 0.4) { const f = pick(askers).p; return { kind: 'crew', key: `cover:${f.id}`, who: f.id, vars: { first: f.first }, play: () => yours(coverWatchScene(f)) }; }
   const options = scenes.map(f => f).sort(() => Math.random() - 0.5);
-  for (const make of options) { const ev = make(); if (ev) return yours(ev); }
-  return null;
+  if (!options.length) return null;
+  const [a, b] = options[0].pair;
+  return { key: `${a.id}:${b.id}`, who: a.id, vars: { first: a.p.first, other: b.p.first }, play() { for (const make of options) { const ev = make(); if (ev) return yours(ev); } return null; } };
 }
 
 // A regular back aboard: the crew remember them.
