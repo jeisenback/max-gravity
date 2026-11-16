@@ -121,14 +121,10 @@ const CAST_BAR = {
           'Honest Comet. I towed her into Ceres eleven years ago. She was dark for six weeks. Everyone aboard was alive." She keeps her finger on the ' +
           'card.'),
       choices: [
-        { label: 'Ask about the crew', memory: 'You asked about the crew of the Honest Comet.', run() { castLike('bexa', 2, this.memory); return (
-            'She tells you, and it takes a while, and every name is in it: the engineer who sang, the child with the broken wrist, the captain, who ' +
-            'wouldn\'t leave the bridge until everyone else was off. "She\'s for sale again," she says, looking at the card. "They never fixed the ' +
-            'port thruster. I told them about the port thruster." She says nothing else for a time.'); } },
+        { label: 'Ask about the crew', memory: 'You asked about the crew of the Honest Comet.', run() { castLike('bexa', 2, this.memory); return 'She tells you, short. Six weeks dark, the air rationed by the hour, and a captain who wouldn\'t leave the bridge until the others were off. "She\'s for sale again," she says, looking at the card. "They never fixed the port thruster. I told them about the port thruster."'; } },
         { label: 'Buy her a drink and let her read', memory: 'You bought me a drink and let me read the board.', run() { castLike('bexa', 1, this.memory); return (
             'You put a drink at her elbow and say nothing. She reads the board from one end to the other, card by card, saying a ship\'s name now and ' +
-            'then under her breath. When she has finished she lifts the glass. "Thank you," she says. "It\'s good to be somewhere I can be quiet. It\'s ' +
-            'better with someone who knows how."'); } },
+            'then under her breath. When she\'s finished, she lifts the glass to you and drinks it.'); } },
       ],
     },
     {
@@ -141,10 +137,7 @@ const CAST_BAR = {
             'You take a stool at the other end and watch, without listening. They talk for an hour. She listens, mostly, with her hand around her ' +
             'glass, and he talks with his hands, drawing the tug in the air. At the end she takes a pen on a chain from her jacket and signs the back ' +
             'of the postcard, small and even. She puts it in her jacket, where the list is.'); } },
-        { label: 'Sit with them', memory: 'You sat with me while the boy from Pallas talked.', run() { castLike('bexa', 3, this.memory); castFlag('bexa', 'pallas'); return (
-            'You sit down beside her. Her shoulder comes to rest against yours. The boy tells it all: the dark, the cold, the drawing. He says she ' +
-            'was the first person he ever saw who wasn\'t afraid. Bexa says, in a low voice, "I was terrified." The boy laughs, startled. She smiles. ' +
-            'It\'s the first time you\'ve seen all of her face.'); } },
+        { label: 'Sit with them', memory: 'You sat with me while the boy from Pallas talked.', run() { castLike('bexa', 3, this.memory); castFlag('bexa', 'pallas'); return 'You sit down beside her. The boy tells it all: the dark, the cold, the drawing. He says she was the first person he ever saw who wasn\'t afraid. Bexa says, in a low voice, "I was terrified." The boy laughs, and so does she.'; } },
       ],
     },
   ],

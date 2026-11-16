@@ -583,31 +583,31 @@ const CAST = {
     traits: ['secretive', 'kind'], wage: 700,
     skills: { pilot: 3, engineer: 1, slicer: 1, gunner: 0 }, captain: { trade: 3, nerve: 3, thrift: 4 },
     ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
-    bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she doesn\'t talk about the list unless you ask the right way.',
+    bio: 'She pulled dead ships into Ceres on a salvage tug for twenty years, on a yard\'s wage, and never owned the tug. She keeps a list of every crew she found aboard them, the living and the others, and doesn\'t talk about it unless you ask the right way.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
         'Bexa: "I\'ve never been aboard a dead one. Cold, yes. The lights on a timer, and the log waiting for somebody to read it."',
-        'Bexa: "In the Belt we don\'t leave a ship. Not for money. Not for orders. You tow her home."',
+        'Bexa: "The insurer writes her off, and the yard won\'t pay the tow. So she stays out. That\'s how most of them stay out."',
       ],
       bridge: [
-        'Bexa is flying with both hands on the stick and her thumbs tucked under, the way you hold something that might slip.',
+        'Bexa flies with both hands on the stick, thumbs tucked under. Tug pilots fly that way.',
         'Bexa has a brass tag on a string above the console. She won\'t say whose it was.',
-        'Bexa is humming a tug-pilot lullaby, low, to the transponder.',
+        'Bexa is reading a hull\'s registry history on the console, back to the yard that built her.',
       ],
     },
     scenes: {
       meet: {
         title: 'The Tug Pilot',
         text: ('Down on the Ceres docks, a woman in a patched tug jacket is signing a salvage chit with a pen on a chain, the chit pinned flat to the rail under two fingers against the draft off the vents. "Bexa Oyelaran," she says, when you ask. "Twenty years towing dead ' +
-            'ships home. I could tell a hull\'s whole history from the airlock." She caps the pen. "The blockade killed the work. Nobody sells a wreck any ' +
-            'more, they keep them. I\'d like a ship I can fly instead of tow."'),
+            'ships home. I could tell a hull\'s whole history from the airlock." She caps the pen. "The yards cut the salvage contracts. They\'d rather ' +
+            'the insurer wrote a hull off than pay the tow. I\'d like a ship I can fly instead of tow."'),
         choices: [
           {
             label: 'Offer her the helm',
             when: { berths: 1 },
             effects: { castJoin: 'bexa' },
             result: 'She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. "I\'ll take your helm," she says. "I\'ll tell you now that I talk to ' +
-              'the transponder. It\'s not a problem. It listens better than most people."',
+              'the transponder. It\'s not a problem."',
           },
           {
             label: '"Not this time."',
@@ -625,16 +625,12 @@ const CAST = {
           {
             label: 'Ask about the living ones',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You asked about the ones who lived.' }, castXp: { who: 'bexa', role: 'pilot', n: 2 } },
-            result: '"Oh," she says, and smiles, for the first time since you came aboard. "Eleven. Eleven of them lived. There\'s a boy on Pallas ' +
-              'who sends me a card every year with the same drawing of a tug, and a woman at Hygiea who runs a water shop and gives me a free flask ' +
-              'every time I dock." She runs a finger down the list, stopping at the names, one at a time. "That\'s the part I put the list here for."',
+            result: '"Eleven," she says. "Eleven of them lived. There\'s a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman on Ceres who runs a water stall and won\'t take my money for a flask." She runs a finger down the list. "I put the list here for the eleven."',
           },
           {
             label: 'Ask about the others',
             effects: { castLike: { who: 'bexa', n: 1, memory: 'You asked about the others, and listened.' } },
-            result: 'She\'s silent for a long time. "Thirty-one," she says. "I make sure I say their names once a year, out loud, on the day I found them. ' +
-              'Somebody should." She closes the cover, finally, gently, as you\'d a door on someone sleeping. "Thank you for asking. It\'s not what ' +
-              'most people ask."',
+            result: 'She\'s quiet for a long time. "Thirty-one," she says. "I say their names once a year, out loud, on the day I found them." She closes the cover. "Most people don\'t ask about those."',
           },
         ],
       },
@@ -642,65 +638,49 @@ const CAST = {
         days: 10, title: 'A Wreck on the Scope',
         text: ('A transponder is repeating a ship\'s name every four seconds, faint and old, a few hours off the lane. Bexa has her hand flat on the ' +
             'console. "It\'s a derelict," she says. "She has been calling a long time. A few hours, no more. It\'s not my ship to ask for. But I\'d ' +
-            'like to look." She keeps her eyes on the scope. "I won\'t do it if you say no."'),
+            'like to look." She keeps her eyes on the scope.'),
         choices: [
           {
             label: 'Take the detour',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You took the detour to look at the wreck.' }, castXp: { who: 'bexa', role: 'pilot', n: 3 }, delay: 6 },
-            result: 'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her ' +
-              'hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck. ' +
-              'Quietly, she writes a name on a list you can\'t see. "She was called the Patient Wren," she says. "I\'ll tell the registry. She\'ll be ' +
-              'towed home." She flies the rest of the shift with two fingers on the stick.',
+            result: 'She brings the ship in slow. The wreck is a hauler, dark and cold, hatches sealed, the beacon still going. Nobody aboard. Bexa reads the registry plate through the camera and writes it down. "The Patient Wren," she says. "Written off four years ago. I\'ll tell the registry where she is. Somebody might pay the tow." She flies the rest of the shift with two fingers on the stick.',
           },
           {
             label: 'Stay on course',
             effects: { castLike: { who: 'bexa', n: -1, memory: 'You wouldn\'t let me look at the wreck.' } },
-            result: '"No," she says. "Of course. It\'s not my ship." She takes her hand off the console slowly, and the transponder\'s faint call fades ' +
-              'behind you, four seconds at a time, until you can\'t hear it. She flies on, correct and silent, and later you see her write something ' +
-              'small on the inside of the console cover.',
+            result: '"No," she says. "Of course. It\'s not my ship." She takes her hand off the console, and the call fades behind you, four seconds at a time. She flies on, and later you see her write something small on the inside of the console cover.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Ghost on the Scope',
-        text: ('The scope paints a ship at forty thousand kilometers, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, ' +
-            'because you haven\'t moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it\'s too tidy, the heading ' +
-            'is a slightly wrong shade of straight. Sensor echo off the ice. I\'ve seen it forty times." She waits. "I\'d like to ignore it."'),
+        text: 'The scope paints a ship at forty thousand kilometers, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, because you haven\'t moved: "Most ghosts out here are real ships. This one\'s too tidy. Constant heading, constant speed, no burn to get there. It\'s an echo off the ice. I\'ve seen it forty times." She waits. "I\'d like to ignore it."',
         choices: [
           {
             label: 'Trust her',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You trusted me about the ghost on the scope.' }, castXp: { who: 'bexa', role: 'pilot', n: 2 } },
-            result: 'You tell her to carry on. She carries on, and for the next twenty minutes the whole ship waits with her, listening to the ' +
-              'thing she\'s certain isn\'t there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a ' +
-              'long, slow exhale. "Echo," she says. "Forty-one." She doesn\'t say thank you. She puts a tick on the inside of the console ' +
-              'cover.',
+            result: 'You tell her to carry on. For twenty minutes the whole ship watches the contact with her. Then it thins out and is gone. "Echo," Bexa says. "Forty-one." She puts a tick on the inside of the console cover.',
           },
           {
             label: 'Raise the alarm anyway',
             effects: { castLike: { who: 'bexa', n: -1, memory: 'You raised the alarm about a ghost I had called.' } },
-            result: 'The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes ' +
-              'the ship off alert herself, calmly, without a word, and flies on. "Better safe," she says at last. For a day she answers in single words, and after that she reports a contact only once she\'s sure of it.',
+            result: 'The alarm goes, the crew goes to stations, and in twenty minutes the contact fades to nothing. Bexa takes the ship off alert herself and flies on. "Better safe," she says. For a day she answers in single words, and after that she reports a contact only once she\'s sure of it.',
           },
         ],
       },
       late: {
         days: 45, title: 'The Ship Nobody Wanted',
-        text: ('Bexa is at the helm with the lights low and the console cover open, and she\'s not looking at the list. She ' +
-            'turns. "I want a ship. Not to tow. A wreck that everyone else has given up on, that I bring home, and put ' +
-            'right, and fly. A ship nobody wanted, and that wants to go." She looks at her hands. "If you ever have ships, I\'d like to be asked."'),
+        text: 'Bexa is at the helm with the lights low and the console cover open. "I want a ship," she says. "Not to tow. One the insurer wrote off and the yard wouldn\'t take, that I bring home and put right and fly." She looks at her hands. "Twenty years of tug pay. It\'s not enough for a ship. It might be enough for a share in one."',
         choices: [
           {
-            label: 'Promise her a ship, someday',
-            effects: { castLike: { who: 'bexa', n: 2, memory: 'I told you about the ship nobody wanted, and you promised.' }, castFlag: { who: 'bexa', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She doesn\'t answer for a moment. Then she takes the brass tag from above the ' +
-              'console, on its string, and holds it in her palm. "He\'d have liked you," she says, to nobody in particular, and puts it carefully ' +
-              'back.',
+            label: 'Say you\'d crew for her',
+            effects: { castLike: { who: 'bexa', n: 2, memory: 'I told you about the ship nobody wanted, and you said you\'d crew for me.' }, castFlag: { who: 'bexa', flag: 'promised' } },
+            result: '"I\'d crew for you," you say. She doesn\'t answer for a moment. Then she takes the brass tag down from above the console and holds it in her palm. "He\'d have liked you," she says, and puts it back.',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'bexa', n: 1, memory: 'You wouldn\'t promise, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." Her mouth goes crooked. "That\'s the ' +
-              'right answer," she says. "Don\'t promise a tow to a ship you haven\'t looked at. I did, once, and she had a hole in her."',
+            label: '"Ask me when you\'ve found her."',
+            effects: { castLike: { who: 'bexa', n: 1, memory: 'I told you about the ship, and you said to ask you when I\'d found her.' } },
+            result: '"Ask me when you\'ve found her," you say. Her mouth goes crooked. "Fair," she says. "Don\'t promise a tow to a ship you haven\'t looked at. I did, once, and she had a hole in her."',
           },
         ],
       },
@@ -1136,15 +1116,15 @@ function theTow(backup) {
   const outcome = castFate('bexa', castPoints(castRiskPoints() + (mass ? 1 : 0) + (backup ? 1 : 0)), `Went out on the tow line near ${system().name}.`, 'Her left hand is numb from the cold, and she flies with the right.', 'pilot');
   const lead = backup ? 'You send a second hand out on the line with her. ' + castBackupCost('bexa') : '';
   if (outcome === 'die') {
-    return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It doesn\'t part with a bang. It goes all at once, like a breath, and the tug jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
-      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+    return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It doesn\'t part with a bang. It goes all at once, and the ship jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
+      + (promised ? ' Nobody is going to ask you to crew for her now.' : '');
   }
   castLike('bexa', 2, outcome === 'mark' ? 'You let me go out on the line, and I came back with a hand that\'s numb.' : 'You let me go out on the line, and I came back.');
   if (outcome === 'mark') {
     return lead + 'She takes the spin out of the hulk, and the line comes slack, and the cold gets into her left hand on the way back to the lock. She flies the rest of the run with the right, the left held in her lap with the glove still on. "It\'ll come back," she says, about the hand, and doesn\'t take the glove off to show you.';
   }
-  return lead + 'She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.'
-    + (promised ? ' "You said someday," she adds, and hangs the brass tag back above the console.' : '');
+  return lead + 'She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round behind the ship on the line. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.'
+    + (promised ? ' "You said you\'d crew for me," she adds, and hangs the brass tag back above the console.' : '');
 }
 
 // A scene with a `closed` reading plays it, in place of the scene itself, when the person's regard for the hand is below friendly

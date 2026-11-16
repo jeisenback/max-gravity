@@ -494,7 +494,7 @@ test('Bexa\'s pivot, The Tow, follows the state, and calling it off costs opinio
   assert.equal(r.backup.dead, false, 'a second hand is a point'); assert.equal(r.backup.marks, 1);
   assert.equal(r.noMass.marks, 1, 'low reaction mass loses a point');
   assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'cutting the line benches her and costs opinion only');
-  assert.match(r.dieP.raw, /you promised her/); assert.doesNotMatch(r.die.raw, /you promised her/);
+  assert.match(r.dieP.raw, /Nobody is going to ask you to crew for her now/); assert.doesNotMatch(r.die.raw, /Nobody is going to ask you to crew for her now/);
   assert.match(r.shown.low, /tanks are low/); assert.match(r.shown.full, /tanks are over half/);
   await done();
 });
