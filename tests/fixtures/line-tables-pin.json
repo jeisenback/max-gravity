@@ -17,11 +17,11 @@
  },
  {
   "key": "cards:talkative:1",
-  "text": "Sam talks all through the hand, mostly about their last captain, and bets without looking at their cards. You take 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam talks all through the hand, mostly about their last captain, and bets without looking at their cards. You take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:talkative:2",
-  "text": "Sam talks all through the hand, mostly about their last captain, and bets without looking at their cards. You take 2,000 cr. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam talks all through the hand, mostly about their last captain, and bets without looking at their cards. You take 2,000 cr. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:talkative:3",
@@ -81,19 +81,19 @@
  },
  {
   "key": "cards:nervous:1",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "You let Sam talk, and they talk themselves into a bad bet. 2,000 cr. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:nervous:2",
-  "text": "Sam plays small, folds early, and checks the time twice. You take 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays small, folds early, and checks the time twice. You take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:nervous:3",
-  "text": "Sam plays small, folds early, and checks the time twice. You take 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays small, folds early, and checks the time twice. You take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:nervous:4",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "quiet:nervous:1",
@@ -149,15 +149,15 @@
  },
  {
   "key": "cards:generous:2",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:generous:3",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "cards:generous:4",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "quiet:generous:1",
@@ -209,7 +209,7 @@
  },
  {
   "key": "cards:greedy:1",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:greedy:2",
@@ -217,11 +217,11 @@
  },
  {
   "key": "cards:greedy:3",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on long watches, slow and never in a hurry. 2,000 cr, and you can't find where you went wrong. You finish the glass.|"
  },
  {
   "key": "cards:greedy:4",
-  "text": "Sam watches the 2,000 cr go across the table, and writes the figure on the back of a pay slip. Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Sam watches the 2,000 cr go across the table, and writes the figure on the back of a pay slip. Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "quiet:greedy:1",
@@ -273,7 +273,7 @@
  },
  {
   "key": "cards:pious:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 2,000 cr. You finish the glass.|"
+  "text": "You have the better hand most of the night, and not at the end. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:pious:2",
@@ -281,11 +281,11 @@
  },
  {
   "key": "cards:pious:3",
-  "text": "Sam touches the cord at their wrist before each hand, and loses 2,000 cr to you anyway. \"It isn't for cards,\" they say. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam touches the cord at their wrist before each hand, and loses 2,000 cr to you anyway. \"It isn't for cards,\" they say. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:pious:4",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "quiet:pious:1",
@@ -337,11 +337,11 @@
  },
  {
   "key": "cards:rude:1",
-  "text": "Sam loses 2,000 cr and says the deck's marked. It isn't. They pay. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam loses 2,000 cr and says the deck's marked. It isn't. They pay. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:rude:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "You let Sam talk, and they talk themselves into a bad bet. 2,000 cr. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:rude:3",
@@ -401,11 +401,11 @@
  },
  {
   "key": "cards:curious:1",
-  "text": "Sam wants to know how you knew, and plays the next hand to find out. You take 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam wants to know how you knew, and plays the next hand to find out. You take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:curious:2",
-  "text": "Sam fans the last cards with a flourish you have seen before, in another port. 2,000 cr. You finish the glass.|"
+  "text": "Sam shows you their last hand. You'd have folded it. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:curious:3",
@@ -413,7 +413,7 @@
  },
  {
   "key": "cards:curious:4",
-  "text": "Sam wants to know how you knew, and plays the next hand to find out. You take 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam wants to know how you knew, and plays the next hand to find out. You take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "quiet:curious:1",
@@ -469,11 +469,11 @@
  },
  {
   "key": "cards:drunk:2",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "The cards run your way. Sam changes seats, then decks. 2,000 cr to you. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:drunk:3",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:drunk:4",
@@ -529,15 +529,15 @@
  },
  {
   "key": "cards:secretive:1",
-  "text": "Sam loses 2,000 cr without a word, and turns their terminal face down. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam loses 2,000 cr without a word, and turns their terminal face down. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:secretive:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "You let Sam talk, and they talk themselves into a bad bet. 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:secretive:3",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "cards:secretive:4",
@@ -593,15 +593,15 @@
  },
  {
   "key": "cards:kind:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 2,000 cr. You finish the glass.|"
+  "text": "You have the better hand most of the night, and not at the end. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:kind:2",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "The cards run your way. Sam changes seats, then decks. 2,000 cr to you. Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:kind:3",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:kind:4",
@@ -657,7 +657,7 @@
  },
  {
   "key": "cards:brave:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "The cards run your way. Sam changes seats, then decks. 2,000 cr to you. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:brave:2",
@@ -721,11 +721,11 @@
  },
  {
   "key": "cards:homesick:1",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "cards:homesick:2",
-  "text": "Sam isn't watching the cards. You take 2,000 cr off them, and it's a moment before they notice. Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Sam isn't watching the cards. You take 2,000 cr off them, and it's a moment before they notice. Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards:homesick:3",
@@ -733,7 +733,7 @@
  },
  {
   "key": "cards:homesick:4",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "quiet:homesick:1",
@@ -773,7 +773,7 @@
  },
  {
   "key": "bless:talkative:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:talkative:2",
@@ -781,7 +781,7 @@
  },
  {
   "key": "bless:talkative:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:nervous:1",
@@ -789,7 +789,7 @@
  },
  {
   "key": "bless:nervous:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:nervous:2",
@@ -797,7 +797,7 @@
  },
  {
   "key": "bless:nervous:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:generous:1",
@@ -805,7 +805,7 @@
  },
  {
   "key": "bless:generous:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:generous:2",
@@ -813,7 +813,7 @@
  },
  {
   "key": "bless:generous:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:greedy:1",
@@ -821,7 +821,7 @@
  },
  {
   "key": "bless:greedy:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:greedy:2",
@@ -829,7 +829,7 @@
  },
  {
   "key": "bless:greedy:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:pious:1",
@@ -837,7 +837,7 @@
  },
  {
   "key": "bless:pious:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:pious:2",
@@ -845,7 +845,7 @@
  },
  {
   "key": "bless:pious:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:rude:1",
@@ -853,7 +853,7 @@
  },
  {
   "key": "bless:rude:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:rude:2",
@@ -861,7 +861,7 @@
  },
  {
   "key": "bless:rude:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:curious:1",
@@ -869,7 +869,7 @@
  },
  {
   "key": "bless:curious:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:curious:2",
@@ -877,7 +877,7 @@
  },
  {
   "key": "bless:curious:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:drunk:1",
@@ -885,7 +885,7 @@
  },
  {
   "key": "bless:drunk:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:drunk:2",
@@ -893,7 +893,7 @@
  },
  {
   "key": "bless:drunk:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:secretive:1",
@@ -901,7 +901,7 @@
  },
  {
   "key": "bless:secretive:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:secretive:2",
@@ -909,7 +909,7 @@
  },
  {
   "key": "bless:secretive:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:kind:1",
@@ -917,7 +917,7 @@
  },
  {
   "key": "bless:kind:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:kind:2",
@@ -925,7 +925,7 @@
  },
  {
   "key": "bless:kind:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:brave:1",
@@ -933,7 +933,7 @@
  },
  {
   "key": "bless:brave:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:brave:2",
@@ -941,7 +941,7 @@
  },
  {
   "key": "bless:brave:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:homesick:1",
@@ -949,7 +949,7 @@
  },
  {
   "key": "bless:homesick:1",
-  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\"|9 Jul 2214: I said the words over your ship."
+  "text": "Sam takes a cord from their wrist, knots it three times, and gives it to you for the ship. \"Hang it by the lock,\" they say. \"It won't stop a rock.\"|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "home:homesick:2",
@@ -957,7 +957,7 @@
  },
  {
   "key": "bless:homesick:2",
-  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.|9 Jul 2214: I said the words over your ship."
+  "text": "Sam doesn't close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it's lost, and who to ask.|9 Jul 2214: I said the words over your ship."
  },
  {
   "key": "heard:home:1",
@@ -1553,63 +1553,63 @@
  },
  {
   "key": "secret:contraband:1",
-  "text": "Sam lowers their voice: \"If you ever need something moved and not looked at, I know people. I might be people.\"|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam keeps their voice down: \"If you ever need something moved and not looked at, I know people.\"|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:contraband:2",
-  "text": "Sam lowers their voice: \"If you ever need something moved and not looked at, I know people. I might be people.\"|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam keeps their voice down: \"If you ever need something moved and not looked at, I know people.\"|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:contraband:3",
-  "text": "Sam leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam asks whether your hold gets inspected at every port, or just some.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:wanted:1",
-  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam goes quiet when a patrol officer comes in, and looks at their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:wanted:2",
-  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam goes quiet when a patrol officer comes in, and looks at their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:wanted:3",
-  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam goes quiet when a patrol officer comes in, and looks at their drink until the officer leaves.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:ill:1",
-  "text": "Sam coughs hard and hides the cloth. It is the dust in here, they say, and would you like another.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam coughs, and folds the cloth away before you can see it.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:ill:2",
-  "text": "Sam coughs into their sleeve and waves it off. \"Nothing. Recyclers on my last ship. It'll pass.\"|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam coughs into their sleeve. \"Recyclers on my last ship,\" they say. \"It'll pass.\"|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:ill:3",
-  "text": "Sam coughs hard and hides the cloth. It is the dust in here, they say, and would you like another.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam coughs, and folds the cloth away before you can see it.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:spy:1",
-  "text": "Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam asks a lot about your routes, and says nothing about theirs.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:spy:2",
-  "text": "Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam asks small, exact things: which ports, which days, how long you sat in the queue.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:spy:3",
-  "text": "Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam asks small, exact things: which ports, which days, how long you sat in the queue.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:debt:1",
-  "text": "Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam checks their messages, and puts the terminal away without answering any.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:debt:2",
-  "text": "Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam checks their messages, and puts the terminal away without answering any.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secret:debt:3",
-  "text": "Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: You bought me a drink at The Anchor."
+  "text": "Sam says, three drinks in, that they owe more than they'll make this year, and not to a bank.|9 Jul 2214: You bought me a drink at The Anchor."
  },
  {
   "key": "secrethelp:contraband:go",
@@ -1617,19 +1617,19 @@
  },
  {
   "key": "secrethelp:contraband:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam makes a gesture at the room, and lowers their voice to nothing. \\\"I move things,\\\" they say, \\\"the kind that don't go on a manifest. I don't tell everyone.\\\"\",[\"Ask who they know\",\"Say you don't want to know\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam keeps their voice down. \\\"I move things,\\\" they say. \\\"The kind that don't go on a manifest. I don't tell everyone.\\\"\",[\"Ask who they know\",\"Say you don't want to know\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:contraband:0",
-  "text": "Sam names a name, and a port, and a time of day, and then says you never heard it. It's a door, and you now know where.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "Sam gives you a name, a dock and a time of day. \"You didn't hear it from me.\"|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:contraband:1",
-  "text": "Sam relaxes. \"Good,\" they say. \"Then we've never talked.\"|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "\"Good,\" Sam says. \"Then we didn't talk.\"|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:contraband:2",
-  "text": "You let it be, and the talk goes somewhere easier.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You let it be, and talk about something else.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:wanted:go",
@@ -1637,19 +1637,19 @@
  },
  {
   "key": "secrethelp:wanted:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam has taken the seat with its back to the wall. \\\"There's a warrant,\\\" they say, \\\"and it's not for what they say it is. I'd rather not be at a table by the door.\\\"\",[\"Say you've seen nothing\",\"Tell them to give themselves up\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has the seat with its back to the wall. \\\"There's a warrant,\\\" they say. \\\"It's not for what it says. I'd rather not sit near the door.\\\"\",[\"Say you've seen nothing\",\"Tell them to give themselves up\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:wanted:0",
-  "text": "\"Good,\" Sam says. \"Thank you.\" They leave by the back a few minutes later, without hurry.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "\"Thanks,\" Sam says. They leave by the back a few minutes later.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:wanted:1",
-  "text": "Sam looks at you and doesn't answer. They finish their drink and leave, and don't look back.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "Sam doesn't answer. They finish the drink and go.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:wanted:2",
-  "text": "You let it be, and the talk goes somewhere easier.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You let it be, and talk about something else.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:ill:go",
@@ -1657,19 +1657,19 @@
  },
  {
   "key": "secrethelp:ill:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam puts the glass down. \\\"Six months and the recyclers on that last ship,\\\" they say. \\\"The clinic wants more than I have. I tell people it's the dust.\\\"\",[\"Pay for the clinic (1,000 cr)\",\"Tell them where the nearest medic is\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam puts the glass down. \\\"Six months on a ship with bad recyclers,\\\" they say. \\\"The clinic wants more than I've got. I tell people it's the dust.\\\"\",[\"Pay for the clinic (1,000 cr)\",\"Tell them where the nearest medic is\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:ill:0",
-  "text": "Sam doesn't argue. The next time you see them, they say, they'll be breathing better.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "Sam doesn't argue. They write the clinic's hours on a napkin.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:ill:1",
-  "text": "You give the name and the street. Sam writes it on a napkin and puts it carefully in a pocket.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You give them the name and the deck. Sam writes it on a napkin and puts it in a pocket.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:ill:2",
-  "text": "You let it be, and the talk goes somewhere easier.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You let it be, and talk about something else.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:spy:go",
@@ -1681,15 +1681,15 @@
  },
  {
   "key": "secrethelp:spy:0",
-  "text": "Sam writes nothing down, and doesn't need to.|"
+  "text": "Sam doesn't write anything down.|"
  },
  {
   "key": "secrethelp:spy:1",
-  "text": "\"Fair,\" Sam says, and orders you another.|"
+  "text": "\"Fair,\" Sam says, and gets you another.|"
  },
  {
   "key": "secrethelp:spy:2",
-  "text": "You let it be, and the talk goes somewhere easier.|"
+  "text": "You let it be, and talk about something else.|"
  },
  {
   "key": "secrethelp:debt:go",
@@ -1697,11 +1697,11 @@
  },
  {
   "key": "secrethelp:debt:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam turns the glass in a ring on the bar. \\\"Six hundred and twelve,\\\" they say. \\\"It's not even a lot. It's just more than I have, and the people it's owed to don't do arithmetic.\\\"\",[\"Cover part of it (2,000 cr)\",\"Say you'll keep an ear out for who's asking\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam turns the glass on the bar. \\\"Four thousand,\\\" they say. \\\"It's not even a lot. It's just more than I've got, and they add the interest every week.\\\"\",[\"Cover part of it (2,000 cr)\",\"Say you'll keep an ear out for who's asking\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:debt:0",
-  "text": "You count out the credits. Sam turns them over, and then takes them, and doesn't say anything for a long time.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You count out the credits. Sam looks at them for a while, and then puts them away.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "secrethelp:debt:1",
@@ -1709,7 +1709,7 @@
  },
  {
   "key": "secrethelp:debt:2",
-  "text": "You let it be, and the talk goes somewhere easier.|9 Jul 2214: You stood by me when I told you my trouble."
+  "text": "You let it be, and talk about something else.|9 Jul 2214: You stood by me when I told you my trouble."
  },
  {
   "key": "goalask:home",
@@ -1721,23 +1721,23 @@
  },
  {
   "key": "goalhelp:home:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam hasn't been home in years, and has the route on a card in a pocket, worn to cloth. \\\"Three more ports,\\\" they say. \\\"Maybe four, if the money holds.\\\"\",[\"Pay part of the fare (600 cr)\",\"Tell them which lanes are quick right now\",\"Ask them what they'll do first, when they get there\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has the route on the back of the ticket, three ports crossed off. \\\"Three more,\\\" they say. \\\"Four if the fare goes up again.\\\"\",[\"Pay part of the next fare (600 cr)\",\"Tell them which lanes are running quick\",\"Ask what they'll do first when they get there\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:home:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:home:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:home:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam says, three drinks in, that they owe more than they'll make this year, and not to a bank.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:home:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:family",
@@ -1749,23 +1749,23 @@
  },
  {
   "key": "goalhelp:family:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see family, and has been trying all evening to think what to bring.\",[\"Press a few credits into their hand for a present (600 cr)\",\"Suggest something from the market here\",\"Ask who they're going to see\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see their sister and her kid. The present's in a bag on the bar, and they keep taking it out to look at it.\",[\"Put something toward the present (600 cr)\",\"Tell them what's good at the market here\",\"Ask who they're going to see\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:family:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:family:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:family:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam says, three drinks in, that they owe more than they'll make this year, and not to a bank.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:family:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:job",
@@ -1777,23 +1777,23 @@
  },
  {
   "key": "goalhelp:job:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam has an interview at the other end, and says the questions over under their breath.\",[\"Stand them the clothes for it (600 cr)\",\"Play the interviewer for a few questions\",\"Let them talk it through\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has the interview the day after they land. The questions are on their terminal, and the answers, and they keep changing the answers.\",[\"Pay for a decent jacket for it (600 cr)\",\"Ask them the questions yourself\",\"Let them talk it through\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:job:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:job:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:job:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam says, three drinks in, that they owe more than they'll make this year, and not to a bank.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:job:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:fresh",
@@ -1805,23 +1805,23 @@
  },
  {
   "key": "goalhelp:fresh:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam says only that it's a fresh start, and that they'd rather not say from what. They're watching to see how you take it.\",[\"Put something toward the first month (600 cr)\",\"Tell them what to do first in a new port\",\"Say it's all right not to say\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam says it's a fresh start, and doesn't say from what. They watch how you take that.\",[\"Put something toward the first month's berth (600 cr)\",\"Tell them what to sort out first in a new port\",\"Say they don't have to tell you\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:fresh:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:fresh:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:fresh:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam checks their messages, and puts the terminal away without answering any.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:fresh:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:research",
@@ -1833,23 +1833,23 @@
  },
  {
   "key": "goalhelp:research:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam has a research posting, and the instruments for it in a case under the table that they haven't let go of since you sat down.\",[\"Pay the case's berth fee (600 cr)\",\"Tell them what to watch for on the lane\",\"Ask what they're going to measure\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has a posting at the end of the trip, and the instruments for it in a case between their feet. The case pays a berth fee of its own.\",[\"Pay the case's berth fee (600 cr)\",\"Tell them how the lane treats kit like that\",\"Ask what they're going to measure\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:research:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:research:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:research:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam checks their messages, and puts the terminal away without answering any.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:research:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:pilgrim",
@@ -1861,23 +1861,23 @@
  },
  {
   "key": "goalhelp:pilgrim:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.\",[\"Pay a leg of the trip (600 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to a shrine a long way out, on the cheapest berth on every leg. They show you the list of legs.\",[\"Pay for one leg (600 cr)\",\"Tell them how to get a berth on the long haul\",\"Ask what the place is\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:pilgrim:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:pilgrim:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:pilgrim:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam says, three drinks in, that they owe more than they'll make this year, and not to a bank.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:pilgrim:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalask:medical",
@@ -1889,23 +1889,23 @@
  },
  {
   "key": "goalhelp:medical:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam presses a hand to their side, and says it's the reason for the trip: a specialist, a long way out.\",[\"Pay toward the specialist (600 cr)\",\"Tell them where the medics are on the way\",\"Ask them to tell you about it\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see a specialist a long way out. The clinic wants a deposit before it'll book them.\",[\"Put something toward the deposit (600 cr)\",\"Tell them where the medics are along the way\",\"Ask them about it\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:medical:0",
-  "text": "You put it on the table and push it across.|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across.|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp:medical:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp:medical:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam tells the next table about it, and you're in the story. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam tells the next table about it, and you're in the story. After a while, Sam checks their messages, and puts the terminal away without answering any.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp:medical:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "crewbar:engineer:1",
@@ -2469,11 +2469,11 @@
  },
  {
   "key": "cards2:rude:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "The cards run your way. Sam changes seats, then decks. 2,000 cr to you. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "The cards run your way. Sam changes seats, then decks. 2,000 cr to you. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:2",
@@ -2481,11 +2481,11 @@
  },
  {
   "key": "cards2:rude:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "You let Sam talk, and they talk themselves into a bad bet. 2,000 cr. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "You let Sam talk, and they talk themselves into a bad bet. 2,000 cr. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:3",
@@ -2505,11 +2505,11 @@
  },
  {
   "key": "cards2:rude:4",
-  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:4",
-  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:5",
@@ -2517,11 +2517,11 @@
  },
  {
   "key": "cards2:rude:5",
-  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:5",
-  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam puts everything on the last hand and loses 2,000 cr to you. \"Again?\" Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:6",
@@ -2529,11 +2529,11 @@
  },
  {
   "key": "cards2:rude:6",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:6",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Sam plays fast and bets on everything. You wait them out, and take 2,000 cr. Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:7",
@@ -2541,11 +2541,11 @@
  },
  {
   "key": "cards2:rude:7",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:7",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam tells the next table you cheated, and laughs.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:8",
@@ -2565,11 +2565,11 @@
  },
  {
   "key": "cards2:rude:9",
-  "text": "Sam loses 2,000 cr and says the deck's marked. It isn't. They pay. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Sam loses 2,000 cr and says the deck's marked. It isn't. They pay. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:9",
-  "text": "Sam loses 2,000 cr, and asks if you've slept. \"You look like you came off a long watch.\" Sam buys you a drink with your own money.|9 Jul 2214: You took my money at cards."
+  "text": "Sam loses 2,000 cr, and asks if you've slept. \"You look like you came off a long watch.\" Sam buys the next round with what's left.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "drink2:10",
@@ -2577,11 +2577,11 @@
  },
  {
   "key": "cards2:rude:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on long watches, slow and never in a hurry. 2,000 cr, and you can't find where you went wrong. You finish the glass.|"
  },
  {
   "key": "cards2:kind:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on long watches, slow and never in a hurry. 2,000 cr, and you can't find where you went wrong. You finish the glass.|"
  },
  {
   "key": "drink2:11",
@@ -2589,11 +2589,11 @@
  },
  {
   "key": "cards2:rude:11",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "cards2:kind:11",
-  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "Sam takes 2,000 cr off you, and spends some of it on your next drink. You finish the glass.|"
  },
  {
   "key": "drink2:12",
@@ -2601,167 +2601,167 @@
  },
  {
   "key": "cards2:rude:12",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam stands up and says you cheated, loud enough for the room. You leave them to it.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "cards2:kind:12",
-  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: You took my money at cards."
+  "text": "Three hands, slow and close. On the last one you take 2,000 cr off Sam, who says you were counting. Sam shakes your hand.|9 Jul 2214: You took my money at cards."
  },
  {
   "key": "fight:gunner:1",
-  "text": "It's short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:gunner:2",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: You started a fight with me."
+  "text": "It's short, and it doesn't go your way. You come round in the back with a wet cloth on your eye and a bill for the mirror: 1,500 cr. \"You were doing all right,\" the bartender says.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:gunner:3",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: You started a fight with me."
+  "text": "It's short, and it doesn't go your way. You come round in the back with a wet cloth on your eye and a bill for the mirror: 1,500 cr. \"You were doing all right,\" the bartender says.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:gunner:4",
-  "text": "It's short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:pilot:1",
-  "text": "It's short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:pilot:2",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: You started a fight with me."
+  "text": "It's short, and it doesn't go your way. You come round in the back with a wet cloth on your eye and a bill for the mirror: 1,500 cr. \"You were doing all right,\" the bartender says.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:pilot:3",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: You started a fight with me."
+  "text": "It's short, and it doesn't go your way. You come round in the back with a wet cloth on your eye and a bill for the mirror: 1,500 cr. \"You were doing all right,\" the bartender says.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:pilot:4",
-  "text": "It's short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:crew:1",
-  "text": "It's short and loud. Rhea steps in and Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Rhea steps in and Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "fight:crew:2",
-  "text": "It's short and loud. Rhea steps in and Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.|9 Jul 2214: You started a fight with me."
+  "text": "It's short. Rhea steps in and Sam ends up on the floor, and somebody picks up the stool. The bartender puts the stool on your tab.|9 Jul 2214: You started a fight with me."
  },
  {
   "key": "peace",
-  "text": "Sam looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. \"It's a start,\" they say.|9 Jul 2214: You bought me a bottle and said sorry."
+  "text": "Sam looks at the bottle for a while, and reads the label. Then they open it and pour two. \"All right,\" they say.|9 Jul 2214: You bought me a bottle and said sorry."
  },
  {
   "key": "goalhelp2:home:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A yard contract on Juno Commons has taken the whole local supply of Luxury Goods.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"A yard contract on Juno Commons has taken the whole local supply of Luxury Goods.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:home:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:home:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks a lot about your routes, and says nothing about theirs.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:home:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:family:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"The governor's office on Earth is buying Water for a reception, over the odds.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"The governor's office on Earth is buying Water for a reception, over the odds.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:family:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:family:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks small, exact things: which ports, which days, how long you sat in the queue.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:family:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:job:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A trade fair on Juno Commons brought in more Water than anyone there can buy.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"A trade fair on Juno Commons brought in more Water than anyone there can buy.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:job:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:job:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks small, exact things: which ports, which days, how long you sat in the queue.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:job:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:fresh:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Warehouses on The Hollows are overflowing with Water. Sellers are dumping it cheap.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"Warehouses on The Hollows are overflowing with Water. Sellers are dumping it cheap.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:fresh:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:fresh:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks a lot about your routes, and says nothing about theirs.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:fresh:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:research:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A festival on Ganymede has used up the Medical Supplies, and the next shipment is a month out.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"A festival on Ganymede has used up the Medical Supplies, and the next shipment is a month out.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:research:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:research:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks a lot about your routes, and says nothing about theirs.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:research:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:pilgrim:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A company on Ganymede has folded, and its whole stock of Medical Supplies is being sold off at auction.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"A company on Ganymede has folded, and its whole stock of Medical Supplies is being sold off at auction.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:pilgrim:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:pilgrim:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks a lot about your routes, and says nothing about theirs.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:pilgrim:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:medical:0",
-  "text": "You put it on the table and push it across. Sam smiles, the first time tonight. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Dockworkers on Ring Nine have gone on strike. Food is suddenly scarce there.\"|9 Jul 2214: You helped me on my way."
+  "text": "You put the credits on the bar and push them across. Sam smiles, the first time tonight. Sam leans in. \"Here's one for you,\" they say: \"Dockworkers on Ring Nine have gone on strike. Food is suddenly scarce there.\"|9 Jul 2214: You helped me on my way."
  },
  {
   "key": "goalhelp2:medical:1",
-  "text": "You tell them what you know, plainly.|9 Jul 2214: You told me what you knew."
+  "text": "You tell them what you know.|9 Jul 2214: You told me what you knew."
  },
  {
   "key": "goalhelp2:medical:2",
-  "text": "You sit back, and ask, and for an hour that's all there is. Sam smiles, the first time tonight. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: You let me talk it through."
+  "text": "You ask, and then you listen. Sam smiles, the first time tonight. After a while, Sam asks small, exact things: which ports, which days, how long you sat in the queue.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "goalhelp2:medical:3",
-  "text": "Sam thanks you, and that's the end of it.|9 Jul 2214: You let me talk it through."
+  "text": "\"Thanks,\" Sam says.|9 Jul 2214: You let me talk it through."
  },
  {
   "key": "label:drink",

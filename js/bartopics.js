@@ -76,16 +76,55 @@ const HELP_TASTE = {
   listen: { loves: ['homesick', 'kind', 'talkative', 'nervous'], hates: ['greedy', 'rude', 'drunk'] },
 };
 const GOAL_HELP = {
-  home: { ask: 'Ask about the way home', text: ('{n} hasn\'t been home in years, and has the route on a card in a pocket, worn to cloth. "Three more ' +
-      'ports," they say. "Maybe four, if the money holds."'), gift: 'Pay part of the fare (600 cr)', advice: 'Tell them which lanes are quick right now', listen: 'Ask them what they\'ll do first, when they get there' },
-  family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (600 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they\'re going to see' },
-  job: { ask: 'Ask about the interview', text: '{n} has an interview at the other end, and says the questions over under their breath.', gift: 'Stand them the clothes for it (600 cr)', advice: 'Play the interviewer for a few questions', listen: 'Let them talk it through' },
-  fresh: { ask: 'Ask about starting again', text: ('{n} says only that it\'s a fresh start, and that they\'d rather not say from what. They\'re ' +
-      'watching to see how you take it.'), gift: 'Put something toward the first month (600 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it\'s all right not to say' },
-  research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they haven\'t' +
-      ' let go of since you sat down.'), gift: 'Pay the case\'s berth fee (600 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they\'re going to measure' },
-  pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.', gift: 'Pay a leg of the trip (600 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
-  medical: { ask: 'Ask what\'s wrong', text: '{n} presses a hand to their side, and says it\'s the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (600 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
+  home: {
+    ask: 'Ask about the way home',
+    text: '{n} has the route on the back of the ticket, three ports crossed off. "Three more," they say. "Four if the fare goes up again."',
+    gift: 'Pay part of the next fare (600 cr)',
+    advice: 'Tell them which lanes are running quick',
+    listen: 'Ask what they\'ll do first when they get there'
+  },
+  family: {
+    ask: 'Ask about the family',
+    text: '{n} is going to see their sister and her kid. The present\'s in a bag on the bar, and they keep taking it out to look at it.',
+    gift: 'Put something toward the present (600 cr)',
+    advice: 'Tell them what\'s good at the market here',
+    listen: 'Ask who they\'re going to see'
+  },
+  job: {
+    ask: 'Ask about the interview',
+    text: '{n} has the interview the day after they land. The questions are on their terminal, and the answers, and they keep changing the answers.',
+    gift: 'Pay for a decent jacket for it (600 cr)',
+    advice: 'Ask them the questions yourself',
+    listen: 'Let them talk it through'
+  },
+  fresh: {
+    ask: 'Ask about starting again',
+    text: '{n} says it\'s a fresh start, and doesn\'t say from what. They watch how you take that.',
+    gift: 'Put something toward the first month\'s berth (600 cr)',
+    advice: 'Tell them what to sort out first in a new port',
+    listen: 'Say they don\'t have to tell you'
+  },
+  research: {
+    ask: 'Ask about the posting',
+    text: '{n} has a posting at the end of the trip, and the instruments for it in a case between their feet. The case pays a berth fee of its own.',
+    gift: 'Pay the case\'s berth fee (600 cr)',
+    advice: 'Tell them how the lane treats kit like that',
+    listen: 'Ask what they\'re going to measure'
+  },
+  pilgrim: {
+    ask: 'Ask about the pilgrimage',
+    text: '{n} is going to a shrine a long way out, on the cheapest berth on every leg. They show you the list of legs.',
+    gift: 'Pay for one leg (600 cr)',
+    advice: 'Tell them how to get a berth on the long haul',
+    listen: 'Ask what the place is'
+  },
+  medical: {
+    ask: 'Ask what\'s wrong',
+    text: '{n} is going to see a specialist a long way out. The clinic wants a deposit before it\'ll book them.',
+    gift: 'Put something toward the deposit (600 cr)',
+    advice: 'Tell them where the medics are along the way',
+    listen: 'Ask them about it'
+  }
 };
 function helpScene(p, pat, ctx) {
   const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
@@ -110,40 +149,90 @@ function helpScene(p, pat, ctx) {
 // of the text layer (lines:bar-secret-help, linetables.js).
 const SECRET_HELP = {
   debt: {
-    text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It\'s not even a lot. It\'s just more than I have, and the people it\'s owed to don\'t do arithmetic."',
+    text: '{n} turns the glass on the bar. "Four thousand," they say. "It\'s not even a lot. It\'s just more than I\'ve got, and they add the interest every week."',
     opts: [
-      { label: 'Cover part of it (2,000 cr)', cost: 2000, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and doesn\'t say anything for a long time.' },
-      { label: 'Say you\'ll keep an ear out for who\'s asking', cost: 0, n: 1, line: '"That\'d help," {n} says.' },
-    ],
+      {
+        label: 'Cover part of it (2,000 cr)',
+        cost: 2000,
+        n: 3,
+        line: 'You count out the credits. {n} looks at them for a while, and then puts them away.'
+      },
+      {
+        label: 'Say you\'ll keep an ear out for who\'s asking',
+        cost: 0,
+        n: 1,
+        line: '"That\'d help," {n} says.'
+      }
+    ]
   },
   ill: {
-    text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it\'s the dust."',
+    text: '{n} puts the glass down. "Six months on a ship with bad recyclers," they say. "The clinic wants more than I\'ve got. I tell people it\'s the dust."',
     opts: [
-      { label: 'Pay for the clinic (1,000 cr)', cost: 1000, n: 3, line: '{n} doesn\'t argue. The next time you see them, they say, they\'ll be breathing better.' },
-      { label: 'Tell them where the nearest medic is', cost: 0, n: 1, line: 'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.' },
-    ],
+      {
+        label: 'Pay for the clinic (1,000 cr)',
+        cost: 1000,
+        n: 3,
+        line: '{n} doesn\'t argue. They write the clinic\'s hours on a napkin.'
+      },
+      {
+        label: 'Tell them where the nearest medic is',
+        cost: 0,
+        n: 1,
+        line: 'You give them the name and the deck. {n} writes it on a napkin and puts it in a pocket.'
+      }
+    ]
   },
   wanted: {
-    text: '{n} has taken the seat with its back to the wall. "There\'s a warrant," they say, "and it\'s not for what they say it is. I\'d rather not be at a table by the door."',
+    text: '{n} has the seat with its back to the wall. "There\'s a warrant," they say. "It\'s not for what it says. I\'d rather not sit near the door."',
     opts: [
-      { label: 'Say you\'ve seen nothing', cost: 0, n: 2, line: '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.' },
-      { label: 'Tell them to give themselves up', cost: 0, n: -1, line: '{n} looks at you and doesn\'t answer. They finish their drink and leave, and don\'t look back.' },
-    ],
+      {
+        label: 'Say you\'ve seen nothing',
+        cost: 0,
+        n: 2,
+        line: '"Thanks," {n} says. They leave by the back a few minutes later.'
+      },
+      {
+        label: 'Tell them to give themselves up',
+        cost: 0,
+        n: -1,
+        line: '{n} doesn\'t answer. They finish the drink and go.'
+      }
+    ]
   },
   contraband: {
-    text: '{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that don\'t go on a manifest. I don\'t tell everyone."',
+    text: '{n} keeps their voice down. "I move things," they say. "The kind that don\'t go on a manifest. I don\'t tell everyone."',
     opts: [
-      { label: 'Ask who they know', cost: 0, n: 1, line: '{n} names a name, and a port, and a time of day, and then says you never heard it. It\'s a door, and you now know where.' },
-      { label: 'Say you don\'t want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we\'ve never talked."' },
-    ],
+      {
+        label: 'Ask who they know',
+        cost: 0,
+        n: 1,
+        line: '{n} gives you a name, a dock and a time of day. "You didn\'t hear it from me."'
+      },
+      {
+        label: 'Say you don\'t want to know',
+        cost: 0,
+        n: 1,
+        line: '"Good," {n} says. "Then we didn\'t talk."'
+      }
+    ]
   },
   spy: {
     text: '{n} stops asking questions. "I\'m paid to ask them," they say. "I\'m not paid to like it."',
     opts: [
-      { label: 'Tell them what you know of the lanes', cost: 0, n: 0, line: '{n} writes nothing down, and doesn\'t need to.' },
-      { label: 'Say you won\'t be asked again', cost: 0, n: 0, line: '"Fair," {n} says, and orders you another.' },
-    ],
-  },
+      {
+        label: 'Tell them what you know of the lanes',
+        cost: 0,
+        n: 0,
+        line: '{n} doesn\'t write anything down.'
+      },
+      {
+        label: 'Say you won\'t be asked again',
+        cost: 0,
+        n: 0,
+        line: '"Fair," {n} says, and gets you another.'
+      }
+    ]
+  }
 };
 function secretScene(p, pat, ctx) {
   const d = barLines('secret-help')[p.secret], say = barSay('secret-help', p);
