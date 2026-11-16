@@ -263,6 +263,22 @@ Built on the view helpers, at 1000 px and up.
 - **Kept as they are:** the contact and its entry scenes (`js/engage.js`), the ambush and the distress call (`js/engagements.js`),
   heave to, the navy's standing cost, the fight ladder's order of authored fights (`js/fightladder.js`), the stakes, and everything
   `shipFightEnd` does after the fight.
+- **The hand's learned moves carry over** (owner's choice, 2026-11-16): each of `FIGHT_MOVES` stays a once-a-fight action, learned
+  as today (the post ladders, `js/picks.js`; the teaching, `js/moves.js`), with this meaning on the radar:
+
+  | Move | On the radar |
+  |---|---|
+  | vent | heat to 0 and the gun unlocked, at once |
+  | lead | this cycle's aimed shot takes no range penalty |
+  | split | this cycle the fire control runs the gun and the PDC both |
+  | called-shot | this cycle's aimed shot takes no range penalty and rolls the top of its range |
+  | break-intercept | the captain's order is "open the range" for this cycle |
+  | redline | the drive runs at double thrust this cycle, after the gun fires |
+  | patch | `FIGHT.PATCH` of the pooled maximum armour back |
+  | hot-start | every shot this cycle overcharged at a plain shot's heat |
+  | bypass | our drive's part back to full |
+  | spoof | she fires no gun and launches nothing this cycle, and keeps her torpedoes |
+  | parley | at 30 km or more, today's wit check: landed, every foe still up breaks off (`broke`) |
 - **Retired with the old fight:** range bands for the ship fight, the band-based board picture, the part-aiming menu (parts are aimed on the radar), and
   holding the turret back for a salvo (replaced by the gun-or-PDC commitment).
 

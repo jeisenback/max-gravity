@@ -283,7 +283,7 @@ test('the fight ends in today\'s ends: a crippled raider goes on to the dead-in-
   - `radarNeeds(state, post) -> [{ key, fixes: [action] }]` in `js/radar.js`: the spec's list per post. The panel draws it as "Needs you" over the console tiles and readouts; "Nothing. The crew have it." when empty; "How this post works" folded.
 
 - **The hand's learned moves** (`FIGHT_MOVES`, `knownMoves(career())`, the post ladders) carry over, each once a fight, as a tile
-  `data-action="radarMove"` with the move's id. Proposed meanings on the radar (owner to confirm, see the plan's hand-off):
+  `data-action="radarMove"` with the move's id. Their meanings on the radar (the spec, confirmed by the owner 2026-11-16):
 
   | Move | On the radar |
   |---|---|
