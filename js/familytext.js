@@ -25,61 +25,48 @@ const HOLIDAYS = [
     d: 12,
     name: 'Landing Day',
     culture: 'mars',
-    text: ('{n} is up before the watch change, kneading dough with a fierce, focused joy, and the galley smells of hot, spiced, red-tinted bread. It\'s ' +
-        'Landing Day, when the first colonists set down on Mars, and {n} has been baking for it every year of their life, from a recipe that came ' +
-        'from a grandmother they can barely remember. They\'re already arguing with nobody in particular about the terraforming schedule, jabbing a ' +
-        'floury finger at the air.'),
-    join: 'The bread is dense and far too spicy, and everyone eats it anyway, with tears in their eyes and hands out for more. The argument about the terraforming schedule lasts until the flip, with three factions and one point of order, and everyone has a side, and nobody, in the end, wins.'
+    text: '{n} is up before the watch change, kneading dough at the galley counter. It\'s Landing Day, the day the first landers set down on Mars, and the bread is red with paprika, from {n}\'s grandmother\'s recipe. "Gran said they\'d have the air done by now," {n} says. "She said it every year."',
+    join: 'The bread is dense and too hot with pepper, and everyone has a second piece anyway. The argument about the terraforming goes on until the flip, and nobody changes their mind.'
   },
   {
     m: 7,
     d: 20,
     name: 'Tranquility Night',
     culture: 'earth',
-    text: ('{n} has the old footage of the first Moon landing queued up on the galley screen, the grainy black-and-white version, with the crackle of ' +
-        'the old radio. On Earth and Luna everyone watches it tonight, all together, at the same hour, even though they have all seen it a hundred ' +
-        'times. {n} sets out cups of something warm, dims the lights, and says that it\'s not the same without company.'),
-    join: 'Two people in bulky suits bounce across gray dust, centuries ago, and a voice, tiny and tinny and calm, says the words. Nobody on the ship says anything for a while. When the picture fades, {n} wipes their eyes. In the dark someone begins to hum.'
+    text: '{n} has the old footage of the first Moon landing queued on the galley screen, the grey version with the radio crackle. On Earth and Luna people watch it tonight, at the same hour, though everyone has seen it. {n} puts out cups of something hot and turns the galley lights down. "It\'s not the same on your own," {n} says.',
+    join: 'Two people in bulky suits bounce across grey dust, and a small, calm voice says the words. Nobody in the galley says anything. When the picture ends, {n} puts the lights back up and collects the cups.'
   },
   {
     m: 8,
     d: 2,
     name: 'First Water',
     culture: 'belt',
-    text: ('It\'s First Water, the day the first ice reached Ceres, and the oldest, quietest holiday in the Belt. {n} fills a cup from the ship\'s ' +
-        'tank, slowly, without spilling a drop, and sets it on the galley table, and passes it around: each person drinks, and says the name of ' +
-        'someone they\'ve lost. It\'s not a happy day. It\'s not meant to be. It\'s the day that a people remember what they nearly didn\'t survive.'),
-    join: 'The cup goes around twice, in silence, warm from many hands. Some of the names you know. Most you don\'t. When it\'s your turn, you find you have a name, too, after all, and you say it aloud, and the room, which was waiting, lets out a breath.'
+    text: 'It\'s First Water, the day the first ice reached Ceres. {n} fills a cup from the ship\'s tank and sets it on the galley table. Each person drinks and says the name of someone they\'ve lost. "At home the queue for the cistern gate goes on all day," {n} says.',
+    join: 'The cup goes round twice. Some of the names you know. Most you don\'t. When it comes to you, you say one too. {n} fills the cup again and puts it back in the rack.'
   },
   {
     m: 12,
     d: 31,
     name: 'Year\'s End',
     culture: null,
-    text: ('It\'s the last night of {year}. {n} has strung lights across the galley, and cobbled together a table out of crates, and set out every ' +
-        'bottle on the ship, and, in the middle, a single cake made of ration bars and hope. They\'re counting down to a midnight that means nothing ' +
-        'out here, where there\'s no sunrise and no season, and everything, in the way that small bright rituals do.'),
-    join: 'Everyone counts down together, in a ragged, cheerful roar, with the last ten seconds shouted in unison. At zero, somebody cries, somebody laughs, somebody kisses somebody, and the ship hums on, warm and steady, into the new year, carrying you all.'
+    text: 'It\'s the last night of {year}. {n} has strung the work lights across the galley, made a table out of two crates, and put out every bottle on the ship. In the middle there\'s a cake made of ration bars. {n} is counting down to midnight, ship\'s time.',
+    join: 'Everyone counts the last ten seconds together. At zero somebody cries and somebody laughs, and the cake is gone in four minutes.'
   },
   {
     m: 12,
     d: 21,
     name: 'The Long Night',
     culture: 'earth',
-    text: ('{n} tells you that, back on Earth, it\'s the longest night of the year, and that, where they grew up, the old people stayed up all ' +
-        'through it, with candles, telling stories to keep the dark at bay. They\'ve set out a single candle, real wax, saved for the purpose, in a ' +
-        'jar in the middle of the galley table. "It\'s silly out here," they say, "where every night is the longest. But I\'d like to keep it."'),
-    join: 'You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some aren\'t stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.'
+    text: '{n} says it\'s the longest night of the year on Earth, and where {n} grew up the old people stayed up through it with candles. There\'s a battery candle in a jar on the galley table, the kind that flickers. "You can\'t have a real one aboard," {n} says. "But I\'d like to keep it."',
+    join: 'You sit round the jar and tell a story each. Some are funny. Some are a few sentences about a place or a person. Nobody gets up until the battery starts to go.'
   },
   {
     m: 10,
     d: 9,
     name: 'Dome Day',
     culture: 'mars',
-    text: ('{n} is polishing a small brass plaque, worn smooth at the edges, that was, they say, cut from the first dome on Mars, three hundred years ' +
-        'ago. It\'s Dome Day, and They have hung a strip of red-dyed cloth over the galley hatch, and there is, for some reason, a small potted fern ' +
-        'on the table.'),
-    join: 'You raise a glass to the domes, and to the people who built them, and to the fools who thought a dead world could be made to breathe. {n} makes a short, awkward, moving speech, and forgets the end of it, and everyone claps anyway. The fern is declared the ship\'s mascot.'
+    text: '{n} is polishing a small brass plaque, worn at the edges, that {n} says was cut from the first dome at Tharsis. It\'s Dome Day, and there\'s a strip of red cloth over the galley hatch.',
+    join: 'You drink to the domes and the people who built them. {n} starts a speech, forgets the end of it, and sits down. Everyone claps.'
   }
 ];
 
@@ -125,16 +112,16 @@ const BAD_NEWS = [
 const TOUCH_LINES = [
   '{n} hung a {team} pennant in the galley',
   '{n} is growing basil in a ration tin on the galley shelf',
-  '{n} painted a small {home} skyline on their bunk panel',
-  '{n} rigged fairy lights along the berth corridor',
-  '{n} put up a picture of their {missed} by the coffee maker',
-  '{n} keeps a battered copy of "{book}" in the galley for anyone to borrow',
-  '{n} chalked a hopscotch grid on the cargo bay deck, and people use it',
-  '{n} tied a small bell by the airlock, so you can hear who\'s coming and going',
-  '{n} started a jar by the galley door for good news, and it already has three slips in it',
-  '{n} taped a hand-drawn star chart to the cockpit bulkhead, with everybody\'s home marked in a different color',
-  '{n} put a small potted succulent on the nav console, and named it, and refuses to say what',
-  '{n} set up a board by the mess with everybody\'s birthday on it, in careful, curly writing'
+  '{n} painted the {home} skyline on a bunk panel',
+  '{n} screwed a row of mug hooks by the galley hatch, one for each person aboard',
+  'A picture of {n}\'s {missed} is taped by the coffee maker',
+  '{n} keeps a copy of "{book}" in the galley for anyone to borrow',
+  '{n} chalked a ring-ball tally on the cargo bay bulkhead, and people keep it up',
+  '{n} labelled every locker in the hold, by hand',
+  '{n} pinned the schedule for the next three ports by the galley door',
+  '{n} taped a star chart to the cockpit bulkhead, with everybody\'s home marked on it',
+  '{n} fixed the rattle in the berth corridor\'s air vent with a strip of tape',
+  '{n} wrote everybody\'s birthday on the galley board'
 ];
 
 const CHATTER_LINES = {
