@@ -27,6 +27,11 @@ the radar (`docs/superpowers/specs/2026-11-16-radar-ship-fight-design.md`); a sh
 4. **Turns, not real time with pause** (2026-11-16): seeing every side's move before committing is the point, and a deck fight is short.
 5. **Her own decks when we board her:** small layouts for the raider and the corsair, three or four decks each (2026-11-16).
 6. **Option 1 for the build:** a new deck fight beside the old one, then the old one retired (2026-11-16).
+7. **The captain is a figure on our bridge** (2026-11-16): she fights and can be wounded, but is not killed in the fight. Her loss
+   stays today's roll when the ship is taken (`CAPTAIN_LOST`), and she counts among ours for holding the bridge.
+8. **The turn caps rise for the longer decks** (2026-11-16): a repel to about 12 turns and a navy inspection to about 8, both tuned
+   against the targets, replacing 8 and 5 (the 2026-10-27 ruling on the navy's cap). An inspection still withdraws before a search
+   unless it pushes hard.
 
 ## Goals
 
@@ -142,7 +147,7 @@ the odds shown, by the same rule as the ship fight's suggestions (trust, level, 
   hand is `repelCrew`'s choice, as today.
 - **Ends:** repelling, won at or under the break line or all down, taken (searched, for the navy) when they hold our bridge's spots
   with none of ours there; boarding her, won when ours hold her bridge's spots with none of hers there or she is at her break line,
-  taken when none of ours are left. At `DECK.TURNS` (the navy's at `NAVY_TURNS`) the attackers withdraw: a repel is won, an assault
+  taken when none of ours are left. At `DECK.TURNS` (about 12; the navy's at `NAVY_TURNS`, about 8) the attackers withdraw: a repel is won, an assault
   lost.
 - **Numbers** stay `DECK` and `DECK.ASSAULT` where they still mean the same; spot cover replaces the section cover of `fightCover`.
 
