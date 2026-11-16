@@ -137,6 +137,11 @@ All numbers are the prototype's starting values, to be tuned against the targets
 - **The gun.** The gunner places the shot. The aim point is where the fire control predicts her; the spread is a ring that grows with
   range, with our own burn, and with the board's error, and shrinks with the gunner's level. Damage falls off past 20 km (three
   quarters) and 30 km (half). A shot needs the gun to bear.
+- **Her parts are aim marks on her contact** (owner's choice, 2026-11-16): her hull, weapons, drive, lock and launcher, from today's
+  parts (`PART_HP`). Placing the shot on a mark aims at that part. A shot at the hull lands in full; an aimed shot at a part loses
+  damage at range, as today's does (`FIGHT.AIM_MULT`). A part at zero stops what it does, as today: no weapons, no shots; no drive,
+  no burns; no lock, no boarding. So "hit her lock as she closes" stays the answer to a raider.
+- **Her fire picks our parts by today's rules** (`foeMove`): she can pin our drive or go for our guns.
 - **The PDC.** An arc the gunner sets, narrow or wide. Its chance to kill a torpedo grows with how far the torpedo travels through the
   arc, so a narrow arc kills well inside it and a wide one covers more and kills less. Its reach is 9 km.
 - **Gun or PDC each cycle.** At the start of each cycle the fire control is committed to the gun or the PDC, never both. A stowed PDC is
@@ -175,7 +180,7 @@ All numbers are the prototype's starting values, to be tuned against the targets
 The hand works one post (`hired().post`); the crew work the other three at their own levels (today's `roleSkill`). The hand never sets
 the captain's order.
 
-- **Gunner** (works the radar): places the shot; sets the PDC's arc; commits the fire control to the gun or the PDC; fires or holds;
+- **Gunner** (works the radar): places the shot on her hull or one of her parts; sets the PDC's arc; commits the fire control to the gun or the PDC; fires or holds;
   fires our torpedoes. The hand's level tightens the spread.
 - **Pilot** (works the radar): drags the burn inside the order's limits, shown as a wedge (90 degrees for a burn order; a coast order
   allows trims up to 30% throttle). Skill scatters where the burn really lands, drawn as two rings: at level 0 a burn can land 20
@@ -258,7 +263,7 @@ Built on the view helpers, at 1000 px and up.
 - **Kept as they are:** the contact and its entry scenes (`js/engage.js`), the ambush and the distress call (`js/engagements.js`),
   heave to, the navy's standing cost, the fight ladder's order of authored fights (`js/fightladder.js`), the stakes, and everything
   `shipFightEnd` does after the fight.
-- **Retired with the old fight:** range bands for the ship fight, the band-based board picture, aiming guns at a part by menu, and
+- **Retired with the old fight:** range bands for the ship fight, the band-based board picture, the part-aiming menu (parts are aimed on the radar), and
   holding the turret back for a salvo (replaced by the gun-or-PDC commitment).
 
 ## Code and delivery
