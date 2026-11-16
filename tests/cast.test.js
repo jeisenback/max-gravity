@@ -560,7 +560,7 @@ test('Pax\'s pivot, The Coupling Again, follows the state, and calling it off co
   assert.equal(r.backup.dead, false, 'a second hand at the rack is a point'); assert.equal(r.backup.marks, 1);
   assert.equal(r.unread.marks, 1, 'with the message unread Pax loses a point');
   assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'cutting the power benches Pax and costs opinion only');
-  assert.match(r.dieP.raw, /you promised them/); assert.doesNotMatch(r.die.raw, /you promised them/);
+  assert.match(r.dieP.raw, /Nobody is going to ask you to crew for them now/); assert.doesNotMatch(r.die.raw, /Nobody is going to ask you to crew for them now/);
   assert.match(r.shown.unread, /still unopened in the queue/); assert.match(r.shown.read, /the last line showing: practice/);
   await done();
 });

@@ -708,23 +708,23 @@ const CAST = {
     traits: ['nervous', 'curious'], wage: 600,
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
-    bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',
+    bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed with Pax at the controls and the foreman, Dele Okafor, was hurt. It was nobody\'s fault, and nobody has been able to convince Pax of that. They pay toward his clinic bill every month. Nobody asked them to.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
         'Pax: "I know the numbers. The numbers are fine. It\'s the part after the numbers I\'m bad at."',
-        'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.',
+        'Pax is reading the manual for the fire control system again, with a finger under each line.',
         'Pax: "It\'s funny. I\'m not nervous when it\'s only me and the target. It\'s when there\'s somebody beside me."',
       ],
       gunnery: [
-        'Pax is on the range, again, with a perfect score and a tight jaw.',
+        'Pax: "Ninety-eight on the range. I want a hundred."',
         'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.',
       ],
     },
     scenes: {
       meet: {
         title: 'The Kid at the Range',
-        text: ('In the dock bar there\'s a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. ' +
-            'Nobody\'s cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes still. "I\'m ' +
+        text: ('In the dock bar there\'s a dart-laser board, and a young person at it with a perfect score, who flinches every time somebody cheers. ' +
+            '"Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes still. "I\'m ' +
             'good with a laser. I\'m the best in the Warren. I want a job where nobody\'s standing next to the thing when it fires." They look up. "That\'s ' +
             'a bad thing to say, I know."'),
         choices: [
@@ -733,7 +733,7 @@ const CAST = {
             when: { berths: 1 },
             effects: { castJoin: 'pax' },
             result: 'The dart goes down, carefully. "Really?" Pax ' +
-              'says. That sounded like asking for too much. "I mean, thanks. Yes. I mean, I\'ll try not to flinch." You tell them ' +
+              'says. "I mean, thanks. Yes. I\'ll try not to flinch." You tell them ' +
               'the flinching can come, too. Pax picks up a bag.',
           },
           {
@@ -752,9 +752,7 @@ const CAST = {
           {
             label: 'Tell them honestly that it\'s different',
             effects: { castLike: { who: 'pax', n: 2, memory: 'You told me the truth about what it\'s like when it\'s real.' }, castXp: { who: 'pax', role: 'gunner', n: 2 } },
-            result: '"Yes," you say. "It\'s different. It\'s louder, and everything you do matters, and your hands shake. Everybody\'s do. You do it ' +
-              'anyway, and it gets quieter." Pax lets out a breath, slowly. "Thank you," they say. "Everybody else says it\'s the same. It\'s a relief ' +
-              'to be told it\'s not." They go back to the scores.',
+            result: '"Yes," you say. "It\'s louder, and your hands shake. Everybody\'s do. You do it anyway, and it gets quieter." Pax lets out a breath. "Everybody else says it\'s the same," they say. They go back to the scores.',
           },
           {
             label: 'Say it\'s the same: aim, breathe',
@@ -772,61 +770,44 @@ const CAST = {
           {
             label: 'Check it together',
             effects: { castLike: { who: 'pax', n: 2, memory: 'You checked the coupling with me.' }, castXp: { who: 'pax', role: 'gunner', n: 3 } },
-            result: 'You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, ' +
-              'not ten. When it\'s done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice. "Good," ' +
-              'they say. "It\'s good." They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.',
+            result: 'You stand beside them and don\'t help. After a minute Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it\'s done they test it, twice. "Good," they say. "It\'s good." They put the wrench back in its clip and square it with the rack.',
           },
           {
             label: 'Do it for them',
             effects: { castLike: { who: 'pax', n: 0, memory: 'You did the coupling for me.' } },
-            result: 'You take the wrench, and do it in nine ' +
-              'minutes. Pax says "Thank you" and watches your hands the whole time. Pax tests the coupling after you, quietly, when ' +
-              'they think no one is looking, and finds it perfect, and doesn\'t look any happier about it.',
+            result: 'You take the wrench, and do it in nine minutes. Pax says "Thank you" and watches your hands the whole time. Pax tests the coupling after you, when they think no one is looking.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Foreman\'s Message',
-        text: ('A message from Ceres has been sitting unopened in Pax\'s queue for three days, with a sender name Pax won\'t say aloud. You know ' +
-            'what it\'s when you see their face. "It\'s from Foreman Dagny," Pax says, finally. "I don\'t know what it says. I know what I think it ' +
-            'says. I\'ve thought it so many times that I don\'t need to read it." They\'re holding the handheld at arm\'s length, like something ' +
-            'hot.'),
+        text: 'A message from Ceres has been sitting unopened in Pax\'s queue for three days. "It\'s from the foreman," Pax says at last. "I don\'t know what it says. I know what I think it says. I\'ve thought it so many times I don\'t need to read it." They\'re holding the handheld at arm\'s length.',
         choices: [
           {
             label: 'Offer to sit with them while they read it',
             effects: { castLike: { who: 'pax', n: 3, memory: 'You sat with me while I read the foreman\'s message.' }, castXp: { who: 'pax', role: 'gunner', n: 2 }, castFlag: { who: 'pax', flag: 'foreman' } },
-            result: 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It\'s short. The foreman is walking ' +
-              'again, with a stick, and doesn\'t blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld ' +
-              'face-down on their knee, and cries, quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practice. ' +
-              'He says I have the best hands in the Warren." They laugh, a damp, astonished sound.',
+            result: 'You sit on the deck beside them, with your back to the bulkhead, and Pax opens it. It\'s short. The foreman is walking again, with a stick. He says to stop sending money for the clinic, he\'s nearly paid it, and he\'d like to see the kid some day. Pax reads it twice and puts the handheld face-down on their knee, and for about a minute doesn\'t say anything. Then they wipe their face on a sleeve. "He says to practise," Pax says. "He says I\'ve got the best hands in the Warren."',
           },
           {
             label: 'Tell them to read it when they\'re ready',
             effects: { castLike: { who: 'pax', n: 0, memory: 'You told me to read it when I was ready.' } },
-            result: '"Yes," Pax says. "When I\'m ready." It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of ' +
-              'the burn. When you pass the weapons bay, Pax has taken it out, and is holding it, and looking at the sender\'s name, and putting it ' +
-              'back.',
+            result: '"Yes," Pax says. "When I\'m ready." They put the handheld away. It stays unopened for the rest of the burn. When you pass the weapons bay, Pax has it out, looking at the sender\'s name, and puts it back.',
           },
         ],
       },
       late: {
         days: 45, title: 'Without Flinching',
-        text: ('Pax finds you outside the weapons bay, with hands that have stopped shaking, and an alarmed look. "I haven\'t flinched in nine days," ' +
-            'they say. "I counted." They take a breath. "I want to run a ship one day. One where nobody gets hurt on my watch. I know you can\'t promise that. I\'d still like to try." They look at the deck. "If you ever get a ship, ask me before you ask anyone else."'),
+        text: 'Pax finds you outside the weapons bay. "I haven\'t flinched in nine days," they say. "I counted." They take a breath. "I want to run a ship one day. One where nobody gets hurt on my watch. I know nobody can promise that." They look at the deck. "I\'d still like to try."',
         choices: [
           {
-            label: 'Promise them a ship, someday',
-            effects: { castLike: { who: 'pax', n: 2, memory: 'I told you about the ship where nobody got hurt, and you promised.' }, castFlag: { who: 'pax', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." Pax opens their mouth and shuts it again, and then the grin gets away from them entirely, wide and helpless. ' +
-              '"Nine days," they say. "Nine days, and a ship. If I tell the foreman he won\'t believe me." They go away down the corridor, walking ' +
-              'straight, with their hands in plain view.',
+            label: 'Say you\'d crew for them',
+            effects: { castLike: { who: 'pax', n: 2, memory: 'I told you about the ship where nobody got hurt, and you said you\'d crew for me.' }, castFlag: { who: 'pax', flag: 'promised' } },
+            result: '"I\'d crew for you," you say. Pax opens their mouth and shuts it again, and then grins. "Nine days," they say, "and a crew. One." They go off down the corridor, walking straight.',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'pax', n: 1, memory: 'You wouldn\'t promise a ship, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." "That\'s fair," Pax says. "It\'d be strange to be promised. I\'m not ' +
-              'used to it." They smile, a crooked one. To your surprise, they say, "Nine days is already a good thing, though. I\'ll ' +
-              'take that."',
+            label: '"Ask me when you\'ve got one."',
+            effects: { castLike: { who: 'pax', n: 1, memory: 'I told you about the ship, and you said to ask you when I had one.' } },
+            result: '"Ask me when you\'ve got one," you say. "That\'s fair," Pax says. "It\'d be strange to be promised." They smile, a crooked one. "Nine days, though. I\'ll take that."',
           },
         ],
       },
@@ -843,7 +824,7 @@ const CAST = {
           { label: 'Put a second hand at the rack beside Pax (the second is hurt for it)', ...gated(needCrew(2)), run: () => theCoupling(true) },
           { label: 'Tell Pax to cut the power and let the mount drop', memory: 'You told me to cut the power on the mount.', run() {
             castFlag('pax', 'benched'); castLike('pax', -3, this.memory);
-            return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it\'s unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that doesn\'t move.';
+            return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench in their hand. "I could have held it," Pax says. "I think I could have."';
           } },
         ],
       },
@@ -1083,7 +1064,7 @@ function theCoupling(backup) {
   const lead = backup ? 'You put a second hand at the rack beside Pax. ' + castBackupCost('pax') : '';
   if (outcome === 'die') {
     return lead + 'Pax gets the wrench onto the coupling and the mount drops anyway, and Pax is between it and the rack, which is where Pax put themself. The hand at the rack is untouched. The mount comes to rest on the deck with the wrench still turning in the coupling, a quarter turn, and another.'
-      + (promised ? ' You remember the ship you promised them, and that nobody will ask for it now.' : '');
+      + (promised ? ' Nobody is going to ask you to crew for them now.' : '');
   }
   castLike('pax', 2, outcome === 'mark' ? 'You let me hold the mount, and I came out with a hand that doesn\'t close.' : 'You let me hold the mount, and I came out.');
   if (outcome === 'mark') {

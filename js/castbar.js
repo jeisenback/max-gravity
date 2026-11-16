@@ -154,7 +154,7 @@ const CAST_BAR = {
             'the walk back, "wasn\'t as bad as I thought."'); } },
         { label: 'Take the stranger\'s challenge yourself', memory: 'You played the stranger so that I didn\'t have to.', run() { castLike('pax', 1, this.memory); return (
             'You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, "Your stance is wrong," ' +
-            'and corrects it, standing very close, without a flinch. The stranger gives a slow nod. Pax doesn\'t see it. You do.'); } },
+            'and corrects it, standing very close, without a flinch.'); } },
       ],
     },
     {
