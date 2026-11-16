@@ -247,7 +247,7 @@ CAST.cato.firstRaid = {
   text: ('Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. "Look at the top of the board," he ' +
       'says. "That\'s what she means to do next, and under it what the captain will do with the helm. You don\'t guess either."</p><p>He points at ' +
       'the guns. "Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and ' +
-      'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and you\'re slower at your post for a few days."' +
+      'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and your work\'s a level lower for a few days."' +
       '</p><p>He taps the gauge over the breech. "Every shot puts heat in the guns, and past that mark one locks ' +
       'for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back to knock down ' +
       'what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We ' +
