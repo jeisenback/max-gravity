@@ -143,14 +143,14 @@
  {
   "key": "dock:lapsed",
   "text": [
-   "Mission failed (deadline passed): Ore run"
+   "Deadline passed: Ore run."
   ],
   "credits": 0
  },
  {
   "key": "dock:walk-off",
   "text": [
-   "Mateo Castillo has had enough of you and your ship, and walks off at Earth."
+   "Mateo Castillo signs off at Earth and goes down the ramp with a gear bag."
   ],
   "credits": 0
  },
@@ -434,21 +434,21 @@
  {
   "key": "boarding:hurt:crew",
   "text": [
-   "Mara Quill is hurt. Their gunner work will suffer until they're treated."
+   "Mara Quill is hurt. The gunner post is short-handed until the medbay has seen to the wound."
   ],
   "credits": 0
  },
  {
   "key": "boarding:hurt:cast",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. The engineer post is short-handed until the medbay has seen to the wound. Another hit like that could kill Tomas."
   ],
   "credits": 0
  },
  {
   "key": "boarding:marked",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. The engineer post is short-handed until the medbay has seen to the wound. Another hit like that could kill Tomas."
   ],
   "credits": 0,
   "x": {}
@@ -549,14 +549,14 @@
  {
   "key": "auto:contact",
   "text": [
-   "Mara: Contact, and they're not friendly. She's yours, captain."
+   "Mara: Contact, and they're not friendly. Coming off auto."
   ],
   "credits": 0
  },
  {
   "key": "auto:stuck",
   "text": [
-   "Mara: I can't get us settled. Your ship, captain."
+   "Mara: I can't get us settled. Coming off auto."
   ],
   "credits": 0
  },
