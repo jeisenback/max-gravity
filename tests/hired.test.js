@@ -836,6 +836,19 @@ test('a crew scene is the hand\'s own affair: the Galley Duty bet is paid from t
   await done();
 });
 
+test('nobody in A Small Ship thanks the hired hand as their captain (#1312)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    const [a, b] = folk().filter(f => f.crew);
+    return [0, 1].map(n => SOCIAL_SCENES['small-ship'](a, b).choices[n].run());
+  });
+  assert.equal(r.length, 2);
+  for (const said of r) assert.doesNotMatch(said, /captain/i, said);
+  await done();
+});
+
 // #953: with the pilot in the medbay, the best of the rest at the helm (pilot skill 1 or more) flies the local legs, and the arrival line says so;
 // with nobody who can fly, the hand is told the stick is theirs. A hand who is the pilot flies as before.
 test('with the pilot hurt, the best of the rest at the helm flies her in, or the hand is told the stick is theirs', async () => {
