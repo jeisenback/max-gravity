@@ -83,7 +83,7 @@ test('the bar and the lanes read a condition of the world by its id, not by its 
     return { lines, trouble };
   });
   await g.done();
-  for (const part of ['watered down', 'navy recruiter', 'raids', 'Money is loose', 'half empty']) assert.ok(r.lines.some(l => l.includes(part)), `a line with "${part}" in ${r.lines.join(' / ')}`);
+  for (const part of ['water ration', 'navy recruiter', 'lane rates', 'contract paid out', 'stools are empty']) assert.ok(r.lines.some(l => l.includes(part)), `a line with "${part}" in ${r.lines.join(' / ')}`);
   assert.ok(r.trouble.includes('Noise on the band'), `${r.trouble.join(' / ')}`);
   assert.ok(!r.trouble.includes('Trouble') && !r.trouble.includes('Hard times'), 'only the raids are trouble ahead');
 });

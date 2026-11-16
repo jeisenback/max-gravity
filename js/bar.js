@@ -9,64 +9,82 @@
 const DRINK = 200, CARDS = 2000;
 
 const BARS = {
-  'Hermes Foundry': ['The Heat Sink', ('Foundry shifts change every six hours, and the bar fills and empties with them. Everyone is red through two ' +
-      'layers of shielding. The ice in the drinks costs more than the liquor. The bartender slides your glass down the bar without looking. The place ' +
-      'smells of cold metal and lime. Nobody stays for more than one round, and everybody says they are here for a couple more years.')],
-  Earth: ['The Gravity Well', ('A spaceport bar with a long copper counter and travel posters from a dozen ports curling on the walls. The drinks are ' +
-      'real, and so are the prices. At the far end a man in a good coat is telling a story about the sea to a table of freight hands, and he is paying for ' +
-      'every round.')],
-  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Arcology Pact officers in civilian jackets that do not fit. The bartender pours slow on ' +
-      'purpose: in one-sixth g the drinks come out in tall ribbons and take a long time to settle. A window behind the bar looks out on the gray ' +
-      'plain, the drydocks and, past them, Earth. People keep their voices down.')],
-  Mars: ['The Red Line', ('Tharsis veterans at one end of the bar, terraforming engineers at the other, and in the middle an argument about the ' +
-      'atmosphere that has run for forty years. The bar top is one slab of red basalt. Most people order coffee. A countdown is chalked on the wall: ' +
-      'DAYS UNTIL THE FIRST RAIN. Someone updates it every morning.')],
-  'Phobos Yards': ['Dry Dock', ('Shipwrights at tables where they can see the yard through a wide window: gantries, and the welded ribs of a ' +
-      'half-finished hull. Every table has a ship part on it and someone explaining it on a napkin. There is a jar behind the bar for lost tools. In ' +
-      'the corner an old man is asleep in a chair. They say he built the first hull that left Phobos. Nobody wakes him.')],
-  'Ceres Station': ['The Warren', ('Warren folk, three deep at the bar, talking with their hands in a mix of dialects. The water ration is posted over the ' +
-      'taps in block letters and updated on the hour. Every drink comes with a small glass of tap water, because the law says so. The floor tilts ' +
-      'toward the curve of the station, and the regulars lean with it.')],
-  'Ring Nine': ['Auntie Oyelaran\'s', ('A noodle counter with a still behind it, in a corner of an old cargo bay, with paper lanterns strung from the ' +
-      'pipes. Squatter families and off-shift dockers sit on stools made from fuel drums. The menu is one hand-lettered board. Auntie says the broth ' +
-      'is the best in the Belt, points a wooden spoon at your chest, and says it again. By the till is a shrine to the ship\'s old captain, with a ' +
-      'dish of fresh noodles in front of it. Nobody takes them.')],
-  'Pallas Refinery': ['The Slag Heap', ('Refinery crews in heat suits unzipped to the waist, steaming in the cool air. By custom no stranger pays for ' +
-      'the first round, and the bartender enforces it with a raised eyebrow. The tables are old casting molds, still warm. Signed work jackets hang on ' +
-      'the walls like flags, one for every crew that lost someone. It smells of hot metal and beer.')],
-  'The Hollows': ['The Chute', ('A bar in an old ore chute, dim and hung with quilts, with a long curved counter cut from the rock. Children ' +
-      'underfoot, grandparents at dominoes, a ring-ball match on every screen, and an argument at every table. Someone\'s aunt pours the drinks. ' +
-      'Someone\'s cousin plays the fiddle badly. A bowl of salted beans reaches you within a minute of sitting down. Nobody asks your business.')],
-  'The Rook': ['The Gallows', ('Hollis Mbeki\'s people drink here. Their tables are known, and nobody sits at them by mistake. The ceiling is low and ' +
-      'made of dull black pipe, and a rope with a noose knotted in it hangs over the bar as a joke. It has collected a great many hats. Keep your ' +
-      'hands where people can see them. The bartender is polite.')],
-  Boneyard: ['The Wreck Room', ('Built inside the bridge of a dead ore hauler. The captain\'s chair is still bolted to the floor, and by custom ' +
-      'nobody sits in it. The old instruments are in place, dark and dusty. The original viewport looks out on a hundred other wrecks lashed together. ' +
-      'Salvagers trade rumors of fresh wrecks over thick sweet coffee. At closing they switch on the old running lights, one after another.')],
-  Ironheart: ['Co-op Hall', ('Half bar, half meeting hall, with a long trestle table down the middle and a cracked gavel on a hook. Most nights there ' +
-      'is a vote on something, and the losers buy the next round. The ballot box is a fuel can. The minutes of every meeting are pinned to the wall in ' +
-      'handwriting that runs from neat to unreadable. Newcomers are expected to speak.')],
-  'Juno Commons': ['The Greenhouse', ('Tables among tomato vines under a curved glass dome. The air is warm and wet and smells of leaves. Within the ' +
-      'hour people will ask your name, your ship, and how you take your tea. A small brass watering can hangs at every table, and when you sit, ' +
-      'someone hands you one to water the vine over your seat.')],
-  'Eros Old Town': ['The Last Strike', ('Sepia holos of the boom years flicker on the walls: crowds, dust, hopeful faces. The regulars are old enough ' +
-      'to be in them, and will say which one. The bar is a plank from a mining sledge, dented by a hundred picks. On a shelf behind it, in a glass ' +
-      'case, sits one nugget of platinum. Nobody has been able to prove it is real.')],
-  Ganymede: ['Harvest Moon', ('Agri-dome workers with dirt under their nails and money in their pockets. A skylight overhead fills with Jupiter, ' +
-      'banded and slow. The bar is polished wood, brought from Earth, they say. The drinks are made from whatever came in that week: peach, pear, wild ' +
-      'honey, something with rosemary. The air smells of ripe fruit.')],
-  Europa: ['The Crack', ('Ice haulers between runs, in bulky insulated jackets, bent over steaming mugs. The walls sweat. The floor is always wet. ' +
-      'Union notices are three layers deep on every bulkhead. One blue lamp lights the room, and the only sound is the ice groaning beneath it. When ' +
-      'they come in, the regulars tap the wall twice. Nobody explains it, and nobody skips it.')],
-  Titan: ['Orange Sky', ('Consortium clerks and methane-rig crews at separate tables, with a space down the middle of the room that nobody crosses. ' +
-      'The window looks out on rain, a slow amber curtain, and the light all day is the color of weak tea. The drinks are quiet and expensive. The ' +
-      'bartender is at your elbow the moment your glass is empty, and gone before you can say thank you.')],
-  Enceladus: ['Geyser Bar', ('Six stools and a window on the plumes, which rise white and silent against the black. The bartender is also the ' +
-      'harbormaster, the doctor and, when it comes up, the mayor. A first-aid kit sits next to the bottles, and a shortwave radio on the bar. One ' +
-      'bottle of something good stays on the top shelf. It is not for sale. Everyone is offered a glass of it, sooner or later.')],
-  'Triton Outpost': ['The Long Night', ('The last bar in the solar system, according to a hand-painted sign. A jar of coins from every port sits on ' +
-      'the bar; people leave one to show they came. The people here are either running from something or waiting for someone, and the ones waiting ' +
-      'keep their eyes on the door. The stove in the corner burns whatever will burn. The light is dim and orange.')],
+  'Hermes Foundry': [
+    'The Heat Sink',
+    'The company\'s bar, two decks under the quarters, open by the company\'s clock. The hazard crews drink at the long tables, most of them two years into a two-year contract and renewing. The fin crews have the corner by the door. The prices are on a board in company scrip, and the call booth at the back is metered by the minute.'
+  ],
+  'Earth': [
+    'The Gravity Well',
+    'Off the market on the Ring: a long copper counter, travel posters from a dozen ports curling on the walls, and the drinks priced in scrip and in trade notes. A drink is two hundred. It fills at the yard\'s shift change.'
+  ],
+  'Luna': [
+    'Copernicus Lounge',
+    'By the public pads. Pact officers in civilian jackets have the front tables, and the dust towns\' day hands have the back ones, with the dust still on their boots. A window behind the bar looks out on the drydocks and, past them, Earth. At the front, people keep their voices down.'
+  ],
+  'Mars': [
+    'The Red Line',
+    'In the hub. The bar top is one slab of basalt, and someone has chalked a countdown on the wall: DAYS UNTIL THE FIRST RAIN. It goes down by one every morning. The talk at the bar is the air bill and the water share, and who\'s been cut.'
+  ],
+  'Phobos Yards': [
+    'Dry Dock',
+    'A bar with a window on the yard: gantries, and the ribs of a half-built hull. There\'s next to no weight here. The stools have straps, the drinks come in bulbs with clips, and everyone keeps a hand on the rail along the bar. The shipwright families sit by the window, and the transfer-dock hands by the door.'
+  ],
+  'Ceres Station': [
+    'The Warren',
+    'Three deep at the bar at a shift change, and louder when the yard crews come down the long stair. The water ration is posted over the taps, with the price of a glass of water next to it. The floor tilts with the ring\'s curve, and the regulars lean with it.'
+  ],
+  'Ring Nine': [
+    'Auntie Ade\'s',
+    'A noodle counter with a still behind it, in a corner of an old cargo bay, under string lights and somebody\'s laundry. Day workers in off the Ceres shuttle sit on fuel drums. The menu is one board. Auntie feeds you before she asks your business, and then she asks it.'
+  ],
+  'Pallas Refinery': [
+    'The Slag Heap',
+    'The company\'s bar, by the shift blocks. The tables are cut from old casting molds, and there\'s a jacket on the wall for every crew that lost someone. The shifts change on the hour, and the room fills and empties with them. A round goes on your store account, against the next pay.'
+  ],
+  'The Hollows': [
+    'The Chute',
+    'A bar in an old ore chute, kept by Mags Fennimore: quilts on the rock, dominoes at the back, a fiddle played badly. Mags puts a cup of hot tea in front of you before she asks anything. Then she asks a great deal.'
+  ],
+  'The Rook': [
+    'The Gallows',
+    'The dock families\' bar, and their tables at the back. A sign over the counter says no weapons and no trouble, in a dozen languages. The bartenders are very polite. The dock takes a cut of any deal made in here, and the sign says that too.'
+  ],
+  'Boneyard': [
+    'The Wreck Room',
+    'Built inside the bridge of a dead ore hauler, in the hull of the family that towed it in. The captain\'s chair is still bolted to the floor, and the old registry plate is on the hatch. Salvage crews and tug hands trade word of fresh wrecks over coffee, and settle their shares at the bar.'
+  ],
+  'Ironheart': [
+    'Co-op Hall',
+    'Half bar, half the co-op\'s meeting hall, with a long table down the middle and the assays pinned on the wall. Most nights there\'s a session, and it takes as long as it takes. The members vote. The families on worked-out claims sit along the wall, with their drinks on the co-op\'s account. Children sit at the back.'
+  ],
+  'Juno Commons': [
+    'The Greenhouse',
+    'Tables among the tomato vines in one of the greenhouse rings. The air is warm and wet and smells of leaves. The members\' families have the tables under the lemon trees. The new families, who have been here twenty years, have the ones by the door.'
+  ],
+  'Eros Old Town': [
+    'The Last Strike',
+    'In the lit half. Sepia holos of the boom years run on the walls, and the regulars are old enough to be in them. The trust\'s service charge for air, heat and light is printed on the back of the menu.'
+  ],
+  'Ganymede': [
+    'Harvest Moon',
+    'A skylight full of Jupiter, with the mirror arrays under it. Leasehold families at the tables, and seasonal hands from the bunkhouses at the bar. The drinks are made from what came in that week: peach, pear, honey. The leaseholders watch how you pay.'
+  ],
+  'Europa': [
+    'The Crack',
+    'A dock canteen that serves drinks after the shift. Water Authority staff sit at one end, with the blue pin on their collars. The hose crews sit at the other, still in their insulated jackets, some with their fingertips taped. The walls sweat. Under it all, the ice hums.'
+  ],
+  'Titan': [
+    'Orange Sky',
+    'Long tables under a window of slow amber rain. The scientists sit at one end and the support crews at the other, and the middle is wherever the gossip is. A visitor gets a seat in the middle, for the news and any fresh vegetables they brought.'
+  ],
+  'Enceladus': [
+    'Geyser Bar',
+    'Six stools in the dock module, and a window onto the plumes. The bartender is also the dock crew\'s slot clerk, and the queue for water slots is chalked on the wall behind the bottles. The dock families say very little. The haulers say more, mostly about the queue.'
+  ],
+  'Triton Outpost': [
+    'The Long Night',
+    'The settlement\'s one bar, in the main dome: the last bar in the solar system, according to a hand-painted sign. Everyone here knows everyone\'s business. The talk is the next supply ship, and what the carrier is charging this time.'
+  ]
 };
 
 
@@ -158,53 +176,53 @@ const SECRET_TALK = {
 
 const CREW_AT_BAR = {
   engineer: [
-    '{n} is sketching a drive modification on a napkin for anyone who will look.',
-    '{n} has found the one other engineer here. They are arguing about injectors.',
-    '{n} is holding a fork up to the light and saying "tolerances" under their breath.',
-    '{n} is under a table with a flashlight, looking at the bar\'s wiring.',
-    '{n} has been handed a wrench by the bartender and is fixing the tap.',
-    '{n} is explaining the coolant loop to a stranger with four salt shakers and a pool of gravy.'
+    '{n} is drawing the coolant loop on a napkin for a yard engineer, who keeps taking the pen.',
+    '{n} has found the one other engineer in here. They\'re comparing what their yards charge for a pump seal.',
+    '{n} is reading the port\'s spares list on their terminal and doesn\'t look up.',
+    '{n} has been handed a spanner by the bartender and is under the tap.',
+    '{n} is asking a dock hand which yard here does honest work, and writing down the answer.',
+    '{n} is nursing a coffee and going through the ship\'s maintenance log.'
   ],
   pilot: [
-    'The flip burn in {n}\'s story is two g harder than it was an hour ago.',
-    '{n} is losing at darts and blaming the gravity.',
-    '{n} has drawn a lane map in spilled beer and is arguing for it with anyone who comes by.',
-    '{n} and another pilot at the far end of the bar are arguing about angles, in hand gestures.',
-    '{n} is sitting straight, listening to a stranger\'s story about a bad landing. {n} winces at the landing.',
-    '{n} is standing on a chair, demonstrating a docking maneuver with two glasses and a napkin.'
+    '{n} is at the window, watching a freighter on its approach, and doesn\'t like it.',
+    '{n} and another pilot are arguing about lane times, with their hands.',
+    '{n} is reading the traffic notices on the board by the door.',
+    '{n} is telling a story about a docking, and the docking gets harder each time.',
+    '{n} is asking around about the pilotage fee here, and how long the queue is.',
+    '{n} is losing at darts and blaming the spin.'
   ],
   gunner: [
-    '{n} is arm-wrestling a dockworker, and winning.',
-    '{n} sits with their back to the wall and watches hands, not faces.',
-    '{n} is cleaning a cup with the hem of their shirt and watching the door.',
-    '{n} has won a small bet on a dart throw and is refusing the money.',
-    '{n} shares a corner table with an old navy veteran. Neither has spoken in an hour. Both have ordered a second round.',
-    '{n} is telling a quiet story about a jammed gun and a captain who never found out.'
+    '{n} is arm-wrestling a docker, and winning.',
+    '{n} sits where they can see the door.',
+    '{n} is at a table with an old navy hand. Neither has said much. Both are on their second.',
+    '{n} has won a small bet on the darts and won\'t take the money.',
+    '{n} is reading the insurers\' notices on the board, the ones about the lanes.',
+    '{n} is telling a quiet story about a jammed feed and a captain who never found out.'
   ],
   quartermaster: [
-    '{n} is working the room, buying no drinks.',
-    '{n} is haggling with the bartender over the price of a bottle.',
+    '{n} is going round the room and not buying anyone a drink.',
+    '{n} is haggling with the bartender over a case of something.',
     '{n} is making a list on the back of a receipt.',
-    '{n} is talking with a grain merchant. A price has been mentioned twice.',
-    '{n} is listening to a stranger\'s theory about the price of water and taking notes.',
-    '{n} has a very large bag of dried figs and is handing them out to the room.'
+    '{n} is talking to a grain broker. A price has come up twice.',
+    '{n} is reading the market board on their terminal and frowning at one line.',
+    '{n} has a bag of dried figs from the market and is handing them round.'
   ],
   slicer: [
-    '{n} is at a corner table, doing something to the bar\'s jukebox.',
+    '{n} is doing something to the bar\'s music, and nobody has noticed yet.',
     '{n} is on their terminal with their back to the room.',
-    '{n} has taken over the bar\'s music. Nobody has complained.',
-    '{n} is watching the bar\'s security feed on a very small screen.',
-    '{n} is talking to the bartender, low, about the till. The bartender counts it twice.',
-    '{n} has made three friends and one enemy in the last ten minutes.'
+    '{n} is showing the bartender why the till keeps freezing.',
+    '{n} is watching the port\'s traffic board on a very small screen.',
+    '{n} is fixing a docker\'s terminal for the price of a drink.',
+    '{n} is at the end of the bar, reading.'
   ],
   medic: [
-    '{n} is patching up someone who lost an argument with a bulkhead.',
-    '{n} is nursing one drink and watching everyone else\'s.',
-    '{n} has been cornered by a stranger with a rash.',
-    '{n} is giving a short lecture on hydration to a table of dockers.',
-    '{n} is sitting alone with an empty glass in both hands.',
-    '{n} is showing the bartender how to bandage a burn, with a napkin.'
-  ],
+    '{n} is cleaning a cut on a docker\'s hand with the bar\'s first-aid kit.',
+    '{n} is having one drink and watching how much everyone else has.',
+    '{n} has been cornered by somebody with a rash.',
+    '{n} is telling a table of dockers to drink some water.',
+    '{n} is asking the bartender where the clinic is, and what it charges.',
+    '{n} is showing the bartender how to dress a burn, with a napkin.'
+  ]
 };
 
 // What happens at the table, so the same four doors do not open onto the same rooms. Variants are picked by the person (a hash of
@@ -421,23 +439,23 @@ function met(pat) {
 function roomLines(planet) {
   const out = [], sid = G.state.systemId, c = culture(), day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), ls = pick(LEAGUES), last = season(ls).last;
   for (const x of conditions(sid)) {
-    if (x.id === 'shortage-water') out.push(`The beer is watered down. A sign by the taps says the water ration on ${planet.name} is cut.`);
-    else if (x.id === 'war') out.push('A navy recruiter is buying drinks for anyone who will sit still.');
-    else if (x.id === 'raids') out.push('Half the pilots in here are talking about the raids. The other half are not talking.');
-    else if (x.id === 'boom') out.push('Money is loose tonight. Somebody at the back is buying rounds for strangers.');
-    else if (x.id === 'slump') out.push('The place is half empty. Everyone is nursing one drink.');
+    if (x.id === 'shortage-water') out.push('The water ration\'s been cut. There\'s a new card by the taps, and the price of a beer has gone up on it.');
+    else if (x.id === 'war') out.push('A navy recruiter has a table by the door and a stack of contracts. The first drink\'s on the navy.');
+    else if (x.id === 'raids') out.push('The insurers have put the lane rates up again. Someone has the new figures on a terminal, and the table is passing it round.');
+    else if (x.id === 'boom') out.push('A big contract paid out today. Somebody at the back is buying rounds for people they don\'t know.');
+    else if (x.id === 'slump') out.push('Half the stools are empty. The board by the door has three jobs on it, all of them from last week.');
   }
   out.push(pick([
-    `The screens over the bar are showing "${show.title}". Someone tells you to be quiet.`,
+    `The screens over the bar are showing "${show.title}". Someone shushes the next table.`,
     last ? `${ls.sport[0].toUpperCase()}${ls.sport.slice(1)} on every screen: ${last.a} ${last.sa}, ${last.b} ${last.sb}. ${pick([`The ${last.winner} fans are buying.`, `Someone here lost money on the ${last.loser}.`])}` : `The ${ls.name} has no games on tonight. Everyone has an opinion anyway.`,
-    `"${c.song.title}" by ${c.song.band} comes on for the third time tonight. Nobody complains.`,
+    `"${c.song.title}" by ${c.song.band} comes on again. Someone at the bar sings the chorus.`,
     `Two people at the bar are arguing about the ending of "${book.title}".`,
-    'A man at the end of the bar is telling the same joke he told an hour ago. Somebody laughs.',
-    'Somebody has started a game of dominoes. It has been going an hour, and two people have stopped speaking.',
-    'The bartender polishes the same glass under the light and hums something old.',
-    'An old couple are dancing in the corner. The song in the room is a different one.',
-    'The light over the bar flickers twice. Everyone looks up. It steadies, and they look down again.',
-    'A child is asleep in a booth with her head on a rolled-up coat. Her parents are talking in low voices over a bottle.',
+    'A man at the end of the bar is telling the joke he told an hour ago. Somebody laughs.',
+    'A game of dominoes has been going for an hour at the corner table. The stake is the next round.',
+    'The bartender is restocking the fridge and checking each bottle off on a tablet.',
+    'An old couple are dancing in the corner to something on one of their terminals.',
+    'The lights dip when the dock cranes start up. Nobody looks up.',
+    'A kid is asleep in a booth on a rolled-up coat. Her parents are going through a lease on a terminal, line by line.',
   ]));
   for (const cm of crewMembers()) {
     const lines = barLines('crew')[cm.role];
