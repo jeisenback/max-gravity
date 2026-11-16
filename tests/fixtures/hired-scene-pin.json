@@ -3151,7 +3151,7 @@
   "id": "cast:cato:late",
   "i": 0,
   "label": "Ask him to tell you if it goes badly",
-  "result": "He writes it in pencil at the foot of the bill, where the next person to read it'll see. \"I will,\" he says. \"It's something, to have somebody to tell.\"",
+  "result": "He writes it in pencil at the foot of the bill, where the next person to read it'll see. \"I will,\" he says, and goes back to the bill.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.told: undefined -> true",
@@ -3188,7 +3188,7 @@
   "id": "cast:cato:late",
   "i": 1,
   "label": "Tell him it's not yours to carry",
-  "result": "\"No,\" he says. \"It's not.\" He squares the watch bill on the table. \"I wanted somebody to hear it said, that's all. It's a lot to carry in the hold.\"",
+  "result": "\"No,\" he says. \"It's not.\" He squares the watch bill on the table. \"I wanted somebody to hear it said, that's all.\"",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3223,7 +3223,7 @@
   "id": "cast:cato:late:closed",
   "i": 0,
   "label": "Say it can wait",
-  "result": "\"It can,\" he says, and puts the pencil back behind his ear. \"Thank you. I wouldn't have known how to start.\"",
+  "result": "\"It can,\" he says, and puts the pencil back behind his ear.",
   "changes": [],
   "next": null,
   "gate": {
@@ -3368,7 +3368,7 @@
   "id": "cast:cato:firstRaid",
   "i": 0,
   "label": "Take your post",
-  "result": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\"",
+  "result": "He lets go of the hatch frame. \"I'll be behind you,\" he says.",
   "changes": [],
   "next": null,
   "gate": {
@@ -5723,7 +5723,7 @@
   "id": "captain:hester:secret:confide",
   "i": 0,
   "label": "Say you'll keep it to yourself",
-  "result": "You say you will. She closes the notebook and holds it shut with both hands. \"Thank you,\" she says. It's the first time you've heard her say it without a number after it.",
+  "result": "You say you will. She closes the notebook and holds it shut with both hands. \"Thank you,\" she says.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -7165,7 +7165,7 @@
   "id": "hired:cap-praise",
   "i": 1,
   "label": "Ask if it's worth a bonus",
-  "result": "\"When it's a word, it's free,\" she says. \"When it's a bonus, it has to be earned. I have a column for each.\"",
+  "result": "\"Not this quarter,\" she says. \"The charter's due on the first.\" She closes the notebook.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Asked Captain Vance for a bonus before I had earned one.",
@@ -7379,7 +7379,7 @@
   "id": "hired:cap-favour",
   "i": 0,
   "label": "Stand the watch",
-  "result": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the gunner post.)",
+  "result": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 14",
    "s.journal.0.day: undefined -> 1",
@@ -7452,7 +7452,7 @@
   "id": "hired:cap-favour",
   "i": 2,
   "label": "Beg off",
-  "result": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+  "result": "\"Of course,\" she says, and goes to ask somebody else.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Wouldn't stand an extra watch for Captain Vance.",

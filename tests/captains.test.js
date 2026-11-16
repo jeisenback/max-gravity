@@ -282,7 +282,7 @@ test('the goodbye has an opening by warmth and a line for each thing that happen
   assert.doesNotMatch(r.alone, /will go with you/); assert.match(r.crew, /Ines Ferreira will go with you/);
   assert.equal(r.noSecret, false); assert.match(r.secret, /The first of the month/); assert.match(r.lent, /four thousand one hundred/);
   assert.match(r.xo, /Cato is at the hatch/); assert.match(r.xoDead, /taken Cato out of the book/); assert.doesNotMatch(r.xoDead, /Cato is at the hatch/);
-  for (const k of ['warm', 'neutral', 'cold']) assert.match(r[k], /account closed/);
+  for (const k of ['warm', 'neutral', 'cold']) assert.match(r[k], /Mind how you go/);
 });
 
 test('a loan is repaid when you leave, and the choices set the captain\'s last opinion', async () => {
@@ -786,7 +786,7 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
   });
   assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I don't know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
   assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', "Tell him it's not yours to carry"]); assert.match(r.openText, /I've known about the house since the spring/);
-  assert.equal(r.openTold, true); assert.match(r.result, /I wouldn't have known how to start/);
+  assert.equal(r.openTold, true); assert.match(r.result, /puts the pencil back behind his ear/);
 });
 
 test('Ilsa\'s, Pilar\'s and Ansel\'s "what they know" scenes open at friendly or better, and below it they keep it to themselves (#346)', async () => {
