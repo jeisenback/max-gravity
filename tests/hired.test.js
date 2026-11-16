@@ -1029,3 +1029,14 @@ test('a full-build start at Mars or the Belt with no papers given is a hand from
   for (const bg of ['mars', 'belt', 'earth']) assert.deepEqual(r[bg].sheet, r[bg].want, `${bg}: the sheet of the background`);
   await done();
 });
+
+test('posts: pressing Ask to move, on a yes, makes the asked post yours on the crew page (#1327)', async () => {
+  const { page, ev, done } = await open({});
+  await ev(hiredHelpers);
+  await ev(() => { startHired('gunner'); G.state.tutorial = null; UI.render(); });
+  await goTo(page, 'crew');
+  await ev(() => { Math.random = () => 0; });  // they say yes (the seeded random is restored by the next ev)
+  await page.click('[data-action=swapPost][data-arg=engineer]');
+  assert.match(await page.innerText('.shell .body'), /Engineer\s+yours/i, 'the engineer post is now yours');
+  await done();
+});

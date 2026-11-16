@@ -67,3 +67,12 @@ test('the hour is the hand\'s: an owner\'s Port page has no button, and the acti
   });
   assert.equal(r.button, false); assert.equal(r.html, '');
 });
+
+test('pressing the day ashore on the Port page opens A Day Ashore (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { const st = landed(); st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); Mods.emit('landed', currentPlanet()); G.dialog = null; G.nextEvent = null; UI.tab = 'port'; UI.render(); });
+  await page.click('[data-action=dayAshore]');
+  assert.equal(await page.textContent('#panel.event [role=dialog] h1'), 'A Day Ashore');
+  await done();
+});

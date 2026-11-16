@@ -123,3 +123,14 @@ test('the Record card opens with what came before the ship, from the papers, and
   assert.equal(r.papers.html + '\n', fs.readFileSync(file, 'utf8'), `record-papers: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });
+
+test('the due pick is taken by pressing it on the Ladder card, and the next rung\'s picks follow (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { setup(); career().skill.gunner = 45; page(); });
+  await page.click('[data-action=pick][data-arg=steady-eye]');
+  const card = await page.$$eval('.shell .body .con-card', cs => { const c = cs.find(x => /Ladder/.test(x.textContent)); return { text: c.textContent, picks: [...c.querySelectorAll('button[data-action="pick"]')].map(b => b.dataset.arg) }; });
+  assert.match(card.text, /Steady eye/, 'the pick taken is on the card');
+  assert.deepEqual(card.picks, ['lead', 'cover-eye'], 'and the next rung offers its two');
+  await done();
+});

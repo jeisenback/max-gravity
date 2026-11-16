@@ -211,3 +211,31 @@ test('Chat on a contact starts the sit-with scene on the burn, uses the half-bur
   assert.equal(r.nextHalf, true, 'after the flip there is another');
   await done();
 });
+
+test('pressing Hide market tips mutes them, as the button and the hint then say (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { hand(); Settings.quiet.market = false; UI.tab = 'comms'; UI.render(); });
+  await page.click('[data-action=commsQuiet][data-arg=market]');
+  assert.equal(await page.getAttribute('[data-action=commsQuiet][data-arg=market]', 'aria-pressed'), 'true');
+  assert.match(await page.innerText('#panel'), /Market tips are muted/);
+  await page.click('[data-action=commsQuiet][data-arg=market]');
+  assert.equal(await page.getAttribute('[data-action=commsQuiet][data-arg=market]', 'aria-pressed'), 'false', 'and pressed again, shown');
+  await done();
+});
+
+test('in a burn, Chat on the comms sheet sits the hand with that crewmate (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9;
+    sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.dialog = null; G.transit.event = null; G.mode = 'transit';
+    G.transit.lifeUsed = {}; G.transit.flipped = true; G.transit.left = G.transit.total * 0.3; G.transit.paused = true;
+  });
+  await page.click('[data-bst=comms]');
+  const name = await page.$eval('[data-action=chatWith]', b => b.closest('.contact').querySelector('span').textContent.trim());
+  await page.click('[data-action=chatWith]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  assert.match(await page.innerText('#panel.event [role=dialog]'), new RegExp(name.split(' ')[0]), 'a scene with the crewmate pressed');
+  await done();
+});
