@@ -5,8 +5,10 @@
 //   node tools/changed-tests.js --list     print the choice and why, without running it
 //   node tools/changed-tests.js --files js/audio.js,style.css   choose for these files instead of the git change
 // A changed test file runs itself. A changed script runs the tests that use a name it declares at the top level (and the
-// globals check). The shell, the stylesheet and the page run the layout, shell and ui tests. Markdown and the JSON under docs/ need none. A file it
-// cannot map, or a script whose names no test uses, runs the whole suite.
+// globals check), and one that builds markup runs the golden copies too, since they reach a page by its tab and not by a name (#1324). The shell, the
+// stylesheet and the page run the layout, shell and ui tests. Markdown and the JSON under docs/ need none. A file it cannot map, or a script whose names
+// no test uses, runs the whole suite. The change is what the branch did since it left origin/main (their merge base), so a branch behind main is not
+// read as changing everything main changed since (#1324).
 
 const { execFileSync, spawnSync } = require('node:child_process');
 const fs = require('node:fs');
@@ -14,6 +16,7 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
+const GOLDEN = 'tests/views.test.js';  // every page's markup held to its golden copy in tests/fixtures
 const TEXT_FILE = /^js\/(?:(?:\w+text|bartopics)\.js|(?:captains|stories)\/[\w-]+\.js)$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
 const EDITOR_TEST = /^tests\/editor[\w-]*\.test\.js$/;  // the scene editor's test files, whatever their number (a long file is split into several, #583)
 
@@ -54,6 +57,7 @@ function select(changed, { tests, sources }) {
       for (const [t, name] of hits) { files.add(t); why.push(`${f}: ${name} is used by ${t}`); }
       add(pinned, `${f}: a text file, so every pin`);
       add([GLOBALS], `${f}: the globals check`);
+      if (/class="/.test(sources[f])) add([GOLDEN], `${f}: builds markup, so the golden copies`);
       continue;
     }
     return everything(`${f}: not mapped to a test, so everything`);
@@ -70,11 +74,17 @@ function withHarnesses(tests, harnesses) {
   }));
 }
 
+// The files the work in `root` changed: what is committed, staged or edited since the merge base with `base`, and the untracked files.
+function changedFiles(root, base = 'origin/main') {
+  const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
+  const since = git('merge-base', base, 'HEAD')[0];
+  return [...new Set([...git('diff', '--name-only', since), ...git('ls-files', '--others', '--exclude-standard')])];
+}
+
 function main() {
   const root = path.resolve(__dirname, '..');
-  const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
   const given = process.argv.indexOf('--files');
-  const changed = given > 0 ? process.argv[given + 1].split(',') : [...new Set([...git('diff', '--name-only', 'origin/main'), ...git('ls-files', '--others', '--exclude-standard')])];
+  const changed = given > 0 ? process.argv[given + 1].split(',') : changedFiles(root);
   const read = (dir, suffix) => Object.fromEntries(fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith(suffix))
     .map(f => [`${dir}/${f}`, fs.readFileSync(path.join(root, dir, f), 'utf8')]));
   const r = select(changed, { tests: withHarnesses(read('tests', '.test.js'), read('tests', 'play.js')), sources: { ...read('js', '.js'), ...read('js/captains', '.js'), ...read('js/stories', '.js') } });
@@ -88,4 +98,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { select, withHarnesses };
+module.exports = { select, withHarnesses, changedFiles };
