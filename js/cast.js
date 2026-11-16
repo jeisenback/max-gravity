@@ -335,24 +335,23 @@ const CAST = {
     traits: ['brave', 'rude'], wage: 600,
     skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
     ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
-    bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
+    bio: 'Striker and captain of the Ravens, her dome\'s ring-ball side, until a dislocated knee in a final ended it at twenty-six. She took the only other job she could find where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
         ('Yelena: "A gun is just a very serious ball. Same principle. You don\'t' +
           ' look at the thing, you look at where it\'s going to be."'),
-        ('Yelena is doing knee exercises in the corridor with the grim cheer of a ' +
-          'woman who has been told to.'),
+        'Yelena is doing the knee exercises off a card taped to the corridor wall, and counting them out loud.',
         'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."',
       ],
-      galley: ['Yelena is arguing with the ring-ball feed. The feed is losing.'],
-      gunnery: ['Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it\'s not regulation.'],
+      galley: ['Yelena is arguing with the ring-ball feed, which is eleven minutes behind, about a foul it hasn\'t shown yet.'],
+      gunnery: ['Yelena has drawn a raven the size of a hand on the fire control housing in marker. It isn\'t regulation. Nobody has rubbed it off.'],
     },
     scenes: {
       meet: {
         title: 'The Striker at the Rail',
         text: ('At the dock bar rail, a woman is icing a knee brace and arguing with the screen over the counter, which is showing a ring-ball ' +
             'replay. "That was a foul," she tells it, without turning. "That was a foul, and the ref is a coward." She turns to you at last. "Yelena ' +
-            'Quint. Olympus Dome Ravens, captain, striker. Retired, they say, like it\'s a sentence." She taps the knee. "Now I aim things for a ' +
+            'Quint. Ravens, captain, striker. Retired, they say, like it\'s a sentence." She taps the knee. "Now I aim things for a ' +
             'living, dome defense mostly, and the pay is an insult. I can put a round through a washer at four kilometers. Does your ship have guns ' +
             'that want somebody who cares where they land?"'),
         choices: [
@@ -373,21 +372,17 @@ const CAST = {
       },
       intro: {
         title: 'The Gunner Who Argued with the Feed',
-        text: ('On the first burn you find the gunner in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," Yelena ' +
-            'Quint says, to the screen, to the room, to nobody. "Look at the elbow. Look at it." Nobody has looked at the elbow. She runs it back herself, thumb on the remote, and the feed, which has the decency not to answer, shows the elbow again, slowly.'),
+        text: 'On the first burn you find Yelena Quint in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," she says, to the screen, to the room. "Look at the elbow. Look at it." Nobody has looked at the elbow. She runs it back with her thumb, and the elbow comes round again, slowly.',
         choices: [
           {
             label: 'Take the ref\'s side',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You took the ref\'s side, and I enjoyed it very much.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 } },
-            result: 'You say the elbow was clean, and for ten minutes she\'s the happiest you\'ve seen her, taking you through the replay frame by frame ' +
-              'with a fork for a pointer. By the end she has you pointing too. "You\'re wrong," she says, delighted, "and you know exactly where, and ' +
-              'that\'s the whole game." She goes back to her post with a spring in her step, favoring the good knee.',
+            result: 'You say the elbow was clean. For ten minutes she takes you through the replay frame by frame with a fork for a pointer, and by the end you\'re pointing too. "You\'re wrong," she says, "and you know exactly where. That\'s the whole game." She goes back to her post on the good knee.',
           },
           {
             label: 'Ask about the knee',
             effects: { castLike: { who: 'yelena', n: 1, memory: 'You asked about the knee, and I told you.' } },
-            result: 'She looks at you for a moment, deciding. "Twenty-six," she says. "Final. A girl from Hellas came in low, and I heard it before I felt ' +
-              'it." She taps the brace. "They say it was nobody\'s fault. That\'s the worst part. Nobody to be angry with." She turns the replay off.',
+            result: 'She looks at you for a moment. "Twenty-six," she says. "A final. A girl from the outer domes came in low, and I heard it before I felt it." She taps the brace. "Nobody\'s fault, they said. There\'s still a loan for the surgeon." She turns the replay off.',
           },
         ],
       },
@@ -400,56 +395,44 @@ const CAST = {
           {
             label: 'Clear the hold and play',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You played, and you were on my side.' }, castXp: { who: 'yelena', role: 'gunner', n: 3 } },
-            result: 'It\'s the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You\'re on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she\'s the one who shouts. You lose by two. ' +
-              'She doesn\'t mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.',
+            result: 'You clear the hold and tie a cable ring at each end. Under thrust the ball drops faster than she\'s used to, and she swears at it every time. She captains your side loudly and unfairly, calls every foul against her own side, and puts everyone aboard on the pitch at least once. You lose by two. At the evening meal she asks each person, by name, whether they\'re in next week.',
           },
           {
             label: 'Not in the hold',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said no to the game in the hold.' } },
-            result: '"Sure," she says, and puts the ball back in her bag, carefully. She\'s professional for the rest of the burn. It\'s the quietest the galley has been.',
+            result: '"Sure," she says, and puts the ball back in her bag. She\'s professional for the rest of the burn, and the galley is quiet at meals.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Final',
-        text: ('It\'s the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days ' +
-            'pretending she doesn\'t care. She has the watch. "It\'s nothing," she says, at the hatch, with a bright, flat voice. "It\'s only a final. ' +
-            'I\'ll listen to the radio. Radio is fine."'),
+        text: 'It\'s the night of the ring-ball final, and the outer domes\' side is in it. Yelena has spent two days saying she doesn\'t care. She has the watch. "It\'s only a final," she says at the hatch. "I\'ll have the radio. The radio\'s fine."',
         choices: [
           {
             label: 'Take her watch',
             effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' }, standWatch: { stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' } },
-            result: 'You tell her to go. She doesn\'t argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
-              'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there\'s a ' +
-              'small black raven drawn on the back of your hand, in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line ' +
-              'of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.',
+            result: 'You tell her to go. She doesn\'t argue. From the second quarter on you can hear her through the deck: refereeing, a long groan, and near the end a silence so long you think the feed has dropped. In the morning there\'s a small raven drawn on the back of your hand in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.',
           },
           {
             label: '"It\'s your watch."',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 }, standWatch: { stands: 'yelena', post: 'gunnery', relieved: null } },
-            result: '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or ' +
-              'after. She runs every drill on the board while she\'s up there, twice, faster the second time. When you come to relieve her she\'s at ' +
-              'the guns with her chin up.',
+            result: '"Of course," she says. She stands the watch to the minute with the radio turned low, and runs every drill on the board while she\'s up there, twice, faster the second time. She doesn\'t say anything about it, then or after.',
           },
         ],
       },
       late: {
         days: 45, title: 'Nobody on the Bench',
-        text: ('Yelena is cleaning the fire control housing when you find her, one slow pass of the cloth for each sentence. "I want to run a ship," she says. "Not now. Someday. A whole crew, and nobody on the bench, nobody who\'s only a name on a ' +
-            'list. Every ship I\'ve been on has a bench. I\'d put everyone on the pitch." She doesn\'t look up. "If you ever have ships, I\'d ' +
-            'like to be asked."'),
+        text: 'Yelena is cleaning the fire control housing, one pass of the cloth for each sentence. "I want to run a ship," she says. "Someday. A whole crew, and nobody on the bench. Every ship I\'ve been on has a bench: somebody who\'s only a name on the bill, sent home at the end of the contract without the bonus." She doesn\'t look up. "When I\'ve got one, I\'ll be asking people. I\'m telling you now."',
         choices: [
           {
-            label: 'Promise her a ship, someday',
-            effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you promised.' }, castFlag: { who: 'yelena', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She puts the cloth down on the housing and, for once, doesn\'t pick anything up in its place. She says ' +
-              '"Good" to the fire control, in a low voice. Then, louder, to the whole housing: "Did you hear that?"',
+            label: 'Say you\'d sign on',
+            effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you said you\'d sign on.' }, castFlag: { who: 'yelena', flag: 'promised' } },
+            result: '"I\'d sign on," you say. She puts the cloth down on the housing, and for once doesn\'t pick anything up in its place. "Good," she says, to the fire control. Then, louder: "Did you hear that?"',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'yelena', n: 1, memory: 'You wouldn\'t promise a ship, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." She raises one flat hand, like a referee, and the cloth goes back to the housing. ' +
-              '"Fair," she says. "I\'ll take fair. Fair is more than most of the bench ever got."',
+            label: '"Ask me then."',
+            effects: { castLike: { who: 'yelena', n: 1, memory: 'I told you about the ship, and you said to ask you then.' } },
+            result: '"Ask me then," you say. She holds up one flat hand, like a referee, and goes back to the housing. "Fair," she says. "I\'ll take fair."',
           },
         ],
       },
@@ -468,7 +451,7 @@ const CAST = {
           { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her ' +
-                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock, straight, and doesn\'t say another word to you for ' +
+                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock and doesn\'t say another word to you for ' +
                 'the rest of the burn.');
           } },
         ],
@@ -1076,8 +1059,8 @@ function overTheHull(backup) {
   if (outcome === 'die') {
     return lead + ('She goes over first, as she said she would. The channel carries the first shot, and then something that\'s not a voice, and then ' +
         'the party, shouting her name. You bring the ship alongside, and you\'re too late, and everyone knows it. When the others come back across the ' +
-        'gap they carry the ring-ball from her bag, and nobody says anything about the foul.')
-      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+        'gap, one of them has the ring-ball from her bag.')
+      + (promised ? ' Nobody is going to ask you to sign on now.' : '');
   }
   castLike('yelena', 2, outcome === 'mark' ? 'You let me go first, and I came back with a hand that doesn\'t close.' : 'You let me go first, and I came back.');
   if (outcome === 'mark') {
@@ -1086,7 +1069,7 @@ function overTheHull(backup) {
         'worth it. Just say I was there."');
   }
   return lead + 'She goes over the hull first, as she said she would, and the party follows. It\'s loud and fast and over before you\'ve finished counting. She comes back across the gap with a split lip and a stranger\'s cap in her fist. "Nobody on the bench," she says.'
-    + (promised ? ' "You said someday," she adds.' : '');
+    + (promised ? ' "You said you\'d sign on," she adds.' : '');
 }
 
 // The hull and the medic, as the pivot scenes state them (Yelena's, Ines's, Tomas's), so the player sees what will count.

@@ -68,18 +68,12 @@ const CAST_BAR = {
   yelena: [
     {
       days: 5, title: 'Last Orders, Ravens',
-      text: ('The bar is showing a ring-ball replay, and a loud man at the next table has said something about the Olympus Dome Ravens. Yelena Quint ' +
+      text: ('The bar is showing a ring-ball replay, and a loud man at the next table has said something about the Ravens. Yelena Quint ' +
           'puts her drink down. "He\'s wrong," she says to you, evenly. "He\'s wrong about the offside rule, and he\'s wrong about number seven, and ' +
           'he\'s wrong about my knee." She\'s already standing. "I\'m going to explain this to him."'),
       choices: [
-        { label: 'Back her up', memory: 'You backed me up when a stranger insulted the Ravens.', run() { castLike('yelena', 2, this.memory); castXp('yelena', 'gunner', 2); return (
-            'She explains it to him with a fork, a beer mat and a great many examples, and you stand behind her with your arms folded. It doesn\'t ' +
-            'come to blows. It comes to him buying a round and apologizing to the memory of number seven. At the end he asks for her autograph. She ' +
-            'signs the beer mat. "Ravens," she says to the room.'); } },
-        { label: 'Steer her to the door', memory: 'You steered me out before it turned into a thing.', run() { castLike('yelena', 1, this.memory); return (
-            '"He\'s wrong," she says, all the way to the door and halfway down the dock. "He\'s so wrong." She lets you take her arm. Halfway to the ' +
-            'ship she stops, and laughs, and says it was probably for the best, because she\'d have hit him. "Thank you," she says. "I needed ' +
-            'somebody to be the sensible one."'); } },
+        { label: 'Back her up', memory: 'You backed me up when a stranger insulted the Ravens.', run() { castLike('yelena', 2, this.memory); castXp('yelena', 'gunner', 2); return 'She explains it to him with a fork and a beer mat, and you stand behind her with your arms folded. It doesn\'t come to blows. It comes to him buying a round. On the way out he asks her to sign the beer mat, and she does. "Ravens," she says to the room.'; } },
+        { label: 'Steer her to the door', memory: 'You steered me out before it turned into a thing.', run() { castLike('yelena', 1, this.memory); return '"He\'s wrong," she says, all the way to the door and halfway down the dock. Halfway to the ship she stops, and laughs. "I\'d have hit him," she says. "Thanks."'; } },
       ],
     },
     {
@@ -88,14 +82,8 @@ const CAST_BAR = {
           'seen her, and is watching the screen. "Don\'t," she says to you, quietly. "Don\'t look at the shirt. If I look at the shirt I\'ll have to ' +
           'say something."'),
       choices: [
-        { label: 'Offer to take their picture together', memory: 'You took a picture of me with a girl in my old shirt.', run() { castLike('yelena', 2, this.memory); return (
-            'You say you\'ll take it. The girl goes red, and Yelena crouches down and puts an arm around her. She asks the girl her name and her ' +
-            'position. It\'s goalkeeper. "Good," Yelena says. "Nobody ever thanks the goalkeeper." When the picture is taken she signs the shirt in ' +
-            'full, and says nothing about the knee.'); } },
-        { label: 'Give them room', memory: 'You gave me room with the girl in the old shirt.', run() { castLike('yelena', 1, this.memory); return (
-            'You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something ' +
-            'with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she\'s almost running. Yelena says nothing about ' +
-            'it. She\'s humming the Ravens\' song.'); } },
+        { label: 'Offer to take their picture together', memory: 'You took a picture of me with a girl in my old shirt.', run() { castLike('yelena', 2, this.memory); return 'You say you\'ll take it. The girl goes red, and Yelena crouches down beside her and asks her name and her position. Goalkeeper. "Good," Yelena says. "Nobody ever thanks the goalkeeper." She signs the shirt in full.'; } },
+        { label: 'Give them room', memory: 'You gave me room with the girl in the old shirt.', run() { castLike('yelena', 1, this.memory); return 'You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she\'s almost running.'; } },
       ],
     },
   ],

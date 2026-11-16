@@ -1093,7 +1093,7 @@
   "id": "cast:yelena:intro",
   "i": 0,
   "label": "Take the ref's side",
-  "result": "You say the elbow was clean, and for ten minutes she's the happiest you've seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. \"You're wrong,\" she says, delighted, \"and you know exactly where, and that's the whole game.\" She goes back to her post with a spring in her step, favoring the good knee.",
+  "result": "You say the elbow was clean. For ten minutes she takes you through the replay frame by frame with a fork for a pointer, and by the end you're pointing too. \"You're wrong,\" she says, \"and you know exactly where. That's the whole game.\" She goes back to her post on the good knee.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1129,7 +1129,7 @@
   "id": "cast:yelena:intro",
   "i": 1,
   "label": "Ask about the knee",
-  "result": "She looks at you for a moment, deciding. \"Twenty-six,\" she says. \"Final. A girl from Hellas came in low, and I heard it before I felt it.\" She taps the brace. \"They say it was nobody's fault. That's the worst part. Nobody to be angry with.\" She turns the replay off.",
+  "result": "She looks at you for a moment. \"Twenty-six,\" she says. \"A final. A girl from the outer domes came in low, and I heard it before I felt it.\" She taps the brace. \"Nobody's fault, they said. There's still a loan for the surgeon.\" She turns the replay off.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1164,7 +1164,7 @@
   "id": "cast:yelena:mid1",
   "i": 0,
   "label": "Clear the hold and play",
-  "result": "It's the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You're on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she's the one who shouts. You lose by two. She doesn't mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.",
+  "result": "You clear the hold and tie a cable ring at each end. Under thrust the ball drops faster than she's used to, and she swears at it every time. She captains your side loudly and unfairly, calls every foul against her own side, and puts everyone aboard on the pitch at least once. You lose by two. At the evening meal she asks each person, by name, whether they're in next week.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1200,7 +1200,7 @@
   "id": "cast:yelena:mid1",
   "i": 1,
   "label": "Not in the hold",
-  "result": "\"Sure,\" she says, and puts the ball back in her bag, carefully. She's professional for the rest of the burn. It's the quietest the galley has been.",
+  "result": "\"Sure,\" she says, and puts the ball back in her bag. She's professional for the rest of the burn, and the galley is quiet at meals.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1235,7 +1235,7 @@
   "id": "cast:yelena:mid2",
   "i": 0,
   "label": "Take her watch",
-  "result": "You tell her to go. She doesn't argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there's a small black raven drawn on the back of your hand, in marker, and she doesn't mention it. The captain finds your name on Yelena's line of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.",
+  "result": "You tell her to go. She doesn't argue. From the second quarter on you can hear her through the deck: refereeing, a long groan, and near the end a silence so long you think the feed has dropped. In the morning there's a small raven drawn on the back of your hand in marker, and she doesn't mention it. The captain finds your name on Yelena's line of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1274,7 +1274,7 @@
   "id": "cast:yelena:mid2",
   "i": 1,
   "label": "\"It's your watch.\"",
-  "result": "\"Of course,\" she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or after. She runs every drill on the board while she's up there, twice, faster the second time. When you come to relieve her she's at the guns with her chin up.",
+  "result": "\"Of course,\" she says. She stands the watch to the minute with the radio turned low, and runs every drill on the board while she's up there, twice, faster the second time. She doesn't say anything about it, then or after.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1313,35 +1313,35 @@
  {
   "id": "cast:yelena:late",
   "i": 0,
-  "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you'll be asked.\" She puts the cloth down on the housing and, for once, doesn't pick anything up in its place. She says \"Good\" to the fire control, in a low voice. Then, louder, to the whole housing: \"Did you hear that?\"",
+  "label": "Say you'd sign on",
+  "result": "\"I'd sign on,\" you say. She puts the cloth down on the housing, and for once doesn't pick anything up in its place. \"Good,\" she says, to the fire control. Then, louder: \"Did you hear that?\"",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.promised: undefined -> true",
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
-   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I told you I wanted a ship with no bench, and you promised.",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I told you I wanted a ship with no bench, and you said you'd sign on.",
    "s.people.c:yelena.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd sign on",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd sign on",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd sign on",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd sign on",
     "open": true,
     "why": ""
    }
@@ -1350,33 +1350,33 @@
  {
   "id": "cast:yelena:late",
   "i": 1,
-  "label": "Make no promises",
-  "result": "\"I can't promise that,\" you say, \"but I heard you.\" She raises one flat hand, like a referee, and the cloth goes back to the housing. \"Fair,\" she says. \"I'll take fair. Fair is more than most of the bench ever got.\"",
+  "label": "\"Ask me then.\"",
+  "result": "\"Ask me then,\" you say. She holds up one flat hand, like a referee, and goes back to the housing. \"Fair,\" she says. \"I'll take fair.\"",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
-   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a ship, but you listened.",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I told you about the ship, and you said to ask you then.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Make no promises",
+    "label": "\"Ask me then.\"",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Make no promises",
+    "label": "\"Ask me then.\"",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Make no promises",
+    "label": "\"Ask me then.\"",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Make no promises",
+    "label": "\"Ask me then.\"",
     "open": true,
     "why": ""
    }
@@ -1458,7 +1458,7 @@
   "id": "cast:yelena:pivot",
   "i": 2,
   "label": "Call it off",
-  "result": "You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her helmet in her hand until the drifting ship is a point of light. \"Fine,\" she says. She sits down on the bench by the airlock, straight, and doesn't say another word to you for the rest of the burn.",
+  "result": "You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her helmet in her hand until the drifting ship is a point of light. \"Fine,\" she says. She sits down on the bench by the airlock and doesn't say another word to you for the rest of the burn.",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.benched: undefined -> true",
@@ -5066,7 +5066,7 @@
   "id": "cast:yelena:bar1",
   "i": 0,
   "label": "Back her up",
-  "result": "She explains it to him with a fork, a beer mat and a great many examples, and you stand behind her with your arms folded. It doesn't come to blows. It comes to him buying a round and apologizing to the memory of number seven. At the end he asks for her autograph. She signs the beer mat. \"Ravens,\" she says to the room.",
+  "result": "She explains it to him with a fork and a beer mat, and you stand behind her with your arms folded. It doesn't come to blows. It comes to him buying a round. On the way out he asks her to sign the beer mat, and she does. \"Ravens,\" she says to the room.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -5102,7 +5102,7 @@
   "id": "cast:yelena:bar1",
   "i": 1,
   "label": "Steer her to the door",
-  "result": "\"He's wrong,\" she says, all the way to the door and halfway down the dock. \"He's so wrong.\" She lets you take her arm. Halfway to the ship she stops, and laughs, and says it was probably for the best, because she'd have hit him. \"Thank you,\" she says. \"I needed somebody to be the sensible one.\"",
+  "result": "\"He's wrong,\" she says, all the way to the door and halfway down the dock. Halfway to the ship she stops, and laughs. \"I'd have hit him,\" she says. \"Thanks.\"",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -5137,7 +5137,7 @@
   "id": "cast:yelena:bar2",
   "i": 0,
   "label": "Offer to take their picture together",
-  "result": "You say you'll take it. The girl goes red, and Yelena crouches down and puts an arm around her. She asks the girl her name and her position. It's goalkeeper. \"Good,\" Yelena says. \"Nobody ever thanks the goalkeeper.\" When the picture is taken she signs the shirt in full, and says nothing about the knee.",
+  "result": "You say you'll take it. The girl goes red, and Yelena crouches down beside her and asks her name and her position. Goalkeeper. \"Good,\" Yelena says. \"Nobody ever thanks the goalkeeper.\" She signs the shirt in full.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -5172,7 +5172,7 @@
   "id": "cast:yelena:bar2",
   "i": 1,
   "label": "Give them room",
-  "result": "You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she's almost running. Yelena says nothing about it. She's humming the Ravens' song.",
+  "result": "You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she's almost running.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
