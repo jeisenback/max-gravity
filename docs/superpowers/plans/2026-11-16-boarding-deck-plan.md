@@ -99,7 +99,7 @@ test('a line of fire runs along a deck and one deck up the well, never two', () 
 
 **Interfaces:**
 - Consumes: `CUNNING` (today's feint rate).
-- Produces: `planTheirMove(state, rand) -> { moves: [{ id, to }], shots: [{ id, at, odds }], charge: { on, from, setter } | null, cut: hatch | null, feint: bool }`, drawn before the hand commits. By party: raiders push and rush (two spots along `spotPath` where the next spot is held by fewer of ours than half of them and the hand is not on it); corsairs push and set a charge (from a spot next to the spot of ours with the most heads; never two turns running; never feinted; while `charges` last); the navy pushes and holds only. Sealed hatch on every path: cut the nearest on the path.
+- Produces: `planTheirMove(state, rand) -> { moves: [{ id, to }], shots: [{ id, at, odds }], charge: { on, from, setter } | null, cut: hatch | null, feint: bool }`, drawn before the hand commits. By party: raiders push and rush (two spots along `spotPath` where the next spot is held by fewer of ours than half of them and the hand is not on it); corsairs push and set a charge (from a spot next to the spot of ours with the most heads; never two turns running; never feinted; while `charges` last); the navy pushes and holds only. Sealed hatch on every path: cut the nearest on the path. Boarding her, her crew defend: they hold her spots toward her bridge and may seal her hatches against us.
 
 - [ ] **Step 1: Write the failing tests:** a rush moves two spots and stops at the hand's spot; a charge is shown a turn ahead from a spot next to its target; the navy never rushes or charges; with every path sealed they cut a hatch (Review Focus 1); a full spot on the only path stops the rush (Review Focus 2).
 - [ ] **Steps 2 to 5:** as above.
