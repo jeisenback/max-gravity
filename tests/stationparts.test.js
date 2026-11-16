@@ -116,3 +116,15 @@ test('a used station part has its catch: its quirk\'s minus counts (a faster-wea
   assert.equal(r.harnessUsed, false, 'a harness is no fire-control part: sold new only');
   assert.match(r.html, /but /, 'a used offer says its catch');
 });
+
+test('at the counter, pressing New buys a gunsight into the bag, and with leave given Ask to fit it fits it (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(start);
+  await ev(() => { handAt({ leave: false }); G.mode = 'landed'; UI.tab = 'port'; UI.render(); });
+  await page.click('[data-action="stationBuy"][data-arg="gunsight:yard"]');
+  assert.ok(await page.$('[data-action="stationFit"]'), 'without the captain\'s leave the gunsight waits in the bag');
+  await ev(() => { hired().stationLeave = true; UI.render(); });  // she gives it
+  await page.click('[data-action="stationFit"][data-arg="0"]');
+  assert.equal(await page.$('[data-action="stationFit"]'), null, 'fitted: the bag is empty');
+  await done();
+});

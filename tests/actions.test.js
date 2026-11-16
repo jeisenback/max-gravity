@@ -75,18 +75,16 @@ const EXEMPT = {
   cescort: COMPANY, cpark: COMPANY, cpick: COMPANY, crelieve: COMPANY, croute: COMPANY, csell: COMPANY, ssell: COMPANY,
   sbuy: "the stake offer on the port page, hidden in the shipped build (scopeOff('owner'), js/ui.js stakeOffer)",
   sideWork: "the bar's side work is off in the shipped build: barWorkHtml returns nothing under scopeOff('barwork'), js/barwork.js",
+  opSupply: "the outpost is off in the shipped build: the port draws neither the outpost nor its claim under scopeOff('owner'), js/outpost.js",
   goDown: "never drawn: the day down is only at Earth (DOWN_PORT), whose port view always offers it as tags (downOffers), and dayDownHtml draws nothing under a port view, js/daydown.js (#1334)",
 };
 
 // Actions a test should press and none does yet, with where the button is. This list only shrinks (#1327): pressing one in a
 // test, and asserting what the press visibly does, takes it off.
 const PENDING = {
-  awayGo: 'awayjobs.js', burnFromSite: 'salvage.js', combatMode: 'bridge.js', cutWreck: 'salvage.js',
-  interview: 'interview.js', interviewAsk: 'interview.js', load: 'ui.js, the death screen', modRemove: 'community.js',
-  newgame: 'ui.js, the death screen', opSupply: 'outpost.js', pitchJob: 'awayjobs.js', programRemove: 'programs.js',
-  programSlot: 'programs.js', scenarioCancel: 'community.js', scenarioPlay: 'community.js', spareFit: 'parts.js',
-  spareSell: 'parts.js', stationBuy: 'parts.js', stationFit: 'parts.js', suggestRun: 'suggest.js',
-  takeContract: 'ownerboard.js', takeJob: 'jobs.js', takeSalvageJob: 'salvage.js',
+  combatMode: 'bridge.js', interview: 'interview.js', interviewAsk: 'interview.js', load: 'ui.js, the death screen',
+  modRemove: 'community.js', newgame: 'ui.js, the death screen', programRemove: 'programs.js', programSlot: 'programs.js',
+  scenarioCancel: 'community.js', scenarioPlay: 'community.js', suggestRun: 'suggest.js', takeContract: 'ownerboard.js',
 };
 
 const declared = declaredActions(walk(path.join(ROOT, 'js')).map(read));

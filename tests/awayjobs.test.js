@@ -131,3 +131,20 @@ test('a run the captain agreed to is the one she flies: it stands through a day 
   assert.ok(r.kept, 'a busy landing takes the job off the page and leaves the open scene'); assert.ok(r.turn, 'it plays when the scenes before it close'); assert.ok(r.go, 'the page offers it'); assert.ok(r.opened, 'and the button opens it');
   await done();
 });
+
+test('pressing Put it to the captain opens the pitch, and Go to it, at the job\'s place, opens the job (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { setup(); offerOne(); UI.tab = 'missions'; UI.render(); });
+  await page.click('[data-action=pitchJob][data-arg="0"]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  const dest = await ev(() => {
+    G.dialog = null; const st = G.state, h = hired(), a = h.away[0];
+    a.booked = true; st.systemId = a.sid; st.planet = a.planet; UI.planet = currentPlanet(); G.mode = 'landed'; UI.tab = 'missions'; UI.show();
+    return a.ctx.dest;
+  });
+  await page.click('[data-action=awayGo][data-arg="0"]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  assert.match(await page.textContent('#panel.event [role=dialog] h1'), new RegExp(dest), 'the job at its place');
+  await done();
+});

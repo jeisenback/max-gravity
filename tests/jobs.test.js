@@ -124,3 +124,13 @@ test('a crew member who works the post helps a job by a tenth; the hand\'s own l
   assert.equal(r.alone, r.own, 'with nobody else aboard the figure is the same');
   await done();
 });
+
+test('pressing Take it on the station\'s job board opens the job (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { setup(); UI.tab = 'missions'; UI.render(); });
+  await page.click('[data-action=takeJob]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  assert.ok((await page.textContent('#panel.event [role=dialog] h1')).length > 0, 'the job is on screen');
+  await done();
+});
