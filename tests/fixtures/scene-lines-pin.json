@@ -11539,7 +11539,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You find the port's chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays. Mate0 says a short word for you. Mate1 smiles, the first time tonight.",
+    "text": "The port has a chapel, a plain room with a rail and a window, and the crew stand in it for a while. Afterwards there's a meal. Nobody eats much, and everybody stays. Mate0 says a short word for you. Mate1 smiles, the first time tonight.",
     "mem": [
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11558,7 +11558,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet. Mate1 smiles, the first time tonight. Mate3 orders you another.",
+    "text": "It takes an evening and four drafts. The letter is a page about the work and the crew, with the money enclosed. You send it on the next outbound packet. Mate1 smiles, the first time tonight. Mate3 orders you another.",
     "mem": [
      "9 Jul 2214: You wrote to Mara's family.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11577,7 +11577,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table. Mate2 tells the next table about it, and you're in the story. Mate4 tells the next table about it, and you're in the story.",
+    "text": "You gather the crew in the galley and say what you can. It's short. Then everyone goes back to their posts. Mate2 tells the next table about it, and you're in the story. Mate4 tells the next table about it, and you're in the story.",
     "mem": [
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
@@ -11593,7 +11593,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 touches the cord at their wrist and doesn't say anything. Mate1 looks at the photo in their tin, not at you.",
+    "text": "There's a run to make, and a clock on it. You don't mention it, and for a while nobody else does either. Mate0 touches the cord at their wrist and doesn't say anything. Mate1 looks at the photo in their tin, not at you.",
     "mem": [
      "9 Jul 2214: The captain didn't give Mara their due.",
      "9 Jul 2214: The captain didn't give Mara their due.",
@@ -11614,7 +11614,7 @@
    }
   ],
   "title": "After the Loss",
-  "text": "Mara Quill, the engineer, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
+  "text": "Mara Quill, the engineer, is on the ship's memorial now, and the ship is in port. There's a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
   "labels": [
    "Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)",
    "Write to their family, and send a month's savings (1,000 cr of yours)",
@@ -11626,7 +11626,7 @@
   "id": "scene:mourn:no-role",
   "plays": [],
   "title": "After the Loss",
-  "text": "Mara Quill, the hand, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
+  "text": "Mara Quill, the hand, is on the ship's memorial now, and the ship is in port. There's a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
   "labels": [
    "Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)",
    "Write to their family, and send a month's savings (1,000 cr of yours)",
@@ -23962,7 +23962,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24039,7 +24039,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the long way round by the yard, where the slips hum and a hull stands open to the dome. A rigger shows you a plate gone wrong on somebody else's ship, and says that is how you tell a good yard from a busy one.",
+    "text": "You walk the long way round by the yard, where a hull stands open in the slip. A rigger shows you a plate that was welded wrong on somebody else's ship.",
     "next": null
    },
    {
@@ -24110,7 +24110,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market tier, and the talk follows you: somebody has a price, somebody else has a better one, and everyone has a cousin who was there. You come back knowing what the dock is whispering.",
+    "text": "You walk the market tier. People are talking prices, and somebody always has a cousin who was there. You come back knowing what the dock is saying.",
     "next": null
    },
    {
@@ -24184,7 +24184,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24255,7 +24255,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24358,7 +24358,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24464,13 +24464,13 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "The bar has \"Tranquility Night: the Old Footage\" on its screen, tonight only. The first Moon landing, the grainy version, with the whole of Earth and Luna watching at once. You stay to the end, and nobody asks you to buy anything.",
+    "text": "The bar has \"Tranquility Night: the Old Footage\" on its screen, tonight only. The first Moon landing, the grainy version, with the whole of Earth and Luna watching at once. You stay to the end.",
     "next": null
    },
    {
@@ -24548,7 +24548,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24625,7 +24625,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24699,7 +24699,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -24770,7 +24770,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "text": "You walk the market from the water sellers to the part stalls, reading the prices off the boards. You don't buy anything.",
     "next": null
    },
    {
@@ -28823,7 +28823,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You match velocity, and cross in suits, and find three people in the yacht's galley, gray-faced, wrapped in blankets, breathing in shallow sips. You patch their air recyclers with a borrowed part, and share some rations, and stay until the color returns to their cheeks. The owner, a rich man in a torn silk shirt, grips your hand so hard it hurts. \"I won't forget this,\" he says.",
+    "text": "You match velocity and cross in suits. Three people are in the yacht's galley in blankets, breathing in short sips. The scrubber cartridge in their recycler is spent. You fit one of the ship's spares and leave enough rations to make the next station. The owner writes down the ship's name.",
     "next": {
      "title": "The Owner",
      "text": "The owner, Halden Voss, has recovered enough to be embarrassed. He runs a shipping house out of Luna, he says, and the yacht was a present to himself. \"Name your price,\" he says. \"I'd rather it were a fair one. I'm told I'm a poor judge of my own life.\"",
@@ -28869,7 +28869,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "It was bait. Two raiders light their drives the moment you match velocity, dark shapes swinging out from behind the yacht's hull, guns already hot. The \"life support failure\" was a recording, looping on a dead panel. You break away, hard, with 78 points of armor damage and a long, ringing anger, at yourself, at them, at a universe in which this works.",
+    "text": "It was bait. Two raiders light their drives as you match velocity, swinging out from behind the yacht's hull. The distress call was a recording, looping on a dead panel. You break away hard, with 78 points of armor damage.",
     "next": {
      "title": "They Follow You",
      "text": "The raiders aren't done. Two dark shapes keep pace off your quarter, closing, and the yacht behind them has gone from a distress call to a decoy to a joke. On the open band a voice you haven't heard before says: \"Cargo or hull, friend.\" There's a pause.",
@@ -28915,20 +28915,20 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You tune out the signal, and tell yourself it's probably a trap, and it probably is. It fades behind you, thinner and thinner, until it's just a whisper in the static, and then it stops. You don't sleep well, that night, and you don't know whether it's because of the voice or because of the silence that followed.",
+    "text": "You stay on course. The signal fades behind you over the next few hours, and then it stops.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You tune out the signal, and tell yourself it's probably a trap, and it probably is. It fades behind you, thinner and thinner, until it's just a whisper in the static, and then it stops. You don't sleep well, that night, and you don't know whether it's because of the voice or because of the silence that followed.",
+    "text": "You stay on course. The signal fades behind you over the next few hours, and then it stops.",
     "next": null
    }
   ],
   "title": "Distress Call",
-  "text": "A signal cuts through the static: \"...reactor scram... life support failing... anyone...\" The voice is thin and cracked. A private yacht is drifting ballistic just off your trajectory, small and dark, with a single tumbling running light. There's no other traffic within a day's burn. Whoever is aboard hasn't much air left.",
+  "text": "A signal comes through the static: \"...reactor scram... life support failing... anyone...\" The voice is thin and cracked. A private yacht is drifting ballistic just off the trajectory, dark, with one running light turning over and over. There's no other traffic within a day's burn.",
   "labels": [
-   "Kill your burn and help (costs time)",
+   "Kill the burn and help (costs time)",
    "Stay on course"
   ]
  },
