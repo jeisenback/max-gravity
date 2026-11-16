@@ -11110,7 +11110,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -11118,10 +11118,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -11133,7 +11133,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Before the ship you worked the docks: loading, three shifts in four, and the hands to show for it. The freight office at home knows your name. The clerk on the late desk was at school with you.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Before the ship you worked the docks: loading, three shifts in four, and the hands to show for it. The freight office at home knows your name. The clerk on the late desk was at school with you.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -11152,7 +11152,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -11160,10 +11160,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -11175,7 +11175,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You came down from Tharsis on a Pact freighter, in a berth that cost two months of a wage you had not earned yet. The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Before the ship you kept a shipper's office: the manifests, the day book, and who owed what to whom. A patrol has your name too, from a stop that ended in a fine you paid off over a year.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You came down from Tharsis on a Pact freighter, in a berth that cost two months of a wage you had not earned yet. The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Before the ship you kept a shipper's office: the manifests, the day book, and who owed what to whom. A patrol has your name too, from a stop that ended in a fine you paid off over a year.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -11194,7 +11194,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -11202,10 +11202,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -11217,7 +11217,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You came in from Ceres on a Federation ore boat, working the passage for the berth. Earth's gravity is still in your knees. The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Before the ship you stood watches on a short-haul ferry, where a rating does what the master says and learns to say it back. Mateo knows you from before: a short-haul boat, a season of watches, and no quarrel.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Guild Federation, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You came in from Ceres on a Federation ore boat, working the passage for the berth. Earth's gravity is still in your knees. The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Before the ship you stood watches on a short-haul ferry, where a rating does what the master says and learns to say it back. Mateo knows you from before: a short-haul boat, a season of watches, and no quarrel.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Guild Federation. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -13908,7 +13908,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -13916,10 +13916,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -13931,7 +13931,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -13950,7 +13950,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -13958,10 +13958,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -13973,7 +13973,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -13992,7 +13992,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -14000,10 +14000,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14015,7 +14015,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14034,7 +14034,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -14042,10 +14042,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14057,7 +14057,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14084,10 +14084,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14099,7 +14099,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14126,10 +14126,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14141,7 +14141,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14168,10 +14168,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14183,7 +14183,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14210,10 +14210,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14225,7 +14225,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14252,10 +14252,10 @@
     "roll": 0.5,
     "text": "Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14267,7 +14267,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Guild Federation, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Guild Federation. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14294,10 +14294,10 @@
     "roll": 0.5,
     "text": "Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14309,7 +14309,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Guild Federation, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Guild Federation. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14336,10 +14336,10 @@
     "roll": 0.5,
     "text": "Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14351,7 +14351,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Guild Federation, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Guild Federation. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14378,10 +14378,10 @@
     "roll": 0.5,
     "text": "Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14393,7 +14393,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Guild Federation, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The Federation's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Guild Federation. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14412,7 +14412,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -14420,10 +14420,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14435,7 +14435,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. The hiring hall paid for the berth, the passage and the kit, and you owe it 9,000 cr for them: 30 percent of each run's pay goes to the hall until it is paid, and no ship can be bought while anything is owed. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You owe the hall 9,000 cr for the seat up and the kit. It takes 30 percent of each run's pay until that's cleared. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14454,7 +14454,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -14462,10 +14462,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14477,7 +14477,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>On the dock they say the hand on the last ship did not come back.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"500 a day, less your kit,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>On the dock they say the hand on the last ship did not come back.</p><p>You're on the guns. When a contact closes, how you meet her is your call.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14496,7 +14496,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "text": "At the first bulkhead you ask what the placard means. The frame number, someone says, and the arrow points aft. You ask about the next one too, and the one after.",
     "next": null
    },
    {
@@ -14504,10 +14504,10 @@
     "roll": 0.5,
     "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Through the port by the lock, a coastline goes by under the cloud, and then the sea.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14519,7 +14519,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as guarded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 500 a day, less 30 a day for your kit. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Arcology Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The berth book at the arcology docks has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was on an agency's list, in capitals: HAND WANTED, ICE HAULER, LAGOS RING, DEPARTS WHEN FULL. The agency put you on the spaceplane up, and the seat came out of its fee. At the Ring, The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as guarded, signed the papers.</p><p>You're on the guns. When a contact closes, how you meet her is your call. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 500 a day, less 30 a day for your kit. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Arcology Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14546,10 +14546,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14561,7 +14561,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister's name correctly, the first time. \"700 a day, less your kit,\" he says, \"and if the fund runs thin, which it does, we don't talk about it before supper. Sit. Have you eaten?\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ilsa Brandt, the first officer, from Hamburg Arcology.</p><p>Captain Dov Adair picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister's name correctly, the first time. \"700 a day, less your kit,\" he says, \"and if the fund runs thin, which it does, we don't talk about it before supper. Sit. Have you eaten?\"</p><p>You're on the guns. When a contact closes, how you meet her is your call. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ilsa Brandt, the first officer, from Hamburg Arcology.</p><p>Captain Dov Adair picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14588,10 +14588,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14603,7 +14603,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been worn for years without a mark on it. \"650 a day, less your kit,\" they say. \"The rules are on the wall of the galley. They apply to everyone, including me. Noted that you're aboard.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Pilar Quesada, the first officer, from Callao Arcology.</p><p>Captain Imre Sato picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been worn for years without a mark on it. \"650 a day, less your kit,\" they say. \"The rules are on the wall of the galley. They apply to everyone, including me. Noted that you're aboard.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Pilar Quesada, the first officer, from Callao Arcology.</p><p>Captain Imre Sato picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -14630,10 +14630,10 @@
     "roll": 0.5,
     "text": "The domes will argue about the future without you. Aboard, nobody asks whose side you're on. The first thing anyone asks is whether you have eaten.",
     "mem": [
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with.",
-     "9 Jul 2214: You came aboard easy to get along with."
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day.",
+     "9 Jul 2214: You were easy to get along with from the first day."
     ],
     "fx": {
      "p1": 1,
@@ -14645,7 +14645,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"450 a day, less your kit,\" she says. \"Which is not much. The fund's thin, and it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can buy into a co-op hull: the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote. Your papers name you a member of the Dome Pact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Dome Pact's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"450 a day, less your kit,\" she says. \"Which is not much. The fund's thin, and it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You're on the guns. When a contact closes, how you meet her is your call. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks the runs. The freight is a shipper's, and the shipper pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Hands who save buy into co-op hulls. The Ceres co-op takes members at 57,000 cr, on a vote, if they owe nobody. Your papers say Dome Pact. Customs reads them, and so does every patrol. What did you sign on for?",
   "labels": [
    "For the money",
    "To learn the work",
