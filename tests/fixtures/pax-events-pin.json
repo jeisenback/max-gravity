@@ -535,7 +535,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "{crew} cracks it over a long evening. Someone's paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\"",
+    "text": "{crew} cracks it over a long evening. Someone's paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"The governor's office on Juno Commons is buying Food for a reception, over the odds.\"",
     "mem": null,
     "d": {
      "credits": 0,
@@ -944,7 +944,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on The Rook took most of the local stock of Medical Supplies, and nobody's saying how it started.\" Sam gives you a shy smile.",
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A warehouse fire on The Rook took most of the local stock of Medical Supplies.\" Sam gives you a shy smile.",
     "mem": "9 Jun 2214: You listened to my stories.",
     "d": {
      "credits": 0,
@@ -960,7 +960,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on Mars took most of the local stock of Medical Supplies, and nobody's saying how it started.\" Sam gives you a shy smile.",
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A warehouse fire on Mars took most of the local stock of Medical Supplies.\" Sam gives you a shy smile.",
     "mem": "9 Jun 2214: You listened to my stories.",
     "d": {
      "credits": 0,
