@@ -134,11 +134,26 @@ const OPENERS = {
 };
 
 const SECRET_TALK = {
-  contraband: ['lowers their voice: "If you ever need something moved and not looked at, I know people. I might be people."', 'leans in and does not meet your eye: "There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it."'],
-  wanted: ['goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.', 'watches the door through the whole conversation. When it opens they stop moving. It is the barman\'s cousin, and they start again.'],
-  ill: ['coughs into their sleeve and waves it off. "Nothing. Recyclers on my last ship. It\'ll pass."', 'coughs hard and hides the cloth. It is the dust in here, they say, and would you like another.'],
-  spy: ['asks a lot of questions about your routes and answers none about theirs.', 'is pleasant and asks small, exact things about ports and times, and gives you nothing.'],
-  debt: ['says, three drinks in, that they owe the wrong people more than they will make in a year.', 'looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.'],
+  contraband: [
+    'keeps their voice down: "If you ever need something moved and not looked at, I know people."',
+    'asks whether your hold gets inspected at every port, or just some.'
+  ],
+  wanted: [
+    'goes quiet when a patrol officer comes in, and looks at their drink until the officer leaves.',
+    'stops talking every time the door opens.'
+  ],
+  ill: [
+    'coughs into their sleeve. "Recyclers on my last ship," they say. "It\'ll pass."',
+    'coughs, and folds the cloth away before you can see it.'
+  ],
+  spy: [
+    'asks a lot about your routes, and says nothing about theirs.',
+    'asks small, exact things: which ports, which days, how long you sat in the queue.'
+  ],
+  debt: [
+    'says, three drinks in, that they owe more than they\'ll make this year, and not to a bank.',
+    'checks their messages, and puts the terminal away without answering any.'
+  ]
 };
 
 const CREW_AT_BAR = {
@@ -231,16 +246,16 @@ const BAR_PLACE = [
   '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'
 ];
 const BAR_CARD_WIN = [
-  'Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.',
-  '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.',
-  'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it.',
-  'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'
+  'Three hands, slow and close. On the last one you take {cr} cr off {n}, who says you were counting.',
+  '{n} plays fast and bets on everything. You wait them out, and take {cr} cr.',
+  'You let {n} talk, and they talk themselves into a bad bet. {cr} cr.',
+  'The cards run your way. {n} changes seats, then decks. {cr} cr to you.'
 ];
 const BAR_CARD_LOSE = [
-  'It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you.',
-  '{n} plays like someone who learned on a long watch: patient, quiet, unrattled. {cr} cr, and you cannot find the mistake you made.',
-  'You have the better hand for most of the evening and none of it at the end. {n} says sorry. {cr} cr.',
-  '{n} fans the last cards with a flourish you have seen before, in another port. {cr} cr.'
+  '{n} takes {cr} cr off you, and spends some of it on your next drink.',
+  '{n} plays like someone who learned on long watches, slow and never in a hurry. {cr} cr, and you can\'t find where you went wrong.',
+  'You have the better hand most of the night, and not at the end. {cr} cr.',
+  '{n} shows you their last hand. You\'d have folded it. {cr} cr.'
 ];
 const BAR_HOME_TALK = [
   '"{home}?" {n} shrugs. "My mum\'s still there. My sister. She sends a message every week, and every week it\'s the lease." They drink. "It went up again."',
@@ -248,11 +263,11 @@ const BAR_HOME_TALK = [
   '{n} plays you a message from {home}: an old man in a kitchen, reading out the football scores. "My dad. He records them twice, in case the first one doesn\'t go."',
   '"I\'ll go back when the lease comes up," {n} says. "If they renew it. They don\'t renew many."'
 ];
-const BAR_BLESS = [('{n} closes their eyes and lays two fingers on the transponder. They say a few words over your ship\'s name, in a cadence you do ' +
-    'not know. The bar goes quiet. When they are done they open their eyes and touch your hand.'), (
-    '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. ' +
-    '"It is not for rocks."'), (
-    '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.')];
+const BAR_BLESS = [
+  '{n} asks the ship\'s name, and says a few words over it, quietly, in a language you don\'t know. Then they touch your hand.',
+  '{n} takes a cord from their wrist, knots it three times, and gives it to you for the ship. "Hang it by the lock," they say. "It won\'t stop a rock."',
+  '{n} doesn\'t close their eyes. They say it in an ordinary voice, like directions: where the ship should go if it\'s lost, and who to ask.'
+];
 const BAR_LEAVE = [
   'You leave {n} to their drink.',
   'You nod, and {n} nods.',
@@ -370,7 +385,7 @@ const barTrait = (kind, p, generic) => {
   return own.length && Math.random() < 0.7 ? pick(own) : pick(generic);
 };
 // How they take you, for someone you know: a friend teases, an enemy keeps it stiff.
-const barTone = (pat, p) => (!pat.known ? '' : p.opinion >= OPINION.FRIEND ? ` ${p.first} grins. "Same again, next port."` : p.opinion <= OPINION.ENEMY ? ` ${p.first} keeps it short, and does not look up.` : '');
+const barTone = (pat, p) => (!pat.known ? '' : p.opinion >= OPINION.FRIEND ? ` ${p.first} grins. "Same again, next port."` : p.opinion <= OPINION.ENEMY ? ` ${p.first} keeps it short.` : '');
 
 const workGroup = job => (WORK_GROUP.find(([re]) => re.test(job || '')) || [null, 'other'])[1];
 const byName = (p, salt, n) => Math.abs(hash(`${p.first}${p.last}${salt}`)) % n;  // the person's own pick, the same every time
@@ -445,7 +460,7 @@ function talkEvent(pat) {
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const who = `${p.first} ${p.last}, ${/^[aeiou]/i.test(p.job) ? 'an' : 'a'} ${p.job} from ${p.home}.`, rest = `${pick(opener[t0])} ${barSays(barLines('goal')[p.goal] || '', p)}`.trim();
   const text = pat.known
-    ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
+    ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you, and turns back to the bar' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
     : `${byName(p, 'intro', 2) ? 'Somebody has taken the stool next to yours: ' : ''}${who} ${rest}`;  // who they are, an opener that shows their first trait, and what they are travelling for (#1278)
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });

@@ -23937,7 +23937,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
       "mem": [
        "9 Jul 2214: You bought me a drink at The Heat Sink."
       ]
@@ -24338,7 +24338,7 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass."
+      "text": "Kwame plays like someone who learned on long watches, slow and never in a hurry. 2,000 cr, and you can't find where you went wrong. You finish the glass."
      },
      {
       "j": 2,
@@ -24433,7 +24433,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
       "mem": [
        "20 Jul 2214: You bought me a drink at The Heat Sink."
       ]
@@ -24449,7 +24449,7 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
       "mem": [
        "20 Jul 2214: You bought me a drink at The Heat Sink."
       ]
@@ -24610,7 +24610,7 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
       "mem": [
        "6 Jan 2215: You bought me a drink at The Heat Sink."
       ]

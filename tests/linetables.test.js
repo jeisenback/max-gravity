@@ -129,7 +129,7 @@ test('the labels of the goal help are left plain for the dialog to escape, and t
   assert.equal(r.gift, 'Pay <b>part</b> & go (600 cr)');
   assert.equal(r.ask, 'Ask <i>about</i> home');
   assert.equal(r.text, '{n} sighs &lt;b&gt;twice&lt;/b&gt;.');
-  assert.equal(r.other, 'Press a few credits into their hand for a present (600 cr)');
+  assert.equal(r.other, 'Put something toward the present (600 cr)');
 });
 
 test('every bar topic has an id and lines, and every line is read: the button, the reason it is shut and what it ends on', async () => {
