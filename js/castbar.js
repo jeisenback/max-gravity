@@ -68,18 +68,12 @@ const CAST_BAR = {
   yelena: [
     {
       days: 5, title: 'Last Orders, Ravens',
-      text: ('The bar is showing a ring-ball replay, and a loud man at the next table has said something about the Olympus Dome Ravens. Yelena Quint ' +
+      text: ('The bar is showing a ring-ball replay, and a loud man at the next table has said something about the Ravens. Yelena Quint ' +
           'puts her drink down. "He\'s wrong," she says to you, evenly. "He\'s wrong about the offside rule, and he\'s wrong about number seven, and ' +
           'he\'s wrong about my knee." She\'s already standing. "I\'m going to explain this to him."'),
       choices: [
-        { label: 'Back her up', memory: 'You backed me up when a stranger insulted the Ravens.', run() { castLike('yelena', 2, this.memory); castXp('yelena', 'gunner', 2); return (
-            'She explains it to him with a fork, a beer mat and a great many examples, and you stand behind her with your arms folded. It doesn\'t ' +
-            'come to blows. It comes to him buying a round and apologizing to the memory of number seven. At the end he asks for her autograph. She ' +
-            'signs the beer mat. "Ravens," she says to the room.'); } },
-        { label: 'Steer her to the door', memory: 'You steered me out before it turned into a thing.', run() { castLike('yelena', 1, this.memory); return (
-            '"He\'s wrong," she says, all the way to the door and halfway down the dock. "He\'s so wrong." She lets you take her arm. Halfway to the ' +
-            'ship she stops, and laughs, and says it was probably for the best, because she\'d have hit him. "Thank you," she says. "I needed ' +
-            'somebody to be the sensible one."'); } },
+        { label: 'Back her up', memory: 'You backed me up when a stranger insulted the Ravens.', run() { castLike('yelena', 2, this.memory); castXp('yelena', 'gunner', 2); return 'She explains it to him with a fork and a beer mat, and you stand behind her with your arms folded. It doesn\'t come to blows. It comes to him buying a round. On the way out he asks her to sign the beer mat, and she does. "Ravens," she says to the room.'; } },
+        { label: 'Steer her to the door', memory: 'You steered me out before it turned into a thing.', run() { castLike('yelena', 1, this.memory); return '"He\'s wrong," she says, all the way to the door and halfway down the dock. Halfway to the ship she stops, and laughs. "I\'d have hit him," she says. "Thanks."'; } },
       ],
     },
     {
@@ -88,14 +82,8 @@ const CAST_BAR = {
           'seen her, and is watching the screen. "Don\'t," she says to you, quietly. "Don\'t look at the shirt. If I look at the shirt I\'ll have to ' +
           'say something."'),
       choices: [
-        { label: 'Offer to take their picture together', memory: 'You took a picture of me with a girl in my old shirt.', run() { castLike('yelena', 2, this.memory); return (
-            'You say you\'ll take it. The girl goes red, and Yelena crouches down and puts an arm around her. She asks the girl her name and her ' +
-            'position. It\'s goalkeeper. "Good," Yelena says. "Nobody ever thanks the goalkeeper." When the picture is taken she signs the shirt in ' +
-            'full, and says nothing about the knee.'); } },
-        { label: 'Give them room', memory: 'You gave me room with the girl in the old shirt.', run() { castLike('yelena', 1, this.memory); return (
-            'You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something ' +
-            'with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she\'s almost running. Yelena says nothing about ' +
-            'it. She\'s humming the Ravens\' song.'); } },
+        { label: 'Offer to take their picture together', memory: 'You took a picture of me with a girl in my old shirt.', run() { castLike('yelena', 2, this.memory); return 'You say you\'ll take it. The girl goes red, and Yelena crouches down beside her and asks her name and her position. Goalkeeper. "Good," Yelena says. "Nobody ever thanks the goalkeeper." She signs the shirt in full.'; } },
+        { label: 'Give them room', memory: 'You gave me room with the girl in the old shirt.', run() { castLike('yelena', 1, this.memory); return 'You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she\'s almost running.'; } },
       ],
     },
   ],
@@ -108,22 +96,17 @@ const CAST_BAR = {
       choices: [
         { label: 'Buy a round (300 cr)', ...gated(needCr(300)), memory: 'You bought a round, and the bartender talked.', run() { G.state.credits -= 300; castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
             `A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of ` +
-            `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear. "A good listener has ` +
-            `no name," he says. "A good bartender has a hundred."`); } },
-        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, "You have the gift. People tell you things."'; } },
+            `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear.`); } },
+        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, "You didn\'t say anything. That\'s why he kept going."'; } },
       ],
     },
     {
       days: 30, title: 'The Council Member',
       text: ('A gray-haired woman in a good coat has come into the bar with two aides, and Ruben Castellanos has picked up the menu and is holding it ' +
-          'high. "That\'s Councillor Reyes," he says, from behind it. "Of the Valles dome council. She signed my notice." He lowers it an inch. "I\'ve ' +
+          'high. "That\'s Councillor Reyes," he says, from behind it. "Of my dome\'s council. She signed my notice." He lowers it an inch. "I\'ve ' +
           'practiced what I\'d say to her for four years. I can\'t remember any of it."'),
       choices: [
-        { label: 'Introduce yourself to the councillor', memory: 'You introduced yourself to the councillor who signed my notice.', run() { castLike('ruben', 3, this.memory); castFlag('ruben', 'councillor'); return (
-            'You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor goes still. ' +
-            '"Castellanos," she says. "The relay in the kitchen." She looks past you at the menu. "We lost eleven days of band because of what he did, ' +
-            'and afterward we found out he had saved the north dome. I\'ve been trying to find him for four years." Ruben lowers the menu all the ' +
-            'way.'); } },
+        { label: 'Introduce yourself to the councillor', memory: 'You introduced yourself to the councillor who signed my notice.', run() { castLike('ruben', 3, this.memory); castFlag('ruben', 'councillor'); return 'You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor puts her glass down. "Castellanos," she says. "The relay in the kitchen." She looks past you at the menu. "The north dome got its warning off that relay," she says. "We let you go anyway. Those were the rules." Ruben lowers the menu all the way.'; } },
         { label: 'Let him hide', memory: 'You let me hide behind the menu.', run() { castLike('ruben', 1, this.memory); return ('You don\'t move. Ruben stays behind the ' +
             'menu, and the councillor takes a table at the far end, orders, and doesn\'t look round. After twenty minutes she leaves. Ruben puts the ' +
             'menu down. "Thank you," he says. "I couldn\'t have said it. Another day." He picks up the thermos and offers it to you.'); } },

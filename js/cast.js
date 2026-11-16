@@ -335,24 +335,23 @@ const CAST = {
     traits: ['brave', 'rude'], wage: 600,
     skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
     ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
-    bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
+    bio: 'Striker and captain of the Ravens, her dome\'s ring-ball side, until a dislocated knee in a final ended it at twenty-six. She took the only other job she could find where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
         ('Yelena: "A gun is just a very serious ball. Same principle. You don\'t' +
           ' look at the thing, you look at where it\'s going to be."'),
-        ('Yelena is doing knee exercises in the corridor with the grim cheer of a ' +
-          'woman who has been told to.'),
+        'Yelena is doing the knee exercises off a card taped to the corridor wall, and counting them out loud.',
         'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."',
       ],
-      galley: ['Yelena is arguing with the ring-ball feed. The feed is losing.'],
-      gunnery: ['Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it\'s not regulation.'],
+      galley: ['Yelena is arguing with the ring-ball feed, which is eleven minutes behind, about a foul it hasn\'t shown yet.'],
+      gunnery: ['Yelena has drawn a raven the size of a hand on the fire control housing in marker. It isn\'t regulation. Nobody has rubbed it off.'],
     },
     scenes: {
       meet: {
         title: 'The Striker at the Rail',
         text: ('At the dock bar rail, a woman is icing a knee brace and arguing with the screen over the counter, which is showing a ring-ball ' +
             'replay. "That was a foul," she tells it, without turning. "That was a foul, and the ref is a coward." She turns to you at last. "Yelena ' +
-            'Quint. Olympus Dome Ravens, captain, striker. Retired, they say, like it\'s a sentence." She taps the knee. "Now I aim things for a ' +
+            'Quint. Ravens, captain, striker. Retired, they say, like it\'s a sentence." She taps the knee. "Now I aim things for a ' +
             'living, dome defense mostly, and the pay is an insult. I can put a round through a washer at four kilometers. Does your ship have guns ' +
             'that want somebody who cares where they land?"'),
         choices: [
@@ -373,21 +372,17 @@ const CAST = {
       },
       intro: {
         title: 'The Gunner Who Argued with the Feed',
-        text: ('On the first burn you find the gunner in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," Yelena ' +
-            'Quint says, to the screen, to the room, to nobody. "Look at the elbow. Look at it." Nobody has looked at the elbow. She runs it back herself, thumb on the remote, and the feed, which has the decency not to answer, shows the elbow again, slowly.'),
+        text: 'On the first burn you find Yelena Quint in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," she says, to the screen, to the room. "Look at the elbow. Look at it." Nobody has looked at the elbow. She runs it back with her thumb, and the elbow comes round again, slowly.',
         choices: [
           {
             label: 'Take the ref\'s side',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You took the ref\'s side, and I enjoyed it very much.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 } },
-            result: 'You say the elbow was clean, and for ten minutes she\'s the happiest you\'ve seen her, taking you through the replay frame by frame ' +
-              'with a fork for a pointer. By the end she has you pointing too. "You\'re wrong," she says, delighted, "and you know exactly where, and ' +
-              'that\'s the whole game." She goes back to her post with a spring in her step, favoring the good knee.',
+            result: 'You say the elbow was clean. For ten minutes she takes you through the replay frame by frame with a fork for a pointer, and by the end you\'re pointing too. "You\'re wrong," she says, "and you know exactly where. That\'s the whole game." She goes back to her post on the good knee.',
           },
           {
             label: 'Ask about the knee',
             effects: { castLike: { who: 'yelena', n: 1, memory: 'You asked about the knee, and I told you.' } },
-            result: 'She looks at you for a moment, deciding. "Twenty-six," she says. "Final. A girl from Hellas came in low, and I heard it before I felt ' +
-              'it." She taps the brace. "They say it was nobody\'s fault. That\'s the worst part. Nobody to be angry with." She turns the replay off.',
+            result: 'She looks at you for a moment. "Twenty-six," she says. "A final. A girl from the outer domes came in low, and I heard it before I felt it." She taps the brace. "Nobody\'s fault, they said. There\'s still a loan for the surgeon." She turns the replay off.',
           },
         ],
       },
@@ -400,56 +395,44 @@ const CAST = {
           {
             label: 'Clear the hold and play',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You played, and you were on my side.' }, castXp: { who: 'yelena', role: 'gunner', n: 3 } },
-            result: 'It\'s the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You\'re on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she\'s the one who shouts. You lose by two. ' +
-              'She doesn\'t mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.',
+            result: 'You clear the hold and tie a cable ring at each end. Under thrust the ball drops faster than she\'s used to, and she swears at it every time. She captains your side loudly and unfairly, calls every foul against her own side, and puts everyone aboard on the pitch at least once. You lose by two. At the evening meal she asks each person, by name, whether they\'re in next week.',
           },
           {
             label: 'Not in the hold',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said no to the game in the hold.' } },
-            result: '"Sure," she says, and puts the ball back in her bag, carefully. She\'s professional for the rest of the burn. It\'s the quietest the galley has been.',
+            result: '"Sure," she says, and puts the ball back in her bag. She\'s professional for the rest of the burn, and the galley is quiet at meals.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Final',
-        text: ('It\'s the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days ' +
-            'pretending she doesn\'t care. She has the watch. "It\'s nothing," she says, at the hatch, with a bright, flat voice. "It\'s only a final. ' +
-            'I\'ll listen to the radio. Radio is fine."'),
+        text: 'It\'s the night of the ring-ball final, and the outer domes\' side is in it. Yelena has spent two days saying she doesn\'t care. She has the watch. "It\'s only a final," she says at the hatch. "I\'ll have the radio. The radio\'s fine."',
         choices: [
           {
             label: 'Take her watch',
             effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' }, standWatch: { stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' } },
-            result: 'You tell her to go. She doesn\'t argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
-              'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there\'s a ' +
-              'small black raven drawn on the back of your hand, in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line ' +
-              'of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.',
+            result: 'You tell her to go. She doesn\'t argue. From the second quarter on you can hear her through the deck: refereeing, a long groan, and near the end a silence so long you think the feed has dropped. In the morning there\'s a small raven drawn on the back of your hand in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.',
           },
           {
             label: '"It\'s your watch."',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 }, standWatch: { stands: 'yelena', post: 'gunnery', relieved: null } },
-            result: '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or ' +
-              'after. She runs every drill on the board while she\'s up there, twice, faster the second time. When you come to relieve her she\'s at ' +
-              'the guns with her chin up.',
+            result: '"Of course," she says. She stands the watch to the minute with the radio turned low, and runs every drill on the board while she\'s up there, twice, faster the second time. She doesn\'t say anything about it, then or after.',
           },
         ],
       },
       late: {
         days: 45, title: 'Nobody on the Bench',
-        text: ('Yelena is cleaning the fire control housing when you find her, one slow pass of the cloth for each sentence. "I want to run a ship," she says. "Not now. Someday. A whole crew, and nobody on the bench, nobody who\'s only a name on a ' +
-            'list. Every ship I\'ve been on has a bench. I\'d put everyone on the pitch." She doesn\'t look up. "If you ever have ships, I\'d ' +
-            'like to be asked."'),
+        text: 'Yelena is cleaning the fire control housing, one pass of the cloth for each sentence. "I want to run a ship," she says. "Someday. A whole crew, and nobody on the bench. Every ship I\'ve been on has a bench: somebody who\'s only a name on the bill, sent home at the end of the contract without the bonus." She doesn\'t look up. "When I\'ve got one, I\'ll be asking people. I\'m telling you now."',
         choices: [
           {
-            label: 'Promise her a ship, someday',
-            effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you promised.' }, castFlag: { who: 'yelena', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She puts the cloth down on the housing and, for once, doesn\'t pick anything up in its place. She says ' +
-              '"Good" to the fire control, in a low voice. Then, louder, to the whole housing: "Did you hear that?"',
+            label: 'Say you\'d sign on',
+            effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you said you\'d sign on.' }, castFlag: { who: 'yelena', flag: 'promised' } },
+            result: '"I\'d sign on," you say. She puts the cloth down on the housing, and for once doesn\'t pick anything up in its place. "Good," she says, to the fire control. Then, louder: "Did you hear that?"',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'yelena', n: 1, memory: 'You wouldn\'t promise a ship, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." She raises one flat hand, like a referee, and the cloth goes back to the housing. ' +
-              '"Fair," she says. "I\'ll take fair. Fair is more than most of the bench ever got."',
+            label: '"Ask me then."',
+            effects: { castLike: { who: 'yelena', n: 1, memory: 'I told you about the ship, and you said to ask you then.' } },
+            result: '"Ask me then," you say. She holds up one flat hand, like a referee, and goes back to the housing. "Fair," she says. "I\'ll take fair."',
           },
         ],
       },
@@ -468,7 +451,7 @@ const CAST = {
           { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her ' +
-                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock, straight, and doesn\'t say another word to you for ' +
+                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock and doesn\'t say another word to you for ' +
                 'the rest of the burn.');
           } },
         ],
@@ -480,18 +463,16 @@ const CAST = {
     traits: ['talkative', 'generous'], wage: 800,
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
-    bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
-        'they\'d pay. When the Dome Pact closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
-        'let go for it.'),
+    bio: 'He ran an outer dome\'s network for twenty-five years, and knew what every dome was short of that week, who was lying about it, and what they\'d pay. When the domes\' patrol shut the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was let go for it.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        'Ruben: "Mars isn\'t quiet. It\'s listening. You can hear the difference if you hold still."',
-        'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.',
-        'Ruben: "The dome at Hellas is short of pumps, and it\'s telling everyone it\'s short of morale. Remember that."',
-        'Ruben is humming along with a dome council meeting, and has gone gently pink with indignation on behalf of the chair.',
+        'Ruben: "Forty-one stations checked in on the band tonight. Two didn\'t. I know which two."',
+        'Ruben has a thermos of coffee, strong, and offers it to everyone who passes.',
+        'Ruben: "One of the outer domes is short of pumps, and it\'s telling the council it\'s a staffing problem. Pumps are dearer than staff."',
+        'Ruben has a dome council meeting on low, eleven minutes behind, and is answering the chair out loud.',
       ],
       bridge: [
-        'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.',
+        'Ruben is going through the night\'s traffic and marking each line in pencil: true, false, or worth knowing.',
       ],
     },
     scenes: {
@@ -499,8 +480,8 @@ const CAST = {
         title: 'The Man with the Relay',
         text: ('At the edge of the yard, among the stalls, a man in a cardigan far too warm for the hall is sitting behind a tangle of antennae with ' +
             'a thermos. "Ruben Castellanos," he says, and pours you a cup before you\'ve said yes. "I know what every dome on Mars is short of this ' +
-            'week, who\'s lying about it, and what they\'ll pay. Twenty-five years on the Valles network. They let me go for keeping a relay running ' +
-            'in my kitchen." He beams. "Does your ship have an ear?"'),
+            'week, who\'s lying about it, and what they\'ll pay. Twenty-five years on an outer dome\'s network. They let me go for keeping a relay running ' +
+            'in my kitchen." He drinks. "Does your ship have an ear?"'),
         choices: [
           {
             label: 'Take him on as comms',
@@ -508,8 +489,7 @@ const CAST = {
             effects: { castJoin: 'ruben' },
             result: 'He packs the whole stall into one battered ' +
               'case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it\'s still hot, that\'s ' +
-              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you\'ve never heard of, and about ' +
-              'how glad he is. Nobody has the heart to interrupt.',
+              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you\'ve never heard of.',
           },
           {
             label: '"Not this time."',
@@ -520,77 +500,62 @@ const CAST = {
       },
       intro: {
         title: 'The Quiet Band',
-        text: ('The comms post is crowded. Ruben Castellanos has turned the whole station to a single narrow band, and has the volume up so that the ' +
-            'galley can hear: a dome council arguing about a pump, in the flat courteous voices of people who have each been awake for two days. ' +
-            '"Listen," he says, softly. "Nobody has mentioned the pump in four minutes. They\'re all being very careful not to."'),
+        text: 'The comms post is crowded. Ruben Castellanos has turned the station to a single narrow band, with the volume up so the galley can hear: a dome council arguing about a pump, in the voices of people who have each been up for two days. "Listen," he says. "Nobody has mentioned the pump in four minutes. They\'re all being very careful not to."',
         choices: [
           {
             label: 'Listen with him',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'You sat and listened to the bands with me.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
-            result: 'You listen for most of an hour. It sounds, at first, like nothing: figures, polite interruptions. Then he nudges you, and you hear it: ' +
-              'the same dome asking three times, in three different ways, whether the shipment is on time. "Frightened," Ruben says, beaming. "Of the ' +
-              'answer. You see? You\'re very good at this. You have the ear."',
+            result: 'You listen for most of an hour. At first it\'s figures and polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, three different ways, whether the shipment is on time. "They\'re frightened of the answer," Ruben says. "You heard it. You\'ve got the ear."',
           },
           {
             label: 'Ask what he\'s listening for',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You asked what I was listening for.' } },
-            result: '"Ah," he says, and holds up the thermos, as one raises a glass. "What they need. People never say it outright, but they tell you in ' +
-              'ways they don\'t notice. Too fast, too polite. That\'s when you know you\'re about to be useful." He turns the band ' +
-              'down, gently, so as not to frighten them.',
+            result: '"What they need," he says, and holds up the thermos. "Nobody says it outright. They say it too fast, or too politely. That\'s when you know you\'re about to be useful." He turns the band down.',
           },
         ],
       },
       mid1: {
         days: 10, title: 'A Tip',
-        text: ('Ruben comes to you with the look of a man holding something that might burst. "Captain. I\'ve been listening to a freight dispatcher ' +
-            'who thinks his channel is private. He\'s quite wrong. I have something, and I\'ll tell you, but I should say that it was heard, not, ' +
-            'strictly, asked for." He lowers his voice. "It\'s worth money. The way a favor is worth money."'),
+        text: 'Ruben comes to you holding his terminal against his chest. "I\'ve been listening to a freight dispatcher who thinks his channel is private. He\'s wrong. I have something, and I\'ll tell you, but it was heard, not asked for." He lowers his voice. "It\'s worth money. The way a favor is worth money."',
         choices: [
           { label: 'Act on the tip', memory: 'You acted on what I heard.', run() { castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
-              `He tells you, and he's right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
-              `"Not a word," he says, delighted, "about where you heard it."`); } },
+              `He tells you, and he's right to be careful: ${tip} He watches your face while you take it in, turning the lid of the thermos. "Not a word," he says, "about where you heard it."`); } },
           {
             label: 'Leave it',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You left the dispatcher\'s secret alone.' } },
-            result: 'He deflates, and then rallies. "You\'re quite right," he says. "It\'s not mine to sell." He goes back to the post, and, for a day or ' +
-              'so, is more careful about where he points the dish.',
+            result: 'He sits back. "You\'re right," he says. "It\'s not mine to sell." For a day or so he\'s more careful where he points the dish.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'What the Bands Say',
-        text: 'Ruben has been hearing your ship\'s name on the bands. A trader at Phobos said something kind about the way you pay. A pirate on a short-range channel said something rather less kind. He plays them both for you, and then plays them a second time, the kind one louder.',
+        text: 'Ruben has been hearing the ship\'s name on the bands. A trader at Phobos said the captain pays on the day. A pirate on a short-range channel said something about the guns. He plays you both, and then plays them again, the trader louder.',
         choices: [
           {
             label: 'Ask him to keep an ear on it',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'You asked me to keep an ear on what\'s said about the ship.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
-            result: '"Of course. Of course." He\'s glowing. For the rest of the burn there\'s a notebook next to the comms console, titled, in his ' +
-              'careful hand, WHAT\'s SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship\'s biography from it.',
+            result: '"Of course." For the rest of the burn there\'s a notebook by the comms console, WHAT\'S SAID on the cover in his careful hand, and each page is a name, a time and what was said.',
           },
           {
             label: 'Tell him not to bother with gossip',
             effects: { castLike: { who: 'ruben', n: 0, memory: 'You told me not to bother with gossip.' } },
-            result: '"Gossip," he says, softly. "Yes. Of course." He turns the second recording off, carefully.',
+            result: '"Gossip," he says. "Yes." He turns the second recording off.',
           },
         ],
       },
       late: {
         days: 45, title: 'One Band',
-        text: ('It\'s late, and Ruben is sitting alone at the comms post with the lights down and the thermos untouched. "Captain, I want to say ' +
-            'something I\'ve said to no one since the kitchen." He turns his chair. "I want every dome on Mars on one open band. Not for money. I ' +
-            'want anyone, anywhere under the glass, to be able to ask for help and be heard. If you ever have a ship with room for a relay, I\'d ' +
-            'like to be the one who carries it."'),
+        text: 'It\'s late, and Ruben is at the comms post with the lights down and the thermos untouched. "I want to say something I haven\'t said since the kitchen," he says, and turns his chair. "I want every dome on Mars on one open band. Not for money. So anyone, anywhere under the glass, can ask for help and be heard. One day there\'ll be a ship with room for a relay, and I\'d like to be the one who carries it."',
         choices: [
           {
-            label: 'Promise him a ship, someday',
-            effects: { castLike: { who: 'ruben', n: 2, memory: 'I told you about the open band, and you promised.' }, castFlag: { who: 'ruben', flag: 'promised' } },
-            result: '"Someday," you say, "and there\'ll be room for a relay." He doesn\'t say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he doesn\'t tell you what\'s in it.',
+            label: 'Say you\'d help him carry it',
+            effects: { castLike: { who: 'ruben', n: 2, memory: 'I told you about the open band, and you said you\'d help.' }, castFlag: { who: 'ruben', flag: 'promised' } },
+            result: '"I\'d help carry it," you say. He doesn\'t say anything for some time. Then he pours a cup from the thermos with both hands and sets it in front of you.',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'ruben', n: 1, memory: 'You wouldn\'t promise, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." He smiles. "That\'s what the open band is for," he says. ' +
-              '"Not promises. Being heard." He turns the volume up on the quiet band, and the two of you sit and listen.',
+            label: '"Ask me when there\'s a ship."',
+            effects: { castLike: { who: 'ruben', n: 1, memory: 'I told you about the open band, and you said to ask you then.' } },
+            result: '"Ask me when there\'s a ship," you say. "I will," he says, and turns up the quiet band, and the two of you sit and listen.',
           },
         ],
       },
@@ -598,16 +563,16 @@ const CAST = {
         days: 60, title: 'The Last Relay',
         get text() {
           const named = !!castRec('ruben').flags.councillor;
-          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now the Hellas relay drops off the open band mid-sentence, and a voice that\'s not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
+          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now an outer dome\'s relay drops off the open band mid-sentence, and a voice that\'s not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
             + castRiskLines()
-            + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor on Hellas has your name, and the dome will take a stranger\'s signal slowly.');
+            + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor in that dome knows your name, and the dome will take a stranger\'s signal slowly.');
         },
         choices: [
           { label: 'Let him go out to the mast', run: () => theMast(false) },
           { label: 'Send a second person out with him (the second is hurt for it)', ...gated(needCrew(2)), run: () => theMast(true) },
           { label: 'Tell him to hold the band from the console', memory: 'You kept me off the mast.', run() {
             castFlag('ruben', 'benched'); castLike('ruben', -3, this.memory);
-            return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "It\'s your ship," he says quietly. "I\'ll keep the band open anyway. Somebody should be listening."';
+            return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "All right," he says. "I\'ll keep the band open anyway. Somebody should be listening."';
           } },
         ],
       },
@@ -1076,8 +1041,8 @@ function overTheHull(backup) {
   if (outcome === 'die') {
     return lead + ('She goes over first, as she said she would. The channel carries the first shot, and then something that\'s not a voice, and then ' +
         'the party, shouting her name. You bring the ship alongside, and you\'re too late, and everyone knows it. When the others come back across the ' +
-        'gap they carry the ring-ball from her bag, and nobody says anything about the foul.')
-      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+        'gap, one of them has the ring-ball from her bag.')
+      + (promised ? ' Nobody is going to ask you to sign on now.' : '');
   }
   castLike('yelena', 2, outcome === 'mark' ? 'You let me go first, and I came back with a hand that doesn\'t close.' : 'You let me go first, and I came back.');
   if (outcome === 'mark') {
@@ -1086,7 +1051,7 @@ function overTheHull(backup) {
         'worth it. Just say I was there."');
   }
   return lead + 'She goes over the hull first, as she said she would, and the party follows. It\'s loud and fast and over before you\'ve finished counting. She comes back across the gap with a split lip and a stranger\'s cap in her fist. "Nobody on the bench," she says.'
-    + (promised ? ' "You said someday," she adds.' : '');
+    + (promised ? ' "You said you\'d sign on," she adds.' : '');
 }
 
 // The hull and the medic, as the pivot scenes state them (Yelena's, Ines's, Tomas's), so the player sees what will count.
@@ -1155,14 +1120,14 @@ function theMast(backup) {
   const lead = backup ? 'You send a second person out to the mast with him. ' + castBackupCost('ruben') : '';
   if (outcome === 'die') {
     return lead + 'He goes out the lock with the tool roll on his belt and the dish tilting above him, and for eleven minutes the open band is his voice, calling the bolts as he turns them, one, two, three, and a dome somewhere answering each. The flare arrives on the fourth. The band fills with noise, and then with a number, which is the last thing he says, and then with the dome, saying it back.'
-      + (promised ? ' You remember the room for a relay you told him there\'d be.' : '');
+      + (promised ? ' Nobody is going to carry the relay now.' : '');
   }
   castLike('ruben', 2, outcome === 'mark' ? 'You let me go out to the north mast, and I came back with one good ear.' : 'You let me go out to the north mast, and I came back.');
   if (outcome === 'mark') {
     return lead + 'He gets the third bolt turned and the mast swings true, and the flare comes in before he\'s through the lock. When you reach him he\'s on the airlock deck with both hands over his left ear. The dome is already answering. "I can hear it," he says, loudly, about the dome. "Mostly." After that he turns the volume up on the quiet band, and sits closer to the speaker.';
   }
-  return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. "There," Ruben says, pink with cold. "Heard."'
-    + (promised ? ' "You said there\'d be room," he adds, and pours you a cup.' : '');
+  return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once. "There," Ruben says, pink with cold. "Heard."'
+    + (promised ? ' "You said you\'d help carry it," he adds, and pours you a cup.' : '');
 }
 
 // Bexa's pivot: a point each for a medic, a hull above 60 percent, more than half the reaction mass, and a second hand on the line.

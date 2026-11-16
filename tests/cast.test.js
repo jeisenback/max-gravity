@@ -527,8 +527,8 @@ test('Ruben\'s pivot, The Last Relay, follows the state, and calling it off cost
   assert.equal(r.backup.dead, false, 'a second person is a point'); assert.equal(r.backup.marks, 1);
   assert.equal(r.noName.marks, 1, 'without the councillor he loses a point');
   assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'holding him at the console benches him and costs opinion only');
-  assert.match(r.dieP.raw, /room for a relay you told him/); assert.doesNotMatch(r.die.raw, /room for a relay you told him/);
-  assert.match(r.shown.without, /No councillor on Hellas has your name/); assert.match(r.shown.withName, /Councillor Reyes\'s name is on the relay/);
+  assert.match(r.dieP.raw, /Nobody is going to carry the relay now/); assert.doesNotMatch(r.die.raw, /Nobody is going to carry the relay now/);
+  assert.match(r.shown.without, /No councillor in that dome knows your name/); assert.match(r.shown.withName, /Councillor Reyes\'s name is on the relay/);
   await done();
 });
 
