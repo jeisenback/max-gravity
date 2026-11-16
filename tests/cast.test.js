@@ -617,7 +617,7 @@ test('a main character who walks off is a scene with their leaving line and what
     out.title = e && e.title; out.text = e && e.text; out.choices = e && G.dialog.choices.map(c => c.label);
     out.gone = [!st.crew.includes(ines.id), !st.crew.includes(other.id), st.crew.includes(tomas.id)];
     out.departed = st.departed; out.planet = planet.name;
-    out.message = G.messages.some(m => m.text.includes(`${fullName(other)} has had enough`)) && !G.messages.some(m => m.text.includes('Ines Ferreira has had enough'));
+    out.message = G.messages.some(m => m.text.includes(`${fullName(other)} signs off at`)) && !G.messages.some(m => m.text.includes('Ines Ferreira signs off at'));
     return out;
   });
   assert.equal(r.title, 'Gone Ashore'); assert.deepEqual(r.choices, ['Close the hatch']);
