@@ -454,20 +454,23 @@ function passengerEvent(m) {
 // Small trait-driven events for procedural crew members.
 // The words of each event are in PEOPLE_LINES (peopletext.js), as the passenger events' are; `say` fills a line's {words} from the shipmate. What a choice does is here.
 const crewSay = (trait, c) => (key, vars) => peopleSay(`people:crew:${trait}`, key, { first: c.first, last: c.last, home: c.home, ...vars });
+// They are the hand's side of a shipmate's life (the owner, 2026-11-16, #1303): the wage and the log are the captain's, so the hand stands with a raise
+// or not, covers a brawl or logs it, and pays for a call home out of their own savings (hired.js handPays).
+const CALL_HOME = 400;
 const CREW_EVENTS = {
   greedy: c => { const say = crewSay('greedy', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label', { raise: fmt(c.wage * 1.25) }), run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
-      { label: say('c1.label'), run() { like(c, -2, say('c1.result.memory')); return say('c1.result'); } },
+      { label: say('c0.label'), run() { like(c, 2, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, -1, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   drunk: c => { const say = crewSay('drunk', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, -2, say('c0.result.memory')); return say('c0.result'); } },
-      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 3000); like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
+      { label: say('c0.label'), run() { G.state.credits = Math.max(0, G.state.credits - 3000); like(c, 2, say('c0.result.memory')); return say('c0.result'); } },  // the stores: the ship's money in a hand's burn (hiredFunds)
+      { label: say('c1.label'), run() { like(c, -2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   homesick: c => { const say = crewSay('homesick', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), ...gated(needCr(5000)), run() { G.state.credits -= 5000; like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c0.label', { cost: fmt(CALL_HOME) }), ...gated(needCr(CALL_HOME)), run() { handPays(CALL_HOME); like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
       { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result'); } },
       { label: say('c2.label'), run() { like(c, -1, null); return say('c2.result'); } },
     ] }); },

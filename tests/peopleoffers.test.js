@@ -72,3 +72,17 @@ test('the work, the road and the ship\'s own trouble stay urgent: no offer', asy
   });
   assert.deepEqual(r, [true, true, true]);
 });
+
+test('the crew\'s trait events are the hand\'s side of it: a raise is stood with, not given, and a call home comes out of the hand\'s savings, not the ship\'s fund (#1303)', async () => {
+  const r = await run(() => {
+    const st = burn(), c = st.crew.map(person).find(p => p && !p.cast), out = {};
+    const play = (trait, i) => { openEvent(CREW_EVENTS[trait](c)); const e = G.dialog.event, label = e.choices[i].label; chooseEvent(i); while (G.dialog) finishEvent(); return label; };
+    const wage = c.wage; out.raise = play('greedy', 0); out.wage = c.wage - wage;
+    st.credits = 3000; const fund = hired().fund, save = st.credits; out.call = play('homesick', 0); out.paid = { savings: save - st.credits, fund: fund - hired().fund };
+    out.brave = CREW_EVENTS.brave(c).text;
+    return out;
+  });
+  assert.equal(r.raise, 'Go with them'); assert.equal(r.wage, 0, 'the wage is the captain\'s');
+  assert.match(r.call, /of your savings/); assert.deepEqual(r.paid, { savings: 400, fund: 0 }, 'the hand pays, the fund does not');
+  assert.doesNotMatch(r.brave, /captain/i, 'nobody calls the hand captain');
+});
