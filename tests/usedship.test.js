@@ -108,3 +108,16 @@ test('with the captain\'s scenes played and runs still to go, the card counts th
   assert.equal(r.yard, false);
   await done();
 });
+
+test('with the money there, pressing Ask the captain on the Port page plays her scene (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(); st.tutorial = null; st.story.next = 1e9; h.flags = { ...(h.flags || {}), sawHull: true };
+    st.credits = 60000; st.day = h.since + 1; G.mode = 'landed'; UI.tab = 'port'; UI.render();
+  });
+  await page.click('[data-action=askCaptain]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  assert.ok((await page.textContent('#panel.event [role=dialog] h1')).length > 0, 'her scene is on screen');
+  await done();
+});

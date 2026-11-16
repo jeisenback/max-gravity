@@ -159,3 +159,21 @@ test('a spare off a wreck is fitted free as a used part with its quirk, and sold
   assert.equal(r.sold.got, r.sold.price); assert.equal(r.sold.left, 0);
   assert.equal(r.noOutfitter, 0);
 });
+
+test('on the shipyard page, a spare is fitted by pressing Fit and sold by pressing Sell (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    hired().chapter = 2; G.mode = 'landed'; G.state.tutorial = null;
+    const st = G.state, q = PART_QUIRKS.find(x => x.system === 'drive'), from = 'off the wreck of the Dorran Sky';
+    st.spares = [{ system: 'drive', quirk: { ...q, from }, from }, { system: 'drive', quirk: { ...q, from }, from }];
+    condition().drive = 50; UI.tab = 'shipyard'; UI.render();
+  });
+  const fits = () => page.$$eval('[data-action=spareFit]', b => b.length);
+  assert.equal(await fits(), 2);
+  await page.click('[data-action=spareFit][data-arg="0"]');
+  assert.equal(await fits(), 1, 'one spare fitted, one left');
+  await page.click('[data-action=spareSell][data-arg="0"]');
+  assert.equal(await fits(), 0, 'and the other sold');
+  await done();
+});

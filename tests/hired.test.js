@@ -192,6 +192,8 @@ test('errands: small jobs for where she is going, paid less, with a cut to the c
   assert.match(await page.innerText('#panel'), /Errand: carry/);
   await page.click('[data-action=accept][data-arg="0"]');
   assert.equal(await ev(() => G.state.missions.length), 1, 'taken');
+  await page.click('[data-action=abort][data-arg="0"]');
+  assert.equal(await page.$('[data-action=abort]'), null, 'abandoned: nothing left on the active list to abandon (#1327)');
   const owner = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); return G.offers.every(o => o.type !== 'errand'); });
   assert.ok(owner, 'an owner sees contracts, not errands');
   await done();
@@ -1025,5 +1027,16 @@ test('a full-build start at Mars or the Belt with no papers given is a hand from
   });
   assert.deepEqual([r.mars.home, r.mars.aff, r.belt.home, r.belt.aff, r.earth.home, r.earth.aff], ['mars', 'Dome Pact', 'belt', 'Guild Federation', 'earth', 'Arcology Pact']);
   for (const bg of ['mars', 'belt', 'earth']) assert.deepEqual(r[bg].sheet, r[bg].want, `${bg}: the sheet of the background`);
+  await done();
+});
+
+test('posts: pressing Ask to move, on a yes, makes the asked post yours on the crew page (#1327)', async () => {
+  const { page, ev, done } = await open({});
+  await ev(hiredHelpers);
+  await ev(() => { startHired('gunner'); G.state.tutorial = null; UI.render(); });
+  await goTo(page, 'crew');
+  await ev(() => { Math.random = () => 0; });  // they say yes (the seeded random is restored by the next ev)
+  await page.click('[data-action=swapPost][data-arg=engineer]');
+  assert.match(await page.innerText('.shell .body'), /Engineer\s+yours/i, 'the engineer post is now yours');
   await done();
 });

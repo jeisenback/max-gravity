@@ -504,3 +504,31 @@ test('the Ashore tab reads The Wreck at a wreck and The Rock at a rock (#1146)',
   await done();
   assert.equal(r.wreck, 'The Wreck'); assert.equal(r.rock, 'The Rock');
 });
+
+test('on station: Cut into the wreck opens the shift; with the wreck done, Burn for the next place leaves (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  await ev(() => { atWreck(); UI.render(); });
+  await page.click('[data-action=cutWreck]');
+  await page.waitForSelector('#panel.event [role=dialog] h1');
+  await ev(() => { G.dialog = null; const { site } = { site: siteOf(G.state, G.state.systemId) }; site.wreck.cut = 3; G.state.dest = 'ceres'; UI.show(); });
+  assert.match(await page.textContent('[data-action=burnFromSite]'), /Burn for/);
+  await page.click('[data-action=burnFromSite]');
+  await page.waitForFunction(() => document.querySelector('#panel').classList.contains('hidden'));
+  assert.equal(await page.isVisible('#panel'), false, 'the ship burns: the station panel is gone');
+  await done();
+});
+
+test('the co-op\'s board: pressing Take it on a salvage job puts it under way (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers); await ev(started);
+  await ev(() => {
+    const st = coopAt(); st.fuel = ship().fuel;
+    let day = st.day; while (!jobsAt(st, currentPlanet(), day).some(j => j.kind === 'salvage') && day < st.day + 90) day++;
+    st.day = day; UI.tab = 'port'; UI.render();
+  });
+  await page.click('[data-action=takeSalvageJob]');
+  assert.match(await page.innerText('#panel'), /Under way:/, 'the board says the job is under way');
+  assert.equal(await page.$('[data-action=takeSalvageJob]'), null, 'and offers no other');
+  await done();
+});

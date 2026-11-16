@@ -75,3 +75,15 @@ test('the run panel lists the next runs for a captain with a style, and the butt
   assert.equal(await ev(() => hired().plan.run.profit), 400);
   await done();
 });
+
+test('on the Port page, pressing Suggest puts the run to the captain, and the run on the page is the new one (#1327)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { setup('dov'); stage({ profit: 1000, days: 5, planet: 'Mars' }, { profit: 100, days: 9, planet: 'Phobos Yards' }); UI.tab = 'port'; UI.render(); });
+  const run = () => page.innerText('.shell .body .post .desc');
+  assert.match(await run(), /to Mars,/);
+  await page.click('[data-action=suggestRun][data-arg="0"]');
+  assert.match(await run(), /to Phobos Yards,/, 'the captain took it: the page shows the new run');
+  assert.equal(await page.$('[data-action=suggestRun]:not([disabled])'), null, 'and no second suggestion this stop');
+  await done();
+});
