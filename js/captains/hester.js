@@ -20,20 +20,20 @@ CAPTAINS.hester = {
 
   chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
     any: [
-      'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
+      'Captain Vance is working the fuel bill out in her notebook, then working it out again.',
       'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
-      'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
+      'Cato has put a second blanket on the berth of whoever has the cold watch. Blankets are a line in the captain\'s notebook, at eleven credits each.',
       'Captain Vance writes the fuel price from the last depot inside the notebook\'s cover, under the one before it.',
       'A message comes in from the finance house. Captain Vance reads it in the passage, standing, and puts it in her breast pocket unanswered.',
     ],
     hold: [
-      'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
+      'Captain Vance checks the manifest against the hold count, then walks the hold and counts it herself.',
     ],
     galley: [
-      'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
+      'Captain Vance is eating standing up at the galley counter, with one hand flat on the notebook.',
     ],
     post: [  // in the hand's post room (hired.js captainChatter)
-      'Captain Vance has stopped by the {post} station and not said anything. She does that. It means the numbers are fine.',
+      'Captain Vance stops by the {post} station, reads the board over your shoulder, and goes on without a word.',
     ],
   },
 
@@ -42,8 +42,8 @@ CAPTAINS.hester = {
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
   sway: {
     ok: (o, cur) => o.profit >= 0.9 * (cur.profit || 0),
-    yes: 'Captain Vance looks at your figure, and then at hers. It\'s within a tenth, and she draws a line through hers. "Your way," she says. "Don\'t make me regret the notebook."',
-    no: 'Captain Vance puts her figure beside yours without a word. It\'s better by more than a tenth. "We go as planned," she says, and turns the page.'
+    yes: 'Captain Vance looks at your figure, and then at hers. It\'s within a tenth, and she draws a line through hers. "Your way," she says, and writes your figure in.',
+    no: 'Captain Vance puts her figure beside yours. Hers is better by more than a tenth. "We go as planned," she says, and turns the page.'
   },
 
   events: {
@@ -52,14 +52,14 @@ CAPTAINS.hester = {
           'costs two days of fuel. She has done the sum on the back of the manifest and turned it so you can read it. "It\'s not an order I like ' +
           'either," she says. "It\'s the cheaper one."'),
       ordered: 'You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing.',
-      heard: 'You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. "Nine percent," she says. "Not ten." It\'s the first time she has changed a number in front of you.',
+      heard: 'You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. "Nine percent," she says. "Not ten."',
       notHeard: '"I didn\'t ask what you thought of the sum," she says. "I asked for the burn." You run it hot, and it works.',
     },
     'cap-praise': {
       text: 'Captain Vance finds you at the end of a watch with the notebook open. "The {post} hasn\'t cost me a repair or a worry in a week," she says. "I\'ve written it down."',
       take: '"The crew make it easy," you say. She turns a page.',
-      bonusYes: 'She looks at you, and at the notebook, and laughs. "Six hundred," she says. "It\'s in the column already." It reaches your account before the end of the watch.',
-      bonusNo: '"When it\'s a word, it\'s free," she says. "When it\'s a bonus, it has to be earned. I have a column for each."',
+      bonusYes: 'She looks at you, and at the notebook. "Six hundred," she says. "It\'s in the column already." It reaches your account before the end of the watch.',
+      bonusNo: '"Not this quarter," she says. "The charter\'s due on the first." She closes the notebook.',
     },
     'cap-dressing': {
       text: 'There\'s a watch with no entry in the log, and Captain Vance has found it. She doesn\'t shout. She puts the log on the galley table, turns it so it faces you, and lays a pencil across the gap. Then she waits.',
@@ -68,13 +68,13 @@ CAPTAINS.hester = {
       terminal: '"Then we\'ll see," Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.',
       showWin: 'Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. "I\'ll have it replaced," she says. "And I was wrong. I\'ll put that in the book."',
       showLose: 'It does nothing. The log sits there, clean and obedient. She looks at it, and at you, and says, "Well." She writes something small in the notebook, and doesn\'t show you what.',
-      admit: 'You say it late, with your eyes on the table. "That\'s the second true thing you\'ve told me tonight," she says. "The first one cost you more." She writes it down, with the date.',
+      admit: 'You say it late, with your eyes on the table. "Next time, say it first," she says. She writes it down, with the date.',
     },
     'cap-favour': {
       text: 'Captain Vance asks whether you\'d stand an extra watch so a crew member can sleep, and say nothing about it. It\'s not in the articles, and she says so. "I\'ll owe you the hours," she says.',
-      stand: 'You take it, and the long hours go slowly, with a flask of the galley\'s worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it.',
+      stand: 'You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, "Six hours. They\'re in the book."',
       fee: 'She pays it out of her own pocket, without comment, and writes it down. The watch passes like any other.',
-      beg: '"Of course," she says, and goes to ask somebody else. The hours go into the book anyway.',
+      beg: '"Of course," she says, and goes to ask somebody else.',
     },
   },
 
@@ -112,7 +112,7 @@ CAPTAINS.hester = {
           {
             label: 'Say you\'ll keep it to yourself',
             effects: { captainLike: { n: 2, memory: 'You said you\'d keep the house to yourself.' }, captainFlag: 'secretKnown' },
-            result: 'You say you will. She closes the notebook and holds it shut with both hands. "Thank you," she says. It\'s the first time you\'ve heard her say it without a number after it.',
+            result: 'You say you will. She closes the notebook and holds it shut with both hands. "Thank you," she says.',
           },
           {
             label: 'Ask how much she still owes',
@@ -152,14 +152,14 @@ CAPTAINS.hester = {
     warm: 'Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. "I have your account," she says. "It\'s correct. I\'d like you to check it anyway."',
     neutral: 'Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.',
     cold: 'Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn\'t offer her hand. "Your account is correct," she says. "Sign here, and here."',
-    jonah: 'She has the two names on the page before yours, in her own hand. "I don\'t hold it against you," she says, and does not say what.',  // two shipmates lost on the hand's record (traits.js)
-    crew: '{names} will go with you. She runs a finger down the crew list. "That\'s a column I\'ll have to fill again," she says.',
+    jonah: 'She has the two names on the page before yours, in her own hand. "I don\'t hold it against you," she says.',  // two shipmates lost on the hand's record (traits.js)
+    crew: '{names} will go with you. She runs a finger down the crew list. "I\'ll have to go to the agency again," she says.',
     secret: 'She doesn\'t mention the house. "The first of the month," she says, "and the first after that. I\'ll be there for them."',
     repay: 4100,
     repaid: 'She counts four thousand one hundred onto the rail, the day you leave, as she said she would. You count it after her. It\'s correct.',
-    xoDead: 'She doesn\'t look at the empty place on the watch bill. "I\'ve taken Cato out of the book," she says. "I had to. It\'s the first time I didn\'t want to."',
-    xo: 'Cato is at the hatch, because the captain wouldn\'t go and say it. "Take care of your people," he says. "They\'ll take care of you. I\'ve put your name on the back of the bill, so I remember to ask after you."',
-    parting: 'She holds out her hand at last. It\'s dry and brief. "That\'s the account closed," she says. "Keep your own books."',
+    xoDead: 'She doesn\'t look at the empty place on the watch bill. "I\'ve taken Cato out of the book," she says. "I didn\'t want to."',
+    xo: 'Cato is at the hatch. "Write to me," he says. "Tell me who you\'re with. I\'ve put your name on the back of the bill, so I remember to ask after you."',
+    parting: 'She holds out her hand at last. It\'s dry and brief. "Mind how you go," she says.',
     choices: [
       {
         label: 'Thank her for the work',

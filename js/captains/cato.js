@@ -18,7 +18,7 @@ function inTheIceHold(backup) {
     return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and the board shows nothing you can ' +
         'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you\'ve finished. She watches the ' +
         'board until the last line stops, and then she closes the notebook. "Take him out," she says.')
-      + (told ? ' He asked you to find him if it went badly. It\'s the other way round now.' : '');
+      + (told ? ' His line is still at the foot of the watch bill, in pencil.' : '');
   }
   castLike('cato', 2, sceneSay('scene:memories', 'cato.lived.memory'));
   if (outcome === 'mark') {
@@ -44,7 +44,7 @@ CAST.cato = {
     homeDetail: 'two rooms above a cargo exchange, where the lift ran all night and nobody in the building kept the same shift',
     favor: null,
     news: {
-      good: ['{who} sent a photo of the whole stairwell at a wedding', '{who} has a new lift technician, who actually comes when called', '{who} says the rent is frozen for another year'],
+      good: ['{who} sent a photo of the whole stairwell at a wedding', '{who} says the lift is working again', '{who} says the rent is frozen for another year'],
       bad: ['{who} says the lift has been broken for a month', '{who} is ill, and the clinic on {home} has a waiting list', '{who} says the exchange is closing the flats for repairs'],
     },
   },
@@ -144,12 +144,12 @@ CAST.cato = {
         {
           label: 'Ask him to tell you if it goes badly',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
-          result: 'He writes it in pencil at the foot of the bill, where the next person to read it\'ll see. "I will," he says. "It\'s something, to have somebody to tell."',
+          result: 'He writes it in pencil at the foot of the bill, where the next person to read it\'ll see. "I will," he says, and goes back to the bill.',
         },
         {
           label: 'Tell him it\'s not yours to carry',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it wasn\'t yours to carry.' } },
-          result: '"No," he says. "It\'s not." He squares the watch bill on the table. "I wanted somebody to hear it said, that\'s all. It\'s a lot to carry in the hold."',
+          result: '"No," he says. "It\'s not." He squares the watch bill on the table. "I wanted somebody to hear it said, that\'s all."',
         },
       ],
       // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the hold) is not asked.
@@ -161,7 +161,7 @@ CAST.cato = {
         choices: [
           {
             label: 'Say it can wait',
-            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you. I wouldn\'t have known how to start."',
+            result: '"It can," he says, and puts the pencil back behind his ear.',
           },
         ],
       },
@@ -173,7 +173,7 @@ CAST.cato = {
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two cargo pod with a lashing gone and the load moving ' +
             'under thrust. Cato is already at the hatch with a strap over one shoulder. "I know where it goes," he says. "It\'s my hold. Give me ten ' +
             'minutes." At a fraction of a g a pod that size doesn\'t move quickly, but it doesn\'t stop, either, and the bulkhead it\'s leaning on isn\'t rated for it.')
-          + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
+          + (low ? ' The hull is under sixty percent, and the frames by the hold have taken most of it.' : ' The hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.')
           + (hands >= 1 ? ' The deckhand is suited and waiting.' : ' There\'s nobody else in the hold for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
@@ -222,7 +222,7 @@ CAST.cato.round = () => {
 // The first arrival (captains.js arrivalScene): Cato settles up at the foot of the ramp.
 CAST.cato.arrival = {
   open: 'The ramp is down. Cato has the captain\'s notebook open on a crate on the apron, and he turns it round so you can read it. "She\'s at the harbor office. I\'m to show you the page and bring it back."',
-  memory: '"My first share was nine hundred," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. It\'s in your savings."',
+  memory: '"It\'s less than you worked out," he says. "It always is, the first time. The kit comes off." He taps the page. "That\'s yours. It\'s gone into your savings."',
   column: '"That column\'s {cap}\'s," Cato says. The pencil stays behind his ear.',
   pace: '"A season," Cato says. "Everyone takes a season. {cap} was a rating for twenty years before she had a ship."',
 };
@@ -230,10 +230,10 @@ CAST.cato.arrival = {
 // The first deck fight (captains.js deckExplanation): Cato at the inner lock, before the first turn of it.
 CAST.cato.firstDeck = {
   title: 'The Inner Lock',
-  text: ('Cato has the sidearm locker open and hands you yours butt first. "Same as the guns," he says. "The top line\'s what they mean to do. ' +
-      'The board\'s the deck, a box a section. Ours on the left, theirs on the right, and the dots are cover. Fewer dots, less to get behind."</p><p>' +
-      'He points at the line under it. "That\'s their count, and the mark is where they break. Put enough of them down and the rest go back the ' +
-      'way they came. Each turn you stand or move a section, and you do one thing there. Then you give one of us an order. Me, if you like. I\'ll ' +
+  text: ('Cato has the sidearm locker open and hands you yours butt first. "Look at the board," he says. "Top line\'s what they mean to do. ' +
+      'The boxes are the deck, a section each, ours on the left and theirs on the right. Dots are cover."</p><p>' +
+      'He points at the line under it. "That\'s how many they\'ve got, and the mark\'s where they break and go back. ' +
+      'Each turn you hold a section or move, and you do one thing there. Then you give one of us an order. Me, if you like. I\'ll ' +
       'tell you if it\'s a bad one."'),
   choices: [{
     label: 'Check the sidearm',
@@ -247,13 +247,13 @@ CAST.cato.firstRaid = {
   text: ('Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. "Look at the top of the board," he ' +
       'says. "That\'s what she means to do next, and under it what the captain will do with the helm. You don\'t guess either."</p><p>He points at ' +
       'the guns. "Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and ' +
-      'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. ' +
-      'I wore a glove for eleven days."</p><p>He taps the gauge over the breech. "Every shot puts heat in the guns, and past that mark one locks ' +
-      'for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge ' +
-      'off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We ' +
+      'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and you\'re slower at your post for a few days."' +
+      '</p><p>He taps the gauge over the breech. "Every shot puts heat in the guns, and past that mark one locks ' +
+      'for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back to knock down ' +
+      'what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We ' +
       'carry a few torpedoes of our own. They hit hard, and when they\'re gone they\'re gone."'),
   choices: [{
     label: 'Take your post',
-    result: 'He lets go of the hatch frame. "Choose what you\'d choose," he says. "I\'ll be behind you."',
+    result: 'He lets go of the hatch frame. "I\'ll be behind you," he says.',
   }],
 };

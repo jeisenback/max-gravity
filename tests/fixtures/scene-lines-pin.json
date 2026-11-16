@@ -11304,7 +11304,7 @@
     "text": "She lets you finish. Her first volley comes in while you are still on the band. Her crew have done this before.",
     "next": {
      "title": "The Guns Hatch",
-     "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. I wore a glove for eleven days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
+     "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and you're slower at your post for a few days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back to knock down what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
      "labels": [
       "Take your post"
      ]
@@ -11313,12 +11313,12 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\""
+      "text": "He lets go of the hatch frame. \"I'll be behind you,\" he says."
      },
      {
       "j": 0,
       "roll": 0.99,
-      "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\""
+      "text": "He lets go of the hatch frame. \"I'll be behind you,\" he says."
      }
     ]
    }
@@ -11765,7 +11765,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.<br>The hiring hall takes 30 percent of your pay, 800. You still owe it 39,200.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.<br>The hiring hall takes 30 percent of your pay, 800. You still owe it 39,200.</p><p>\"It's less than you worked out,\" he says. \"It always is, the first time. The kit comes off.\" He taps the page. \"That's yours. It's gone into your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -11788,7 +11788,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>30 t of ore, bought for 18,000 and sold for 16,000: the ship loses 2,000.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>30 t of ore, bought for 18,000 and sold for 16,000: the ship loses 2,000.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.</p><p>\"It's less than you worked out,\" he says. \"It always is, the first time. The kit comes off.\" He taps the page. \"That's yours. It's gone into your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -11811,7 +11811,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>No cargo this run.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>No cargo this run.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.</p><p>\"It's less than you worked out,\" he says. \"It always is, the first time. The kit comes off.\" He taps the page. \"That's yours. It's gone into your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -11834,7 +11834,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>80 t of water for a shipper, 197,309 paid on delivery: the ship clears 197,309.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.<br>The hiring hall takes 30 percent of your pay, 3,467. You still owe it 26,533.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>80 t of water for a shipper, 197,309 paid on delivery: the ship clears 197,309.<br>Your pay: 1,200 in wages for 9 days, less 0 for your kit.<br>The hiring hall takes 30 percent of your pay, 3,467. You still owe it 26,533.</p><p>\"It's less than you worked out,\" he says. \"It always is, the first time. The kit comes off.\" He taps the page. \"That's yours. It's gone into your savings.\"</p><p>There is a column for the officers' shares, with Tomas and Ines in it. The ratings are paid by the day, and your name is on the wage page. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -14682,7 +14682,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the gunner post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -14697,7 +14697,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the gunner post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -14840,7 +14840,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -14852,7 +14852,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -14953,7 +14953,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -14961,7 +14961,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15000,7 +15000,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15008,7 +15008,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15029,7 +15029,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the gunner post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -15044,7 +15044,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the gunner post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -15083,7 +15083,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -15098,7 +15098,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -15869,7 +15869,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the pilot post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -15884,7 +15884,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the pilot post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -16027,7 +16027,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -16039,7 +16039,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -16140,7 +16140,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -16148,7 +16148,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -16187,7 +16187,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -16195,7 +16195,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -16216,7 +16216,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the pilot post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -16231,7 +16231,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the pilot post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -16270,7 +16270,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -16285,7 +16285,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -17056,7 +17056,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the engineer post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -17071,7 +17071,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the engineer post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -17214,7 +17214,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -17226,7 +17226,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -17327,7 +17327,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -17335,7 +17335,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -17374,7 +17374,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -17382,7 +17382,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -17403,7 +17403,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the engineer post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -17418,7 +17418,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the engineer post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -17457,7 +17457,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -17472,7 +17472,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -18243,7 +18243,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the comms post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -18258,7 +18258,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" It's the first time she has changed a number in front of you. (+2 experience at the comms post.)",
+    "text": "You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. \"Nine percent,\" she says. \"Not ten.\" (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
@@ -18401,7 +18401,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -18413,7 +18413,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and at the notebook, and laughs. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook. \"Six hundred,\" she says. \"It's in the column already.\" It reaches your account before the end of the watch.",
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
@@ -18514,7 +18514,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -18522,7 +18522,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -18561,7 +18561,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -18569,7 +18569,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
+      "text": "You say it late, with your eyes on the table. \"Next time, say it first,\" she says. She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -18590,7 +18590,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the comms post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -18605,7 +18605,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You take it, and the long hours go slowly, with a flask of the galley's worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it. (+2 experience at the comms post.)",
+    "text": "You take it. The hours go slowly, with a flask of coffee from the galley. At the next port she says, \"Six hours. They're in the book.\" (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
@@ -18644,7 +18644,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -18659,7 +18659,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -23161,7 +23161,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "\"When it's a word, it's free,\" she says. \"When it's a bonus, it has to be earned. I have a column for each.\"",
+    "text": "\"Not this quarter,\" she says. \"The charter's due on the first.\" She closes the notebook.",
     "mem": [
      "9 Jul 2214: You asked for a bonus before you had earned one."
     ],
@@ -23176,7 +23176,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"When it's a word, it's free,\" she says. \"When it's a bonus, it has to be earned. I have a column for each.\"",
+    "text": "\"Not this quarter,\" she says. \"The charter's due on the first.\" She closes the notebook.",
     "mem": [
      "9 Jul 2214: You asked for a bonus before you had earned one."
     ],
@@ -28632,12 +28632,12 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\"",
+    "text": "He lets go of the hatch frame. \"I'll be behind you,\" he says.",
     "next": null
    }
   ],
   "title": "The Guns Hatch",
-  "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. I wore a glove for eleven days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
+  "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and you're slower at your post for a few days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back to knock down what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
   "labels": [
    "Take your post"
   ]
@@ -28653,7 +28653,7 @@
    }
   ],
   "title": "The Inner Lock",
-  "text": "Cato has the sidearm locker open and hands you yours butt first. \"Same as the guns,\" he says. \"The top line's what they mean to do. The board's the deck, a box a section. Ours on the left, theirs on the right, and the dots are cover. Fewer dots, less to get behind.\"</p><p>He points at the line under it. \"That's their count, and the mark is where they break. Put enough of them down and the rest go back the way they came. Each turn you stand or move a section, and you do one thing there. Then you give one of us an order. Me, if you like. I'll tell you if it's a bad one.\"",
+  "text": "Cato has the sidearm locker open and hands you yours butt first. \"Look at the board,\" he says. \"Top line's what they mean to do. The boxes are the deck, a section each, ours on the left and theirs on the right. Dots are cover.\"</p><p>He points at the line under it. \"That's how many they've got, and the mark's where they break and go back. Each turn you hold a section or move, and you do one thing there. Then you give one of us an order. Me, if you like. I'll tell you if it's a bad one.\"",
   "labels": [
    "Check the sidearm"
   ]
