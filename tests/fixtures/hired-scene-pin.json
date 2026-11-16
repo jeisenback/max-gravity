@@ -1980,7 +1980,7 @@
   "id": "cast:bexa:meet",
   "i": 0,
   "label": "Offer her the helm",
-  "result": "She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. \"I'll take your helm,\" she says. \"I'll tell you now that I talk to the transponder. It's not a problem. It listens better than most people.\"",
+  "result": "She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. \"I'll take your helm,\" she says. \"I'll tell you now that I talk to the transponder. It's not a problem.\"",
   "changes": [
    "s.crew.5: undefined -> c:bexa",
    "s.home.log: [] -> undefined",
@@ -2051,7 +2051,7 @@
   "id": "cast:bexa:intro",
   "i": 0,
   "label": "Ask about the living ones",
-  "result": "\"Oh,\" she says, and smiles, for the first time since you came aboard. \"Eleven. Eleven of them lived. There's a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman at Hygiea who runs a water shop and gives me a free flask every time I dock.\" She runs a finger down the list, stopping at the names, one at a time. \"That's the part I put the list here for.\"",
+  "result": "\"Eleven,\" she says. \"Eleven of them lived. There's a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman on Ceres who runs a water stall and won't take my money for a flask.\" She runs a finger down the list. \"I put the list here for the eleven.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2087,7 +2087,7 @@
   "id": "cast:bexa:intro",
   "i": 1,
   "label": "Ask about the others",
-  "result": "She's silent for a long time. \"Thirty-one,\" she says. \"I make sure I say their names once a year, out loud, on the day I found them. Somebody should.\" She closes the cover, finally, gently, as you'd a door on someone sleeping. \"Thank you for asking. It's not what most people ask.\"",
+  "result": "She's quiet for a long time. \"Thirty-one,\" she says. \"I say their names once a year, out loud, on the day I found them.\" She closes the cover. \"Most people don't ask about those.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2122,7 +2122,7 @@
   "id": "cast:bexa:mid1",
   "i": 0,
   "label": "Take the detour",
-  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck. Quietly, she writes a name on a list you can't see. \"She was called the Patient Wren,\" she says. \"I'll tell the registry. She'll be towed home.\" She flies the rest of the shift with two fingers on the stick.",
+  "result": "She brings the ship in slow. The wreck is a hauler, dark and cold, hatches sealed, the beacon still going. Nobody aboard. Bexa reads the registry plate through the camera and writes it down. \"The Patient Wren,\" she says. \"Written off four years ago. I'll tell the registry where she is. Somebody might pay the tow.\" She flies the rest of the shift with two fingers on the stick.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2158,7 +2158,7 @@
   "id": "cast:bexa:mid1",
   "i": 1,
   "label": "Stay on course",
-  "result": "\"No,\" she says. \"Of course. It's not my ship.\" She takes her hand off the console slowly, and the transponder's faint call fades behind you, four seconds at a time, until you can't hear it. She flies on, correct and silent, and later you see her write something small on the inside of the console cover.",
+  "result": "\"No,\" she says. \"Of course. It's not my ship.\" She takes her hand off the console, and the call fades behind you, four seconds at a time. She flies on, and later you see her write something small on the inside of the console cover.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2193,7 +2193,7 @@
   "id": "cast:bexa:mid2",
   "i": 0,
   "label": "Trust her",
-  "result": "You tell her to carry on. She carries on, and for the next twenty minutes the whole ship waits with her, listening to the thing she's certain isn't there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. \"Echo,\" she says. \"Forty-one.\" She doesn't say thank you. She puts a tick on the inside of the console cover.",
+  "result": "You tell her to carry on. For twenty minutes the whole ship watches the contact with her. Then it thins out and is gone. \"Echo,\" Bexa says. \"Forty-one.\" She puts a tick on the inside of the console cover.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2229,7 +2229,7 @@
   "id": "cast:bexa:mid2",
   "i": 1,
   "label": "Raise the alarm anyway",
-  "result": "The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes the ship off alert herself, calmly, without a word, and flies on. \"Better safe,\" she says at last. For a day she answers in single words, and after that she reports a contact only once she's sure of it.",
+  "result": "The alarm goes, the crew goes to stations, and in twenty minutes the contact fades to nothing. Bexa takes the ship off alert herself and flies on. \"Better safe,\" she says. For a day she answers in single words, and after that she reports a contact only once she's sure of it.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2263,35 +2263,35 @@
  {
   "id": "cast:bexa:late",
   "i": 0,
-  "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you'll be asked.\" She doesn't answer for a moment. Then she takes the brass tag from above the console, on its string, and holds it in her palm. \"He'd have liked you,\" she says, to nobody in particular, and puts it carefully back.",
+  "label": "Say you'd crew for her",
+  "result": "\"I'd crew for you,\" you say. She doesn't answer for a moment. Then she takes the brass tag down from above the console and holds it in her palm. \"He'd have liked you,\" she says, and puts it back.",
   "changes": [
    "s.cast.bexa.flags: {} -> undefined",
    "s.cast.bexa.flags.promised: undefined -> true",
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
-   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I told you about the ship nobody wanted, and you promised.",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I told you about the ship nobody wanted, and you said you'd crew for me.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd crew for her",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd crew for her",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd crew for her",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Promise her a ship, someday",
+    "label": "Say you'd crew for her",
     "open": true,
     "why": ""
    }
@@ -2300,33 +2300,33 @@
  {
   "id": "cast:bexa:late",
   "i": 1,
-  "label": "Make no promises",
-  "result": "\"I can't promise that,\" you say, \"but I heard you.\" Her mouth goes crooked. \"That's the right answer,\" she says. \"Don't promise a tow to a ship you haven't looked at. I did, once, and she had a hole in her.\"",
+  "label": "\"Ask me when you've found her.\"",
+  "result": "\"Ask me when you've found her,\" you say. Her mouth goes crooked. \"Fair,\" she says. \"Don't promise a tow to a ship you haven't looked at. I did, once, and she had a hole in her.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
-   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You wouldn't promise, but you listened.",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I told you about the ship, and you said to ask you when I'd found her.",
    "s.people.c:bexa.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've found her.\"",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've found her.\"",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've found her.\"",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've found her.\"",
     "open": true,
     "why": ""
    }
@@ -2336,7 +2336,7 @@
   "id": "cast:bexa:pivot",
   "i": 0,
   "label": "Let her go out on the line",
-  "result": "She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "result": "She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round behind the ship on the line. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2371,7 +2371,7 @@
   "id": "cast:bexa:pivot",
   "i": 1,
   "label": "Send a second hand out with her (the second is hurt for it)",
-  "result": "You send a second hand out on the line with her. Pax comes back hurt, and is off duty until the next port. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "result": "You send a second hand out on the line with her. Pax comes back hurt, and is off duty until the next port. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round behind the ship on the line. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
   "changes": [
    "s.injured: {} -> undefined",
    "s.injured.c:pax: undefined -> true",
@@ -2445,7 +2445,7 @@
   "id": "cast:pax:meet",
   "i": 0,
   "label": "Offer them the guns",
-  "result": "The dart goes down, carefully. \"Really?\" Pax says. That sounded like asking for too much. \"I mean, thanks. Yes. I mean, I'll try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
+  "result": "The dart goes down, carefully. \"Really?\" Pax says. \"I mean, thanks. Yes. I'll try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
   "changes": [
    "s.crew.5: undefined -> c:pax",
    "s.home.log: [] -> undefined",
@@ -2518,7 +2518,7 @@
   "id": "cast:pax:intro",
   "i": 0,
   "label": "Tell them honestly that it's different",
-  "result": "\"Yes,\" you say. \"It's different. It's louder, and everything you do matters, and your hands shake. Everybody's do. You do it anyway, and it gets quieter.\" Pax lets out a breath, slowly. \"Thank you,\" they say. \"Everybody else says it's the same. It's a relief to be told it's not.\" They go back to the scores.",
+  "result": "\"Yes,\" you say. \"It's louder, and your hands shake. Everybody's do. You do it anyway, and it gets quieter.\" Pax lets out a breath. \"Everybody else says it's the same,\" they say. They go back to the scores.",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
@@ -2589,7 +2589,7 @@
   "id": "cast:pax:mid1",
   "i": 0,
   "label": "Check it together",
-  "result": "You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it's done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice. \"Good,\" they say. \"It's good.\" They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.",
+  "result": "You stand beside them and don't help. After a minute Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it's done they test it, twice. \"Good,\" they say. \"It's good.\" They put the wrench back in its clip and square it with the rack.",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
@@ -2625,7 +2625,7 @@
   "id": "cast:pax:mid1",
   "i": 1,
   "label": "Do it for them",
-  "result": "You take the wrench, and do it in nine minutes. Pax says \"Thank you\" and watches your hands the whole time. Pax tests the coupling after you, quietly, when they think no one is looking, and finds it perfect, and doesn't look any happier about it.",
+  "result": "You take the wrench, and do it in nine minutes. Pax says \"Thank you\" and watches your hands the whole time. Pax tests the coupling after you, when they think no one is looking.",
   "changes": [
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You did the coupling for me."
@@ -2658,7 +2658,7 @@
   "id": "cast:pax:mid2",
   "i": 0,
   "label": "Offer to sit with them while they read it",
-  "result": "You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It's short. The foreman is walking again, with a stick, and doesn't blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld face-down on their knee, and cries, quietly, for about a minute. Then Pax wipes their face on a sleeve and says, \"He says to practice. He says I have the best hands in the Warren.\" They laugh, a damp, astonished sound.",
+  "result": "You sit on the deck beside them, with your back to the bulkhead, and Pax opens it. It's short. The foreman is walking again, with a stick. He says to stop sending money for the clinic, he's nearly paid it, and he'd like to see the kid some day. Pax reads it twice and puts the handheld face-down on their knee, and for about a minute doesn't say anything. Then they wipe their face on a sleeve. \"He says to practise,\" Pax says. \"He says I've got the best hands in the Warren.\"",
   "changes": [
    "s.cast.pax.flags: {} -> undefined",
    "s.cast.pax.flags.foreman: undefined -> true",
@@ -2696,7 +2696,7 @@
   "id": "cast:pax:mid2",
   "i": 1,
   "label": "Tell them to read it when they're ready",
-  "result": "\"Yes,\" Pax says. \"When I'm ready.\" It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of the burn. When you pass the weapons bay, Pax has taken it out, and is holding it, and looking at the sender's name, and putting it back.",
+  "result": "\"Yes,\" Pax says. \"When I'm ready.\" They put the handheld away. It stays unopened for the rest of the burn. When you pass the weapons bay, Pax has it out, looking at the sender's name, and puts it back.",
   "changes": [
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to read it when I was ready."
@@ -2728,35 +2728,35 @@
  {
   "id": "cast:pax:late",
   "i": 0,
-  "label": "Promise them a ship, someday",
-  "result": "\"Someday,\" you say, \"and you'll be asked.\" Pax opens their mouth and shuts it again, and then the grin gets away from them entirely, wide and helpless. \"Nine days,\" they say. \"Nine days, and a ship. If I tell the foreman he won't believe me.\" They go away down the corridor, walking straight, with their hands in plain view.",
+  "label": "Say you'd crew for them",
+  "result": "\"I'd crew for you,\" you say. Pax opens their mouth and shuts it again, and then grins. \"Nine days,\" they say, \"and a crew. One.\" They go off down the corridor, walking straight.",
   "changes": [
    "s.cast.pax.flags: {} -> undefined",
    "s.cast.pax.flags.promised: undefined -> true",
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
-   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I told you about the ship where nobody got hurt, and you promised.",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I told you about the ship where nobody got hurt, and you said you'd crew for me.",
    "s.people.c:pax.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Promise them a ship, someday",
+    "label": "Say you'd crew for them",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Promise them a ship, someday",
+    "label": "Say you'd crew for them",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Promise them a ship, someday",
+    "label": "Say you'd crew for them",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Promise them a ship, someday",
+    "label": "Say you'd crew for them",
     "open": true,
     "why": ""
    }
@@ -2765,33 +2765,33 @@
  {
   "id": "cast:pax:late",
   "i": 1,
-  "label": "Make no promises",
-  "result": "\"I can't promise that,\" you say, \"but I heard you.\" \"That's fair,\" Pax says. \"It'd be strange to be promised. I'm not used to it.\" They smile, a crooked one. To your surprise, they say, \"Nine days is already a good thing, though. I'll take that.\"",
+  "label": "\"Ask me when you've got one.\"",
+  "result": "\"Ask me when you've got one,\" you say. \"That's fair,\" Pax says. \"It'd be strange to be promised.\" They smile, a crooked one. \"Nine days, though. I'll take that.\"",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
-   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a ship, but you listened.",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I told you about the ship, and you said to ask you when I had one.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've got one.\"",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've got one.\"",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've got one.\"",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Make no promises",
+    "label": "\"Ask me when you've got one.\"",
     "open": true,
     "why": ""
    }
@@ -2877,7 +2877,7 @@
   "id": "cast:pax:pivot",
   "i": 2,
   "label": "Tell Pax to cut the power and let the mount drop",
-  "result": "You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it's unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. \"I could have held it,\" Pax says. \"I think I could have.\" The coupling is the only thing in the bay that doesn't move.",
+  "result": "You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench in their hand. \"I could have held it,\" Pax says. \"I think I could have.\"",
   "changes": [
    "s.cast.pax.flags: {} -> undefined",
    "s.cast.pax.flags.benched: undefined -> true",
@@ -5368,7 +5368,7 @@
   "id": "cast:bexa:bar1",
   "i": 0,
   "label": "Ask about the crew",
-  "result": "She tells you, and it takes a while, and every name is in it: the engineer who sang, the child with the broken wrist, the captain, who wouldn't leave the bridge until everyone else was off. \"She's for sale again,\" she says, looking at the card. \"They never fixed the port thruster. I told them about the port thruster.\" She says nothing else for a time.",
+  "result": "She tells you, short. Six weeks dark, the air rationed by the hour, and a captain who wouldn't leave the bridge until the others were off. \"She's for sale again,\" she says, looking at the card. \"They never fixed the port thruster. I told them about the port thruster.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -5403,7 +5403,7 @@
   "id": "cast:bexa:bar1",
   "i": 1,
   "label": "Buy her a drink and let her read",
-  "result": "You put a drink at her elbow and say nothing. She reads the board from one end to the other, card by card, saying a ship's name now and then under her breath. When she has finished she lifts the glass. \"Thank you,\" she says. \"It's good to be somewhere I can be quiet. It's better with someone who knows how.\"",
+  "result": "You put a drink at her elbow and say nothing. She reads the board from one end to the other, card by card, saying a ship's name now and then under her breath. When she's finished, she lifts the glass to you and drinks it.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -5473,7 +5473,7 @@
   "id": "cast:bexa:bar2",
   "i": 1,
   "label": "Sit with them",
-  "result": "You sit down beside her. Her shoulder comes to rest against yours. The boy tells it all: the dark, the cold, the drawing. He says she was the first person he ever saw who wasn't afraid. Bexa says, in a low voice, \"I was terrified.\" The boy laughs, startled. She smiles. It's the first time you've seen all of her face.",
+  "result": "You sit down beside her. The boy tells it all: the dark, the cold, the drawing. He says she was the first person he ever saw who wasn't afraid. Bexa says, in a low voice, \"I was terrified.\" The boy laughs, and so does she.",
   "changes": [
    "s.cast.bexa.flags: {} -> undefined",
    "s.cast.bexa.flags.pallas: undefined -> true",
@@ -5546,7 +5546,7 @@
   "id": "cast:pax:bar1",
   "i": 1,
   "label": "Take the stranger's challenge yourself",
-  "result": "You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, \"Your stance is wrong,\" and corrects it, standing very close, without a flinch. The stranger gives a slow nod. Pax doesn't see it. You do.",
+  "result": "You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, \"Your stance is wrong,\" and corrects it, standing very close, without a flinch.",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
