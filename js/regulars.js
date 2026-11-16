@@ -10,31 +10,55 @@ const REGULARS = 2, NEWS_AFTER = 4, ARC_AFTER = 7;
 // A regular's life (#672): an arc of three beats that moves one beat a visit when you are back a week or more after the last, told as their
 // news (after the name, as NEWS is), drawn when the regular is made (p.arc = { key, beat }). How it ends: 'gone' leaves the bar at the visit
 // after the last beat (the stool goes to someone new, and the dock's return line can say so, revisit.js); 'stays' goes back to the news.
-const ARCS = {  // lines:regular-arcs
-  berth: { end: 'gone', beats: [
-    'is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool.',
-    'has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks.',
-    'has the hauler\'s name on a slip of paper and a date under it, and buys the round. "Tuesday," they say. "Ask anyone."'] },
-  flat: { end: 'stays', beats: [
-    'is behind on the rent, and says so to the glass and not to you.',
-    'is sleeping in the back room here, by arrangement with the owner, and has the key out on the bar to prove it.',
-    'has a flat on the lower ring, two rooms and a plant, and the plant is doing well. You hear about the plant.'] },
-  sister: { end: 'gone', beats: [
-    'has a sister visiting, who sits at the far end and does not drink and watches the door.',
-    'is arguing with the sister in the low voice people use for an argument they have had before.',
-    'has paid the tab in full, for the first time anyone here remembers, and is leaving with the sister on the morning boat.'] },
-  cough: { end: 'stays', beats: [
-    'has the cough half the port has, and a bottle of something for it that does not work.',
-    'has been to the clinic at last, and come back with a paper and a worse cough.',
-    'is over it, and thinner, and eats two bowls of the bar\'s noodles a night now, on the owner\'s orders.'] },
-  fiddle: { end: 'stays', beats: [
-    'is learning the fiddle, and has been asked twice to practice elsewhere.',
-    'has been asked a third time, and practices in the stairwell now, where the whole port can hear.',
-    'plays on match nights, badly, and the room has decided it likes it.'] },
-  debt: { end: 'gone', beats: [
-    'owes money to a man who comes in on Fridays, and leaves before he does.',
-    'has stopped leaving on Fridays, and sits with their back to the door.',
-    'paid the man in front of everyone, counted out, and is on the first drink bought with their own money in a year, and reading the ships on the board.'] },
+const ARCS = {
+  berth: {
+    end: 'gone',
+    beats: [
+      'is asking every ship in for a berth, and keeps a bag packed under the stool.',
+      'has a place promised on a hauler that keeps not arriving, and reads the arrivals board between drinks.',
+      'has the hauler\'s name on a slip of paper and a date under it. "Tuesday," they say. They buy the round.'
+    ]
+  },
+  flat: {
+    end: 'stays',
+    beats: [
+      'is behind on the rent, and says so to the glass.',
+      'is sleeping in the back room here, and pays the owner for it in shifts behind the bar.',
+      'has a room of their own again, a month paid up front, and shows you the key.'
+    ]
+  },
+  sister: {
+    end: 'gone',
+    beats: [
+      'has a sister visiting, who sits at the far end, doesn\'t drink, and watches the door.',
+      'is arguing with the sister, low, the way people argue about something they\'ve argued about before.',
+      'has paid the tab in full and is leaving with the sister on the morning shuttle.'
+    ]
+  },
+  cough: {
+    end: 'stays',
+    beats: [
+      'has the cough half the port has, and a bottle of something for it that doesn\'t work.',
+      'has been to the clinic, paid the fee, and come back with a paper and the same cough.',
+      'is over it, and thinner, and back on full shifts.'
+    ]
+  },
+  fiddle: {
+    end: 'stays',
+    beats: [
+      'is learning the fiddle, and has been asked twice to practise somewhere else.',
+      'practises in the stairwell now, where the whole block can hear.',
+      'plays on match nights. Nobody\'s asked them to stop.'
+    ]
+  },
+  debt: {
+    end: 'gone',
+    beats: [
+      'owes money to a man who comes in on Fridays, and leaves before he does.',
+      'has stopped leaving on Fridays, and sits with their back to the wall.',
+      'paid the man in front of everyone, counted out, and is reading the ships on the departures board.'
+    ]
+  }
 };
 const regularArc = key => linedText('lines:regular-arcs', ARCS[key].beats, key);
 
@@ -248,12 +272,18 @@ function arcStep(p) {
   return false;
 }
 const NEWS = [
-  'has a new job, and comes in straight off the shift in a work jacket.', 'lost a month\'s pay at cards, and is telling everyone.',
-  'has a sister visiting, and talks about nothing else.', 'is off the drink, and orders water loudly.',
-  'got engaged since you were last here. The bar has bought them four rounds.', 'was in a fight, and has the black eye to show for it.',
-  'is learning the fiddle, and has been asked twice to practice elsewhere.', 'was passed over for a promotion, and says so to anyone who asks.',
-  'is saving for a passage out, and counting every coin aloud.', 'is minding a stray cat that has moved in under the bench.',
-  'is on a long streak of bad luck, and laughs when it happens.', 'has a cough that has been going round the whole port.',
+  'has a new job on the day shift, and comes in still in the work jacket.',
+  'lost a week\'s pay at cards, and is telling everyone the hand.',
+  'has had their contract renewed for another year, at the same rate.',
+  'is off the drink, and orders a tea.',
+  'got engaged, to someone off a hauler, and shows you the message.',
+  'was in a fight with a shift supervisor, and has the written warning to show for it.',
+  'was passed over for a lead\'s job, and says the name of the one who got it.',
+  'is saving for a passage out, and has the fare written on the back of their hand.',
+  'had their rent go up, and has the letter on the bar.',
+  'has a kid starting school back home, and a message from the first day that they play for anyone.',
+  'is on the night shift this month, and is here at the wrong end of the day.',
+  'has the cough that\'s going round the port, and a bottle of something for it.'
 ];
 
 // The regulars of this planet's bar, made on the first visit and given a new line of news
@@ -271,7 +301,7 @@ function barRegulars(planet) {
     let left = false, told = false;
     if (week && p.arc && !p.arc.done) { const at = p.arc.beat; left = arcStep(p); told = p.arc.beat !== at; }  // told: a beat was their news this visit; an arc that only finished leaves room for the news
     if (left) { rec.ids = rec.ids.filter(x => x !== id); p.regular = null; p.location = null; }
-    else if (fresh && !told) p.gossip = news;
+    else if (fresh && !told) p.gossip = writtenArc((p.arc || {}).key) ? null : news;  // a written regular has only their own life to tell (#1292): no beat this visit, no news
   }
   rec.written = rec.written || [];  // the port's written regulars this run has seated, in or gone
   const run = `${captain().name} ${(st.castPair || []).join(' ')}`;

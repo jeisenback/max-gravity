@@ -4337,27 +4337,27 @@
  },
  {
   "key": "regular-arc:berth",
-  "text": "is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool. | has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it, and buys the round. \"Tuesday,\" they say. \"Ask anyone.\""
+  "text": "is asking every ship in for a berth, and keeps a bag packed under the stool. | has a place promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it. \"Tuesday,\" they say. They buy the round."
  },
  {
   "key": "regular-arc:flat",
-  "text": "is behind on the rent, and says so to the glass and not to you. | is sleeping in the back room here, by arrangement with the owner, and has the key out on the bar to prove it. | has a flat on the lower ring, two rooms and a plant, and the plant is doing well. You hear about the plant."
+  "text": "is behind on the rent, and says so to the glass. | is sleeping in the back room here, and pays the owner for it in shifts behind the bar. | has a room of their own again, a month paid up front, and shows you the key."
  },
  {
   "key": "regular-arc:sister",
-  "text": "has a sister visiting, who sits at the far end and does not drink and watches the door. | is arguing with the sister in the low voice people use for an argument they have had before. | has paid the tab in full, for the first time anyone here remembers, and is leaving with the sister on the morning boat."
+  "text": "has a sister visiting, who sits at the far end, doesn't drink, and watches the door. | is arguing with the sister, low, the way people argue about something they've argued about before. | has paid the tab in full and is leaving with the sister on the morning shuttle."
  },
  {
   "key": "regular-arc:cough",
-  "text": "has the cough half the port has, and a bottle of something for it that does not work. | has been to the clinic at last, and come back with a paper and a worse cough. | is over it, and thinner, and eats two bowls of the bar's noodles a night now, on the owner's orders."
+  "text": "has the cough half the port has, and a bottle of something for it that doesn't work. | has been to the clinic, paid the fee, and come back with a paper and the same cough. | is over it, and thinner, and back on full shifts."
  },
  {
   "key": "regular-arc:fiddle",
-  "text": "is learning the fiddle, and has been asked twice to practice elsewhere. | has been asked a third time, and practices in the stairwell now, where the whole port can hear. | plays on match nights, badly, and the room has decided it likes it."
+  "text": "is learning the fiddle, and has been asked twice to practise somewhere else. | practises in the stairwell now, where the whole block can hear. | plays on match nights. Nobody's asked them to stop."
  },
  {
   "key": "regular-arc:debt",
-  "text": "owes money to a man who comes in on Fridays, and leaves before he does. | has stopped leaving on Fridays, and sits with their back to the door. | paid the man in front of everyone, counted out, and is on the first drink bought with their own money in a year, and reading the ships on the board."
+  "text": "owes money to a man who comes in on Fridays, and leaves before he does. | has stopped leaving on Fridays, and sits with their back to the wall. | paid the man in front of everyone, counted out, and is reading the ships on the departures board."
  },
  {
   "key": "written:Earth|biodun",
