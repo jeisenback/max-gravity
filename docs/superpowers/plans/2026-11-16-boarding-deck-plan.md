@@ -126,7 +126,7 @@ test('a line of fire runs along a deck and one deck up the well, never two', () 
 - Consumes: `REPEL_HURT`, `DECK.SUIT`, `DECK.CASUALTY`, `DECK.ASSAULT`.
 - Produces: `planTurn(state, { move, act, order }, shown, rand) -> { state, events }`, where `shown` is Task 4's move and our crew's, resolved in this order: moves; fire along `inLine` (each shooter one target, odds by level and the target spot's cover); the charge, unless one of theirs at the setter's spot was hit this turn; the wave on its turn; then the end check. Events carry who, where and what for the casualty rolls the screen makes (`deckLoss` stays in `js/fightui.js`), the hand's hurt roll (a shot of theirs aimed at the hand's spot), and the navy's heads put down.
 
-- [ ] **Step 1: Write the failing tests:** a first hit wounds and a second downs; cover cuts the odds; the charge blows on the spot it was shown on, and does not when the setter's spot was hit; pull back takes everyone of ours at the hand's spot one step toward our bridge before the charge; the second wave lands at the end of `WAVE_TURN`; Hester wounded twice is downed, not killed (Review Focus 5).
+- [ ] **Step 1: Write the failing tests:** a first hit wounds and a second downs; cover cuts the odds; the charge blows on the spot it was shown on, and does not when the setter's spot was hit; pull back takes everyone of ours at the hand's spot one step toward our bridge before the charge; the second wave lands at the end of `WAVE_TURN`; Hester wounded twice is downed, not killed (Review Focus 5); a friend takes the first hit meant for the hand, once a fight; boarding her, a hatch her crew sealed is cut by ours in a turn, as theirs cut ours.
 - [ ] **Steps 2 to 5:** as above.
 
 ### Task 7: The end
