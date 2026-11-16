@@ -72,21 +72,22 @@ const BOTH_BARRED = 'barred for the hand (OWNER_ACTIONS) and for the co-op (COOP
 const COMPANY = 'on the company page, which neither the hand nor the co-op may open (OWNER_TABS, mayTab in js/role.js)';
 const EXEMPT = {
   cbuy: BOTH_BARRED, interviewHire: BOTH_BARRED, dismiss: BOTH_BARRED,
-  cescort: COMPANY, cpark: COMPANY, cpick: COMPANY, crelieve: COMPANY, croute: COMPANY, csell: COMPANY, sbuy: COMPANY, ssell: COMPANY,
+  cescort: COMPANY, cpark: COMPANY, cpick: COMPANY, crelieve: COMPANY, croute: COMPANY, csell: COMPANY, ssell: COMPANY,
+  sbuy: "the stake offer on the port page, hidden in the shipped build (scopeOff('owner'), js/ui.js stakeOffer)",
   sideWork: "the bar's side work is off in the shipped build: barWorkHtml returns nothing under scopeOff('barwork'), js/barwork.js",
 };
 
 // Actions a test should press and none does yet, with where the button is. This list only shrinks (#1327): pressing one in a
 // test, and asserting what the press visibly does, takes it off.
 const PENDING = {
-  abort: 'ui.js, an active mission', askCaptain: 'hired.js', awayGo: 'awayjobs.js', burnFromSite: 'salvage.js', buy: 'ui.js, the exchange',
+  askCaptain: 'hired.js', awayGo: 'awayjobs.js', burnFromSite: 'salvage.js',
   chatWith: 'comms.js', combatMode: 'bridge.js', commsQuiet: 'comms.js', cutWreck: 'salvage.js', dayAshore: 'dayashore.js', goDown: 'daydown.js',
-  interview: 'interview.js', interviewAsk: 'interview.js', load: 'ui.js, the death screen', map: 'bridge.js and ui.js, the system map',
+  interview: 'interview.js', interviewAsk: 'interview.js', load: 'ui.js, the death screen',
   modRemove: 'community.js', newgame: 'ui.js, the death screen', opSupply: 'outpost.js', pick: 'hired.js and picks.js, the post ladder',
-  pitchJob: 'awayjobs.js', programRemove: 'programs.js', programSlot: 'programs.js', refuel: 'ui.js, the port', repair: 'ui.js, the port',
-  scenarioCancel: 'community.js', scenarioPlay: 'community.js', sell: 'ui.js, the exchange', spareFit: 'parts.js', spareSell: 'parts.js',
+  pitchJob: 'awayjobs.js', programRemove: 'programs.js', programSlot: 'programs.js',
+  scenarioCancel: 'community.js', scenarioPlay: 'community.js', spareFit: 'parts.js', spareSell: 'parts.js',
   stationBuy: 'parts.js', stationFit: 'parts.js', suggestRun: 'suggest.js', swapPost: 'hired.js', takeContract: 'ownerboard.js',
-  takeJob: 'jobs.js', takeSalvageJob: 'salvage.js', torpbuy: 'torpedoes.js',
+  takeJob: 'jobs.js', takeSalvageJob: 'salvage.js',
 };
 
 const declared = declaredActions(walk(path.join(ROOT, 'js')).map(read));

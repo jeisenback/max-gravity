@@ -192,6 +192,8 @@ test('errands: small jobs for where she is going, paid less, with a cut to the c
   assert.match(await page.innerText('#panel'), /Errand: carry/);
   await page.click('[data-action=accept][data-arg="0"]');
   assert.equal(await ev(() => G.state.missions.length), 1, 'taken');
+  await page.click('[data-action=abort][data-arg="0"]');
+  assert.equal(await page.$('[data-action=abort]'), null, 'abandoned: nothing left on the active list to abandon (#1327)');
   const owner = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); return G.offers.every(o => o.type !== 'errand'); });
   assert.ok(owner, 'an owner sees contracts, not errands');
   await done();

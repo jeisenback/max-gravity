@@ -24,6 +24,61 @@ test('buying raises the price, selling lowers it, markets save', async () => {
   await done();
 });
 
+// The port's own buttons, pressed as a player presses them, each checked by what the screen then shows (#1327).
+
+test('Buy 1 and Sell 1 move one ton, as the exchange row shows', async () => {
+  const { page, ev, done } = await open({});
+  await ev(() => { G.state.tutorial = null; UI.render(); });
+  await page.click('[data-action=tab][data-arg=trade]');
+  const held = () => page.$eval('[data-action=buy][data-arg=equipment]', b => Number(b.closest('.trow').querySelector('.theld').textContent.match(/\d+/)[0]));
+  assert.equal(await held(), 0);
+  await page.click('[data-action=buy][data-arg=equipment]');
+  assert.equal(await held(), 1, 'one ton bought');
+  await page.click('[data-action=sell][data-arg=equipment]');
+  assert.equal(await held(), 0, 'and sold');
+  await done();
+});
+
+test('the port refuels and repairs at the price on the button, and then has nothing to charge', async () => {
+  const { page, ev, done } = await open({});
+  await ev(() => { const st = G.state; st.tutorial = null; st.fuel = Math.floor(ship().fuel / 2); st.armor = Math.floor(ship().armor / 2); UI.tab = 'port'; UI.render(); });
+  const button = a => page.$eval(`[data-action=${a}]`, b => ({ text: b.textContent, off: b.disabled }));
+  // each press written out, so tests/actions.test.js can read which button it presses
+  for (const [a, press] of [['refuel', () => page.click('[data-action=refuel]')], ['repair', () => page.click('[data-action=repair]')]]) {
+    const before = await button(a);
+    assert.equal(before.off, false, `${a}: there is something to pay for`);
+    assert.doesNotMatch(before.text, /\(0 cr\)/);
+    await press();
+    const after = await button(a);
+    assert.equal(after.off, true, `${a}: done, so the button is off`);
+    assert.match(after.text, /\(0 cr\)/, `${a}: and costs nothing now`);
+  }
+  await done();
+});
+
+test('the system map opens from the port and Escape brings the port back', async () => {
+  const { page, ev, done } = await open({});
+  await ev(() => { G.state.tutorial = null; UI.tab = 'port'; UI.render(); });
+  assert.equal(await page.isVisible('#panel'), true);
+  await page.click('[data-action=map]');
+  assert.equal(await page.isVisible('#panel'), false, 'the map takes the screen');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.isVisible('#panel'), true, 'and the port is back');
+  await done();
+});
+
+test('a launcher bought at the outfitter, then a torpedo for it', async () => {
+  const { page, ev, done } = await open({});
+  await ev(() => { G.state.tutorial = null; G.state.credits = 400000; UI.render(); });
+  await goTo(page, 'shipyard');
+  await page.click('[data-action=buyout][data-arg=launcher]');
+  const loaded = async () => ((await page.innerText('#panel')).match(/Torpedoes\s+(\d+)\/\d+ loaded/) || [])[1];
+  assert.equal(await loaded(), '0', 'the launcher is fitted and empty');
+  await page.click('[data-action=torpbuy][data-arg="1"]');
+  assert.equal(await loaded(), '1', 'one torpedo loaded');
+  await done();
+});
+
 test('the world runs for years: shortages come and go, raids clear when pirates die', async () => {
   const { ev, done } = await open({});
   const r = await ev(() => {
