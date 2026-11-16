@@ -31,7 +31,15 @@ test('a short play-through writes its transcript and shots, and the same seed wr
     assert.match(text, /\n- Page errors: none\n/);
     assert.ok(fs.readdirSync(path.join(dirs[0], 'shots')).some(f => /^\d{3}-[a-z0-9-]+\.png$/.test(f)), 'the shots are written');
     assert.ok(!fs.existsSync(path.join(dirs[0], 'run.webm')), 'no video with video off');
-    assert.equal(fs.readFileSync(path.join(dirs[1], 'transcript.md'), 'utf8'), text, 'the same seed, the same transcript');
+    // The second run is held to the same checks as the first: a page error in it alone (a resource that failed under load) would otherwise show only as a
+    // different transcript, by its Page errors line (#1308). A difference left after that is named by its first lines, so a failure says what moved.
+    assert.deepEqual(b.errors, [], 'page errors in the second run');
+    assert.deepEqual(b.bad, [], 'trouble in the second run');
+    const again = fs.readFileSync(path.join(dirs[1], 'transcript.md'), 'utf8');
+    if (again !== text) {
+      const x = text.split('\n'), y = again.split('\n'), at = x.findIndex((l, i) => l !== y[i]);
+      assert.fail(`the same seed, the same transcript: they part at line ${at + 1}\n- first:  ${x.slice(at, at + 3).join('\n          ')}\n- second: ${y.slice(at, at + 3).join('\n          ')}`);
+    }
     assert.equal(b.days, a.days);
   } finally {
     for (const d of dirs) fs.rmSync(d, { recursive: true, force: true });
