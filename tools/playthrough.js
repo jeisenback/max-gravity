@@ -237,6 +237,11 @@ function setup([policySrc, answerSrc, o]) {
       if (hired() && hired().confirm === id) { Mods.act('buyInGo', id); await answer(); }
     },
   });
+  // The game's own frame loop still has one frame queued, which would play the frame listeners (wear, the ship's life, the port clock) and a burn at the
+  // wall clock's step wherever the chapter first waits, a moment that moves with the machine's load (#1308). It runs here, paused, before the chapter starts.
+  const paused = G.paused;
+  G.paused = true;
+  return new Promise(r => requestAnimationFrame(() => { G.paused = paused; r(); }));
 }
 
 // The transcript, from the records the hooks kept and the chapter's result.
