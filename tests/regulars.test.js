@@ -9,6 +9,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
+const NEWS_WORDS = /day shift|cards|contract renewed|tea|engaged|written warning|lead's job|passage out|rent go up|starting school|night shift|cough/;  // a line of NEWS (regulars.js)
+
 const helpers = () => {
   window.start = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' }); while (G.dialog) finishEvent(); const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; };
   window.regs = () => { fillBar(currentPlanet()); return G.patrons.filter(x => x.regular); };
@@ -19,6 +21,7 @@ test('two regulars stay the same, their news changes after a few days, and they 
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
+    uatLand('Ironheart'); G.dialog = null;  // a port with no written pool: its regulars are generated and tell the news (#1292)
     const a = regs(); out.n = a.length; out.ids = a.map(x => x.p.id); out.news0 = a.map(x => x.p.gossip);
     st.day += 1; out.same = regs().map(x => x.p.id); out.news1 = regs().map(x => x.p.gossip);
     like(a[0].p, 1, 'The captain bought me a drink at the bar.');
@@ -155,5 +158,22 @@ test('a written regular who goes leaves at the visit after their last beat, the 
   assert.doesNotMatch(r.line, /Biodun is gone from the bar/);
   assert.equal(r.seated.length, 3, 'a third of the pool sits');
   assert.ok(r.firsts.every(n => ['Biodun', 'Chidinma', 'Segun', 'Grace'].includes(n) && n !== 'Biodun'));
+  await done();
+});
+
+test('a written regular has no stranger\'s news on a visit without a beat of their own; a generated one at a port with no pool has the news (#1292)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, out = {};
+    const a = regs(); out.written = a.every(x => x.p.arc && x.p.arc.key.includes('|'));
+    st.day += 5; const b = regs(); out.news = b.map(x => x.p.gossip); out.text = talkEvent(b[0]).text;  // back after five days: news is due, a beat is not
+    uatLand('Ironheart'); G.dialog = null; regs(); st.day += 5; out.generated = regs().map(x => x.p.gossip);
+    return out;
+  });
+  assert.ok(r.written, 'the Ring seats written regulars');
+  assert.deepEqual(r.news, [null, null], 'no generic news for a written regular');
+  assert.doesNotMatch(r.text, /Since you were last here/);
+  assert.ok(r.generated.every(n => typeof n === 'string' && NEWS_WORDS.test(n)), `${r.generated}`);
   await done();
 });
