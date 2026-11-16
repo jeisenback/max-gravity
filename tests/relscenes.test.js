@@ -19,14 +19,14 @@ const helpers = () => {
   window.take = (sc, re) => { G.dialog = { event: sc, choices: sc.choices }; return chooseEvent(sc.choices.findIndex(c => re.test(c.label))); };
 };
 
-test('a feud over the watch log: ruling favors one side, splitting the watches cools it, doing it together is a gamble', async () => {
+test('a feud over the watch log: saying who is right favors one side, telling the captain cools it, doing it together is a gamble', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const { st, a, b, A, B } = setup(), out = {};
     let sc = feudHandover(a, b, A, B); out.title = sc.title; out.labels = sc.choices.length;
-    const ra = a.p.opinion, rb = b.p.opinion; take(sc, /Read the log/); out.ruled = (a.p.opinion - ra) + (b.p.opinion - rb); out.ruledBond = bond(a, b);
-    st.bonds = {}; take(feudHandover(a, b, A, B), /Split their watches/); out.split = bond(a, b);
+    const ra = a.p.opinion, rb = b.p.opinion; take(sc, /timestamps/); out.ruled = (a.p.opinion - ra) + (b.p.opinion - rb); out.ruledBond = bond(a, b);
+    st.bonds = {}; take(feudHandover(a, b, A, B), /captain/); out.split = bond(a, b);
     st.bonds = {}; Math.random = () => 0.01; take(feudHandover(a, b, A, B), /together/); out.good = bond(a, b);
     st.bonds = {}; Math.random = () => 0.99; take(feudHandover(a, b, A, B), /together/); out.bad = bond(a, b);
     return out;
@@ -36,16 +36,16 @@ test('a feud over the watch log: ruling favors one side, splitting the watches c
   await done();
 });
 
-test('cold shoulders: the same job is a gamble, talking to each helps a little, letting it run costs', async () => {
+test('cold shoulders: the hold count together is a gamble, talking to each helps a little, letting it run costs', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const { st, a, b, A, B } = setup(), out = {};
     out.title = feudShoulders(a, b, A, B).title;
-    Math.random = () => 0.01; take(feudShoulders(a, b, A, B), /same job/); out.good = bond(a, b);
-    st.bonds = {}; Math.random = () => 0.99; take(feudShoulders(a, b, A, B), /same job/); out.bad = bond(a, b);
-    st.bonds = {}; take(feudShoulders(a, b, A, B), /each of them alone/); out.talk = bond(a, b);
-    st.bonds = {}; take(feudShoulders(a, b, A, B), /Let it run/); out.run = bond(a, b);
+    Math.random = () => 0.01; take(feudShoulders(a, b, A, B), /hold count/); out.good = bond(a, b);
+    st.bonds = {}; Math.random = () => 0.99; take(feudShoulders(a, b, A, B), /hold count/); out.bad = bond(a, b);
+    st.bonds = {}; take(feudShoulders(a, b, A, B), /each of them on their own/); out.talk = bond(a, b);
+    st.bonds = {}; take(feudShoulders(a, b, A, B), /Leave it/); out.run = bond(a, b);
     return out;
   });
   assert.equal(r.title, 'Cold Shoulders'); assert.equal(r.good, 2); assert.equal(r.bad, -1); assert.equal(r.talk, 0.5); assert.equal(r.run, -1);
@@ -58,11 +58,11 @@ test('the replay of an old match and the recipe from home each work, and the rec
   const r = await ev(() => {
     const { st, a, b, A, B } = setup(), out = {};
     const sc = matchReplay(a, b, 'Luna Rovers', 'Ceres Miners'); out.title = sc.title;
-    out.old = /\d/.test(take(matchReplay(a, b, tastes(a).team, tastes(b).team), /Play the old fixture/));
-    out.mute = take(matchReplay(a, b, tastes(a).team, tastes(b).team), /Mute/).length > 0;
+    out.old = /\d/.test(take(matchReplay(a, b, tastes(a).team, tastes(b).team), /archive/));
+    out.mute = take(matchReplay(a, b, tastes(a).team, tastes(b).team), /sound down/).length > 0;
     st.bonds = {}; st.credits = 5000;
     const rc = rootsRecipe(a, b, A, B); out.rtitle = rc.title;
-    take(rc, /Pay for the missing/); out.credits = st.credits; out.bond = bond(a, b);
+    take(rc, /Pay for what/); out.credits = st.credits; out.bond = bond(a, b);
     st.credits = 1000; out.cannot = rootsRecipe(a, b, A, B).choices[0].can();
     return out;
   });
@@ -97,7 +97,7 @@ test('a friend asks you to cover their watch: you learn their post for a night, 
     out.offered = !!e && e.title === 'Cover My Watch';
     const op = p.opinion, xp = skillXp(out.post);
     const t = take(e, /Take /);
-    out.liked = p.opinion - op; out.xp = skillXp(out.post) - xp; out.owes = p.owes === st.day; out.text = /learn more about the engineer post/.test(t);
+    out.liked = p.opinion - op; out.xp = skillXp(out.post) - xp; out.owes = p.owes === st.day; out.text = /know the engineer board better/.test(t);
     out.again = (() => { for (let i = 0; i < 200; i++) { st.qualities = {}; const x = relationshipScene(); if (x && x.title === 'Cover My Watch') return true; } return false; })();  // not again for thirty days
     // and they pay it: a hit meant for you is theirs, though they are not a friend
     p.opinion = 0; const d = { foe: makeEnemy({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }), foeHp: 4, init: 'foe' }, s = repelStart(d, 'full'), real = Math.random;
