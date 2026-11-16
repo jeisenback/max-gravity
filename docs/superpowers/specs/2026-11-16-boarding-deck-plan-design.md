@@ -200,6 +200,22 @@ Today's deck-fight targets (`tests/distribution/fights.test.js`), restated for t
 - **Two orders are added** from the prototype: move a crewmate one step, and hold a crewmate where they are.
 - **Suggestions** to the captain use the ship fight's rule, and, as there, read regard without changing it.
 - **If a target cannot be met by tuning,** the switch-over waits and the gap goes to the owner as a design question.
+- **Each person fires alone,** as in the prototype. Every figure is one person (ours named, theirs counted), wounded by a first hit and
+  downed by a second. Each picks one target spot in line of fire: theirs and our crew the nearest of the other side, unless the
+  captain's order or the hand's order names one; the hand chooses. A shot hits at odds set by the shooter's level and the target spot's
+  cover, and the red and yellow lines show those odds. Today's `CREW_HIT` tuning does not carry over; the targets do.
+- **Two sides never share a spot,** and a spot holds three people at most. Stepping onto a spot the other side holds is not a move.
+  "Contested" for the hand's hurt roll means a shot of theirs is aimed at the hand's spot that turn.
+- **When we board her** the captain gives the order over the intercom from our ship: push for her bridge, hold where we are, or pull
+  back to her lock. The hand suggests to that order the same way.
+- **Hatches:** sealing or opening a hatch is an order to our pilot or engineer, worked through the ship from wherever they stand, at
+  `crewOrderOdds`. It hurts no one and does not stop a charge. The pilot's steady ability (cycle a hatch on them) stays as today's: it
+  downs or wounds one at a spot next to a well hatch, and counts at the setter. Boarding her, her own crew may seal her hatches against
+  us, and ours cut them as hers cut ours.
+- **The rush moves two spots in a turn** along their path toward our bridge, where the next spot on that path is held by fewer of ours
+  than half of them and the hand is not on it; the hand's spot or a sealed hatch on the path stops it. Boarders head for the bridge and
+  only go below the lock deck to get round a sealed hatch if no other path is open.
+- **Any other hull boarded** uses the raider's layout; the navy's hulls are never boarded by a hand.
 
 ## Left to the builder
 
