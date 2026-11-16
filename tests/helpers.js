@@ -129,9 +129,10 @@ async function closeBrowser() {
 }
 
 // Opens a page on the shell's rail (js/shell.js) by clicking its entry. A shut entry is not clicked: it throws the reason the rail prints under it.
+// A locator, not an element handle: it finds the entry again at each step, so a re-render of the rail between the look and the click cannot leave it holding a detached button (#1316).
 async function goTo(page, tab) {
-  const entry = await page.$(`.rail [data-action=tab][data-arg="${tab}"]`);
-  if (!entry) throw new Error(`no rail entry for ${tab}`);
+  const entry = page.locator(`.rail [data-action=tab][data-arg="${tab}"]`);
+  if (!(await entry.count())) throw new Error(`no rail entry for ${tab}`);
   if (await entry.isDisabled()) throw new Error(`the ${tab} entry is shut: ${await entry.evaluate(b => (b.nextElementSibling && b.nextElementSibling.className === 'rail-why' ? b.nextElementSibling.textContent : ''))}`);
   await entry.click();
 }

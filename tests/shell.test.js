@@ -282,3 +282,14 @@ test('at a site the rail has the ship\'s pages and The Rock, and no port pages, 
   assert.equal(r.html + '\n', fs.readFileSync(file, 'utf8'), `site: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });
+
+test('goTo clicks the rail entry through a locator, and a shut entry still gives the rail\'s reason (#1316)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; });
+  await page.evaluate(() => { const rail = document.querySelector('.rail'); rail.innerHTML = rail.innerHTML; });  // the rail drawn again: the buttons first found are gone
+  await goTo(page, 'crew');
+  assert.ok(await page.$('#panel .con-read'), 'the crew page opened');
+  await page.evaluate(() => { const b = document.querySelector('.rail [data-action=tab][data-arg="crew"]'); b.disabled = true; b.insertAdjacentHTML('afterend', '<span class="rail-why">Not while the drill is on.</span>'); });
+  await assert.rejects(goTo(page, 'crew'), /the crew entry is shut: Not while the drill is on\./);
+  await done();
+});
