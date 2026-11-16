@@ -169,18 +169,18 @@ const TRAITS = {
     adj: 'talkative',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first}: "Did I ever tell you about the time the tug on {home} lost my cargo..."',
-        '{first}: "And that, I always say, is the whole trouble with the lane pilots on {home}, and the tug that never comes. Oh, but that reminds me..."',
-        '{first} is explaining, to nobody in particular, what they\'d do with a ship of their own, down to the pump rating on the recycler.',
-        '{first}: "Don\'t let me start on the pilotage fees on {home}, or the tug that never came. Too late. Where was I."',
-        '{first} has told the same story to three watches, and each has been given a different ending.',
+        '{first}: "Did I tell you about my last ship? The one with the recycler next to where I slept?" You\'ve heard about it.',
+        '{first} is telling whoever\'s nearest what berths cost on {home} by the hour, and what they cost ten years ago.',
+        '{first} is explaining what they\'d do with a ship of their own, down to the pump rating on the recycler.',
+        '{first}: "Don\'t get me started on the agency. No, it\'s fine, I\'ll be quick."',
+        '{first} is telling the story they told yesterday, with a different captain in it.',
       ],
       galley: [
-        '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
-        '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
+        '{first} is telling a long story at the galley table, and stops now and then to check nobody\'s leaving.',
+        '{first} has been talking since the start of the meal. Their plate is still full.',
       ],
       bridge: [
-        '{first} is talking the empty bridge through the next flip, step by step, a day early.',
+        '{first} is talking the watchkeeper through the next flip, a day early.',
       ],
     }
   },
@@ -188,16 +188,16 @@ const TRAITS = {
     adj: 'nervous',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} keeps checking the hull pressure readouts.',
-        '{first} jumps at a clank from the engine room, and pretends they didn\'t.',
-        '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.',
-        '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.',
+        '{first} keeps checking the hull pressure readout.',
+        '{first} jumps at a clank from the engine room, and then goes to see what it was.',
+        '{first} has checked the seal on the hatch twice this watch, and logged it both times.',
+        '{first} is counting the emergency suits against the list on the locker door.',
         '{first} sleeps with a hand flat on the bulkhead, to feel the drive.',
-        '{first} listens to the hull ticking as it cools, and counts the gaps.',
-        '{first} asked the pilot for the burn time, and then asked again to be sure.',
+        '{first} has asked the pilot for the burn time, and then asked again.',
+        '{first} is reading their contract again, the part about what happens if the ship\'s lost.',
       ],
       berths: [
-        '{first} has put the survival kit within reach of the bunk, and moved it twice.',
+        '{first} keeps the survival kit by the bunk, and has moved it twice.',
       ],
     }
   },
@@ -206,28 +206,28 @@ const TRAITS = {
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
         '{first} made coffee for the whole watch out of their own ration.',
-        '{first} is giving away, one piece at a time, the contents of their locker.',
-        '{first} covered someone\'s watch, and won\'t hear a word about it.',
-        '{first} split the last ration bar in four and kept the smallest piece.',
+        '{first} covered someone\'s watch, and wouldn\'t have it put on the bill.',
+        '{first} split the last ration bar four ways and kept the smallest piece.',
         '{first} has lent out three pairs of EVA gloves and is down to one.',
-        '{first} is mending a mag boot that belongs to someone else.',
+        '{first} is mending someone else\'s mag boot.',
+        '{first} gave their relay slot this week to someone whose kid had a birthday.',
       ],
       engine: [
-        '{first} has left a plate of something sweet outside the engine room, without a note.',
-        '{first} has a knack for turning up at the engine room, unasked, with exactly the spare you need.',
+        '{first} has left a plate of something sweet outside the engine room.',
+        '{first} turns up at the engine room with the spare you were about to go and find.',
       ],
     }
   },
   greedy: {
     adj: 'money-minded',
     chatter: [
-      '{first} is doing sums on a hand terminal, the day\'s burn against the fuel price, and muttering.',
-      '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.',
-      '{first} is running the numbers on a trade route, and, from the muttering, it\'s not going to be enough.',
-      '{first} watches the fuel gauge, and doesn\'t blink.',
-      '{first} has started a betting pool on the arrival date, and holds all the odds.',
-      '{first} keeps a column in a notebook for what each meal costs, and is adding it up.',
-      '{first} asks what the cargo insurance pays on a total loss, and who decides.',
+      '{first} is going through their pay slip line by line: agency, berth, air, kit.',
+      '{first} has worked out what the cargo\'s worth, and what their share would be if hands got a share.',
+      '{first} is running the numbers on a trade route on their terminal, and doesn\'t like the answer.',
+      '{first} is watching the fuel gauge and working out what the burn costs.',
+      '{first} has started a pool on the arrival date and is keeping the book.',
+      '{first} keeps a column in a notebook for what each meal costs the crew, and adds it up at the end of the week.',
+      '{first} asks what the cargo insurance pays on a total loss, and who it pays.',
       '{first} is weighing a spare part in one hand and pricing it.'
     ]
   },
@@ -235,31 +235,31 @@ const TRAITS = {
     adj: 'devout',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} is praying quietly among the cargo straps, at the turn of the watch.',
-        '{first} has tied a ribbon to a handrail by the airlock, and blessed it.',
-        '{first} murmurs a short blessing over the drive before each flip.',
-        '{first} says the thanks at the turn of the watch, quietly, at the hatch, before handing over the log.',
+        '{first} is praying among the cargo straps at the turn of the watch.',
+        '{first} has tied a ribbon to the handrail by the airlock.',
+        '{first} says a few words before each flip, under the drive noise.',
+        '{first} says a thanks at the turn of the watch before handing over the log.',
         '{first} touches the hatch frame before going through.',
-        '{first} says grace over the ration pack, in a language nobody else on board speaks.',
+        '{first} says grace over the ration pack, in a language nobody else aboard speaks.',
       ],
       galley: [
-        '{first} is reading, aloud and softly, from a worn book, in the galley, over the sound of the recycler.',
+        '{first} is reading from a worn book at the galley table, under their breath.',
       ],
       berths: [
-        '{first} keeps a cord and a coin on a shelf behind the bunk curtain, and doesn\'t explain them.',
+        '{first} keeps a cord and a coin on the shelf behind the bunk curtain.',
       ],
     }
   },
   rude: {
     adj: 'abrasive',
     chatter: [
-      '{first}: "Who put the hot plate there, and were they drunk? Eleven feet across and one hot plate."',
+      '{first}: "Who put the hot plate there? Eleven feet across and one hot plate."',
       '{first} is complaining about the coffee, and the recycler that made the water.',
-      '{first}: "In my last ship, we had a proper berth. With a door you could slam."',
-      '{first} has an opinion about the way you\'re flying, and shares it, generously, at every turn.',
-      '{first} is glaring at the cabin temperature readout, as if it had changed on purpose.',
+      '{first}: "On my last ship we had a proper berth. With a door you could slam."',
+      '{first} has an opinion about the burn plan, and tells the pilot.',
+      '{first} is glaring at the cabin temperature readout.',
       '{first}: "That\'s not how you stow a crate. That\'s how you lose a crate."',
-      '{first} is reading the maintenance log aloud and ranking the people in it.',
+      '{first} is reading the maintenance log aloud and saying who did what wrong.',
       '{first} turned the vent fan off because of the noise. Somebody turned it back on.'
     ]
   },
@@ -267,16 +267,16 @@ const TRAITS = {
     adj: 'curious',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} is asking the nav computer far too many questions.',
+        '{first} is asking the nav software questions it wasn\'t built for.',
         '{first} is following the plume readout with a notebook, and has filled four pages.',
-        '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
-        '{first} is pressing an ear to the bulkhead, listening for a pump cycle nobody else can hear.',
+        '{first}: "Why does it hum at that note? Has anyone ever asked?"',
+        '{first} has an ear to the bulkhead, listening for the pump cycle.',
         '{first} has asked the engineer what the third gauge is for, and is writing down the answer.',
-        '{first} is timing how long a dropped spoon takes to reach the deck under thrust, and has a number.',
-        '{first} reads the label on every cabinet in the stores locker and asks about the ones in another language.',
+        '{first} is timing how long a dropped spoon takes to hit the deck under thrust, and has a number.',
+        '{first} is reading the labels in the stores locker and asking about the ones in another language.',
       ],
       galley: [
-        '{first} has taken the panel off the galley clock to see what makes it tick.',
+        '{first} has the back off the galley clock.',
       ],
     }
   },
@@ -284,16 +284,16 @@ const TRAITS = {
     adj: 'hard-drinking',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} is suspiciously cheerful for this point in the watch.',
-        '{first} is humming, loudly, an old song from {home}, over the sound of the pumps, and has forgotten the second verse.',
-        '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.',
-        '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
-        '{first} is cheerfully explaining the burn plan to a coaster.',
-        '{first} has found a bottle nobody remembers stowing, and is being generous with it.',
-        '{first} is singing the one verse of a song from {home} that they know, off key, twice, down the ladder.',
+        '{first} is cheerful for this point in the watch.',
+        '{first} is humming an old song from {home} over the pumps, and has forgotten the second verse.',
+        '{first} is sitting very upright, with a mug that doesn\'t smell of coffee.',
+        '{first} has made a toast to the ship, and is now toasting the coffee maker.',
+        '{first} is explaining the burn plan to a coaster.',
+        '{first} has found a bottle nobody remembers stowing, and is sharing it.',
+        '{first} is singing the one verse they know of a song from {home}, twice, on the ladder.',
       ],
       berths: [
-        '{first} is walking the passage between the berths with a hand on each wall, sure that it\'s straight.',
+        '{first} is walking the passage between the berths with a hand on each wall.',
       ],
     }
   },
@@ -301,16 +301,16 @@ const TRAITS = {
     adj: 'guarded',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} closes the comms window whenever you walk past, and leaves only the ship\'s log on the screen.',
-        '{first} answers every question with a question, even the one about the cargo manifest, and does it very gracefully.',
-        '{first} has a locked case, and a way of standing between it and everyone else.',
-        '{first} is very quiet, and very watchful, and always knows which watch everyone\'s on.',
-        '{first} deletes a message from the ship\'s comms log, and looks up, and smiles at you.',
+        '{first} closes the comms window when you walk past.',
+        '{first} answers every question with a question, even the one about where they signed on.',
+        '{first} has a locked case, and keeps it where they can see it.',
+        '{first} always knows who\'s on which watch.',
+        '{first} deletes a message from their queue, and looks up, and smiles at you.',
         '{first} has moved the locked case twice since breakfast.',
-        '{first} gives the date of arrival when asked where they were born.',
+        '{first} gives a different port each time someone asks where they\'re from.',
       ],
       berths: [
-        '{first} closes the terminal window when the berth door hisses, and keeps a hand on the lid.',
+        '{first} closes the terminal when the berth door opens, and keeps a hand on the lid.',
       ],
     }
   },
@@ -318,29 +318,29 @@ const TRAITS = {
     adj: 'kind',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} fixed the squeaky hatch without being asked.',
-        '{first} noticed someone was tired, and quietly took the rest of their watch.',
-        '{first} has pinned a note to the watch bill: "Ask me if you need anything. Anything at all."',
-        '{first} is humming, softly, at the sink, washing everyone else\'s cups out of their own share of the water ration.',
+        '{first} fixed the squeaking hatch without being asked, and logged it.',
+        '{first} has swapped onto the middle watch so someone else can sleep.',
+        '{first} washed everyone\'s cups out of their own share of the water.',
         '{first} has put a second blanket on whoever sleeps nearest the vent.',
+        '{first} is going through a crewmate\'s contract with them, a clause at a time.',
       ],
       berths: [
-        '{first} is sewing a torn flight-suit sleeve, by the berth lamp, for someone who\'s not going to ask.',
+        '{first} is sewing up a torn sleeve under the berth lamp. It isn\'t theirs.',
       ],
       galley: [
         '{first} stays at the galley table after the change until the one coming off watch late has eaten.',
-        '{first} wrote everyone\'s birthday in the galley log, and has marked the next one.',
+        '{first} has written everyone\'s birthday on the galley board, and marked the next one.',
       ],
     }
   },
   brave: {
     adj: 'steady',
     chatter: [
-      '{first} volunteered for the next EVA before anyone asked.',
-      '{first} is calmly checking the emergency hatches, one by one, whistling.',
-      '{first} has a plain scar from a docking clamp, and a plain refusal to talk about it.',
+      '{first} has put their name down for the next EVA.',
+      '{first} is checking the emergency hatches one by one, whistling.',
+      '{first} has a scar from a docking clamp, and doesn\'t talk about it.',
       '{first}: "Hatch four is good. Hatch five is good. Hatch six is stiff, and I\'ve oiled it."',
-      '{first} is smiling, in the face of a very small, very real problem with the coolant.',
+      '{first} is looking at a small, real problem with the coolant, and isn\'t hurrying.',
       '{first} went out to check the antenna mount and came back in with a bolt.',
       '{first} says the drive sounds fine, and lays a hand flat on the deck to be sure.',
       '{first}: "If the coupling goes, tell me which deck. I\'ll go and look."'
@@ -350,16 +350,16 @@ const TRAITS = {
     adj: 'homesick',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        '{first} is looking through old pictures of {home} on a hand terminal, with the screen dimmed to save charge.',
-        '{first} has gone very quiet, and is watching the viewport.',
-        '{first} is humming something from {home}, low and soft, over the sound of the drive, and doesn\'t seem to know.',
-        '{first} keeps a stone from {home} tied in a sock, worn smooth, and takes it out at every flip.',
-        '{first} has set a clock to the time on {home} and checks it at every watch change.',
-        '{first} asks every crew that has docked at {home} what the weather is there.',
-        '{first} is making tea the way they make it on {home}, from the ration kettle. It doesn\'t taste right, and they\'re drinking it anyway.',
+        '{first} is going through pictures of {home} on their terminal, with the screen dimmed to save charge.',
+        '{first} is watching a message from {home} again. It was hours old when it came.',
+        '{first} is humming something from {home} over the drive noise.',
+        '{first} keeps a stone from {home} in a sock, and takes it out at each flip.',
+        '{first} has a clock set to {home} time, and checks it at the watch change.',
+        '{first} asks anyone who\'s been to {home} lately what the rents are like now.',
+        '{first} is making tea the way they do on {home}, with the ration kettle. It doesn\'t taste right. They drink it anyway.',
       ],
       galley: [
-        '{first} is making a dish from {home}, out of galley stores that aren\'t quite right, and eating it with great seriousness.',
+        '{first} is making a dish from {home} out of galley stores that aren\'t quite right, and eating it slowly.',
       ],
     }
   }
