@@ -58,7 +58,7 @@ test('the hired chapter\'s code-written scenes are listed as code, and say where
   assert.equal(late.file, 'js/cast.js');
   assert.equal(late.title, 'A Tip');
   assert.equal(late.where, 'transit');
-  assert.match(late.text, /Ruben comes to you with the look of a man holding something that might burst/);
+  assert.match(late.text, /Ruben comes to you holding his terminal against his chest/);
   assert.equal(late.belongs, "ruben (main character)");
   assert.match(late.codeNote, /choices run code/);
   assert.ok(late.choices.length > 0 && late.choices.every(c => c.label) && late.choices.some(c => c.result === ''), 'a choice that runs code has no result of its own');

@@ -463,18 +463,16 @@ const CAST = {
     traits: ['talkative', 'generous'], wage: 800,
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
-    bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
-        'they\'d pay. When the Dome Pact closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
-        'let go for it.'),
+    bio: 'He ran an outer dome\'s network for twenty-five years, and knew what every dome was short of that week, who was lying about it, and what they\'d pay. When the domes\' patrol shut the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was let go for it.',
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
-        'Ruben: "Mars isn\'t quiet. It\'s listening. You can hear the difference if you hold still."',
-        'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.',
-        'Ruben: "The dome at Hellas is short of pumps, and it\'s telling everyone it\'s short of morale. Remember that."',
-        'Ruben is humming along with a dome council meeting, and has gone gently pink with indignation on behalf of the chair.',
+        'Ruben: "Forty-one stations checked in on the band tonight. Two didn\'t. I know which two."',
+        'Ruben has a thermos of coffee, strong, and offers it to everyone who passes.',
+        'Ruben: "One of the outer domes is short of pumps, and it\'s telling the council it\'s a staffing problem. Pumps are dearer than staff."',
+        'Ruben has a dome council meeting on low, eleven minutes behind, and is answering the chair out loud.',
       ],
       bridge: [
-        'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.',
+        'Ruben is going through the night\'s traffic and marking each line in pencil: true, false, or worth knowing.',
       ],
     },
     scenes: {
@@ -482,8 +480,8 @@ const CAST = {
         title: 'The Man with the Relay',
         text: ('At the edge of the yard, among the stalls, a man in a cardigan far too warm for the hall is sitting behind a tangle of antennae with ' +
             'a thermos. "Ruben Castellanos," he says, and pours you a cup before you\'ve said yes. "I know what every dome on Mars is short of this ' +
-            'week, who\'s lying about it, and what they\'ll pay. Twenty-five years on the Valles network. They let me go for keeping a relay running ' +
-            'in my kitchen." He beams. "Does your ship have an ear?"'),
+            'week, who\'s lying about it, and what they\'ll pay. Twenty-five years on an outer dome\'s network. They let me go for keeping a relay running ' +
+            'in my kitchen." He drinks. "Does your ship have an ear?"'),
         choices: [
           {
             label: 'Take him on as comms',
@@ -491,8 +489,7 @@ const CAST = {
             effects: { castJoin: 'ruben' },
             result: 'He packs the whole stall into one battered ' +
               'case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it\'s still hot, that\'s ' +
-              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you\'ve never heard of, and about ' +
-              'how glad he is. Nobody has the heart to interrupt.',
+              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you\'ve never heard of.',
           },
           {
             label: '"Not this time."',
@@ -503,77 +500,62 @@ const CAST = {
       },
       intro: {
         title: 'The Quiet Band',
-        text: ('The comms post is crowded. Ruben Castellanos has turned the whole station to a single narrow band, and has the volume up so that the ' +
-            'galley can hear: a dome council arguing about a pump, in the flat courteous voices of people who have each been awake for two days. ' +
-            '"Listen," he says, softly. "Nobody has mentioned the pump in four minutes. They\'re all being very careful not to."'),
+        text: 'The comms post is crowded. Ruben Castellanos has turned the station to a single narrow band, with the volume up so the galley can hear: a dome council arguing about a pump, in the voices of people who have each been up for two days. "Listen," he says. "Nobody has mentioned the pump in four minutes. They\'re all being very careful not to."',
         choices: [
           {
             label: 'Listen with him',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'You sat and listened to the bands with me.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
-            result: 'You listen for most of an hour. It sounds, at first, like nothing: figures, polite interruptions. Then he nudges you, and you hear it: ' +
-              'the same dome asking three times, in three different ways, whether the shipment is on time. "Frightened," Ruben says, beaming. "Of the ' +
-              'answer. You see? You\'re very good at this. You have the ear."',
+            result: 'You listen for most of an hour. At first it\'s figures and polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, three different ways, whether the shipment is on time. "They\'re frightened of the answer," Ruben says. "You heard it. You\'ve got the ear."',
           },
           {
             label: 'Ask what he\'s listening for',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You asked what I was listening for.' } },
-            result: '"Ah," he says, and holds up the thermos, as one raises a glass. "What they need. People never say it outright, but they tell you in ' +
-              'ways they don\'t notice. Too fast, too polite. That\'s when you know you\'re about to be useful." He turns the band ' +
-              'down, gently, so as not to frighten them.',
+            result: '"What they need," he says, and holds up the thermos. "Nobody says it outright. They say it too fast, or too politely. That\'s when you know you\'re about to be useful." He turns the band down.',
           },
         ],
       },
       mid1: {
         days: 10, title: 'A Tip',
-        text: ('Ruben comes to you with the look of a man holding something that might burst. "Captain. I\'ve been listening to a freight dispatcher ' +
-            'who thinks his channel is private. He\'s quite wrong. I have something, and I\'ll tell you, but I should say that it was heard, not, ' +
-            'strictly, asked for." He lowers his voice. "It\'s worth money. The way a favor is worth money."'),
+        text: 'Ruben comes to you holding his terminal against his chest. "I\'ve been listening to a freight dispatcher who thinks his channel is private. He\'s wrong. I have something, and I\'ll tell you, but it was heard, not asked for." He lowers his voice. "It\'s worth money. The way a favor is worth money."',
         choices: [
           { label: 'Act on the tip', memory: 'You acted on what I heard.', run() { castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
-              `He tells you, and he's right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
-              `"Not a word," he says, delighted, "about where you heard it."`); } },
+              `He tells you, and he's right to be careful: ${tip} He watches your face while you take it in, turning the lid of the thermos. "Not a word," he says, "about where you heard it."`); } },
           {
             label: 'Leave it',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You left the dispatcher\'s secret alone.' } },
-            result: 'He deflates, and then rallies. "You\'re quite right," he says. "It\'s not mine to sell." He goes back to the post, and, for a day or ' +
-              'so, is more careful about where he points the dish.',
+            result: 'He sits back. "You\'re right," he says. "It\'s not mine to sell." For a day or so he\'s more careful where he points the dish.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'What the Bands Say',
-        text: 'Ruben has been hearing your ship\'s name on the bands. A trader at Phobos said something kind about the way you pay. A pirate on a short-range channel said something rather less kind. He plays them both for you, and then plays them a second time, the kind one louder.',
+        text: 'Ruben has been hearing the ship\'s name on the bands. A trader at Phobos said the captain pays on the day. A pirate on a short-range channel said something about the guns. He plays you both, and then plays them again, the trader louder.',
         choices: [
           {
             label: 'Ask him to keep an ear on it',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'You asked me to keep an ear on what\'s said about the ship.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
-            result: '"Of course. Of course." He\'s glowing. For the rest of the burn there\'s a notebook next to the comms console, titled, in his ' +
-              'careful hand, WHAT\'s SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship\'s biography from it.',
+            result: '"Of course." For the rest of the burn there\'s a notebook by the comms console, WHAT\'S SAID on the cover in his careful hand, and each page is a name, a time and what was said.',
           },
           {
             label: 'Tell him not to bother with gossip',
             effects: { castLike: { who: 'ruben', n: 0, memory: 'You told me not to bother with gossip.' } },
-            result: '"Gossip," he says, softly. "Yes. Of course." He turns the second recording off, carefully.',
+            result: '"Gossip," he says. "Yes." He turns the second recording off.',
           },
         ],
       },
       late: {
         days: 45, title: 'One Band',
-        text: ('It\'s late, and Ruben is sitting alone at the comms post with the lights down and the thermos untouched. "Captain, I want to say ' +
-            'something I\'ve said to no one since the kitchen." He turns his chair. "I want every dome on Mars on one open band. Not for money. I ' +
-            'want anyone, anywhere under the glass, to be able to ask for help and be heard. If you ever have a ship with room for a relay, I\'d ' +
-            'like to be the one who carries it."'),
+        text: 'It\'s late, and Ruben is at the comms post with the lights down and the thermos untouched. "I want to say something I haven\'t said since the kitchen," he says, and turns his chair. "I want every dome on Mars on one open band. Not for money. So anyone, anywhere under the glass, can ask for help and be heard. One day there\'ll be a ship with room for a relay, and I\'d like to be the one who carries it."',
         choices: [
           {
-            label: 'Promise him a ship, someday',
-            effects: { castLike: { who: 'ruben', n: 2, memory: 'I told you about the open band, and you promised.' }, castFlag: { who: 'ruben', flag: 'promised' } },
-            result: '"Someday," you say, "and there\'ll be room for a relay." He doesn\'t say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he doesn\'t tell you what\'s in it.',
+            label: 'Say you\'d help him carry it',
+            effects: { castLike: { who: 'ruben', n: 2, memory: 'I told you about the open band, and you said you\'d help.' }, castFlag: { who: 'ruben', flag: 'promised' } },
+            result: '"I\'d help carry it," you say. He doesn\'t say anything for some time. Then he pours a cup from the thermos with both hands and sets it in front of you.',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'ruben', n: 1, memory: 'You wouldn\'t promise, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." He smiles. "That\'s what the open band is for," he says. ' +
-              '"Not promises. Being heard." He turns the volume up on the quiet band, and the two of you sit and listen.',
+            label: '"Ask me when there\'s a ship."',
+            effects: { castLike: { who: 'ruben', n: 1, memory: 'I told you about the open band, and you said to ask you then.' } },
+            result: '"Ask me when there\'s a ship," you say. "I will," he says, and turns up the quiet band, and the two of you sit and listen.',
           },
         ],
       },
@@ -581,16 +563,16 @@ const CAST = {
         days: 60, title: 'The Last Relay',
         get text() {
           const named = !!castRec('ruben').flags.councillor;
-          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now the Hellas relay drops off the open band mid-sentence, and a voice that\'s not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
+          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now an outer dome\'s relay drops off the open band mid-sentence, and a voice that\'s not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
             + castRiskLines()
-            + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor on Hellas has your name, and the dome will take a stranger\'s signal slowly.');
+            + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor in that dome knows your name, and the dome will take a stranger\'s signal slowly.');
         },
         choices: [
           { label: 'Let him go out to the mast', run: () => theMast(false) },
           { label: 'Send a second person out with him (the second is hurt for it)', ...gated(needCrew(2)), run: () => theMast(true) },
           { label: 'Tell him to hold the band from the console', memory: 'You kept me off the mast.', run() {
             castFlag('ruben', 'benched'); castLike('ruben', -3, this.memory);
-            return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "It\'s your ship," he says quietly. "I\'ll keep the band open anyway. Somebody should be listening."';
+            return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "All right," he says. "I\'ll keep the band open anyway. Somebody should be listening."';
           } },
         ],
       },
@@ -1138,14 +1120,14 @@ function theMast(backup) {
   const lead = backup ? 'You send a second person out to the mast with him. ' + castBackupCost('ruben') : '';
   if (outcome === 'die') {
     return lead + 'He goes out the lock with the tool roll on his belt and the dish tilting above him, and for eleven minutes the open band is his voice, calling the bolts as he turns them, one, two, three, and a dome somewhere answering each. The flare arrives on the fourth. The band fills with noise, and then with a number, which is the last thing he says, and then with the dome, saying it back.'
-      + (promised ? ' You remember the room for a relay you told him there\'d be.' : '');
+      + (promised ? ' Nobody is going to carry the relay now.' : '');
   }
   castLike('ruben', 2, outcome === 'mark' ? 'You let me go out to the north mast, and I came back with one good ear.' : 'You let me go out to the north mast, and I came back.');
   if (outcome === 'mark') {
     return lead + 'He gets the third bolt turned and the mast swings true, and the flare comes in before he\'s through the lock. When you reach him he\'s on the airlock deck with both hands over his left ear. The dome is already answering. "I can hear it," he says, loudly, about the dome. "Mostly." After that he turns the volume up on the quiet band, and sits closer to the speaker.';
   }
-  return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. "There," Ruben says, pink with cold. "Heard."'
-    + (promised ? ' "You said there\'d be room," he adds, and pours you a cup.' : '');
+  return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once. "There," Ruben says, pink with cold. "Heard."'
+    + (promised ? ' "You said you\'d help carry it," he adds, and pours you a cup.' : '');
 }
 
 // Bexa's pivot: a point each for a medic, a hull above 60 percent, more than half the reaction mass, and a second hand on the line.

@@ -96,22 +96,17 @@ const CAST_BAR = {
       choices: [
         { label: 'Buy a round (300 cr)', ...gated(needCr(300)), memory: 'You bought a round, and the bartender talked.', run() { G.state.credits -= 300; castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
             `A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of ` +
-            `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear. "A good listener has ` +
-            `no name," he says. "A good bartender has a hundred."`); } },
-        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, "You have the gift. People tell you things."'; } },
+            `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear.`); } },
+        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, "You didn\'t say anything. That\'s why he kept going."'; } },
       ],
     },
     {
       days: 30, title: 'The Council Member',
       text: ('A gray-haired woman in a good coat has come into the bar with two aides, and Ruben Castellanos has picked up the menu and is holding it ' +
-          'high. "That\'s Councillor Reyes," he says, from behind it. "Of the Valles dome council. She signed my notice." He lowers it an inch. "I\'ve ' +
+          'high. "That\'s Councillor Reyes," he says, from behind it. "Of my dome\'s council. She signed my notice." He lowers it an inch. "I\'ve ' +
           'practiced what I\'d say to her for four years. I can\'t remember any of it."'),
       choices: [
-        { label: 'Introduce yourself to the councillor', memory: 'You introduced yourself to the councillor who signed my notice.', run() { castLike('ruben', 3, this.memory); castFlag('ruben', 'councillor'); return (
-            'You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor goes still. ' +
-            '"Castellanos," she says. "The relay in the kitchen." She looks past you at the menu. "We lost eleven days of band because of what he did, ' +
-            'and afterward we found out he had saved the north dome. I\'ve been trying to find him for four years." Ruben lowers the menu all the ' +
-            'way.'); } },
+        { label: 'Introduce yourself to the councillor', memory: 'You introduced yourself to the councillor who signed my notice.', run() { castLike('ruben', 3, this.memory); castFlag('ruben', 'councillor'); return 'You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor puts her glass down. "Castellanos," she says. "The relay in the kitchen." She looks past you at the menu. "The north dome got its warning off that relay," she says. "We let you go anyway. Those were the rules." Ruben lowers the menu all the way.'; } },
         { label: 'Let him hide', memory: 'You let me hide behind the menu.', run() { castLike('ruben', 1, this.memory); return ('You don\'t move. Ruben stays behind the ' +
             'menu, and the councillor takes a table at the far end, orders, and doesn\'t look round. After twenty minutes she leaves. Ruben puts the ' +
             'menu down. "Thank you," he says. "I couldn\'t have said it. Another day." He picks up the thermos and offers it to you.'); } },

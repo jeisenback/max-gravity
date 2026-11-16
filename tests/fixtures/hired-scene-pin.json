@@ -1495,7 +1495,7 @@
   "id": "cast:ruben:meet",
   "i": 0,
   "label": "Take him on as comms",
-  "result": "He packs the whole stall into one battered case in what seems like a single motion, and presses the thermos into your hands. \"Hold this,\" he says, \"it's still hot, that's important.\" He talks the whole way to the ship: about the band, about your ship, about three domes you've never heard of, and about how glad he is. Nobody has the heart to interrupt.",
+  "result": "He packs the whole stall into one battered case in what seems like a single motion, and presses the thermos into your hands. \"Hold this,\" he says, \"it's still hot, that's important.\" He talks the whole way to the ship: about the band, about your ship, about three domes you've never heard of.",
   "changes": [
    "s.crew.5: undefined -> c:ruben",
    "s.home.log: [] -> undefined",
@@ -1566,7 +1566,7 @@
   "id": "cast:ruben:intro",
   "i": 0,
   "label": "Listen with him",
-  "result": "You listen for most of an hour. It sounds, at first, like nothing: figures, polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, in three different ways, whether the shipment is on time. \"Frightened,\" Ruben says, beaming. \"Of the answer. You see? You're very good at this. You have the ear.\"",
+  "result": "You listen for most of an hour. At first it's figures and polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, three different ways, whether the shipment is on time. \"They're frightened of the answer,\" Ruben says. \"You heard it. You've got the ear.\"",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1602,7 +1602,7 @@
   "id": "cast:ruben:intro",
   "i": 1,
   "label": "Ask what he's listening for",
-  "result": "\"Ah,\" he says, and holds up the thermos, as one raises a glass. \"What they need. People never say it outright, but they tell you in ways they don't notice. Too fast, too polite. That's when you know you're about to be useful.\" He turns the band down, gently, so as not to frighten them.",
+  "result": "\"What they need,\" he says, and holds up the thermos. \"Nobody says it outright. They say it too fast, or too politely. That's when you know you're about to be useful.\" He turns the band down.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1637,7 +1637,7 @@
   "id": "cast:ruben:mid1",
   "i": 0,
   "label": "Act on the tip",
-  "result": "He tells you, and he's right to be careful: Three haulers just unloaded Electronics on Titan. Prices there are collapsing. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
+  "result": "He tells you, and he's right to be careful: Three haulers just unloaded Electronics on Titan. Prices there are collapsing. He watches your face while you take it in, turning the lid of the thermos. \"Not a word,\" he says, \"about where you heard it.\"",
   "changes": [
    "s.inbox.0.n: 1 -> 2",
    "s.inbox.0.pid: p2 -> undefined",
@@ -1690,7 +1690,7 @@
   "id": "cast:ruben:mid1",
   "i": 1,
   "label": "Leave it",
-  "result": "He deflates, and then rallies. \"You're quite right,\" he says. \"It's not mine to sell.\" He goes back to the post, and, for a day or so, is more careful about where he points the dish.",
+  "result": "He sits back. \"You're right,\" he says. \"It's not mine to sell.\" For a day or so he's more careful where he points the dish.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1725,7 +1725,7 @@
   "id": "cast:ruben:mid2",
   "i": 0,
   "label": "Ask him to keep an ear on it",
-  "result": "\"Of course. Of course.\" He's glowing. For the rest of the burn there's a notebook next to the comms console, titled, in his careful hand, WHAT's SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship's biography from it.",
+  "result": "\"Of course.\" For the rest of the burn there's a notebook by the comms console, WHAT'S SAID on the cover in his careful hand, and each page is a name, a time and what was said.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1761,7 +1761,7 @@
   "id": "cast:ruben:mid2",
   "i": 1,
   "label": "Tell him not to bother with gossip",
-  "result": "\"Gossip,\" he says, softly. \"Yes. Of course.\" He turns the second recording off, carefully.",
+  "result": "\"Gossip,\" he says. \"Yes.\" He turns the second recording off.",
   "changes": [
    "s.people.c:ruben.memories: [] -> undefined",
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You told me not to bother with gossip."
@@ -1793,35 +1793,35 @@
  {
   "id": "cast:ruben:late",
   "i": 0,
-  "label": "Promise him a ship, someday",
-  "result": "\"Someday,\" you say, \"and there'll be room for a relay.\" He doesn't say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he doesn't tell you what's in it.",
+  "label": "Say you'd help him carry it",
+  "result": "\"I'd help carry it,\" you say. He doesn't say anything for some time. Then he pours a cup from the thermos with both hands and sets it in front of you.",
   "changes": [
    "s.cast.ruben.flags: {} -> undefined",
    "s.cast.ruben.flags.promised: undefined -> true",
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
-   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I told you about the open band, and you promised.",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I told you about the open band, and you said you'd help.",
    "s.people.c:ruben.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Promise him a ship, someday",
+    "label": "Say you'd help him carry it",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Promise him a ship, someday",
+    "label": "Say you'd help him carry it",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Promise him a ship, someday",
+    "label": "Say you'd help him carry it",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Promise him a ship, someday",
+    "label": "Say you'd help him carry it",
     "open": true,
     "why": ""
    }
@@ -1830,33 +1830,33 @@
  {
   "id": "cast:ruben:late",
   "i": 1,
-  "label": "Make no promises",
-  "result": "\"I can't promise that,\" you say, \"but I heard you.\" He smiles. \"That's what the open band is for,\" he says. \"Not promises. Being heard.\" He turns the volume up on the quiet band, and the two of you sit and listen.",
+  "label": "\"Ask me when there's a ship.\"",
+  "result": "\"Ask me when there's a ship,\" you say. \"I will,\" he says, and turns up the quiet band, and the two of you sit and listen.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
-   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You wouldn't promise, but you listened.",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I told you about the open band, and you said to ask you then.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Make no promises",
+    "label": "\"Ask me when there's a ship.\"",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Make no promises",
+    "label": "\"Ask me when there's a ship.\"",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Make no promises",
+    "label": "\"Ask me when there's a ship.\"",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Make no promises",
+    "label": "\"Ask me when there's a ship.\"",
     "open": true,
     "why": ""
    }
@@ -1906,7 +1906,7 @@
   "id": "cast:ruben:pivot",
   "i": 1,
   "label": "Send a second person out with him (the second is hurt for it)",
-  "result": "You send a second person out to the mast with him. Yelena comes back hurt, and is off duty until the next port. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. \"There,\" Ruben says, pink with cold. \"Heard.\"",
+  "result": "You send a second person out to the mast with him. Yelena comes back hurt, and is off duty until the next port. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once. \"There,\" Ruben says, pink with cold. \"Heard.\"",
   "changes": [
    "s.injured: {} -> undefined",
    "s.injured.c:yelena: undefined -> true",
@@ -1943,7 +1943,7 @@
   "id": "cast:ruben:pivot",
   "i": 2,
   "label": "Tell him to hold the band from the console",
-  "result": "You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. \"It's your ship,\" he says quietly. \"I'll keep the band open anyway. Somebody should be listening.\"",
+  "result": "You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. \"All right,\" he says. \"I'll keep the band open anyway. Somebody should be listening.\"",
   "changes": [
    "s.cast.ruben.flags: {} -> undefined",
    "s.cast.ruben.flags.benched: undefined -> true",
@@ -5207,7 +5207,7 @@
   "id": "cast:ruben:bar1",
   "i": 0,
   "label": "Buy a round (300 cr)",
-  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Electronics on Titan. Prices there are collapsing. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Electronics on Titan. Prices there are collapsing. Ruben puts the pencil behind his ear.",
   "changes": [
    "s.credits: 50000 -> 49700",
    "s.inbox.0.n: 1 -> 2",
@@ -5261,7 +5261,7 @@
   "id": "cast:ruben:bar1",
   "i": 1,
   "label": "Just listen",
-  "result": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You have the gift. People tell you things.\"",
+  "result": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You didn't say anything. That's why he kept going.\"",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -5296,7 +5296,7 @@
   "id": "cast:ruben:bar2",
   "i": 0,
   "label": "Introduce yourself to the councillor",
-  "result": "You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor goes still. \"Castellanos,\" she says. \"The relay in the kitchen.\" She looks past you at the menu. \"We lost eleven days of band because of what he did, and afterward we found out he had saved the north dome. I've been trying to find him for four years.\" Ruben lowers the menu all the way.",
+  "result": "You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor puts her glass down. \"Castellanos,\" she says. \"The relay in the kitchen.\" She looks past you at the menu. \"The north dome got its warning off that relay,\" she says. \"We let you go anyway. Those were the rules.\" Ruben lowers the menu all the way.",
   "changes": [
    "s.cast.ruben.flags: {} -> undefined",
    "s.cast.ruben.flags.councillor: undefined -> true",

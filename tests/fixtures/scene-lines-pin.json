@@ -12307,7 +12307,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing. Ruben puts the pencil behind his ear.",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],
@@ -12329,7 +12329,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You have the gift. People tell you things.\"",
+    "text": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You didn't say anything. That's why he kept going.\"",
     "mem": [
      "25 Dec 2214: You listened with me."
     ],
@@ -12352,7 +12352,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor goes still. \"Castellanos,\" she says. \"The relay in the kitchen.\" She looks past you at the menu. \"We lost eleven days of band because of what he did, and afterward we found out he had saved the north dome. I've been trying to find him for four years.\" Ruben lowers the menu all the way.",
+    "text": "You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor puts her glass down. \"Castellanos,\" she says. \"The relay in the kitchen.\" She looks past you at the menu. \"The north dome got its warning off that relay,\" she says. \"We let you go anyway. Those were the rules.\" Ruben lowers the menu all the way.",
     "mem": [
      "25 Dec 2214: You introduced yourself to the councillor who signed my notice."
     ],
@@ -12386,7 +12386,7 @@
    }
   ],
   "title": "The Council Member",
-  "text": "A gray-haired woman in a good coat has come into the bar with two aides, and Ruben Castellanos has picked up the menu and is holding it high. \"That's Councillor Reyes,\" he says, from behind it. \"Of the Valles dome council. She signed my notice.\" He lowers it an inch. \"I've practiced what I'd say to her for four years. I can't remember any of it.\"",
+  "text": "A gray-haired woman in a good coat has come into the bar with two aides, and Ruben Castellanos has picked up the menu and is holding it high. \"That's Councillor Reyes,\" he says, from behind it. \"Of my dome's council. She signed my notice.\" He lowers it an inch. \"I've practiced what I'd say to her for four years. I can't remember any of it.\"",
   "labels": [
    "Introduce yourself to the councillor",
    "Let him hide"
