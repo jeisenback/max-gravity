@@ -325,7 +325,7 @@
  },
  {
   "key": "idle:nervous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam listens for the pump to change its note, and relaxes a little when you stay. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam listens for the pump to change its note, and relaxes a little when you stay. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:generous",
@@ -341,15 +341,15 @@
  },
  {
   "key": "idle:rude",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:curious",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:drunk",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is on water tonight, and says so with an effort that's its own kind of story. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is on water tonight, and says so with an effort that's its own kind of story. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:secretive",
@@ -361,11 +361,11 @@
  },
  {
   "key": "idle:brave",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:homesick",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a photograph out, and puts it away when you come in, and then takes it out again. Somewhere aft the recycler changes its note and changes back.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a photograph out, and puts it away when you come in, and then takes it out again. Somewhere aft, a pump cycles.\"]"
  },
  {
   "key": "idle:two",
