@@ -181,7 +181,8 @@ the odds shown, by the same rule as the ship fight's suggestions (trust, level, 
 - **The fight tool** (`tools/fights.js`) and the soak (`tests/distribution/fights.test.js`) get the new deck fight beside the old.
 - **Retirement:** when the targets pass, the old deck fight, its strip, its setting and its tests are removed, and `COMBAT.md`'s deck
   fight section is rewritten. `prototypes/boarding-spike.html` is deleted and `prototypes/README.md` updated (removed with the folder
-  if the radar fight's retirement already removed the others).
+  if the radar fight's retirement already removed the others). The soak's check that the navy's cap sits in 4 to 6 turns
+  (`tests/distribution/fights.test.js`) moves to the new cap's range, about 8.
 - **Delivered in steps that each leave the game playable:** (1) the decks as data; (2) the rules module; (3) the screen, behind the
   setting; (4) tuning against the targets and the soak; (5) the switch-over and the old fight's retirement.
 
