@@ -157,7 +157,7 @@ test('the opening scene does not promise errands the narrow build does not have'
     return { narrow, full: signOnEvent().text };
   });
   assert.doesNotMatch(r.narrow, /Errands|Missions board|keeps a fifth/);
-  assert.match(r.narrow, /who pays on delivery\. (You are paid|A hand who saves|The hiring hall)/, 'the sentences either side still join up');
+  assert.match(r.narrow, /pays on delivery\. (You're paid|Hands who save|You owe the hall)/, 'the sentences either side still join up');
   assert.match(r.full, /Errands for wherever she's going come through the port/);
   await done();
 });

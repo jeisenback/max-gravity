@@ -137,43 +137,43 @@
  },
  {
   "key": "touch:2",
-  "text": "\"Sam painted a small Titan skyline on their bunk panel\""
+  "text": "\"Sam painted the Titan skyline on a bunk panel\""
  },
  {
   "key": "touch:3",
-  "text": "\"Sam rigged fairy lights along the berth corridor\""
+  "text": "\"Sam screwed a row of mug hooks by the galley hatch, one for each person aboard\""
  },
  {
   "key": "touch:4",
-  "text": "\"Sam put up a picture of their father Vesna by the coffee maker\""
+  "text": "\"A picture of Sam's father Dru is taped by the coffee maker\""
  },
  {
   "key": "touch:5",
-  "text": "\"Sam keeps a battered copy of \\\"Rations and Other Lies\\\" in the galley for anyone to borrow\""
+  "text": "\"Sam keeps a copy of \\\"Rations and Other Lies\\\" in the galley for anyone to borrow\""
  },
  {
   "key": "touch:6",
-  "text": "\"Sam chalked a hopscotch grid on the cargo bay deck, and people use it\""
+  "text": "\"Sam chalked a ring-ball tally on the cargo bay bulkhead, and people keep it up\""
  },
  {
   "key": "touch:7",
-  "text": "\"Sam tied a small bell by the airlock, so you can hear who's coming and going\""
+  "text": "\"Sam labelled every locker in the hold, by hand\""
  },
  {
   "key": "touch:8",
-  "text": "\"Sam started a jar by the galley door for good news, and it already has three slips in it\""
+  "text": "\"Sam pinned the schedule for the next three ports by the galley door\""
  },
  {
   "key": "touch:9",
-  "text": "\"Sam taped a hand-drawn star chart to the cockpit bulkhead, with everybody's home marked in a different color\""
+  "text": "\"Sam taped a star chart to the cockpit bulkhead, with everybody's home marked on it\""
  },
  {
   "key": "touch:10",
-  "text": "\"Sam put a small potted succulent on the nav console, and named it, and refuses to say what\""
+  "text": "\"Sam fixed the rattle in the berth corridor's air vent with a strip of tape\""
  },
  {
   "key": "touch:11",
-  "text": "\"Sam set up a board by the mess with everybody's birthday on it, in careful, curly writing\""
+  "text": "\"Sam wrote everybody's birthday on the galley board\""
  },
  {
   "key": "cat",
@@ -213,7 +213,7 @@
  },
  {
   "key": "chatter:all",
-  "text": "[\"Sam has been quiet all watch.\",\"Sam is rereading an old message from their father Imi.\",\"Ana is humming. Ana never hums.\",\"Rivet is asleep on the reactor housing again.\",\"Rivet knocked a wrench off the workbench, on purpose, while making eye contact.\",\"Somebody has been feeding Rivet from the good rations.\",\"Sam hung a pennant in the galley, and it makes the ship feel more like home.\"]"
+  "text": "[\"Sam has been quiet all watch.\",\"Sam is rereading an old message from their father Dru.\",\"Ana is humming. Ana never hums.\",\"Rivet is asleep on the reactor housing again.\",\"Rivet knocked a wrench off the workbench, on purpose, while making eye contact.\",\"Somebody has been feeding Rivet from the good rations.\",\"Sam hung a pennant in the galley.\"]"
  },
  {
   "key": "chatter:pool",
@@ -229,7 +229,7 @@
  },
  {
   "key": "favor:done",
-  "text": "[[\"Sam goes ashore to see their father Lolo, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my father.\"]"
+  "text": "[[\"Sam goes ashore to see their father Dru, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my father.\"]"
  },
  {
   "key": "rename",
@@ -237,11 +237,11 @@
  },
  {
   "key": "letter:note",
-  "text": "[\"A message for Sam at Ceres Station: their father Jo won a little money on the ring-ball pool, and is buying everyone a round.\"]"
+  "text": "[\"A message for Sam at Ceres Station: their father Dru won a little money on the ring-ball pool, and is buying everyone a round.\"]"
  },
  {
   "key": "letter:visit",
-  "text": "[[\"A message for Sam at Ceres Station: their father Sabe writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back.\"],{\"good\":true,\"text\":\"their father Sabe writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back\"},\"high\",true,[]]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Dru writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back.\"],{\"good\":true,\"text\":\"their father Dru writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back\"},\"high\",true,[]]"
  },
  {
   "key": "birthday:gate",
@@ -249,7 +249,7 @@
  },
  {
   "key": "touches:add",
-  "text": "[[\"[Ship] Sam is growing basil in a ration tin on the galley shelf.\",\"[Ship] Ben put a small potted succulent on the nav console, and named it, and refuses to say what.\"],[\"Sam is growing basil in a ration tin on the galley shelf\",\"Ben put a small potted succulent on the nav console, and named it, and refuses to say what\"]]"
+  "text": "[[\"[Ship] Sam is growing basil in a ration tin on the galley shelf.\",\"[Ship] Ben fixed the rattle in the berth corridor's air vent with a strip of tape.\"],[\"Sam is growing basil in a ration tin on the galley shelf\",\"Ben fixed the rattle in the berth corridor's air vent with a strip of tape\"]]"
  },
  {
   "key": "force:birthday:0",

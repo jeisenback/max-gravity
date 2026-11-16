@@ -73,14 +73,19 @@ const placeSay = (p, id) => { const tables = placeTables(p, id); return (key, va
 function storyOf(p) {
   const own = authoredStory(p);
   if (own && !(p.story && p.story.authored)) p.story = { ...own, authored: true, beat: p.story ? p.story.beat : 0 };
-  if (!p.story) {
-    const who = makePerson(cultureOfPerson(p));
-    p.story = { name: who.first, favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
-    const m = moduleId(p);  // who is missed, what they left and hope for, and home, from the place's story (#871, #885); read through its lines, so an edit to them shows
-    if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), module: m, ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
-    else p.story.rel = pick(RELATIONS);
+  if (!p.story) {  // drawn from the person's own dice, so it is the same whoever reads it first (the screen or the game, #1290)
+    const real = Math.random;
+    Math.random = seededRandom(Math.abs(hash(`story ${p.id} ${p.first} ${p.last}`)));
+    try { makeStory(p); } finally { Math.random = real; }
   }
   return p.story;
+}
+function makeStory(p) {  // who is missed at home, and the favor they may ask; storyOf draws it on the person's own dice
+  const who = makePerson(cultureOfPerson(p));
+  p.story = { name: who.first, favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
+  const m = moduleId(p);  // who is missed, what they left and hope for, and home, from the place's story (#871, #885); read through its lines, so an edit to them shows
+  if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), module: m, ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
+  else p.story.rel = pick(RELATIONS);
 }
 const missed = p => `${storyOf(p).rel} ${storyOf(p).name}`;
 

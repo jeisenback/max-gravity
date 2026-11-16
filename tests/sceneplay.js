@@ -64,6 +64,7 @@ const playScenes = () => {
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });
   run('scene:hand-death:bridge', {}, () => handDeathScene('bridge'), { skip: [0] });
+  run('scene:chapter-two-start:drawn', {}, () => { G.state.castPair = ['bexa', 'pax']; return chapterTwoStartScene(); }, { skip: [0] });  // the ramp when chapter one met Bexa and Pax: Yelena and Ruben (#1240)
   // the same on the hand's own bridge (#1045): no captain to say it
   const ownBridge = () => { const h = hired(); Object.assign(h, { chapter: 2, bridge: true }); delete h.captain; delete h.captainKey; };
   for (const how of ['hurt', 'bridge']) run(`scene:hand-death:${how}:own`, {}, () => { ownBridge(); return handDeathScene(how); }, { skip: [0] });

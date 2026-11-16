@@ -85,6 +85,8 @@ const ALLOWED = [
   'on the berth of whoever has the cold watch',  // Hester: Cato's blanket, on someone else's berth, not where Cato is
   'jumps at a clank from the engine room',  // nervous: the clank is heard anywhere
   'we had a proper berth',  // rude: talk about another ship
+  'what berths cost on',  // talkative: a dock's berths at home, not the ship's
+  'agency, berth, air, kit',  // greedy: the berth deduction on a pay slip
   'The captain is in the galley',  // Ilsa: where her captain is, not where she is
   'a day for the berth',  // Hester: the berth at a port, its fee
 ];

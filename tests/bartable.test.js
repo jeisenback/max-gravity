@@ -129,8 +129,8 @@ test('what someone says at the table is theirs: their traits, their goal, and ho
       st.credits = 20000;
       out.greedy = topic(greedy, 'cards');
       out.pious = take(talkEvent({ p: pious, known: false }), /Leave/);
-      out.medical = topic(greedy, 'heard');
-      out.pilgrim = topic(pious, 'heard');
+      out.medical = talkEvent({ p: greedy, known: false }).text;  // what they are travelling for is in the intro (#1278)
+      out.pilgrim = talkEvent({ p: pious, known: false }).text;
       out.friend = take(talkEvent({ p: friend, known: true }), /Leave/);
       out.stranger = take(talkEvent({ p: friend, known: false }), /Leave/);
       Math.random = () => 0.99;  // the shared pool instead
@@ -138,10 +138,10 @@ test('what someone says at the table is theirs: their traits, their goal, and ho
     } finally { Math.random = real; }
     return out;
   });
-  assert.match(r.greedy, /counts the pot twice/); assert.match(r.pious, /Fair winds/);
-  assert.match(r.medical, /medic/); assert.match(r.pilgrim, /holy/);
+  assert.match(r.greedy, /back of a pay slip/); assert.match(r.pious, /Go safe/);
+  assert.match(r.medical, /specialist/); assert.match(r.pilgrim, /shrine/);
   assert.match(r.friend, /Same again, next port/); assert.doesNotMatch(r.stranger, /Same again/);
-  assert.doesNotMatch(r.shared, /bigger purse/, 'a shared goodbye some of the time');
+  assert.doesNotMatch(r.shared, /Your round next time/, 'a shared goodbye some of the time');
   await done();
 });
 

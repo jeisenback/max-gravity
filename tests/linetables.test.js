@@ -101,7 +101,7 @@ test('an override is escaped in a bar line and left plain in the chatter, and a 
   assert.equal(r.warned.length, 1, 'one warning for the file');
   for (const w of ['parts.0 has {nothing}', 'parts has no "9"', 'parts.2 is not text', 'has no "title"', 'has no choice 0', 'unknown scene "lines:nope"']) assert.ok(r.warned[0].includes(w), `${w} in: ${r.warned[0]}`);
   assert.equal(r.bar, 'A &lt;b&gt;wave&lt;/b&gt; &amp; {n} goes.', 'a bar line is text');
-  assert.equal(r.bar2, 'You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'the other lines are as shipped');
+  assert.equal(r.bar2, 'You leave {n} to their drink.', 'the other lines are as shipped');
   assert.equal(r.chatter, '<b>{first}</b> & talks.', 'the chatter is drawn as plain text');
 });
 
@@ -129,7 +129,7 @@ test('the labels of the goal help are left plain for the dialog to escape, and t
   assert.equal(r.gift, 'Pay <b>part</b> & go (600 cr)');
   assert.equal(r.ask, 'Ask <i>about</i> home');
   assert.equal(r.text, '{n} sighs &lt;b&gt;twice&lt;/b&gt;.');
-  assert.equal(r.other, 'Press a few credits into their hand for a present (600 cr)');
+  assert.equal(r.other, 'Put something toward the present (600 cr)');
 });
 
 test('every bar topic has an id and lines, and every line is read: the button, the reason it is shut and what it ends on', async () => {

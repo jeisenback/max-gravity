@@ -349,7 +349,7 @@ const CAUSES = [
   'the way somebody chews',
   'a promise about a shift swap',
   'the good pillow',
-  'whether the cat is allowed on the console',
+  'who keeps taking the good knife from the galley',
   'a sock that has been in the corridor for a week'
 ];
 // A repeatable scene waits its turn per pair, so the same two people do not have the

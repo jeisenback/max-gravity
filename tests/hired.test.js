@@ -35,7 +35,7 @@ test('new game offers a hired start, and the choice of post', async () => {
   assert.equal(r.tutorial, 0, 'the first run begins'); assert.equal(r.mode, 'landed');
   assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
   assert.equal(r.scene.title, 'Signing On');
-  assert.match(r.scene.text, /ice hauler/); assert.match(r.scene.text, /Captain/); assert.match(r.scene.text, /You have the guns/);
+  assert.match(r.scene.text, /ice hauler/); assert.match(r.scene.text, /Captain/); assert.match(r.scene.text, /You're on the guns/);
   assert.doesNotMatch(r.scene.text, /credits to your name|Save toward|press Sail/, 'the opening leaves the interface to the help');
   await done();
 });
@@ -562,7 +562,7 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
     const owner = { weapons: weaponsPanel(), projects: projectsHtml('gunner') };
     return { hand, owner, hiredNow: !!hired() };
   });
-  assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /the move at the guns is yours alone/);
+  assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /how you meet her is your call/);
   assert.match(r.hand.weapons, /The fight/); assert.match(r.hand.weapons, /over 4 a gun locks for a turn/); assert.doesNotMatch(r.hand.weapons, /Fire deck|Threats|Answers/, 'a hand does not fight with the deck (#851)'); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
   assert.equal(r.hiredNow, false); assert.match(r.owner.weapons, /Fire deck/); assert.doesNotMatch(r.owner.weapons, /The fight/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
   await done();
@@ -833,6 +833,19 @@ test('a crew scene is the hand\'s own affair: the Galley Duty bet is paid from t
   assert.equal(r.personal, true, 'the scene is marked the hand\'s own');
   assert.equal(r.fund, 10000, 'the fund is untouched');
   assert.ok(r.credits === 8000 || r.credits === 2000, `the bet moves the savings by 3,000 (now ${r.credits})`);
+  await done();
+});
+
+test('nobody in A Small Ship thanks the hired hand as their captain (#1312)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    const [a, b] = folk().filter(f => f.crew);
+    return [0, 1].map(n => SOCIAL_SCENES['small-ship'](a, b).choices[n].run());
+  });
+  assert.equal(r.length, 2);
+  for (const said of r) assert.doesNotMatch(said, /captain/i, said);
   await done();
 });
 

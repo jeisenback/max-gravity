@@ -143,14 +143,14 @@
  {
   "key": "dock:lapsed",
   "text": [
-   "Mission failed (deadline passed): Ore run"
+   "Deadline passed: Ore run."
   ],
   "credits": 0
  },
  {
   "key": "dock:walk-off",
   "text": [
-   "Mateo Castillo has had enough of you and your ship, and walks off at Earth."
+   "Mateo Castillo signs off at Earth and goes down the ramp with a gear bag."
   ],
   "credits": 0
  },
@@ -434,21 +434,21 @@
  {
   "key": "boarding:hurt:crew",
   "text": [
-   "Mara Quill is hurt. Their gunner work will suffer until they're treated."
+   "Mara Quill is hurt. The gunner post is short-handed until the medbay has seen to the wound."
   ],
   "credits": 0
  },
  {
   "key": "boarding:hurt:cast",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. The engineer post is short-handed until the medbay has seen to the wound. Another hit like that could kill Tomas."
   ],
   "credits": 0
  },
  {
   "key": "boarding:marked",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. The engineer post is short-handed until the medbay has seen to the wound. Another hit like that could kill Tomas."
   ],
   "credits": 0,
   "x": {}
@@ -549,14 +549,14 @@
  {
   "key": "auto:contact",
   "text": [
-   "Mara: Contact, and they're not friendly. She's yours, captain."
+   "Mara: Contact, and they're not friendly. Coming off auto."
   ],
   "credits": 0
  },
  {
   "key": "auto:stuck",
   "text": [
-   "Mara: I can't get us settled. Your ship, captain."
+   "Mara: I can't get us settled. Coming off auto."
   ],
   "credits": 0
  },
@@ -847,9 +847,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury)",
-   "comm": "[Market] A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury, for about 21 days)",
-   "inbox": "A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury)"
+   "rumor": "There's a fever going round Hermes Foundry, and people there are buying up Machine Parts while they can. (Mercury)",
+   "comm": "[Market] There's a fever going round Hermes Foundry, and people there are buying up Machine Parts while they can. (Mercury, for about 21 days)",
+   "inbox": "There's a fever going round Hermes Foundry, and people there are buying up Machine Parts while they can. (Mercury)"
   }
  },
  {
@@ -857,9 +857,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury)",
-   "comm": "[Market] Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury, for about 21 days)",
-   "inbox": "Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury)"
+   "rumor": "Customs on Hermes Foundry seized a shipment of Machine Parts. The buyers there are short. (Mercury)",
+   "comm": "[Market] Customs on Hermes Foundry seized a shipment of Machine Parts. The buyers there are short. (Mercury, for about 21 days)",
+   "inbox": "Customs on Hermes Foundry seized a shipment of Machine Parts. The buyers there are short. (Mercury)"
   }
  },
  {
@@ -867,9 +867,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury)",
-   "comm": "[Market] A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury, for about 21 days)",
-   "inbox": "A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury)"
+   "rumor": "A company on Hermes Foundry has bought up the local Machine Parts for a contract of its own. (Mercury)",
+   "comm": "[Market] A company on Hermes Foundry has bought up the local Machine Parts for a contract of its own. (Mercury, for about 21 days)",
+   "inbox": "A company on Hermes Foundry has bought up the local Machine Parts for a contract of its own. (Mercury)"
   }
  },
  {
@@ -877,9 +877,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury)",
-   "comm": "[Market] A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury, for about 21 days)",
-   "inbox": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury)"
+   "rumor": "A warehouse fire on Hermes Foundry took most of the local stock of Machine Parts. (Mercury)",
+   "comm": "[Market] A warehouse fire on Hermes Foundry took most of the local stock of Machine Parts. (Mercury, for about 21 days)",
+   "inbox": "A warehouse fire on Hermes Foundry took most of the local stock of Machine Parts. (Mercury)"
   }
  },
  {
@@ -887,9 +887,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury)",
-   "comm": "[Market] A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury, for about 21 days)",
-   "inbox": "A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury)"
+   "rumor": "A festival on Hermes Foundry has used up the Machine Parts, and the next shipment is a month out. (Mercury)",
+   "comm": "[Market] A festival on Hermes Foundry has used up the Machine Parts, and the next shipment is a month out. (Mercury, for about 21 days)",
+   "inbox": "A festival on Hermes Foundry has used up the Machine Parts, and the next shipment is a month out. (Mercury)"
   }
  },
  {
@@ -897,9 +897,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury)",
-   "comm": "[Market] A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury, for about 21 days)",
-   "inbox": "A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury)"
+   "rumor": "A ship carrying Machine Parts to Hermes Foundry was taken by raiders two weeks ago. Nothing's come in since. (Mercury)",
+   "comm": "[Market] A ship carrying Machine Parts to Hermes Foundry was taken by raiders two weeks ago. Nothing's come in since. (Mercury, for about 21 days)",
+   "inbox": "A ship carrying Machine Parts to Hermes Foundry was taken by raiders two weeks ago. Nothing's come in since. (Mercury)"
   }
  },
  {
@@ -907,9 +907,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury)",
-   "comm": "[Market] A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury, for about 21 days)",
-   "inbox": "A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury)"
+   "rumor": "A new import tax on Machine Parts at Hermes Foundry has the traders holding back, and the price there is up. (Mercury)",
+   "comm": "[Market] A new import tax on Machine Parts at Hermes Foundry has the traders holding back, and the price there is up. (Mercury, for about 21 days)",
+   "inbox": "A new import tax on Machine Parts at Hermes Foundry has the traders holding back, and the price there is up. (Mercury)"
   }
  },
  {
@@ -917,9 +917,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury)",
-   "comm": "[Market] A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury, for about 21 days)",
-   "inbox": "A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury)"
+   "rumor": "A yard contract on Hermes Foundry has taken the whole local supply of Machine Parts. (Mercury)",
+   "comm": "[Market] A yard contract on Hermes Foundry has taken the whole local supply of Machine Parts. (Mercury, for about 21 days)",
+   "inbox": "A yard contract on Hermes Foundry has taken the whole local supply of Machine Parts. (Mercury)"
   }
  },
  {
@@ -927,9 +927,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury)",
-   "comm": "[Market] A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury, for about 21 days)",
-   "inbox": "A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury)"
+   "rumor": "A convoy of Machine Parts for Hermes Foundry is being held at a picket, and the buyers there are paying more. (Mercury)",
+   "comm": "[Market] A convoy of Machine Parts for Hermes Foundry is being held at a picket, and the buyers there are paying more. (Mercury, for about 21 days)",
+   "inbox": "A convoy of Machine Parts for Hermes Foundry is being held at a picket, and the buyers there are paying more. (Mercury)"
   }
  },
  {
@@ -937,9 +937,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury)",
-   "comm": "[Market] A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury, for about 21 days)",
-   "inbox": "A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury)"
+   "rumor": "A plant on Hermes Foundry is down for repairs, and they're buying Machine Parts wherever they can get it. (Mercury)",
+   "comm": "[Market] A plant on Hermes Foundry is down for repairs, and they're buying Machine Parts wherever they can get it. (Mercury, for about 21 days)",
+   "inbox": "A plant on Hermes Foundry is down for repairs, and they're buying Machine Parts wherever they can get it. (Mercury)"
   }
  },
  {
@@ -947,9 +947,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury)",
-   "comm": "[Market] Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury, for about 21 days)",
-   "inbox": "Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury)"
+   "rumor": "The governor's office on Hermes Foundry is buying Machine Parts for a reception, over the odds. (Mercury)",
+   "comm": "[Market] The governor's office on Hermes Foundry is buying Machine Parts for a reception, over the odds. (Mercury, for about 21 days)",
+   "inbox": "The governor's office on Hermes Foundry is buying Machine Parts for a reception, over the odds. (Mercury)"
   }
  },
  {
@@ -977,9 +977,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury)",
-   "comm": "[Market] A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury, for about 21 days)",
-   "inbox": "A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury)"
+   "rumor": "A big output of Machine Parts on Hermes Foundry has the market there swamped. (Mercury)",
+   "comm": "[Market] A big output of Machine Parts on Hermes Foundry has the market there swamped. (Mercury, for about 21 days)",
+   "inbox": "A big output of Machine Parts on Hermes Foundry has the market there swamped. (Mercury)"
   }
  },
  {
@@ -997,9 +997,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury)",
-   "comm": "[Market] A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury, for about 21 days)",
-   "inbox": "A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury)"
+   "rumor": "A trade fair on Hermes Foundry brought in more Machine Parts than anyone there can buy. (Mercury)",
+   "comm": "[Market] A trade fair on Hermes Foundry brought in more Machine Parts than anyone there can buy. (Mercury, for about 21 days)",
+   "inbox": "A trade fair on Hermes Foundry brought in more Machine Parts than anyone there can buy. (Mercury)"
   }
  },
  {
@@ -1007,9 +1007,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury)",
-   "comm": "[Market] A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury, for about 21 days)",
-   "inbox": "A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury)"
+   "rumor": "A warehouse on Hermes Foundry is being cleared in a hurry, and the Machine Parts is going for whatever anyone will pay. (Mercury)",
+   "comm": "[Market] A warehouse on Hermes Foundry is being cleared in a hurry, and the Machine Parts is going for whatever anyone will pay. (Mercury, for about 21 days)",
+   "inbox": "A warehouse on Hermes Foundry is being cleared in a hurry, and the Machine Parts is going for whatever anyone will pay. (Mercury)"
   }
  },
  {
@@ -1017,9 +1017,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury)",
-   "comm": "[Market] A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury, for about 21 days)",
-   "inbox": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury)"
+   "rumor": "Word on Hermes Foundry is that a batch of Machine Parts is contaminated. Nobody's shown it is, but the price there has dropped. (Mercury)",
+   "comm": "[Market] Word on Hermes Foundry is that a batch of Machine Parts is contaminated. Nobody's shown it is, but the price there has dropped. (Mercury, for about 21 days)",
+   "inbox": "Word on Hermes Foundry is that a batch of Machine Parts is contaminated. Nobody's shown it is, but the price there has dropped. (Mercury)"
   }
  },
  {
@@ -1297,42 +1297,42 @@
   "x": {
    "lines": [
     "Nav: trajectory nominal, drift within tolerance.",
-    "Ice hauler \"Mule's Promise\" to all ships: anyone got a spare coolant pump?",
+    "Ice hauler \"Mule's Promise\", all ships: we're short a coolant pump. Will pay at Ceres.",
     "Arcology Pact Navy picket: routine sweep, no contacts.",
-    "Somebody's broadcasting polka on the emergency band again.",
+    "Someone is playing music on the emergency band again. The picket tells them to clear it.",
     "Crash couch: anti-g drip reservoir at 80 percent.",
-    "\"...and that's why you never play cards with a Pallas refinery crew.\" [laughter]",
+    "\"...so they docked us the day, and the shift still had to be made up.\" The rest is static.",
     "Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged.",
-    "Courier \"Swift Dispatch\": running a hard burn, clear the approach please.",
+    "Courier \"Swift Dispatch\": running a hard burn, requesting the approach clear.",
     "Life support: CO2 scrubbers cycling.",
-    "Unknown ship: \"Anyone else see that drive plume? No transponder? Just me?\"",
+    "A voice with no transponder behind it: \"Plume off the port side, running dark. Anyone else have it?\"",
     "Dome Pact Navy: all vessels, maintain transponders in Martian space.",
-    "Belt pirate radio: static, then a laugh, then static again.",
+    "Static on a Belt band, a few words in a language nobody aboard speaks, then static again.",
     "Reactor: output steady. Drive plume stable.",
-    "Freighter \"Second Wind\" to nobody in particular: \"Forty days out and I've run out of things to say to the cat.\"",
-    "An old recorded voice, on an old beacon: \"This lane is maintained by the Ceres Water Authority. Please burn responsibly.\"",
-    "Hauler \"Long Odds\": \"Anybody running to Titan? I've got a spare berth and a very bad sense of direction.\"",
-    "Arcology Pact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method.",
-    "A child, on an open band: \"This is Captain Pip of the good ship Blanket Fort. Do you copy?\"",
-    "Ceres Water Authority relay: \"Reminder to all vessels, water isn't a right, but it's a courtesy. Thank you for your understanding.\"",
-    "Belt trader on the band: \"Fresh onions! Real onions! Meet me at the flip, and bring your own bags!\"",
-    "Tug \"Old Bess\": \"Anybody know a good doctor on Ganymede? Asking for a friend. The friend is my knee.\"",
-    "Static, then faintly someone singing an old work song, and the tail of a chorus.",
-    "Mars traffic: \"All ships in the Phobos approach corridor, welcome, and please note that, yes, the coffee really is that good.\"",
-    "Someone on the emergency band, in a small voice: \"Testing. Testing. Is this thing on? Mom, it's on.\"",
-    "Drive plume harmonics: a low, steady, contented hum. All quiet.",
-    "A distant hauler broadcasts a recipe for fried dough. In the middle it apologizes and carries on.",
-    "Luna control: \"Please remember that the Copernicus Lounge isn't, in fact, an official navigation aid.\"",
-    "Ring-ball commentary, faint and crackling, from a ship somewhere in the dark: \"...and he SHOOTS, and he SCORES...\"",
-    "Nav: micrometeoroid flux low. Hull integrity nominal. Optimism, unofficially, high.",
-    "A salvager on the band, cheerfully: \"Anybody lose a left boot? Somebody lost a left boot. I have a hundred of them.\"",
-    "Enceladus relay: \"All ships, geyser activity is up today. Please enjoy responsibly, and don't fly through the plume.\"",
-    "A young voice, on an open channel, awed: \"I can see the whole ring from here. Is it always like this?\"",
-    "The ship's hull creaks, once, softly, as it cools in the long shadow. Nothing follows.",
-    "A hauler crew, in unison, on the open band, singing \"Happy Birthday\" to a captain who is, from the sound of it, deeply embarrassed.",
-    "Eros beacon: \"Welcome to the Old Town. Half of us are still here, and the other half will be, shortly.\"",
-    "Crew mess: somebody's arguing that soup counts as a beverage. The argument has been going for ninety minutes.",
-    "Static, followed by a woman's voice, low and warm, reading the names of every ship that has ever left Ceres, one by one."
+    "Freighter \"Second Wind\", to the band: \"Forty days out. If anyone has the Orbitals match, we'll trade for it.\"",
+    "An old recorded voice on a lane beacon: \"This lane is maintained by the Ceres Water Authority. Lane fees are payable at any Authority office.\"",
+    "Hauler \"Long Odds\": \"Spare berth to Titan. Two hundred a day, and you cook.\"",
+    "Arcology Pact traffic control: lane fees fall due on the first. Ships in arrears will be held at the next Pact port.",
+    "A child on an open band, reading out a ship's call sign and asking if anyone can hear. A woman comes on and takes the handset back.",
+    "Ceres Water Authority relay: the ration at Ceres goes down a litre a head from the first. Ships calling are asked to bring their own.",
+    "Belt trader on the band: \"Onions, a crate at the flip, Ceres prices. Bring your own bags.\"",
+    "Tug \"Old Bess\": \"Anyone know a clinic at Ganymede that takes Guild cover? My knee's gone.\"",
+    "Static, then someone singing a few lines of an old work song on an open channel, until they key off.",
+    "Mars traffic: all ships in the Phobos approach corridor, hold your slot. The corridor is running two hours behind.",
+    "Someone on the emergency band: \"Testing. Is this on?\" The picket says it is, and to get off it.",
+    "Drive: injector four reading warm. Within limits.",
+    "A distant hauler is reading a recipe for fried dough over an open channel, for someone on another ship.",
+    "Luna control: Copernicus berths are full until the fourteenth. Inbound ships will be given a slot at Tycho.",
+    "Ring-ball commentary, faint, from a ship somewhere behind: the Orbitals are two down at the half.",
+    "Nav: micrometeoroid flux low. Hull integrity nominal.",
+    "A salvager on the band: \"Boots, suit liners, a crate of filters, all off a hull we broke up at Juno. Make an offer.\"",
+    "Enceladus relay: geyser activity is up today. All ships keep clear of the plume.",
+    "A young voice on an open channel asks which planet has the ring. Somebody tells them it's Saturn.",
+    "The hull ticks as it cools in the shadow.",
+    "A hauler crew sings \"Happy Birthday\" on the open band, for a captain who doesn't answer.",
+    "Eros beacon: the Old Town's far half is closed. Ships for the Old Town dock at the near lock.",
+    "Galley: the coffee's out until Ceres. Somebody has put it on the stores list twice.",
+    "A Ceres station on a low band, reading the names of the haulers lost on the ice this year, one at a time."
    ]
   }
  },
