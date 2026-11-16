@@ -216,3 +216,15 @@ test('the Mods screen says a mod runs code in the page and to trust its author, 
   assert.ok(r.together, 'the warning is in the same section as the field');
   await done();
 });
+
+test('on the death screen, Load last save brings the saved game back, and New game opens the new game page (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); save(); G.mode = 'dead'; UI.showDead(); });
+  await page.click('[data-action=load]');
+  assert.equal(await page.$('#panel .dead'), null, 'the death screen is gone');
+  assert.equal(await ev(() => G.mode), 'landed', 'landed again from the save');
+  await ev(() => { G.mode = 'dead'; UI.showDead(); });
+  await page.click('[data-action=newgame]');
+  assert.ok(await page.waitForSelector('[data-action=menuStart]'), 'the new game page, with its Start button');
+  await done();
+});

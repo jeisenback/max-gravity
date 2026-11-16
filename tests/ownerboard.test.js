@@ -103,3 +103,13 @@ test('the pump-crew coolant bypass is in the outfitter only for a ship that hold
   assert.equal(r.with, true); assert.equal(r.without, false, 'a ship without the keys is not offered it'); assert.equal(r.again, true);
   assert.equal(r.fuel, 60); assert.equal(r.cargo, 0); assert.equal(r.paid, 15000); assert.equal(r.fitted, 1);
 });
+
+test('on the Port page, pressing Take on a contract puts it in the hold and off the board (#1327)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { owner(); board([contract()]); UI.tab = 'port'; UI.render(); });
+  await page.click('[data-action=takeContract][data-arg="0"]');
+  assert.match((await page.innerText('.shell .body')).replace(/\s+/g, ' '), /30t of water for the Arcology Pact Freight Office, to Mars/, 'the page shows the contract held');
+  assert.equal(await page.$('[data-action=takeContract]'), null, 'and the board offers no other');
+  await done();
+});

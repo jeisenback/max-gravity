@@ -69,6 +69,9 @@ const COMPUTED = {
 
 // Actions no test need press, each with a reason a reader can check in the code.
 const BOTH_BARRED = 'barred for the hand (OWNER_ACTIONS) and for the co-op (COOP_BARRED) alike, js/role.js';
+const COMMUNITY = "community scenarios and mods are off in the shipped build: the port page draws no communityHtml under scopeOff('community'), js/ui.js";
+const PROGRAMS = "never drawn for the hand or the co-op: programsHtml returns nothing while hired() (standing rules are the captain's), js/programs.js";
+const INTERVIEW = "the bar's Interview button is drawn only for an owner (interviewButton returns nothing while hired()), and the interview page opens only from it, js/interview.js";
 const COMPANY = 'on the company page, which neither the hand nor the co-op may open (OWNER_TABS, mayTab in js/role.js)';
 const EXEMPT = {
   cbuy: BOTH_BARRED, interviewHire: BOTH_BARRED, dismiss: BOTH_BARRED,
@@ -76,15 +79,9 @@ const EXEMPT = {
   sbuy: "the stake offer on the port page, hidden in the shipped build (scopeOff('owner'), js/ui.js stakeOffer)",
   sideWork: "the bar's side work is off in the shipped build: barWorkHtml returns nothing under scopeOff('barwork'), js/barwork.js",
   opSupply: "the outpost is off in the shipped build: the port draws neither the outpost nor its claim under scopeOff('owner'), js/outpost.js",
+  modRemove: COMMUNITY, scenarioPlay: COMMUNITY, scenarioCancel: COMMUNITY, programSlot: PROGRAMS, programRemove: PROGRAMS, interview: INTERVIEW, interviewAsk: INTERVIEW,
+  combatMode: "no handler: no script registers it and js/ui.js has no case for it, so the weapons console's button does nothing (#1336)",
   goDown: "never drawn: the day down is only at Earth (DOWN_PORT), whose port view always offers it as tags (downOffers), and dayDownHtml draws nothing under a port view, js/daydown.js (#1334)",
-};
-
-// Actions a test should press and none does yet, with where the button is. This list only shrinks (#1327): pressing one in a
-// test, and asserting what the press visibly does, takes it off.
-const PENDING = {
-  combatMode: 'bridge.js', interview: 'interview.js', interviewAsk: 'interview.js', load: 'ui.js, the death screen',
-  modRemove: 'community.js', newgame: 'ui.js, the death screen', programRemove: 'programs.js', programSlot: 'programs.js',
-  scenarioCancel: 'community.js', scenarioPlay: 'community.js', suggestRun: 'suggest.js', takeContract: 'ownerboard.js',
 };
 
 const declared = declaredActions(walk(path.join(ROOT, 'js')).map(read));
@@ -92,16 +89,12 @@ for (const c of Object.values(COMPUTED)) c.names.forEach(n => declared.names.add
 const pressed = pressedActions(fs.readdirSync(__dirname).filter(f => f.endsWith('.js') && f !== 'actions.test.js').map(f => read(path.join(__dirname, f))));
 
 test('every player action is pressed by a test, or exempt with a reason', () => {
-  const missing = [...declared.names].filter(a => !pressed.has(a) && !(a in EXEMPT) && !(a in PENDING)).sort();
+  const missing = [...declared.names].filter(a => !pressed.has(a) && !(a in EXEMPT)).sort();
   assert.deepEqual(missing, [], 'press each in a test (and assert what it does), or add it to EXEMPT with a reason a reader can check');
 });
 
-test('PENDING only shrinks: an action a test now presses is taken off it', () => {
-  assert.deepEqual(Object.keys(PENDING).filter(a => pressed.has(a)).sort(), []);
-});
-
-test('every EXEMPT and PENDING name is still an action the game declares', () => {
-  assert.deepEqual([...Object.keys(EXEMPT), ...Object.keys(PENDING)].filter(a => !declared.names.has(a)).sort(), []);
+test('every EXEMPT name is still an action the game declares', () => {
+  assert.deepEqual(Object.keys(EXEMPT).filter(a => !declared.names.has(a)).sort(), []);
 });
 
 test('every computed data-action site is listed with the names it can take', () => {
