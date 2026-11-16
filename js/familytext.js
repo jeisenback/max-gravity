@@ -128,7 +128,7 @@ const CHATTER_LINES = {
   low: ['{n} has been quiet all watch.', '{n} is rereading an old message from their {missed}.'],
   high: '{n} is humming. {n} never hums.',
   cat: ['{cat} is asleep on the reactor housing again.', '{cat} knocked a wrench off the workbench, on purpose, while making eye contact.', 'Somebody has been feeding {cat} from the good rations.'],
-  touch: '{touch}, and it makes the ship feel more like home.'
+  touch: '{touch}.'
 };
 
 const SHIP_LINES = {
