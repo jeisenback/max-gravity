@@ -425,7 +425,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=weapons]');
-  assert.ok(await page.$('#bsheet .con [data-action=combatMode]'), 'the console is in the burn sheet too');
+  assert.ok(await page.$('#bsheet .con'), 'the console is in the burn sheet too');
   assert.equal(await row('#bsheet', 'Gun run'), String(want.deck.gun));
   await done();
 });

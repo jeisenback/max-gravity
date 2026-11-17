@@ -444,7 +444,6 @@ const playScenes = () => {
   }
   // ---------- a day down in Lagos (#1162): the menu on each of the three days its lines turn on, and the Port page's button and its shut line ----------
   for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); }, { skip: [3] });  // looking for work is played last (below)
-  run('scene:day-down:button', {}, () => ({ title: lagosSay('button', { fare: fmt(DOWN_FARE) }), text: lagosSay('shut'), choices: [] }));
   // the lanes as tags on the Ring's spoke lift, and the line that brings the hand back up (#1193)
   run('scene:day-down:tags', {}, () => ({ title: lagosSay('title'), text: [...['tiers', 'market', 'hall', 'work'].map(k => lagosSay(`tag.${k}`, { fare: fmt(DOWN_FARE) })), lagosSay('tag.below', { first: 'Ada', fare: fmt(DOWN_FARE) }), lagosSay('tag.parcel', { first: 'Tomas' })].join(' '), choices: [{ label: lagosSay('up.label'), run: () => null }] }));
   // the day ashore's entries as tags on a port's view, and the line that closes one (#1193)

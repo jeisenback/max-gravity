@@ -12,10 +12,10 @@
 const DOWN_FARE = 900, DOWN_PORT = 'Earth', CRAYFISH = 60, SELLER_DAYS = 5, BOY_DAYS = 10;
 const DOWN_LANES = ['tiers', 'market', 'hall'];
 const lagosSay = (key, vars) => sceneSay('scene:day-down', key, vars);
-// Whether a day down is on offer here now, and if it is, why it is shut (or '' when it is open). `st` the save, `h` the hand, `planet` the port.
+// Whether a day down is on offer here now, and if it is, whether it is shut (been down today, or short of the fare). `st` the save, `h` the hand, `planet` the port.
 function downOffer(st, h, planet) {
   if (!h || !planet || planet.name !== DOWN_PORT || atSite(st) || !stayOf(h)) return null;
-  return { why: h.downDay === st.day ? lagosSay('shut') : st.credits < DOWN_FARE ? needCr(DOWN_FARE)[1]() : '' };
+  return { shut: h.downDay === st.day || st.credits < DOWN_FARE };
 }
 // Something to bring up (#1164, part 1): once the hand has eaten at Ngozi's (portview.js st.portAte), the day can go on a bag of dried crayfish for her
 // from Surulere's market, carried up (st.forNgozi) until her next word takes it.
@@ -88,7 +88,7 @@ function tomasParentsEvent(t) {
 // on the view, and nothing is paid unless it is taken. Each is { key, label, who | room, lift, take }: the view's standing offers (portview.js).
 function downOffers(st, planet) {
   const h = hired(), o = G.mode === 'landed' && downOffer(st, h, planet);
-  if (!o || o.why || !portLayout(planet)) return [];
+  if (!o || o.shut || !portLayout(planet)) return [];
   const fare = fmt(DOWN_FARE), day = st.day, pay = () => { st.credits -= DOWN_FARE; h.downDay = day; };
   const up = { label: lagosSay('up.label'), keep: true, run: () => null };
   const dayOf = (text, more = []) => ({ title: lagosSay('title'), text, personal: true, place: 'well', choices: [...more, up] });
@@ -111,20 +111,13 @@ function downOffers(st, planet) {
   ];
 }
 
-// The Port page's button, under the day ashore's: at the Ring in a stay only, when the view is not up; with it, the lanes are tags (downOffers).
-function dayDownHtml() {
-  const o = G.mode === 'landed' && downOffer(G.state, hired(), currentPlanet());
-  if (!o || portLayout(currentPlanet())) return '';
-  return String(h`<div class="row"><button data-action="goDown" ${o.why ? 'disabled' : ''}>${lagosSay('button', { fare: fmt(DOWN_FARE) })}</button>${o.why ? h` <span class="hint">${o.why}</span>` : ''}</div>`);
-}
-
 Mods.register({
   id: 'daydown', name: 'Going down to Lagos', builtin: true,
   init(M) {
     M.on('landed', planet => { const st = G.state; if (hired() && boyDue(st, planet)) { st.boyUp = true; offerScene('people', boyEvent(planet)); } });  // among the landing's people
     M.action('goDown', () => {
       const st = G.state, h = hired(), o = !G.dialog && G.mode === 'landed' && downOffer(st, h, currentPlanet());
-      if (!o || o.why) return;
+      if (!o || o.shut) return;
       st.credits -= DOWN_FARE; h.downDay = st.day;
       const t = tomasAboard();
       openEvent(parcelDue(st, t) ? tomasParcelEvent(t) : dayDownEvent());  // Tomas at the lift first, when he has something for his parents
