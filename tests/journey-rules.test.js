@@ -8,7 +8,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const ACTION = /\b(?:button|choose)\(|\bpage\.(?:click|keyboard\.press|keyboard\.type|fill)\(/;
+// What counts as the first action: the journey helpers that press or answer, any click (a locator's too), a key, typing, and a reload.
+const ACTION = /\b(?:button|choose|answerScenes|runBurn)\(|\.click\(|\bpage\.(?:keyboard\.press|keyboard\.type|fill|reload)\(/;
 
 // What a journey file's text breaks, as "<test>: <rule>" lines; each test's body is the text from its `test(` to the next.
 function problems(src) {
@@ -27,6 +28,13 @@ function problems(src) {
 test('every journey keeps the rules: setup before the first action, no fixed sleeps, assertions on the screen', () => {
   const files = fs.readdirSync(__dirname).filter(f => /^journey-[\w-]+\.test\.js$/.test(f) && f !== 'journey-rules.test.js');
   for (const f of files) assert.deepEqual(problems(fs.readFileSync(path.join(__dirname, f), 'utf8')), [], f);
+});
+
+test('every way a journey acts counts as its first action: ev() after any of them is reported', () => {
+  for (const act of ["await page.locator('#panel').getByRole('button').click();", 'await answerScenes(page);', 'await runBurn(page, /DOCKED/);', 'await page.reload();', "await page.keyboard.press('Digit4');", "await choose(page, 'Fire');"]) {
+    const p = problems(`test('acts', async () => {\n  await ev(setup);\n  ${act}\n  await ev(() => 1);\n});`);
+    assert.deepEqual(p, ['acts: ev() after the first action; only setup may use it'], act);
+  }
 });
 
 test('a journey that breaks a rule is reported, one line for each rule it breaks', () => {
