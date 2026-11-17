@@ -1,10 +1,14 @@
 'use strict';
 
-// tools/changed-tests.js: which test files a change can affect (#401). A pure function, so no browser here.
+// tools/changed-tests.js: which test files a change can affect (#401). A pure function and a small git repo, so no browser here.
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { select, withHarnesses } = require('../tools/changed-tests');
+const { execFileSync } = require('node:child_process');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { select, withHarnesses, changedFiles } = require('../tools/changed-tests');
 
 const tests = {
   'tests/sound.test.js': 'test("sfx", () => { Sfx.toggle(); })',
@@ -104,4 +108,46 @@ test('a captain\'s or a story\'s file is mapped by its key and runs every pin, n
   assert.deepEqual(select(['js/stories/ports.js'], { tests: pins, sources }).files, ['tests/apin.test.js', 'tests/bpin.test.js'], 'a story no test names still runs the pins');
   assert.equal(select(['js/captains/missing.js'], { tests: pins, sources }).full, true, 'a file it cannot read is still the whole suite');
   assert.equal(select(['js/captains/a/b.js'], { tests: pins, sources }).full, true, 'two levels down is not mapped');
+});
+
+test('a script that builds markup runs the golden copies, which reach a page by its tab and not by a name (#1324)', () => {
+  const t = { ...tests, 'tests/views.test.js': 'test("golden", () => { UI.tab = "person"; UI.render(); })' };
+  const page = select(['js/audio.js'], { tests: t, sources: { 'js/audio.js': 'const Sfx = {};\nconst card = () => `<div class="card"></div>`;' } });
+  assert.deepEqual(page.files, ['tests/globals.test.js', 'tests/sound.test.js', 'tests/views.test.js']);
+  assert.deepEqual(select(['js/audio.js'], { tests: t, sources }).files, ['tests/globals.test.js', 'tests/sound.test.js'], 'a script with no markup does not');
+});
+
+test('the change is what the branch did since it left main, not what main did since (#1324)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'changed-'));
+  const git = (...a) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { cwd: dir, encoding: 'utf8' });
+  try {
+    git('init', '-q', '-b', 'main');
+    fs.writeFileSync(path.join(dir, 'a.js'), '1\n'); fs.writeFileSync(path.join(dir, 'b.js'), '1\n');
+    git('add', '.'); git('commit', '-q', '-m', 'start');
+    git('checkout', '-q', '-b', 'work');
+    fs.writeFileSync(path.join(dir, 'a.js'), '2\n'); git('commit', '-q', '-am', 'the branch');
+    git('checkout', '-q', 'main');
+    fs.writeFileSync(path.join(dir, 'b.js'), '2\n'); git('commit', '-q', '-am', 'main moves on');
+    git('checkout', '-q', 'work');
+    fs.writeFileSync(path.join(dir, 'c.js'), '1\n');  // untracked
+    assert.deepEqual(changedFiles(dir, 'main').sort(), ['a.js', 'c.js']);
+    fs.writeFileSync(path.join(dir, 'a.js'), '3\n');  // edited, not committed
+    assert.deepEqual(changedFiles(dir, 'main').sort(), ['a.js', 'c.js']);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('with no merge base in the fetched history (a shallow clone), the change is diffed against main itself (#1324)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'changed-'));
+  const git = (...a) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { cwd: dir, encoding: 'utf8' });
+  try {
+    git('init', '-q', '-b', 'main');
+    fs.writeFileSync(path.join(dir, 'b.js'), '1\n'); git('add', '.'); git('commit', '-q', '-m', 'main');
+    git('checkout', '-q', '--orphan', 'work');  // a history that shares nothing with main, as a depth-1 fetch of each looks
+    fs.writeFileSync(path.join(dir, 'a.js'), '1\n'); git('add', 'a.js'); git('commit', '-q', '-m', 'the branch');
+    assert.deepEqual(changedFiles(dir, 'main').sort(), ['a.js'], 'no throw, and the branch\'s change is in it');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
