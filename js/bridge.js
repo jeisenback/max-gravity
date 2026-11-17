@@ -132,7 +132,7 @@ function weaponsPanel() {
     screen: `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Armament diagram">${gunnerySvg()}</svg>`,
     side: (hired() ? fightCard() : conCard('Fire deck', `<div class="hint">Threats</div>${cards(DUEL_THREATS)}<div class="hint">Answers</div>${cards(DUEL_ANSWERS)}`))  // a hand fights turn by turn; the deck is an owner's (#851)
       + conCard('Gun systems', `${conRead('Weapons power', `${power().weapons}%`)}${conRead('Fire control', `${Math.round(c.fire)}%`)}${armament()}`),
-    controls: `<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`,
+    controls: `${projectsHtml('gunner')}${postHtml('gunner')}`,
   });
 }
 

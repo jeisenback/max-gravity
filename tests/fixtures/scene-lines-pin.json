@@ -23524,13 +23524,6 @@
   ]
  },
  {
-  "id": "scene:day-down:button",
-  "plays": [],
-  "title": "Go down to Lagos (900 cr)",
-  "text": "You've been down today.",
-  "labels": []
- },
- {
   "id": "scene:day-down:tags",
   "plays": [
    {

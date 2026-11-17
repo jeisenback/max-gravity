@@ -644,9 +644,8 @@ const SCENE_LINES = {
     ines: 'Ines is already in the pilot\'s seat, with the panel open and her endorsement taped to the console. It is the same registry\'s, and good on this hull now.',
     noines: 'The pilot\'s seat is empty. Somebody will have to fly her.',
   },
-  'scene:day-down': {  // a day down in Lagos from the Ring (daydown.js, #1162; docs/bible/ports.md, lagos.md): the button, its shut line, the opening, and each lane's three lines by the day
+  'scene:day-down': {  // a day down in Lagos from the Ring (daydown.js, #1162; docs/bible/ports.md, lagos.md): the opening, and each lane's three lines by the day
     title: 'A Day Down',
-    button: 'Go down to Lagos ({fare} cr)', shut: 'You\'ve been down today.',
     // the day's lanes as tags on the spoke lift (#1193), each the day down on its own, and the line that brings the hand back up
     'tag.tiers': 'Down to the tiers ({fare} cr)', 'tag.market': 'Down to the mainland market ({fare} cr)', 'tag.hall': 'Down to the departure hall ({fare} cr)', 'tag.work': 'Down to look for work ({fare} cr)',
     'tag.below': 'Down to see {first} ({fare} cr)', 'tag.parcel': '{first} has a bag for his parents', 'up.label': 'Back up the spoke',
