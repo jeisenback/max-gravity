@@ -275,6 +275,7 @@ test('the first inspector knows a hand whose papers say a patrol has their name:
   const r = await ev(() => {
     const out = {}, known = () => !!G.dialog && /name from before|had your name|knows the name/i.test(G.dialog.event.text), stop = () => { inspectAtLanding(currentPlanet()); const k = known(); chooseEvent(G.dialog.choices.length - 1); G.dialog = null; G.nextEvent = null; return k; };
     handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); const h = hired(); h.origin = { home: 'earth', before: 'none', known: 'patrol' }; h.record = { fines: 1 };
+    inspectAtLanding(currentPlanet()); out.unanswered = known(); G.dialog = null; G.nextEvent = null; G.state.cargo = { water: 50 };  // the scene opened and left, as a tab closed with the inspector aboard (#1267)
     out.first = stop(); out.after = { fines: finesOf(), marked: hasTrait(h, 'marked') };
     G.state.cargo = { water: 50 }; out.second = stop();
     // said once whatever fine came first (the ice run's search, say) and whether or not the fund could pay (#1258)
@@ -284,7 +285,7 @@ test('the first inspector knows a hand whose papers say a patrol has their name:
     handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); delete hired().origin; let threw = null; try { out.old = stop(); } catch (e) { threw = String(e); } out.threw = threw;
     return out;
   });
-  assert.equal(r.first, true, 'the officer has the name'); assert.deepEqual(r.after, { fines: 2, marked: true });
+  assert.equal(r.unanswered, true); assert.equal(r.first, true, 'the officer has the name, though the scene was left unanswered once (#1267)'); assert.deepEqual(r.after, { fines: 2, marked: true });
   assert.equal(r.second, false, 'said once'); assert.equal(r.plain, false);
   assert.equal(r.laterFine, true, 'said though another fine came first (#1258)'); assert.deepEqual([r.broke, r.brokeAgain], [true, false], 'said once though the fund paid nothing (#1258)'); assert.deepEqual([r.old, r.threw], [false, null]);
   await done();

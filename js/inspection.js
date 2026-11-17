@@ -42,7 +42,6 @@ function inspectionScene(cause, planet) {
   const off = dockOfficial(planet);
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), official: officialName(planet), ...vars });
   const h = hired(), known = !!h && (h.origin || {}).known === 'patrol' && !(h.record || {}).patrolKnown;  // the papers (spec 2026-11-14): a patrol had the name before the run; said at the first inspection of a berth, paid or not, whatever fine came first (#1258)
-  if (known) h.record.patrolKnown = true;
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
@@ -56,8 +55,9 @@ function inspectionScene(cause, planet) {
     } });
   }
   choices.push({ label: say(post ? 'keep.label' : 'pay.label'), dock: post ? 'keep' : 'pay', run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });
+  const said = c => ({ ...c, run() { if (known) h.record.patrolKnown = true; return c.run(); } });  // the line is used up when the scene is answered, not when it is built: one left open on a closed tab says it again (#1267)
   return { title: say('title'), via: 'crew', owner: 'you', stage: 'dock',  // the inspector comes aboard, as customs does (ties.js), played out in the cutaway at the dock (dock.js, #940)
-    text: [say('text', { causes }), known ? say('known') : '', cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
+    text: [say('text', { causes }), known ? say('known') : '', cap ? say('captain') : ''].filter(Boolean).join(' '), choices: choices.map(said) };
 }
 
 // The landed hook's body (`note` is the hook's M.note; a test reads UI.notes; `cargo` is the hold as the ship came in, read on 'landing'): at an inspecting
