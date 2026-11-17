@@ -3,7 +3,10 @@
     "name": "sail-does-nothing",
     "file": "js/hired.js",
     "find": "if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail();",
-    "replace": "return;"
+    "replace": "return;",
+    "by": [
+      "journey: sign on, sail with the captain, arrive"
+    ]
   },
   {
     "name": "heat-never-bleeds",
@@ -27,7 +30,10 @@
     "name": "never-saves",
     "file": "js/game.js",
     "find": "if (G.state && G.mode === 'landed') Saves.write(G.state);",
-    "replace": "if (false) Saves.write(G.state);"
+    "replace": "if (false) Saves.write(G.state);",
+    "by": [
+      "journey: back in port"
+    ]
   },
   {
     "name": "savings-shown-zero",
