@@ -43,8 +43,9 @@ test('journey: back in port, the fight\'s cost and the pay on screen, and a relo
   const before = await figures(page);
   await page.reload();
   await button(page, /^Continue/);
-  await waitText(page, /DOCKED · PALLAS/i);
+  await waitText(page, /· PALLAS/i);  // the save is the one made as she docked, so the landing's scenes may be open again over it ("ABOARD · PALLAS ...")
   await answerScenes(page);
+  await waitText(page, /DOCKED · PALLAS/i);
   const after = await figures(page);
   assert.deepEqual(after, before, 'the save kept the hull and the savings');
   assert.deepEqual(errors, []);
