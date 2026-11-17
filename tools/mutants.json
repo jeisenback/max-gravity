@@ -39,6 +39,9 @@
     "name": "savings-shown-zero",
     "file": "js/character.js",
     "find": "conRead('Savings', `${fmt(G.state.credits)} cr`)",
-    "replace": "conRead('Savings', `${fmt(0)} cr`)"
+    "replace": "conRead('Savings', `${fmt(0)} cr`)",
+    "by": [
+      "the character page (you) shows the hand's savings from the game"
+    ]
   }
 ]

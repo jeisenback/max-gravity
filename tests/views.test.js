@@ -256,6 +256,46 @@ for (const [name, who] of [['person', 'crew'], ['person-you', 'you'], ['person-c
   });
 }
 
+// The golden pages' key figures, each worked out from the game's state and looked for in the page's visible text (#1330): a golden copy rewritten
+// with UPDATE_GOLDEN=1 while a page is edited can carry a wrong number with it, and these cannot. Each entry is [what, () => the texts the page must
+// show], run in the page. A tab's page is opened from the rail; a character page as its golden test opens it.
+const KEY_NUMBERS = {
+  port: [['your savings', () => [`you have ${fmt(G.state.credits)} cr`]], ['the contract\'s pay', () => [`Pay on delivery ${fmt(heldContract(hired()).pay)} cr`]]],
+  missions: [['each job\'s pay', () => jobBoard().ids.map(id => `up to ${fmt(jobTerms(JOBS.find(j => j.id === id)).pay)} cr`)]],
+  shipyard: [['the hull', () => [`Armor ${G.state.armor}/${ship().armor}`]]],
+  weapons: [['the weapons power', () => [`Weapons power ${power().weapons}%`]]],
+  nav: [['the burn\'s days', () => { const p = currentPlan(); return [`Burn ${travelDays(G.state.systemId, p.site || p.sid)} days`]; }]],
+};
+const PERSON_NUMBERS = {
+  you: [['the hand\'s savings', () => [`Savings ${fmt(G.state.credits)} cr`]]],
+  crew: [['their wage', () => [`Wage ${fmt(person(G.state.crew[0]).wage)} cr`]]],
+  captain: [['the ship\'s fund', () => [`${fmt(hired().fund)} cr`]]],
+};
+const visible = text => text.replace(/\s+/g, ' ');
+const showsAll = (text, want, label) => { assert.ok(want.length, `${label}: something to look for`); for (const w of want) assert.ok(visible(text).includes(w), `${label}: the page shows "${w}"`); };
+for (const [tab, figures] of Object.entries(KEY_NUMBERS)) {
+  for (const [label, want] of figures) {
+    test(`the ${tab} page shows ${label} from the game`, async () => {
+      const { page, ev, done } = await open({ scope: 'earth-hired' });
+      await ev(ordinaryGame);
+      await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+      showsAll(await ev(() => document.querySelector('.shell .body').innerText), await ev(want), `${tab}, ${label}`);
+      await done();
+    });
+  }
+}
+for (const [who, figures] of Object.entries(PERSON_NUMBERS)) {
+  for (const [label, want] of figures) {
+    test(`the character page (${who}) shows ${label} from the game`, async () => {
+      const { ev, done } = await open({ scope: 'earth-hired' });
+      await ev(ordinaryGame);
+      const text = await ev(w => { G.viewPerson = w === 'crew' ? G.state.crew[0] : w === 'you' ? 'you' : hired().captain; UI.tab = 'person'; UI.render(); return document.querySelector('.shell .body').innerText; }, who);
+      showsAll(text, await ev(want), `the character page (${who}), ${label}`);
+      await done();
+    });
+  }
+}
+
 // An owner's interview of someone for hire at the bar (the candidate page: wage, signing fee, perks and the questions).
 test('the interview page renders the golden markup for an ordinary owner game', async () => {
   const { ev, done } = await open({ scope: 'full' });

@@ -89,10 +89,14 @@ test('the counter: shown at a port with an outfitter, not at one with none; its 
     const h = handAt({ leave: true }), earth = currentPlanet(), mars = SYSTEMS.mars.planets.find(p => p.name === 'Mars');
     buyStation(G.state, h, 'gunsight', 'yard', null);
     G.state.day = 40;  // a day the markup is pinned at (the used part on offer is the day's)
-    return { at: String(stationHtml(G.state, h, earth)), none: String(stationHtml(G.state, h, mars)) };
+    const box = document.createElement('div'); box.innerHTML = String(stationHtml(G.state, h, earth));
+    return { at: String(stationHtml(G.state, h, earth)), none: String(stationHtml(G.state, h, mars)), text: box.textContent.replace(/\s+/g, ' '),
+      prices: STATION_PARTS[h.post].map(p => `New, ${fmt(p.price)} cr`) };  // the key figures, from the parts' table (#1330)
   });
   await done();
   assert.equal(r.none, '', 'no counter with no outfitter');
+  assert.ok(r.prices.length, 'parts to price');
+  for (const p of r.prices) assert.ok(r.text.includes(p), `the counter shows "${p}" from the parts' table`);
   const file = path.join(__dirname, 'fixtures', 'station-counter.html');
   if (process.env.PIN_WRITE) fs.writeFileSync(file, r.at + '\n');
   assert.equal(r.at + '\n', fs.readFileSync(file, 'utf8'), 'the counter as pinned (PIN_WRITE=1 to write it again, and read the diff)');
