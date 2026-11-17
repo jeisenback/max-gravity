@@ -137,3 +137,17 @@ test('the change is what the branch did since it left main, not what main did si
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('with no merge base in the fetched history (a shallow clone), the change is diffed against main itself (#1324)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'changed-'));
+  const git = (...a) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { cwd: dir, encoding: 'utf8' });
+  try {
+    git('init', '-q', '-b', 'main');
+    fs.writeFileSync(path.join(dir, 'b.js'), '1\n'); git('add', '.'); git('commit', '-q', '-m', 'main');
+    git('checkout', '-q', '--orphan', 'work');  // a history that shares nothing with main, as a depth-1 fetch of each looks
+    fs.writeFileSync(path.join(dir, 'a.js'), '1\n'); git('add', 'a.js'); git('commit', '-q', '-m', 'the branch');
+    assert.deepEqual(changedFiles(dir, 'main').sort(), ['a.js'], 'no throw, and the branch\'s change is in it');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

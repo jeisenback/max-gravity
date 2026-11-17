@@ -74,10 +74,12 @@ function withHarnesses(tests, harnesses) {
   }));
 }
 
-// The files the work in `root` changed: what is committed, staged or edited since the merge base with `base`, and the untracked files.
+// The files the work in `root` changed: what is committed, staged or edited since the merge base with `base`, and the untracked files. A shallow clone
+// whose fetched history holds no merge base is diffed against `base` itself, which can choose more than the change but misses none of it.
 function changedFiles(root, base = 'origin/main') {
-  const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
-  const since = git('merge-base', base, 'HEAD')[0];
+  const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).split('\n').filter(Boolean);
+  let since = base;
+  try { since = git('merge-base', base, 'HEAD')[0] || base; } catch (e) { /* no merge base in the fetched history */ }
   return [...new Set([...git('diff', '--name-only', since), ...git('ls-files', '--others', '--exclude-standard')])];
 }
 
