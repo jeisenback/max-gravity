@@ -1,0 +1,34 @@
+name: Planted bugs
+# The planted-bug runner (node tools/mutants.js, tools/mutants.json, #1328): each bug is put in the game in turn and the suite must catch it. A red here is
+# a bug the suite no longer catches, or a bug whose text has moved away from the game (the run says which). It runs weekly on main, by the owner's choice
+# (2026-11-17), and by hand from the Actions page, one runner per bug. Each runner plays the suite twice (clean, then with its bug) on one machine, about
+# 25 minutes, so the timeout is 40.
+on:
+  schedule:
+    - cron: '41 4 * * 0'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      names: ${{ steps.list.outputs.names }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: echo "names=$(node tools/mutants.js --list | jq -Rsc 'split("\n") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
+  mutant:
+    needs: list
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        name: ${{ fromJSON(needs.list.outputs.names) }}
+    name: planted (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: node tools/mutants.js --only ${{ matrix.name }}

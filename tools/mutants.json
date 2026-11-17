@@ -1,0 +1,38 @@
+[
+  {
+    "name": "sail-does-nothing",
+    "file": "js/hired.js",
+    "find": "if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail();",
+    "replace": "return;"
+  },
+  {
+    "name": "heat-never-bleeds",
+    "file": "js/fight.js",
+    "find": "st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);",
+    "replace": "st.heat = Math.max(0, heat);"
+  },
+  {
+    "name": "fight-damage-not-kept",
+    "file": "js/fightui.js",
+    "find": "st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor - HULL_SKIN * me.maxArmor) / (s.armor0.scale || FIGHT.POOL))));",
+    "replace": "st.armor = s.armor0.real;"
+  },
+  {
+    "name": "opinion-backwards",
+    "file": "js/people.js",
+    "find": "  p.opinion += n;",
+    "replace": "  p.opinion -= n;"
+  },
+  {
+    "name": "never-saves",
+    "file": "js/game.js",
+    "find": "if (G.state && G.mode === 'landed') Saves.write(G.state);",
+    "replace": "if (false) Saves.write(G.state);"
+  },
+  {
+    "name": "savings-shown-zero",
+    "file": "js/character.js",
+    "find": "conRead('Savings', `${fmt(G.state.credits)} cr`)",
+    "replace": "conRead('Savings', `${fmt(0)} cr`)"
+  }
+]
