@@ -78,6 +78,7 @@ function radarFight({ me, foes, nerve, types = foes.map(() => 'raider'), opening
 
 const radarHull = side => (side.maxArmor ? side.armor / side.maxArmor : 0);
 const radarOut = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);  // shipEnd's `out`: no hull, or no guns and no drive
+const radarMounts = side => Math.max(0, Math.min(side.guns, Math.ceil(side.parts.weapons.hp / FIGHT.PART_HP.weapons)));  // the mounts still working, as gunsReady and foeVolley count them
 const radarCap = state => (state.opening === 'short' ? Math.round(RADAR.TURNS - (RADAR.MEET - RADAR.MEET_SHORT) / RADAR.CLOSING) : RADAR.TURNS);
 
 const radarRange = (state, i = 1) => radarDist(state.ships[0].p, state.ships[i].p);
@@ -188,9 +189,10 @@ function radarStep(state, orders, rand) {
   // fire: the gun, once a cycle for each gun it has, when it is ordered, bears, is not locked and has weapons left; our torpedo when ordered and held
   const hits = [];
   const target = o.aim ? o.aim.foe + 1 : 1;
-  if (o.fire && st.fc === 'gun' && st.fired < st.me.guns && st.ships[target]) {
+  if (o.fire && st.fc === 'gun' && st.fired < Math.max(1, radarMounts(st.me)) && st.ships[target]) {  // a shot a working mount (one, to say why none fires)
     if (st.locked) { if (!st.spent.includes(`locked:${st.cycle}`)) { st.spent.push(`locked:${st.cycle}`); events.push({ at: at(), kind: 'gunLocked' }); } }
     else if (st.me.parts.weapons.hp <= 0) { if (!st.spent.includes(`noguns:${st.cycle}`)) { st.spent.push(`noguns:${st.cycle}`); events.push({ at: at(), kind: 'noGuns' }); } }
+    else if (st.power.guns <= 0) { if (!st.spent.includes(`nopower:${st.cycle}`)) { st.spent.push(`nopower:${st.cycle}`); events.push({ at: at(), kind: 'noPower' }); } }  // an order that gives the guns nothing (break, evade)
     else if (!radarBears(st, target)) { if (!st.spent.includes(`nobear:${st.cycle}`)) { st.spent.push(`nobear:${st.cycle}`); events.push({ at: at(), kind: 'noBear', foe: target - 1 }); } }
     else {
       st.fired++;
@@ -218,7 +220,7 @@ function radarStep(state, orders, rand) {
     if (!fo.fire || st.herFired[i] || radarOut(f) || f.parts.weapons.hp <= 0 || km > RADAR.GUN_RANGE) continue;
     st.herFired[i] = true;
     const spread = km * RADAR.SPREAD_KM + RADAR.ERROR[0] * (st.spoofing ? 2 : 1), chance = Math.min(1, (RADAR.HIT_R / spread) ** 2);
-    if (rand() < chance) herHits.push({ foe: i, part: fo.part || 'hull', dmg: Math.round(f.guns * (FIGHT.FOE_DMG[0] + rand() * (FIGHT.FOE_DMG[1] - FIGHT.FOE_DMG[0])) * f.dmgMult * radarFalloff(km)) });
+    if (rand() < chance) herHits.push({ foe: i, part: fo.part || 'hull', dmg: Math.round(radarMounts(f) * (FIGHT.FOE_DMG[0] + rand() * (FIGHT.FOE_DMG[1] - FIGHT.FOE_DMG[0])) * f.dmgMult * radarFalloff(km)) });
     else events.push({ at: at(), kind: 'missUs', foe: i });
   }
   // point defence: hers at us, through the arc, while the fire control is on the PDC; a stowed PDC never fires
@@ -299,12 +301,15 @@ function radarSeen(state, rand) {
 // gun's solution is the chance a shot lands, from its spread, low with the aim off by the error and high with it on her.
 function radarProject(state, orders, cycles = 4, seen = null) {
   const o = orders || {}, dt = radarDt(), e = radarError(state), want = o.turnTo !== undefined && o.turnTo !== null ? o.turnTo : o.burn ? o.burn.dir : null;
-  const us = radarClone(state.ships[0]), hers = state.foes.map((f, i) => { const c = seen && seen[i] ? seen[i] : state.ships[i + 1]; return c ? { p: { ...c.p }, v: { ...c.v }, a: state.lockOn ? { ...(c.a || { x: 0, y: 0 }) } : { x: 0, y: 0 } } : null; });
+  // a contact the board does not see (null in a seen it was given) has no track, closest approach or impact
+  const us = radarClone(state.ships[0]), hers = state.foes.map((f, i) => { const c = seen ? seen[i] : state.ships[i + 1]; return c ? { p: { ...c.p }, v: { ...c.v }, a: state.lockOn ? { ...(c.a || { x: 0, y: 0 }) } : { x: 0, y: 0 } } : null; });
   const band = t => e + RADAR.HER_ACCEL * t * t / 2;
   const tracks = [[{ p: { ...us.p }, band: 0 }], ...hers.map(h => (h ? [{ p: { ...h.p }, band: band(0) }] : []))];
   const steps = cycles * RADAR.SUB, path = [];
+  let drivePower = state.power.drive;
   for (let k = 1; k <= steps; k++) {
-    radarCoast(us, radarMoveUs(us, o.burn, want, state.power.drive, state.me.parts.drive.hp > 0, dt), dt);
+    if ((state.step + k - 1) % RADAR.SUB === 0 && o.power) drivePower = o.power.drive;  // the orders' split takes over at a cycle's start, as in the step
+    radarCoast(us, radarMoveUs(us, o.burn, want, drivePower, state.me.parts.drive.hp > 0, dt), dt);
     for (const h of hers) if (h) radarCoast(h, h.a, dt);
     path.push({ t: k * dt, us: { ...us.p }, hers: hers.map(h => (h ? { ...h.p } : null)) });
     if (k % RADAR.SUB === 0) { tracks[0].push({ p: { ...us.p }, band: 0 }); hers.forEach((h, i) => { if (h) tracks[i + 1].push({ p: { ...h.p }, band: band(k * dt) }); }); }
@@ -317,12 +322,15 @@ function radarProject(state, orders, cycles = 4, seen = null) {
   }
   const impacts = state.torps.map(t => {
     const target = t.target === 0 ? path.map(s => s.us) : path.map(s => s.hers[t.target - 1]), p = { ...t.p };
-    let best = { d: Infinity, t: 0 };
+    let best = { d: Infinity, t: 0 }, was = t.target === 0 ? tracks[0][0].p : tracks[t.target][0] && tracks[t.target][0].p;
     for (const [k, s] of path.entries()) {
-      const aim = target[k]; if (!aim) break;
+      const aim = target[k]; if (!aim || !was) break;
+      const from = { x: p.x - was.x, y: p.y - was.y };
       const u = radarUnit(radarDir(p, aim)); p.x += u.x * RADAR.TORP_SPEED * dt; p.y += u.y * RADAR.TORP_SPEED * dt;
-      const d = radarDist(p, aim); if (d < best.d) best = { d, t: s.t };
+      const d = radarNear(from, { x: p.x - aim.x, y: p.y - aim.y });  // the closest approach over the step, as the step measures it
+      if (d < best.d) best = { d, t: s.t - dt };  // at the step's start, as the step's events are
       if (d <= RADAR.TORP_HIT) break;
+      was = aim;
     }
     const b = t.target === 0 ? 0 : band(best.t), spread = b / RADAR.TORP_SPEED / RADAR.TURN_S;
     return { torp: t.id, side: t.side, at: [Math.max(0, best.t / RADAR.TURN_S - spread), best.t / RADAR.TURN_S + spread], hits: best.d + b <= RADAR.TORP_HIT ? 'yes' : best.d - b <= RADAR.TORP_HIT ? 'may' : 'no' };

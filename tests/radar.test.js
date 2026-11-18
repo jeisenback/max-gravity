@@ -383,3 +383,46 @@ test('an order change pauses only into or out of evade or break-off', () => {
   const r = radarCycle(fight(), { order: 'evade' }, LOW);
   assert.ok(plain(r.events).some(e => e.kind === 'order' && e.from === 'hold' && e.to === 'evade'), 'the step says the change');
 });
+
+// ---------- review fixes (#1367) ----------
+
+test('our projected track flies on the orders\' power from the next cycle, as the step does: a break order\'s drive', () => {
+  const s = fight(); s.ships[0].facing = 180;  // nose already away from her, so the burn lights at once
+  const orders = { burn: { dir: 180, throttle: 1 }, power: { drive: 5, guns: 0, pdc: 1 } };
+  const proj = api.radarProject(s, orders, 2), flown = cycles(s, orders, 2, LOW).state;
+  const at = proj.tracks[0][2].p, off = Math.hypot(flown.ships[0].p.x - at.x, flown.ships[0].p.y - at.y);
+  assert.ok(off < 1e-6, `projected ${JSON.stringify(plain(at))}, flown ${JSON.stringify(plain(flown.ships[0].p))}`);
+  const onOld = api.radarProject(s, { burn: orders.burn }, 2).tracks[0][2].p;
+  assert.ok(Math.abs(onOld.y) < Math.abs(at.y), 'five units of drive go farther than two');
+});
+
+test('a contact the board cannot see has no track, closest approach or solution', () => {
+  const s = place(fight(), { x: 0, y: 40 }); s.blind = true;
+  const p = api.radarProject(s, {}, 2, api.radarSeen(s, LOW));
+  assert.deepEqual(plain(p.tracks[1]), []); assert.equal(p.cpa, null); assert.deepEqual(plain(p.solution), [0, 0]);
+});
+
+test('no gun power, no shot: an order that gives the guns nothing fires nothing, and says so once a cycle', () => {
+  const r = cycles(held(fight(), { x: 0, y: 10 }), { fire: true, power: { drive: 3, guns: 0, pdc: 3 } }, 1, LOW);
+  assert.equal(r.events.filter(e => e.kind === 'hit' || e.kind === 'miss').length, 0);
+  assert.equal(r.events.filter(e => e.kind === 'noPower').length, 1);
+  assert.equal(r.state.heat, 0);
+});
+
+test('the projected impact time of a torpedo is when it hits in the fight', () => {
+  const s = plain(fight()); s.torps.push({ id: 9, side: 'her', p: { x: 0, y: 30 }, v: { x: 0, y: 0 }, target: 0 });
+  const imp = api.radarProject(s, {}, 2).impacts[0];
+  let st = s, hit = null;
+  for (let k = 0; k < 2 * RADAR.SUB && hit === null; k++) { const r = radarStep(st, {}, LOW); st = r.state; const e = plain(r.events).find(x => x.kind === 'impact'); if (e) hit = e.at; }
+  assert.ok(hit !== null, 'it hits');
+  assert.ok(Math.abs(hit / RADAR.TURN_S - imp.at[0]) < 1e-6, `projected ${imp.at[0]} cycles, hit at ${hit / RADAR.TURN_S}`);
+});
+
+test('a ship fires only the mounts still working: one mount of two shot away, one shot a cycle and one gun\'s volley', () => {
+  const s = held(fight(), { x: 0, y: 10 }); s.me.parts.weapons.hp = FIGHT.PART_HP.weapons;  // two guns, one mount's hp left
+  assert.equal(cycles(s, { fire: true }, 1, LOW).events.filter(e => e.kind === 'hit' || e.kind === 'miss').length, 1);
+  const two = held(radarFight({ me: side(230, 2), foes: [side(150, 2)], nerve: 3 }), { x: 0, y: 10 }), one = plain(two); one.foes[0].parts.weapons.hp = FIGHT.PART_HP.weapons;
+  const took = st => plain(cycles(st, {}, 1, () => 0.999).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);
+  const [full] = took(two), [half] = took(one);
+  assert.ok(full && half && Math.abs(full / half - 2) < 0.05, `two mounts ${full}, one ${half}`);
+});
