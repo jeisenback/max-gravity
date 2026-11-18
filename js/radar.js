@@ -270,11 +270,12 @@ function radarStep(state, orders, rand) {
 
 // Runs the whole steps that `seconds` more of fight time holds, from where the state is (its `t`), so that any split of the same time gives the same fight.
 function radarAdvance(state, orders, seconds, rand) {
-  const dt = radarDt(), upto = Math.floor((state.t + seconds) / dt + 1e-9);
+  const dt = radarDt(), upto = Math.max(state.step, Math.floor((state.t + seconds) / dt + 1e-5));  // t is kept to a millionth of a second, so a step boundary may fall a hair short
   let st = state, events = [];
   for (let k = st.step; k < upto; k++) { const r = radarStep(st, orders, rand); st = r.state; events = events.concat(r.events); }
   if (st === state) st = radarClone(state);
-  st.t = Math.round((state.t + seconds) * 1e6) / 1e6;
+  const base = st.step * dt;  // the clock, kept to a millionth past the last step's end, so its rounding does not build up over a fight
+  st.t = Math.round((base + Math.round((state.t + seconds - base) * 1e6) / 1e6) * 1e6) / 1e6;
   st.events = events;
   return { state: st, events };
 }
@@ -335,8 +336,9 @@ function radarProject(state, orders, cycles = 4, seen = null) {
     const b = t.target === 0 ? 0 : band(best.t), spread = b / RADAR.TORP_SPEED / RADAR.TURN_S;
     return { torp: t.id, side: t.side, at: [Math.max(0, best.t / RADAR.TURN_S - spread), best.t / RADAR.TURN_S + spread], hits: best.d + b <= RADAR.TORP_HIT ? 'yes' : best.d - b <= RADAR.TORP_HIT ? 'may' : 'no' };
   });
-  const s = first >= 0 ? radarSpread(state, o.level || 0, first + 1) : Infinity, chance = r => Math.min(1, (Math.max(0, r) / s) ** 2);
-  const solution = first >= 0 && radarBears(state, first + 1) ? [chance(RADAR.HIT_R - e), chance(RADAR.HIT_R)] : [0, 0];
+  const aimed = o.aim && hers[o.aim.foe] && !radarOut(state.foes[o.aim.foe]) ? o.aim.foe : first;  // the solution is for the one the gun is aimed at, else the first of hers the board sees
+  const s = aimed >= 0 ? radarSpread(state, o.level || 0, aimed + 1) : Infinity, chance = r => Math.min(1, (Math.max(0, r) / s) ** 2);
+  const solution = aimed >= 0 && radarBears(state, aimed + 1) ? [chance(RADAR.HIT_R - e), chance(RADAR.HIT_R)] : [0, 0];
   return { tracks, cpa, impacts, solution };
 }
 
@@ -431,6 +433,24 @@ function radarCost(state, order) {
   const bears = Math.abs(radarTurnBy(endFacing, radarDir(state.ships[0].p, state.ships[i + 1].p))) <= RADAR.BEAR;
   return { endFacing, bears, why: bears ? null : 'driveAway' };
 }
+
+// ---------- the hand at the pilot's post (Task 10) ----------
+
+// The order's wedge for a burn the pilot drags: about the line the order plots (the crew pilot's burn without scatter), `half` degrees either side, at full
+// throttle; a coast plots no burn, so any direction, trimmed to the order's `trim`.
+function radarWedge(state, order) {
+  const o = RADAR_ORDERS[order] || RADAR_ORDERS.hold, p = radarCrew(state, 'pilot', 5, order, () => 0.5);
+  return p.burn ? { dir: p.burn.dir, half: o.wedge / 2, most: 1 } : { dir: null, half: 180, most: o.trim };
+}
+// A burn held to the wedge: its direction to the nearer edge when it is outside, its throttle to the most the order allows.
+function radarHold(burn, wedge) {
+  const d = wedge.dir === null ? 0 : radarTurnBy(wedge.dir, burn.dir);
+  const dir = wedge.dir === null ? radarNorm(burn.dir) : radarNorm(wedge.dir + Math.max(-wedge.half, Math.min(wedge.half, d)));
+  return { dir, throttle: Math.max(0, Math.min(wedge.most, burn.throttle)) };
+}
+// Where a burn the pilot puts really lands: up to SCATTER degrees off at level 0, on it at level 5.
+const radarScatterOf = level => RADAR.SCATTER * Math.max(0, 1 - level / 5);
+const radarScatter = (burn, level, rand) => ({ ...burn, dir: radarNorm(burn.dir + (rand() - 0.5) * 2 * radarScatterOf(level)) });
 
 // A cycle's orders when the crew work every post (the fight tool and the tests; the page puts the hand's own post in place of the crew's): the captain's
 // order on what the board shows, and each post at its level. `levels`: { pilot, gunner, engineer, comms }.

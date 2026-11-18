@@ -11,9 +11,9 @@ after(closeBrowser);
 
 // A hired game on a burn with an ordinary foe of a kind (as fightui.test.js sets one up), and the fight started as a contact starts it.
 const helpers = () => {
-  window.radarGame = (shipId = 'raider') => {
+  window.radarGame = (shipId = 'raider', post = 'gunner') => {
     __seed(1);
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.day += 30; hired().raidTold = true;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     __seed(2);
@@ -24,6 +24,7 @@ const helpers = () => {
     return st;
   };
   window.radarBattle = () => { startDuel({ kind: 'pirate' }, false); const e = G.nextEvent; G.nextEvent = null; openEvent(e); return G.radar; };
+  window.runQuiet = (g, seconds) => { const real = radarPauses; window.radarPauses = () => []; g.running = true; try { radarRun(g, seconds); } finally { window.radarPauses = real; g.running = false; } };  // fight time with no pause
   window.placeHer = km => { const st = G.radar.s.state; st.ships[1].p = { x: 0, y: km }; st.ships[1].v = { x: 0, y: -RADAR.CLOSING / RADAR.TURN_S }; };
 };
 const stopped = page => page.waitForFunction(() => G.radar && !G.radar.running && G.radar.why.length, null, { timeout: 30000, polling: 50 });
@@ -102,7 +103,8 @@ test('pressing a speed changes how far a frame advances the fight; the zoom butt
   for (const n of [1, 2, 16]) {
     await page.click(`[data-action="radarSpeed"][data-arg="${n}"]`);
     const moved = await ev(() => { const r = G.radar; r.running = true; const t = r.s.state.t; radarTick(0.05); r.running = false; return r.s.state.t - t; });
-    assert.ok(Math.abs(moved - 0.05 * n) < 1e-6, `at ${n}x a 0.05 s frame is ${0.05 * n} s of fight, not ${moved}`);
+    assert.ok(Math.abs(moved - 0.05 * n) < 1e-5,  // the clock is kept to a millionth of a second (radarAdvance)
+      `at ${n}x a 0.05 s frame is ${0.05 * n} s of fight, not ${moved}`);
   }
   assert.equal(await ev(() => G.radar.drawn.reach), 400, 'her at the long opening is in the widest zoom');
   await page.click('[data-action="radarZoom"][data-arg="50"]');
@@ -118,7 +120,7 @@ test('the timeline lists the last six events, the rest folded; hovering one ring
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.radarFight = true; radarGame(); radarBattle();
+    Settings.radarFight = true; radarGame('raider', 'engineer'); radarBattle();  // a post the crew work: the radar's own labels, with no part marks round her
     G.radar.feed = Array.from({ length: 8 }, (_, i) => ({ at: i * 5, cycle: 0, kind: 'miss', text: `Miss number ${i}.`, p: { x: i, y: 100 } }));
     radarTick(0);
   });
@@ -127,6 +129,7 @@ test('the timeline lists the last six events, the rest folded; hovering one ring
   assert.match(items[0], /Miss number 2\./);
   assert.match(items[5], /0:35 Miss number 7\./);
   assert.match(await page.textContent('.radar-log summary'), /The whole log/);
+  await page.locator('canvas.radar').scrollIntoViewIfNeeded();
   await page.hover('.radar-last li:nth-child(6)');
   assert.deepEqual(await ev(() => G.radar.ring.p), { x: 7, y: 100 });
   const box = await page.locator('canvas.radar').boundingBox();
@@ -197,5 +200,81 @@ test('the fight ends in today\'s ends: a crippled raider goes on to the dead-in-
   assert.ok(r.text.startsWith(r.line), `the dead-in-space scene, led by the crippled line: ${r.text.slice(0, 200)}`);
   assert.equal(r.fight, false);
   assert.deepEqual(errors, []);
+  await done();
+});
+
+// ---------- the hand's post on the radar (Task 10) ----------
+
+test('the gunner aims by a mark on her contact or by its button; aimed at her lock and fired, the hit lands on her lock', async () => {
+  const { page, ev, errors, done } = await open();
+  await ev(helpers);
+  await ev(() => { Settings.radarFight = true; radarGame('raider', 'gunner'); radarBattle(); placeHer(8); G.radar.s.state.foes[0].parts.drive.hp = 0; radarTick(0); });
+  const mark = await ev(() => G.radar.drawn.marks.find(m => m.part === 'drive'));
+  const box = await page.locator('canvas.radar').boundingBox();
+  await page.mouse.click(box.x + mark.x, box.y + mark.y);
+  assert.deepEqual(await ev(() => G.radar.orders.aim), { foe: 0, part: 'drive' }, 'a click on her drive mark aims there');
+  await page.click('[data-action="radarAimPart"][data-arg="0:lock"]');
+  assert.deepEqual(await ev(() => G.radar.orders.aim), { foe: 0, part: 'lock' });
+  const r = await ev(() => { const g = G.radar, max = g.s.state.foes[0].parts.lock.hp; runQuiet(g, RADAR.TURN_S); return { max, now: g.s.state.foes[0].parts.lock.hp, hits: g.feed.filter(e => e.kind === 'hit').map(e => e.text) }; });
+  assert.ok(r.now < r.max, `her lock took the hit: ${r.now} of ${r.max}`);
+  assert.ok(r.hits.length && r.hits.every(t => /lock/.test(t)), r.hits.join(' | '));
+  assert.deepEqual(errors, []);
+  await done();
+});
+
+test('the gun-or-PDC tile changes what fires from the next cycle, not this one; hold fire and a torpedo are the gunner\'s too', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { Settings.radarFight = true; radarGame('raider', 'gunner'); radarBattle(); runQuiet(G.radar, 5 * radarDt()); });
+  await page.click('[data-action="radarFc"][data-arg="pdc"]');
+  const r = await ev(() => { const g = G.radar, before = g.s.state.fc; runQuiet(g, (RADAR.SUB - 6) * radarDt()); const late = g.s.state.fc; runQuiet(g, 2 * radarDt()); return { before, late, next: g.s.state.fc, ordered: g.orders.fc }; });
+  assert.deepEqual(r, { before: 'gun', late: 'gun', next: 'pdc', ordered: 'pdc' });
+  await page.click('[data-action="radarFire"][data-arg="hold"]');
+  assert.equal(await ev(() => G.radar.orders.fire), false);
+  await page.click('[data-action="radarFire"][data-arg="fire"]');
+  assert.equal(await ev(() => G.radar.orders.fire), true);
+  await ev(() => { const st = G.radar.s.state; st.me.launcher = true; st.me.parts.launcher = st.me.parts.launcher || { hp: 10, max: 10 }; st.me.torps = 2; radarTick(0); });
+  await page.click('[data-action="radarTorp"]');
+  const t = await ev(() => { const g = G.radar; const ordered = g.orders.torp; runQuiet(g, radarDt()); return { ordered, left: g.s.state.me.torps, launched: g.feed.some(e => e.kind === 'launch' && e.side === 'us') }; });
+  assert.deepEqual(t, { ordered: 0, left: 1, launched: true });
+  await done();
+});
+
+test('the pilot drags the burn: outside the wedge it is held to its edge, and it lands within the hand\'s scatter of where it was put', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  const w = await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); radarTick(0); return { wedge: G.radar.wedge, geo: G.radar.geo, scatter: radarScatterOf(radarLevels().pilot) }; });
+  assert.ok(w.wedge.dir !== null, 'far out, the order plots a burn toward her');
+  const box = await page.locator('canvas.radar').boundingBox(), out = (w.wedge.dir + 90) * Math.PI / 180;  // a quarter turn off the plotted line: outside the wedge
+  await page.mouse.move(box.x + w.geo.cx + 60 * Math.sin(out), box.y + w.geo.cy - 60 * Math.cos(out));
+  await page.mouse.down();
+  await page.mouse.up();
+  const r = await ev(() => ({ plot: G.radar.hand.plot, burn: G.radar.orders.burn }));
+  const edge = (w.wedge.dir + w.wedge.half) % 360, off = d => ((d - edge + 540) % 360) - 180;
+  assert.ok(Math.abs(off(r.plot.dir)) < 1e-6, `held to the wedge's edge ${edge}, not ${r.plot.dir}`);
+  assert.ok(Math.abs(off(r.burn.dir)) <= w.scatter + 1e-6, `lands within the scatter: ${r.burn.dir}`);
+  await done();
+});
+
+test('the pilot chooses, when coasting, to turn to her or hold the heading; a post the crew work has no console', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); G.radar.hand.burn = null; G.radar.orders = radarCompose(G.radar); radarTick(0); });
+  await page.click('[data-action="radarCoast"][data-arg="hold"]');
+  assert.equal(await ev(() => G.radar.orders.turnTo), null);
+  await page.click('[data-action="radarCoast"][data-arg="turn"]');
+  assert.equal(await ev(() => { const st = G.radar.s.state; return G.radar.orders.turnTo === radarDir(st.ships[0].p, st.ships[1].p); }), true);
+  await ev(() => { G.radar = null; G.dialog = null; radarGame('raider', 'engineer'); radarBattle(); });
+  assert.equal(await page.textContent('.radar-post'), '');
+  await done();
+});
+
+test('an aim at a part she has lost moves to her hull at the next cycle, so the gun does not fire at nothing', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { Settings.radarFight = true; radarGame('raider', 'gunner'); radarBattle(); });
+  await page.click('[data-action="radarAimPart"][data-arg="0:drive"]');
+  const r = await ev(() => { const g = G.radar; g.s.state.foes[0].parts.drive.hp = 0; const before = { ...g.orders.aim }; runQuiet(g, RADAR.TURN_S); return { before, after: g.orders.aim }; });
+  assert.deepEqual(r, { before: { foe: 0, part: 'drive' }, after: { foe: 0, part: 'hull' } });
   await done();
 });

@@ -8,10 +8,12 @@
 // captain's order's cost under it, and the timeline; they are drawn once with the scene and kept up to date in place, each frame. The fight is kept with the
 // scene, as today's is, so nothing of it is in the save. The words are the 'scene:fight' lines under 'radar.' (hiredscenes.js). Loaded after radar.js.
 
-const RADAR_UI = { FADE: 3, LAST: 6, RATIO: 0.62, HOVER: 14 };  // cycles an event's mark fades over; events listed in words; the radar's height to its width; px a hover finds a thing within
+const RADAR_UI = { FADE: 3, LAST: 6, RATIO: 0.62, HOVER: 14, ARC: 40, ARC_MIN: 10, ARC_MAX: 180, WEDGE: 90 };  // cycles an event's mark fades over; events listed in words; the radar's height to its width; px a hover finds a thing within; px out to the PDC arc's ends; its narrowest and widest, degrees; px a full-throttle burn reaches
 const radarSay = (key, vars) => sceneSay('scene:fight', `radar.${key}`, vars);
 const radarFit = st => ({ accuracy: !!(st.outfits || {}).fcAccuracy, resilience: !!(st.outfits || {}).fcResilience });  // the fire-control upgrades, fitted on no ship yet (an outfit is a follow-up)
 const radarLevels = () => Object.fromEntries(HIRED_POSTS.map(p => [p, Math.min(5, roleSkill(POSTS[p].role))]));  // each post's crew level, for radarAuto
+const RADAR_POSTS = ['gunner', 'pilot'];  // the posts the hand works on the radar (Task 10); the crew work the others for now
+const radarPost = () => (RADAR_POSTS.includes(lockPost()) ? lockPost() : null);
 
 // The head start (an ambush, a run that fails) on the radar: today's volley (headStart), taken off the sides where they stand.
 function radarHeadStart(state, edge, band) {
@@ -21,18 +23,43 @@ function radarHeadStart(state, edge, band) {
 
 // The scene. The view's state (G.radar) is made with the fight and kept across redraws of the same fight; it opens paused, at the fastest speed.
 function radarFightEvent(s) {
-  if (!G.radar || G.radar.s !== s) { G.radar = { s, orders: {}, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], zoom: null, feed: [], hover: null, ring: null, shown: {} }; radarPlan(G.radar); }
+  if (!G.radar || G.radar.s !== s) {
+    G.radar = { s, orders: {}, crew: {}, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], zoom: null, feed: [], hover: null, ring: null, shown: {},
+      post: radarPost(), hand: { aim: { foe: 0, part: 'hull' }, fc: 'gun', fire: true, torp: false, arc: null, coast: 'turn', plot: null, burn: null }, wedge: null, drag: null };
+    radarPlan(G.radar);
+  }
   return { title: fightSay('title'), personal: true, via: 'crew', owner: 'you', fight: s, board: String(radarPanelHtml(G.radar)), text: s.state.log.join('</p><p>'), choices: [] };
 }
 
 // A cycle's plan, at its start: the crew's orders on what the board shows, where the board sees her this cycle (an offset off her true place, kept so her
 // contact moves with her), and what the captain's order costs the gun.
 function radarPlan(r) {
-  const st = r.s.state;
-  r.orders = radarAuto(st, radarLevels(), Math.random);
+  const st = r.s.state, h = r.hand;
+  r.crew = radarAuto(st, radarLevels(), Math.random);
   r.seen = radarSeen(st, Math.random).map((c, i) => (c ? { x: c.p.x - st.ships[i + 1].p.x, y: c.p.y - st.ships[i + 1].p.y } : null));
-  r.cost = radarCost(st, r.orders.order);
+  r.cost = radarCost(st, r.crew.order);
+  // the hand's post: a torpedo is ordered a cycle at a time; the aim moves off one of hers who is out; the pilot's burn is the order's plot, landing by the hand's scatter, until it is dragged; the aim moves to her hull once its part is gone
+  h.torp = false;
+  if (radarOut(st.foes[h.aim.foe] || { armor: 0 })) h.aim = { foe: Math.max(0, radarNearest(st)), part: 'hull' };
+  else if (h.aim.part !== 'hull' && !(st.foes[h.aim.foe].parts[h.aim.part].hp > 0)) h.aim = { ...h.aim, part: 'hull' };  // a part shot away: on to her hull, so the gun does not fire at nothing
+  r.wedge = radarWedge(st, r.crew.order);
+  h.plot = r.crew.burn ? { dir: r.wedge.dir, throttle: Math.min(r.wedge.most, r.crew.burn.throttle) } : null;
+  h.burn = h.plot ? radarScatter(h.plot, radarLevels()[r.post] || 0, Math.random) : null;
+  r.orders = radarCompose(r);
 }
+
+// The cycle's orders: the crew's, with the hand's own post's in place of its crew's. The gunner's aim, fire control, fire, arc and torpedo; the pilot's burn,
+// and when coasting whether to turn to her or hold the facing.
+function radarCompose(r) {
+  const o = { ...r.crew }, h = r.hand, st = r.s.state;
+  if (r.post === 'gunner') Object.assign(o, { aim: { ...h.aim }, fc: h.fc, fire: h.fire, pdcArc: h.arc || r.crew.pdcArc, torp: h.torp ? h.aim.foe : null, level: radarLevels().gunner });
+  if (r.post === 'pilot') {
+    const i = radarNearest(st);
+    o.burn = h.burn; o.turnTo = h.burn || h.coast !== 'turn' || i < 0 ? null : radarDir(st.ships[0].p, st.ships[i + 1].p);
+  }
+  return o;
+}
+const radarHandSet = (r, change) => { Object.assign(r.hand, change); r.orders = radarCompose(r); radarPaint(r); };
 const radarSeenNow = r => r.s.state.foes.map((f, i) => { const ship = r.s.state.ships[i + 1], off = r.seen[i]; return off ? { p: { x: ship.p.x + off.x, y: ship.p.y + off.y }, v: { ...ship.v }, a: { ...ship.a } } : null; });
 
 // ---------- real time ----------
@@ -125,6 +152,7 @@ function radarPanelHtml(r) {
     <div class="radar-sit" aria-live="polite">${radarSitHtml(r)}</div>
     <canvas class="radar" role="img" aria-label="${radarSay('radar')}"></canvas>
     <p class="radar-cost hint">${radarCostText(r)}</p>
+    <div class="radar-post">${radarPostHtml(r)}</div>
     <div class="radar-line">${radarLineHtml(r)}</div>
   </div>`;
 }
@@ -154,6 +182,34 @@ function radarSitHtml(r) {
 
 const radarCostText = r => (r.cost ? radarSay(r.cost.bears ? 'cost.bears' : `cost.${r.cost.why}`, { order: radarSay(`order.${r.orders.order}`) }) : '');
 
+// The hand's post, under the radar: its choices as tiles, clearly on or off, and its readouts. Nothing for a post the crew work.
+function radarPostHtml(r) {
+  if (!r.post) return '';
+  const st = r.s.state, hd = r.hand, on = b => (b ? raw('class="on" aria-pressed="true"') : raw('aria-pressed="false"')), level = radarLevels()[r.post] || 0;
+  const row = (label, buttons) => h`<div class="choice-row" role="group" aria-label="${label}"><span class="row-label">${label}</span><span class="row-picks">${buttons}</span></div>`;
+  const read = items => h`<p class="radar-read">${items.map(x => h`<span>${x}</span>`)}</p>`;
+  const head = h`<div class="group">${radarSay('console', { post: POSTS[r.post].name })}</div>`;
+  if (r.post === 'gunner') {
+    const aims = st.foes.map((f, i) => (radarOut(f) ? '' : row(i ? fightSay('consort') : theShip(r.s.foe), ['hull', 'weapons', 'drive', 'lock', ...(f.parts.launcher ? ['launcher'] : [])]
+      .map(part => h`<button data-action="radarAimPart" data-arg="${i}:${part}" ${on(hd.aim.foe === i && hd.aim.part === part)}>${fightSay(`aim.${part}`)}</button>`))));
+    const sol = radarProject(st, r.orders, 1, radarSeenNow(r)).solution, foe = hd.aim.foe + 1;
+    const torp = st.me.launcher && st.me.torps > 0 ? row(radarSay('torp'), h`<button data-action="radarTorp" ${on(hd.torp)}>${radarSay(hd.torp ? 'torp.ordered' : 'torp.fire', { n: st.me.torps })}</button>`) : '';
+    return h`${head}${aims}
+      ${row(radarSay('fc'), ['gun', 'pdc'].map(k => h`<button data-action="radarFc" data-arg="${k}" ${on(hd.fc === k)}>${radarSay(`fc.${k}`)}</button>`))}
+      ${row(radarSay('fire'), ['fire', 'hold'].map(k => h`<button data-action="radarFire" data-arg="${k}" ${on(hd.fire === (k === 'fire'))}>${radarSay(`fire.${k}`)}</button>`))}
+      ${torp}
+      ${read([radarSay('read.solution', { lo: Math.round(100 * sol[0]), hi: Math.round(100 * sol[1]) }), radarSay('read.spread', { km: st.ships[foe] ? radarSpread(st, level, foe).toFixed(1) : '-' }), radarSay('read.heat', { heat: Math.round(st.heat * 10) / 10, cap: RADAR.HEAT_CAP })])}
+      <p class="hint">${radarSay('drag.gunner')}</p>`;
+  }
+  const me = st.ships[0], i = radarNearest(st), cpa = radarProject(st, r.orders, 4, radarSeenNow(r)).cpa, deg = d => String(Math.round(d)).padStart(3, '0');
+  return h`${head}
+    ${row(radarSay('coast'), ['turn', 'hold'].map(k => h`<button data-action="radarCoast" data-arg="${k}" ${on(hd.coast === k)}>${radarSay(`coast.${k}`)}</button>`))}
+    ${read([hd.burn ? radarSay('read.burn', { dir: deg(hd.burn.dir), pct: Math.round(100 * hd.burn.throttle) }) : radarSay('read.coasting'), radarSay('read.facing', { dir: deg(me.facing) }),
+      i >= 0 && radarBears(st, i + 1) ? radarSay('read.bears') : radarSay('read.nobear'), cpa ? radarSay('closest', { lo: Math.round(cpa.min), hi: Math.round(cpa.max), at: cpa.at.toFixed(1) }) : '',
+      radarSay('read.scatter', { deg: Math.round(radarScatterOf(level)) }), radarSay('read.speed', { v: Math.hypot(me.v.x, me.v.y).toFixed(2) })].filter(Boolean))}
+    <p class="hint">${radarSay('drag.pilot')}</p>`;
+}
+
 // What has happened: a tick for each event along the fight so far, the last few in words with their times, and the whole log folded under them.
 const RADAR_TICKS = { launch: 'launch', pdcKill: 'kill', hit: 'given', impact: 'given', hitUs: 'taken', miss: 'miss', missUs: 'miss', order: 'order' };
 function radarLineHtml(r) {
@@ -169,6 +225,7 @@ function radarPaint(r) {
   const el = UI.el, put = (sel, html) => { const n = el.querySelector(sel); if (n && r.shown[sel] !== html) { n.innerHTML = html; r.shown[sel] = html; } };
   put('.radar-sit', String(radarSitHtml(r)));
   put('.radar-cost', String(radarCostText(r)));
+  put('.radar-post', String(radarPostHtml(r)));
   put('.radar-line', String(radarLineHtml(r)));
   const c = el.querySelector('canvas.radar');
   if (c) radarDraw(c, r);
@@ -192,6 +249,9 @@ function radarDraw(c, r) {
     c.dataset.bound = '1';
     c.addEventListener('mousemove', e => { if (G.radar) { const b = c.getBoundingClientRect(); G.radar.hover = { x: e.clientX - b.left, y: e.clientY - b.top }; } });
     c.addEventListener('mouseleave', () => { if (G.radar) G.radar.hover = null; });
+    c.addEventListener('mousedown', e => { const b = c.getBoundingClientRect(); if (G.radar) radarPress(G.radar, e.clientX - b.left, e.clientY - b.top); });
+    window.addEventListener('mousemove', e => { const b = c.getBoundingClientRect(); if (G.radar && G.radar.drag) radarDrag(G.radar, e.clientX - b.left, e.clientY - b.top); });
+    window.addEventListener('mouseup', () => { if (G.radar && G.radar.drag) radarRelease(G.radar); });
   }
   const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
   const st = r.s.state, me = st.ships[0], reach = radarReach(r), cx = w / 2, cy = hgt / 2, k = (Math.min(w, hgt) / 2 - 10) / reach;
@@ -208,6 +268,23 @@ function radarDraw(c, r) {
   for (const side of [-1, 1]) { const d = dir(me.facing + side * RADAR.BEAR, reach * k); g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + d.x, cy + d.y); g.stroke(); }
   const arc = st.pdcArc, a0 = (arc.dir - arc.width / 2 - 90) * Math.PI / 180, a1 = (arc.dir + arc.width / 2 - 90) * Math.PI / 180;
   g.fillStyle = st.fc === 'pdc' ? 'rgba(74,163,255,0.25)' : 'rgba(74,163,255,0.1)'; g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, Math.max(4, RADAR.PDC_R * k), a0, a1); g.closePath(); g.fill();
+  const handles = [], marks = [];
+  if (r.post === 'gunner') {  // the arc's two ends, at a fixed size so they can be taken at any zoom; dashed while the fire control is on the gun (the PDC stowed)
+    const ga = r.hand.arc || r.orders.pdcArc || arc;
+    g.strokeStyle = RADAR_INK.ours; if (st.fc !== 'pdc') g.setLineDash([3, 3]); g.beginPath(); g.arc(cx, cy, RADAR_UI.ARC, (ga.dir - ga.width / 2 - 90) * Math.PI / 180, (ga.dir + ga.width / 2 - 90) * Math.PI / 180); g.stroke(); g.setLineDash([]);
+    for (const edge of [-1, 1]) { const d = dir(ga.dir + edge * ga.width / 2, RADAR_UI.ARC), q = { x: cx + d.x, y: cy + d.y }; g.fillStyle = RADAR_INK.ours; g.beginPath(); g.arc(q.x, q.y, 4, 0, 2 * Math.PI); g.fill(); handles.push({ ...q, edge }); hovers.push({ ...q, text: radarSay('arc.edge') }); }
+  }
+  if (r.post === 'pilot') {  // the order's wedge, the burn put and where it lands, and the scatter either side of it
+    const R = RADAR_UI.WEDGE, hd = r.hand, w = r.wedge;
+    if (w && w.dir !== null) { g.fillStyle = 'rgba(207,227,255,0.08)'; g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, R, (w.dir - w.half - 90) * Math.PI / 180, (w.dir + w.half - 90) * Math.PI / 180); g.closePath(); g.fill(); const d = dir(w.dir, R); hovers.push({ x: cx + d.x, y: cy + d.y, text: radarSay('wedge') }); }
+    const ray = (b, dash, color) => { const d = dir(b.dir, R * Math.max(0.15, b.throttle)); g.strokeStyle = color; g.setLineDash(dash); g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + d.x, cy + d.y); g.stroke(); g.setLineDash([]); return { x: cx + d.x, y: cy + d.y }; };
+    if (hd.plot) {
+      const q = ray(hd.plot, [4, 3], RADAR_INK.track), sc = radarScatterOf(radarLevels().pilot || 0);
+      hovers.push({ ...q, text: radarSay('plot') });
+      if (sc > 0) for (const side of [-1, 1]) { const d = dir(hd.plot.dir + side * sc, R * Math.max(0.15, hd.plot.throttle)); g.strokeStyle = RADAR_INK.dim; g.beginPath(); g.arc(cx + d.x, cy + d.y, 4, 0, 2 * Math.PI); g.stroke(); }
+    }
+    if (hd.burn) hovers.push({ ...ray(hd.burn, [], RADAR_INK.us), text: radarSay('landed') });
+  }
   // the projected tracks, a dot a cycle, hers in their bands, and closest approach
   const seen = radarSeenNow(r), proj = radarProject(st, r.orders, 4, seen);
   proj.tracks.forEach((track, t) => track.forEach((pt, n) => {
@@ -234,6 +311,16 @@ function radarDraw(c, r) {
     const d = dir(ship.facing, 9); g.strokeStyle = RADAR_INK.her; g.beginPath(); g.moveTo(q.x, q.y); g.lineTo(q.x + d.x, q.y + d.y); g.stroke();
     const e = radarError(st) * k; if (e > 3) { g.strokeStyle = 'rgba(255,106,74,0.5)'; g.beginPath(); g.arc(q.x, q.y, e, 0, 2 * Math.PI); g.stroke(); }
     g.globalAlpha = 1;
+    if (r.post === 'gunner' && !out) {  // her parts as marks on her contact: a click on one aims there
+      const parts = ['hull', 'weapons', 'drive', 'lock', ...(f.parts.launcher ? ['launcher'] : [])], at = { hull: [0, 0], weapons: [0, -12], drive: [0, 12], lock: [-12, 0], launcher: [12, 0] };
+      for (const part of parts) {
+        const m = { x: q.x + at[part][0], y: q.y + at[part][1], foe: i, part }, aimed = r.hand.aim.foe === i && r.hand.aim.part === part;
+        if (part !== 'hull') { g.fillStyle = (f.parts[part].hp > 0 ? RADAR_INK.warn : RADAR_INK.dim); g.fillRect(m.x - 3, m.y - 3, 6, 6); }
+        if (aimed) { g.strokeStyle = RADAR_INK.us; g.beginPath(); g.arc(m.x, m.y, 7, 0, 2 * Math.PI); g.stroke(); }
+        marks.push(m);
+        hovers.push({ ...m, text: part === 'hull' ? radarSay('mark.hull', { ship: i ? fightSay('consort') : theShip(r.s.foe), hp: f.armor, max: f.maxArmor }) : radarSay('mark', { part: fightSay(`part.${part}`), hp: f.parts[part].hp, max: f.parts[part].max }) });
+      }
+    }
     const say = radarSay('her', { ship: i ? fightSay('consort') : theShip(r.s.foe), km: Math.round(radarRange(st, i + 1)) });
     if (!i) text(say, q.x + 8, q.y + 4, RADAR_INK.her, 10, true); else hovers.push({ ...q, text: say });
   });
@@ -257,10 +344,38 @@ function radarDraw(c, r) {
   if (!r.running && r.why.length) text(r.why.map(x => radarSay(`why.${x}`)).join(' '), 8, 16 + labels.length * 14, RADAR_INK.warn, 11, true);
   const near = r.hover && hovers.filter(o => Math.hypot(o.x - r.hover.x, o.y - r.hover.y) <= RADAR_UI.HOVER).sort((a, b) => Math.hypot(a.x - r.hover.x, a.y - r.hover.y) - Math.hypot(b.x - r.hover.x, b.y - r.hover.y))[0];
   if (near) { g.font = font(11); const tw = g.measureText(near.text).width, x = Math.min(w - tw - 10, near.x + 10), y = Math.max(14, near.y - 10); g.fillStyle = 'rgba(5,10,17,0.85)'; g.fillRect(x - 4, y - 11, tw + 8, 15); text(near.text, x, y); }
-  r.drawn = { reach, hover: near ? near.text : null, says: [...said, ...hovers.map(o => o.text)] };  // for the tests: the zoom in use, the label the hover shows, and every word the radar has on it
+  r.geo = { cx, cy, R: Math.min(w, hgt) / 2 - 10 };  // where the radar's centre is, for a press and a drag
+  r.drawn = { reach, hover: near ? near.text : null, says: [...said, ...hovers.map(o => o.text)], marks, handles };  // for the tests: the zoom in use, the label the hover shows, and every word the radar has on it
 }
 
 // ---------- the controls ----------
+
+// A press on the radar: the gunner aims at the part mark under it or takes an end of the PDC's arc; the pilot puts the burn where it is dragged.
+const radarAngle = (r, x, y) => radarNorm(Math.atan2(x - r.geo.cx, r.geo.cy - y) * 180 / Math.PI);
+function radarPress(r, x, y) {
+  if (!r.geo || !r.drawn) return;
+  const near = (list, d) => list.find(m => Math.hypot(m.x - x, m.y - y) <= d);
+  if (r.post === 'gunner') {
+    const m = near(r.drawn.marks, 6);
+    if (m) { radarHandSet(r, { aim: { foe: m.foe, part: m.part } }); return; }
+    const end = near(r.drawn.handles, 9);
+    if (end) r.drag = { kind: 'arc', edge: end.edge };
+  }
+  if (r.post === 'pilot') { r.drag = { kind: 'burn' }; radarDrag(r, x, y); }
+}
+function radarDrag(r, x, y) {
+  const a = radarAngle(r, x, y);
+  if (r.drag.kind === 'arc') {
+    const now = r.hand.arc || r.orders.pdcArc, lo = r.drag.edge < 0 ? a : now.dir - now.width / 2, hi = r.drag.edge > 0 ? a : now.dir + now.width / 2;
+    const width = Math.max(RADAR_UI.ARC_MIN, Math.min(RADAR_UI.ARC_MAX, radarNorm(hi - lo)));
+    radarHandSet(r, { arc: { dir: radarNorm(r.drag.edge > 0 ? hi - width / 2 : lo + width / 2), width } });
+  } else if (r.wedge) { r.hand.plot = radarHold({ dir: a, throttle: Math.min(1, Math.hypot(x - r.geo.cx, y - r.geo.cy) / RADAR_UI.WEDGE) }, r.wedge); radarPaint(r); }
+}
+// Let go: the burn put lands by the hand's scatter, and the ship flies it from the next step.
+function radarRelease(r) {
+  if (r.drag.kind === 'burn' && r.hand.plot) radarHandSet(r, { burn: radarScatter(r.hand.plot, radarLevels().pilot || 0, Math.random) });
+  r.drag = null;
+}
 
 function radarToggle() { const r = G.radar; if (!r) return; r.running = !r.running; if (r.running) r.why = []; radarPaintBar(r); }
 Mods.register({
@@ -270,6 +385,12 @@ Mods.register({
     M.action('radarPlay', () => radarToggle());
     M.action('radarSpeed', n => { if (G.radar) { G.radar.speed = Number(n); radarPaintBar(G.radar); } });
     M.action('radarZoom', km => { if (G.radar) { G.radar.zoom = km === 'auto' ? null : Number(km); radarPaintBar(G.radar); } });
+    // the hand's post: the gunner's aim, fire control, fire or hold, and torpedo; the pilot's turn or hold when coasting
+    M.action('radarAimPart', arg => { const [foe, part] = String(arg).split(':'); if (G.radar) radarHandSet(G.radar, { aim: { foe: Number(foe), part } }); });
+    M.action('radarFc', k => { if (G.radar) radarHandSet(G.radar, { fc: k === 'pdc' ? 'pdc' : 'gun' }); });
+    M.action('radarFire', k => { if (G.radar) radarHandSet(G.radar, { fire: k === 'fire' }); });
+    M.action('radarTorp', () => { if (G.radar) radarHandSet(G.radar, { torp: !G.radar.hand.torp }); });
+    M.action('radarCoast', k => { if (G.radar) radarHandSet(G.radar, { coast: k === 'hold' ? 'hold' : 'turn' }); });
   },
 });
 // Space pauses and resumes, wherever the focus is, and does not also press a focused button (a button is pressed on Space's keyup)
