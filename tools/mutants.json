@@ -43,5 +43,14 @@
     "by": [
       "the character page (you) shows the hand's savings from the game"
     ]
+  },
+  {
+    "name": "radar-never-pauses",
+    "file": "js/radarui.js",
+    "find": "if (why.length) { r.running = false; r.why = why; radarPaintBar(r); return true; }",
+    "replace": "if (false) { r.running = false; r.why = why; radarPaintBar(r); return true; }",
+    "by": [
+      "pressing play at 16x runs the fight until she arms and then launches, and it pauses each time saying so"
+    ]
   }
 ]

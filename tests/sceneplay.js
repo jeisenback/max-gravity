@@ -642,6 +642,22 @@ const playScenes = () => {
       { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[1].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null; s.state.turn = DECK.NAVY_TURNS - 1;
         deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
+      // the fight on the radar (radarui.js, #1345): its page paused and running, every reason it stops, every order and its cost, each event's line on the
+      // timeline, and every word the radar draws or shows on hover, from a state set by hand
+      { const was = Settings.radarFight; Settings.radarFight = true;
+        try {
+          const s = start('corsair').fight, r = G.radar, st = s.state, torp = (id, side, p, target) => ({ id, side, p, v: { x: 0, y: 0 }, target, warned: false });
+          st.ships[0].v = { x: 0.5, y: 0 }; st.ships[1].p = { x: 0, y: 30 }; st.armed[0] = true; st.torps.push(torp(90, 'her', { x: 0, y: 20 }, 0), torp(91, 'her', { x: 6, y: 22 }, 0), torp(92, 'us', { x: 0, y: 5 }, 1));
+          r.feed = Array.from({ length: 7 }, (_, i) => ({ at: i, cycle: 0, kind: 'miss', text: radarEventText(s, { kind: 'miss', km: 30 + i }), p: { x: 0, y: 30 } }));
+          const page = () => { const d = document.createElement('div'); d.innerHTML = String(radarPanelHtml(r)); radarDraw(document.createElement('canvas'), r); rec.plays.push({ radar: d.textContent.replace(/\s+/g, ' ').trim(), aria: [...d.querySelectorAll('[aria-label]')].map(x => x.getAttribute('aria-label')), drawn: r.drawn.says }); };
+          r.running = false; r.why = ['armed', 'launched', 'pdcSoon', 'hit', 'call', 'gunRange', 'plan']; page();
+          r.running = true; r.why = []; st.ships[1].v = { x: 0, y: 1 }; st.armed[0] = false; st.torps = []; r.zoom = 50; page();
+          for (const order of Object.keys(RADAR_ORDERS)) { r.orders = { ...r.orders, order }; r.cost = { endFacing: 0, bears: order === 'hold', why: order === 'hold' ? null : 'driveAway' }; rec.plays.push({ order: String(radarSitHtml(r)).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(), cost: radarCostText(r) }); }
+          const events = [{ kind: 'launch', side: 'her', foe: 0 }, { kind: 'launch', side: 'us', foe: 0 }, { kind: 'armed', foe: 1, n: 2 }, { kind: 'pdcKill' }, { kind: 'pdcSoon' }, { kind: 'hit', foe: 0, part: 'lock', dmg: 9, km: 18.4 }, { kind: 'miss', foe: 0, km: 22 },
+            { kind: 'hitUs', foe: 0, part: 'hull', dmg: 12 }, { kind: 'missUs', foe: 1 }, { kind: 'impact', side: 'her', dmg: 70 }, { kind: 'impact', side: 'us', dmg: 80 }, { kind: 'order', from: 'hold', to: 'evade' }, { kind: 'overheat' }, { kind: 'gunRange', foe: 0 }, { kind: 'alongside', foe: 0 }, { kind: 'cycle' }];
+          rec.plays.push({ timeline: events.map(e => radarEventText(s, e)) });
+        } finally { Settings.radarFight = was; G.radar = null; }
+      }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);
   }

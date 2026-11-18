@@ -4,7 +4,7 @@
 // changes nothing it is given and takes its dice as `rand`; each call takes the fight's state and returns the next with the facts of the step. Space is km on a
 // plane centred where the fight began, our ship first in `ships`; a direction is in degrees clockwise from the top of the radar. Time is fixed steps, SUB to an
 // order cycle of TURN_S seconds, each resolved in one order (move, sensors, fire control, fire, point defence, damage), so that how a fight is advanced (a cycle
-// at once, small frames at 16x, a pause between) does not change it. Nothing in the game calls this yet: the scene (radarui.js) comes in Part 2. Loaded after fight.js.
+// at once, small frames at 16x, a pause between) does not change it. The scene is radarui.js. Loaded after fight.js.
 
 const RADAR = {
   TURN_S: 20,          // seconds of fight time in an order cycle: orders, power and comms are set a cycle at a time
@@ -15,7 +15,7 @@ const RADAR = {
   CLOSING: 12,         // km a cycle she closes from the meeting
   JINK: 60,            // km: she jinks only inside this
   ESCAPE: 400,         // km: opening past this is away
-  ZOOM: [50, 150, 400],  // km across the radar's three zooms
+  ZOOM: [50, 150, 400],  // km from our ship to the radar's edge, at its three zooms
   TURN: 90,            // degrees the hull turns in a cycle, at most
   GATE: 30,            // degrees off the burn's direction inside which the drive lights
   ACCEL: 0.02,         // km/s/s at full throttle on two units of drive power (the builder's: a 20 s burn is 0.4 km/s, 8 km a cycle)

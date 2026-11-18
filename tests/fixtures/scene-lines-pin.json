@@ -28197,6 +28197,94 @@
     "log": "Turn 5: nobody gives ground. None of them are where you stand.",
     "end": true,
     "close": "Turn 5: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund."
+   },
+   {
+    "radar": "Play 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Paused: She's loading torpedoes. She's launched. A torpedo reaches the point defence this cycle. We're hit. Someone's calling you. She's in gun range. The captain's changed the plan. Her range 30 km, closingShe's arming 2 inbound, first in 0.5 to 0.5 cycles Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
+    "aria": [
+     "Fight controls",
+     "The radar: our ship at the centre, her contact, the projected tracks and the torpedoes."
+    ],
+    "drawn": [
+     "50 km to the edge",
+     "Torpedo, 0.5 to 0.5 cycles out",
+     "The Pirate \"Bitter Grin\", 30 km",
+     "Closest 6 to 23 km in about 1.4 cycles",
+     "She's loading torpedoes. She's launched. A torpedo reaches the point defence this cycle. We're hit. Someone's calling you. She's in gun range. The captain's changed the plan.",
+     "Us in 1 cycle",
+     "Us in 2 cycles",
+     "Us in 3 cycles",
+     "Us in 4 cycles",
+     "Her in 1 cycle",
+     "Her in 2 cycles",
+     "Her in 3 cycles",
+     "Her in 4 cycles",
+     "Torpedo, 0.5 to 0.5 cycles out",
+     "Ours, 0.4 to 0.5 cycles to her",
+     "Us at the end of the cycle",
+     "Us, heading 000, 0.50 km/s"
+    ]
+   },
+   {
+    "radar": "Pause 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
+    "aria": [
+     "Fight controls",
+     "The radar: our ship at the centre, her contact, the projected tracks and the torpedoes."
+    ],
+    "drawn": [
+     "50 km to the edge",
+     "The Pirate \"Bitter Grin\", 30 km",
+     "Closest 30 to 31 km now, and opening",
+     "Us in 1 cycle",
+     "Us in 2 cycles",
+     "Us in 3 cycles",
+     "Us in 4 cycles",
+     "Her in 1 cycle",
+     "Her in 2 cycles",
+     "Her in 3 cycles",
+     "Her in 4 cycles",
+     "Us at the end of the cycle",
+     "Us, heading 000, 0.50 km/s"
+    ]
+   },
+   {
+    "order": "Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: close and engage Hull 100%, hers 100%, heat 0 of 5",
+    "cost": "To close and engage, the drive points away from her, and the gun won't bear at the end of the cycle."
+   },
+   {
+    "order": "Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5",
+    "cost": "To hold at 20 km, the gun still bears on her at the end of the cycle."
+   },
+   {
+    "order": "Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: open the range Hull 100%, hers 100%, heat 0 of 5",
+    "cost": "To open the range, the drive points away from her, and the gun won't bear at the end of the cycle."
+   },
+   {
+    "order": "Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: break off Hull 100%, hers 100%, heat 0 of 5",
+    "cost": "To break off, the drive points away from her, and the gun won't bear at the end of the cycle."
+   },
+   {
+    "order": "Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: evade Hull 100%, hers 100%, heat 0 of 5",
+    "cost": "To evade, the drive points away from her, and the gun won't bear at the end of the cycle."
+   },
+   {
+    "timeline": [
+     "The Pirate \"Bitter Grin\" launches.",
+     "Torpedo away.",
+     "Her consort is loading 2.",
+     "The point defence gets one.",
+     "One of hers will reach the point defence this cycle.",
+     "Hit on her lock at 18 km, 9.",
+     "A miss at 22 km.",
+     "The Pirate \"Bitter Grin\" hits our hull, 12.",
+     "Her consort fires and misses.",
+     "A torpedo hits our hull, 70.",
+     "Our torpedo hits her, 80.",
+     "Captain Vance: evade.",
+     "The gun locks with heat.",
+     "The Pirate \"Bitter Grin\" is in gun range.",
+     "The Pirate \"Bitter Grin\" comes alongside.",
+     null
+    ]
    }
   ]
  },
