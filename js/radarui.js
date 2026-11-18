@@ -38,9 +38,10 @@ function radarPlan(r) {
   r.crew = radarAuto(st, radarLevels(), Math.random);
   r.seen = radarSeen(st, Math.random).map((c, i) => (c ? { x: c.p.x - st.ships[i + 1].p.x, y: c.p.y - st.ships[i + 1].p.y } : null));
   r.cost = radarCost(st, r.crew.order);
-  // the hand's post: a torpedo is ordered a cycle at a time; the aim moves off one of hers who is out; the pilot's burn is the order's plot, landing by the hand's scatter, until it is dragged
+  // the hand's post: a torpedo is ordered a cycle at a time; the aim moves off one of hers who is out; the pilot's burn is the order's plot, landing by the hand's scatter, until it is dragged; the aim moves to her hull once its part is gone
   h.torp = false;
   if (radarOut(st.foes[h.aim.foe] || { armor: 0 })) h.aim = { foe: Math.max(0, radarNearest(st)), part: 'hull' };
+  else if (h.aim.part !== 'hull' && !(st.foes[h.aim.foe].parts[h.aim.part].hp > 0)) h.aim = { ...h.aim, part: 'hull' };  // a part shot away: on to her hull, so the gun does not fire at nothing
   r.wedge = radarWedge(st, r.crew.order);
   h.plot = r.crew.burn ? { dir: r.wedge.dir, throttle: Math.min(r.wedge.most, r.crew.burn.throttle) } : null;
   h.burn = h.plot ? radarScatter(h.plot, radarLevels()[r.post] || 0, Math.random) : null;

@@ -464,3 +464,13 @@ test('advanced a step\'s time at a time, the fight runs a step each time and nev
     assert.equal(st.step, k, `at ${st.t} s`);
   }
 });
+
+test('the gun\'s solution is for the one it is aimed at: with a pair, aimed at the one that bears, it is not the other\'s nothing', () => {
+  const { radarProject } = api;
+  let s = fight({ foes: [side(150, 1), side(150, 1)] });
+  s = place(s, { x: 0, y: -15 }, 1);  // the first astern, out of the gun's bearing
+  s = place(s, { x: 0, y: 15 }, 2);   // her consort dead ahead
+  assert.deepEqual(plain(radarProject(s, {}, 1).solution), [0, 0], 'unaimed: the first of hers, who does not bear');
+  const aimed = plain(radarProject(s, { aim: { foe: 1, part: 'hull' } }, 1).solution);
+  assert.ok(aimed[1] > 0, `aimed at her consort, who bears: ${aimed}`);
+});

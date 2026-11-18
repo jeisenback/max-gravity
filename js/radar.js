@@ -336,8 +336,9 @@ function radarProject(state, orders, cycles = 4, seen = null) {
     const b = t.target === 0 ? 0 : band(best.t), spread = b / RADAR.TORP_SPEED / RADAR.TURN_S;
     return { torp: t.id, side: t.side, at: [Math.max(0, best.t / RADAR.TURN_S - spread), best.t / RADAR.TURN_S + spread], hits: best.d + b <= RADAR.TORP_HIT ? 'yes' : best.d - b <= RADAR.TORP_HIT ? 'may' : 'no' };
   });
-  const s = first >= 0 ? radarSpread(state, o.level || 0, first + 1) : Infinity, chance = r => Math.min(1, (Math.max(0, r) / s) ** 2);
-  const solution = first >= 0 && radarBears(state, first + 1) ? [chance(RADAR.HIT_R - e), chance(RADAR.HIT_R)] : [0, 0];
+  const aimed = o.aim && hers[o.aim.foe] && !radarOut(state.foes[o.aim.foe]) ? o.aim.foe : first;  // the solution is for the one the gun is aimed at, else the first of hers the board sees
+  const s = aimed >= 0 ? radarSpread(state, o.level || 0, aimed + 1) : Infinity, chance = r => Math.min(1, (Math.max(0, r) / s) ** 2);
+  const solution = aimed >= 0 && radarBears(state, aimed + 1) ? [chance(RADAR.HIT_R - e), chance(RADAR.HIT_R)] : [0, 0];
   return { tracks, cpa, impacts, solution };
 }
 

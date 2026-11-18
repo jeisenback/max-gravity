@@ -268,3 +268,13 @@ test('the pilot chooses, when coasting, to turn to her or hold the heading; a po
   assert.equal(await page.textContent('.radar-post'), '');
   await done();
 });
+
+test('an aim at a part she has lost moves to her hull at the next cycle, so the gun does not fire at nothing', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { Settings.radarFight = true; radarGame('raider', 'gunner'); radarBattle(); });
+  await page.click('[data-action="radarAimPart"][data-arg="0:drive"]');
+  const r = await ev(() => { const g = G.radar; g.s.state.foes[0].parts.drive.hp = 0; const before = { ...g.orders.aim }; runQuiet(g, RADAR.TURN_S); return { before, after: g.orders.aim }; });
+  assert.deepEqual(r, { before: { foe: 0, part: 'drive' }, after: { foe: 0, part: 'hull' } });
+  await done();
+});
