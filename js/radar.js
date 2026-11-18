@@ -96,6 +96,12 @@ function radarPdcKill(arc, from, to, centre = { x: 0, y: 0 }, power = 2) {
   return inside ? 1 - Math.exp(-inside * RADAR.PDC_KILL * (power / 2) / Math.max(1, arc.width)) : 0;
 }
 
+// How near the origin a segment passes: a torpedo's motion relative to its target over a step, so a glancing pass between its ends is seen.
+function radarNear(a, b) {
+  const dx = b.x - a.x, dy = b.y - a.y, len2 = dx * dx + dy * dy, f = len2 ? Math.max(0, Math.min(1, -(a.x * dx + a.y * dy) / len2)) : 0;
+  return Math.hypot(a.x + dx * f, a.y + dy * f);
+}
+
 // Where a torpedo steers: at its target's track, led by the time it takes to get there.
 const radarLead = (torp, ship) => { const t = radarDist(torp.p, ship.p) / RADAR.TORP_SPEED; return { x: ship.p.x + ship.v.x * t, y: ship.p.y + ship.v.y * t }; };
 
@@ -104,7 +110,7 @@ const radarLead = (torp, ship) => { const t = radarDist(torp.p, ship.p) / RADAR.
 function radarStep(state, orders, rand) {
   const st = radarClone(state), dt = radarDt(), o = orders || {}, events = [], now = Math.round(st.step * dt * 1e6) / 1e6, at = () => now;  // a step's time is its count's, not the carried t
   const me = st.ships[0], first = st.step % RADAR.SUB === 0;
-  if (o.power) st.power = { ...o.power };
+  if (o.power && first) st.power = { ...o.power };  // power is set a cycle at a time, as the fire control is; the burn and the PDC's arc change at any step
   if (o.pdcArc) st.pdcArc = { ...o.pdcArc };
   // move: our hull turns toward the ordered direction (or the burn's), and the drive lights only with the nose inside GATE of the burn
   const want = o.turnTo !== undefined && o.turnTo !== null ? o.turnTo : o.burn ? o.burn.dir : null;
@@ -114,6 +120,7 @@ function radarStep(state, orders, rand) {
     const u = radarUnit(o.burn.dir), g = RADAR.ACCEL * Math.min(1, o.burn.throttle) * (st.power.drive / 2);
     a = { x: u.x * g, y: u.y * g };
   }
+  const was = st.ships.map(s => ({ ...s.p }));  // where each ship began the step, for a torpedo's closest approach over it
   for (const [i, s] of st.ships.entries()) {
     const ax = i === 0 ? a.x : 0, ay = i === 0 ? a.y : 0;
     s.p = { x: s.p.x + s.v.x * dt + ax * dt * dt / 2, y: s.p.y + s.v.y * dt + ay * dt * dt / 2 };
@@ -168,8 +175,8 @@ function radarStep(state, orders, rand) {
   }
   for (const { torp, from, to } of paths) {
     if (gone.has(torp.id)) continue;
-    const ship = st.ships[torp.target];
-    if (Math.min(radarDist(from, ship.p), radarDist(to, ship.p), radarDist({ x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 }, ship.p)) <= RADAR.TORP_HIT) {
+    const ship = st.ships[torp.target], start = was[torp.target];
+    if (radarNear({ x: from.x - start.x, y: from.y - start.y }, { x: to.x - ship.p.x, y: to.y - ship.p.y }) <= RADAR.TORP_HIT) {  // their closest approach over the step
       gone.add(torp.id);
       const [lo, hi] = torp.side === 'us' ? FIGHT.TORP_DMG : FIGHT.SALVO_DMG, dmg = Math.round(lo + rand() * (hi - lo));
       const side = torp.side === 'us' ? st.foes[torp.target - 1] : st.me;

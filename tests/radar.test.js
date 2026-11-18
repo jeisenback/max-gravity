@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -186,6 +186,23 @@ test('changing fc mid-cycle takes effect at the next cycle only', () => {
   assert.equal(mid.fc, 'gun', 'committed at the cycle\'s start');
   const next = radarAdvance(mid, { fc: 'pdc' }, RADAR.TURN_S / 2, LOW).state;
   assert.equal(next.cycle, 1); assert.equal(next.fc, 'pdc');
+});
+
+test('a torpedo\'s hit is its closest approach over the step: a glancing pass between the ends and the middle is seen', () => {
+  // the review's case: a 1.75 km step whose nearest point, 0.45 km off, is at the quarter; the ends and the middle are all past TORP_HIT
+  const a = { x: -0.4375, y: 0.45 }, b = { x: 1.3125, y: 0.45 }, mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, off = p => Math.hypot(p.x, p.y);
+  assert.ok([a, b, mid].every(p => off(p) > RADAR.TORP_HIT), 'three samples would miss it');
+  assert.ok(Math.abs(api.radarNear(a, b) - 0.45) < 1e-9);
+  assert.ok(api.radarNear(a, b) <= RADAR.TORP_HIT, 'so it hits');
+  assert.equal(api.radarNear({ x: 1, y: 1 }, { x: 2, y: 2 }), Math.hypot(1, 1), 'a segment moving away: its near end');
+});
+
+test('a power split changed mid-cycle takes effect at the next cycle only', () => {
+  const half = radarAdvance(fight(), {}, RADAR.TURN_S / 2, LOW).state, split = { drive: 0, guns: 6, pdc: 0 };
+  const mid = radarAdvance(half, { power: split }, RADAR.TURN_S / 4, LOW).state;
+  assert.deepEqual(plain(mid.power), plain(fight().power), 'set a cycle at a time');
+  const next = radarAdvance(mid, { power: split }, RADAR.TURN_S / 2, LOW).state;
+  assert.equal(next.cycle, 1); assert.deepEqual(plain(next.power), split);
 });
 
 test('our torpedo is fired by the gunner, spent, and steers to her', () => {
