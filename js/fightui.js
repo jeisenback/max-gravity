@@ -42,19 +42,23 @@ function startShipFight(spec, flee, o = {}) {
   mine.pdcHold = heldCut();
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL * guard)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor, scale: FIGHT.POOL * guard };  // what fightTook measures the real loss from, and at what scale
-  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
+  const met = Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0));  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
+  const foes = s.pack ? [side(), side()] : [side()], nerve = entry ? entry.captain.nerve : 3, radar = !!Settings.radarFight;  // radar: the fight on the radar (radarui.js), behind its setting until the switch-over (#1345)
+  s.state = radar ? radarFight({ me: mine, foes, nerve, types: foes.map(() => foe.shipId), opening: bandIndex(met) < RANGE_BANDS.indexOf('long') ? 'short' : 'long', fit: radarFit(st), sensors: perf('sensors') })  // short: today's fight would start inside mid range (a patrol, an ambush)
+    : shipFight({ me: mine, foes, nerve, band: bandIndex(met) });
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
   if (s.edge) {
-    const r = headStart(s.state, s.edge, Math.random);
+    const r = radar ? radarHeadStart(s.state, s.edge, bandIndex(met)) : headStart(s.state, s.edge, Math.random);
     s.state = r.state;
     s.state.log.push(fightSay(s.edge > 0 ? 'first.ours' : 'first.hers', { hits: fightHits(r.events) }));
     fightTook(s, r.events);
     if (s.handDied) return text;  // the hand is dead: the ending is queued (boarders.js)
   }
-  s.shown = fightMoves(s.state);
+  s.shown = radar ? null : fightMoves(s.state);  // the radar fight shows her moves on the radar
   const orders = { guns: Array.from({ length: mine.guns }, () => ({ foe: 0, part: 'hull' })), torp: null, pdc: 'fire' };  // the guns start on her hull (the owner, 2026-11-07); her weapons, drive and lock are a click away
   const told = raidExplanation();  // the first fight of a new game is explained once, before the panel (captains.js)
-  G.nextEvent = told ? chainEvents([told, shipFightEvent(s, orders)]) : shipFightEvent(s, orders);
+  const panel = radar ? radarFightEvent(s) : shipFightEvent(s, orders);
+  G.nextEvent = told ? chainEvents([told, panel]) : panel;
   return text;
 }
 

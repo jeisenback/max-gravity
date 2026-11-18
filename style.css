@@ -626,6 +626,25 @@ details.feeds .more { color: var(--accent); }
   #panel.event:has(.fight-bars) { scroll-padding-top: 260px; }  /* a choice scrolled into view stops below them */
 }
 svg.board { display: block; width: 100%; max-width: 360px; height: auto; margin: 4px 0 10px; border: 1px solid var(--line); }  /* the sensor board (js/board.js) above a raid's text */
+/* the ship fight on the radar (js/radarui.js, #1345): the top bar, the situation bar, the radar, the order's cost and the timeline */
+.radar-fight { margin: 4px 0 10px; }
+.radar-top { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
+.radar-top .radar-group { display: inline-flex; gap: 4px; }
+.radar-top button { margin: 0; padding: 4px 10px; }
+.radar-top button.on { background: color-mix(in srgb, var(--accent) 30%, var(--panel-2)); border-color: var(--accent); font-weight: 600; }
+.radar-sit { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 12px "IBM Plex Mono", monospace; color: var(--muted); padding: 6px 8px; border: 1px solid var(--line); border-bottom: 0; background: #08111c; }
+.radar-sit .radar-state.stopped { color: #ffcf7f; }
+.radar-sit .warn { color: #ffcf7f; }
+.radar-sit .radar-threat.bad { color: #ff6a4a; outline: 1px solid #ff6a4a; padding: 0 4px; }
+canvas.radar { display: block; width: 100%; border: 1px solid var(--line); background: #050a11; }
+.radar-cost { margin: 4px 0 8px; }
+.radar-ticks { position: relative; height: 10px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+.radar-ticks .tick { position: absolute; top: 1px; width: 2px; height: 8px; background: var(--muted); }
+.radar-ticks .tick.launch { background: #ffcf7f; } .radar-ticks .tick.kill { background: #4aa3ff; } .radar-ticks .tick.given { background: #7fd8a0; }
+.radar-ticks .tick.taken { background: #ff6a4a; } .radar-ticks .tick.order { background: #cfe3ff; }
+.radar-last, .radar-log ol { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.radar-last li b, .radar-log li b { font: 12px "IBM Plex Mono", monospace; color: var(--muted); margin-right: 6px; }
+.radar-last li:hover { background: #0c1826; }
 
 #bsheet { display: flex; flex-direction: column; overflow: hidden; padding-top: 26px; }  /* the body scrolls inside; a thin band on top holds Close (#913) */
 #bsheet .bsheet-body { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
