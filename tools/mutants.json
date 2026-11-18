@@ -52,5 +52,14 @@
     "by": [
       "pressing play at 16x runs the fight until she arms and then launches, and it pauses each time saying so"
     ]
+  },
+  {
+    "name": "radar-hand-aim-ignored",
+    "file": "js/radarui.js",
+    "find": "aim: { ...h.aim }",
+    "replace": "aim: { ...r.crew.aim }",
+    "by": [
+      "the gunner aims by a mark on her contact or by its button; aimed at her lock and fired, the hit lands on her lock"
+    ]
   }
 ]

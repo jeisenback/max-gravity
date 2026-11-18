@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -425,4 +425,42 @@ test('a ship fires only the mounts still working: one mount of two shot away, on
   const took = st => plain(cycles(st, {}, 1, () => 0.999).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);
   const [full] = took(two), [half] = took(one);
   assert.ok(full && half && Math.abs(full / half - 2) < 0.05, `two mounts ${full}, one ${half}`);
+});
+
+// ---------- Task 10: the hand at the pilot's post ----------
+
+test('the wedge is the order\'s plotted line, half its width either side, at full throttle; a coast allows any direction at the order\'s trim', () => {
+  const { radarWedge, radarCrew, RADAR_ORDERS } = api;
+  const s = place(fight(), { x: 0, y: 100 });  // far from the range to hold: the order plots a burn toward her
+  const w = plain(radarWedge(s, 'hold')), p = radarCrew(s, 'pilot', 5, 'hold', () => 0.5);
+  assert.deepEqual(w, { dir: p.burn.dir, half: RADAR_ORDERS.hold.wedge / 2, most: 1 });
+  const near = place(fight(), { x: 0, y: RADAR_ORDERS.hold.range });  // at the range to hold and not closing: a coast
+  assert.deepEqual(plain(radarWedge(near, 'hold')), { dir: null, half: 180, most: RADAR_ORDERS.hold.trim });
+});
+
+test('a burn dragged outside the wedge is held to its nearer edge, and its throttle to the most the order allows', () => {
+  const { radarHold } = api, w = { dir: 0, half: 45, most: 1 };
+  assert.deepEqual(plain(radarHold({ dir: 120, throttle: 1 }, w)), { dir: 45, throttle: 1 });
+  assert.deepEqual(plain(radarHold({ dir: 250, throttle: 1 }, w)), { dir: 315, throttle: 1 });
+  assert.deepEqual(plain(radarHold({ dir: 20, throttle: 0.6 }, w)), { dir: 20, throttle: 0.6 });
+  assert.deepEqual(plain(radarHold({ dir: 200, throttle: 1 }, { dir: null, half: 180, most: 0.3 })), { dir: 200, throttle: 0.3 });
+});
+
+test('a burn lands up to SCATTER off where it was put at level 0, and on it at level 5', () => {
+  const { radarScatter, radarScatterOf } = api, put = { dir: 90, throttle: 1 };
+  assert.equal(radarScatterOf(0), RADAR.SCATTER);
+  assert.equal(radarScatter(put, 0, () => 1).dir, 90 + RADAR.SCATTER);
+  assert.equal(radarScatter(put, 0, LOW).dir, 90 - RADAR.SCATTER);
+  const r = seeded(7), offs = Array.from({ length: 200 }, () => radarScatter(put, 0, r).dir - 90);
+  assert.ok(offs.every(d => Math.abs(d) <= RADAR.SCATTER) && offs.some(d => Math.abs(d) > RADAR.SCATTER / 2), 'off by up to the scatter');
+  assert.equal(radarScatter(put, 5, () => 1).dir, 90);
+});
+
+test('advanced a step\'s time at a time, the fight runs a step each time and never falls behind its clock', () => {
+  const dt = RADAR.TURN_S / RADAR.SUB;
+  let st = fight();
+  for (let k = 1; k <= 3 * RADAR.SUB; k++) {
+    st = radarAdvance(st, {}, dt, LOW).state;  // a frame of a step's length, from where the clock is kept (to a millionth of a second)
+    assert.equal(st.step, k, `at ${st.t} s`);
+  }
 });

@@ -656,6 +656,12 @@ const playScenes = () => {
           const events = [{ kind: 'launch', side: 'her', foe: 0 }, { kind: 'launch', side: 'us', foe: 0 }, { kind: 'armed', foe: 1, n: 2 }, { kind: 'pdcKill' }, { kind: 'pdcSoon' }, { kind: 'hit', foe: 0, part: 'lock', dmg: 9, km: 18.4 }, { kind: 'miss', foe: 0, km: 22 },
             { kind: 'hitUs', foe: 0, part: 'hull', dmg: 12 }, { kind: 'missUs', foe: 1 }, { kind: 'impact', side: 'her', dmg: 70 }, { kind: 'impact', side: 'us', dmg: 80 }, { kind: 'order', from: 'hold', to: 'evade' }, { kind: 'overheat' }, { kind: 'gunRange', foe: 0 }, { kind: 'alongside', foe: 0 }, { kind: 'cycle' }];
           rec.plays.push({ timeline: events.map(e => radarEventText(s, e)) });
+          // the hand's post (Task 10): the gunner's console with a torpedo to fire and then ordered, and the pilot's burning and coasting, each with what the radar shows on hover
+          const post = () => { const d = document.createElement('div'); d.innerHTML = String(radarPostHtml(r)); radarDraw(document.createElement('canvas'), r); rec.plays.push({ post: r.post, console: d.textContent.replace(/\s+/g, ' ').trim(), drawn: r.drawn.says }); };
+          r.zoom = null; st.ships[1].p = { x: 0, y: 12 }; st.me.launcher = true; st.me.parts.launcher = st.me.parts.launcher || { hp: 10, max: 10 }; st.me.torps = 2;
+          r.post = 'gunner'; r.orders = radarCompose(r); post(); r.hand.torp = true; r.orders = radarCompose(r); post();
+          r.post = 'pilot'; r.wedge = { dir: 0, half: 45, most: 1 }; r.hand.plot = { dir: 0, throttle: 1 }; r.hand.burn = { dir: 5, throttle: 1 }; r.orders = radarCompose(r); post();
+          st.ships[1].p = { x: 60, y: 0 }; r.hand.plot = null; r.hand.burn = null; r.orders = radarCompose(r); post();
         } finally { Settings.radarFight = was; G.radar = null; }
       }
     } catch (err) { rec.error = String(err && err.stack || err); }
