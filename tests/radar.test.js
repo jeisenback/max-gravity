@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -15,8 +15,9 @@ const LOW = () => 0;
 const seeded = seed => () => { seed = (seed + 0x6d2b79f5) >>> 0; let t = seed; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 const side = (armor, guns, extra = {}, opts = {}) => shipSide({ armor, guns, dmgMult: 1, accel: 1, turn: 1, ...extra }, opts);
 const fight = (o = {}) => radarFight({ me: side(230, 2, { pdc: true, launcher: true }, { torps: 2 }), foes: [side(150, 1)], nerve: 3, ...o });  // the Ice Hauler's two torpedoes
-// Her ship set where a test wants it, still.
+// Her ship set where a test wants it, still; `held` also takes her drive, so she stays there (her own orders would otherwise move her, radarFoe).
 const place = (s, p, i = 1) => { const st = plain(s); st.ships[i].p = p; st.ships[i].v = { x: 0, y: 0 }; return st; };
+const held = (s, p, i = 1) => { const st = place(s, p, i); st.foes[i - 1].parts.drive.hp = 0; return st; };
 const cycles = (s, orders, n, rand) => { let st = s, events = []; for (let k = 0; k < n; k++) { const r = radarCycle(st, orders, rand); st = r.state; events = events.concat(plain(r.events)); } return { state: st, events }; };
 const speed = s => Math.hypot(s.ships[0].v.x, s.ships[0].v.y);
 
@@ -141,7 +142,7 @@ test('a shot that lands farther than HIT_R from her misses', () => {
 });
 
 test('heat over the cap locks the gun for the next cycle, until it bleeds off', () => {
-  const s = place(fight(), { x: 0, y: 10 }), hot = { fire: true, power: { drive: 0, guns: 6, pdc: 0 } };
+  const s = held(fight(), { x: 0, y: 10 }), hot = { fire: true, power: { drive: 0, guns: 6, pdc: 0 } };
   const one = cycles(s, hot, 1, LOW);
   assert.ok(one.events.some(e => e.kind === 'overheat'));
   assert.equal(one.state.locked, true, 'two shots at six units: over HEAT_CAP');
@@ -212,4 +213,173 @@ test('our torpedo is fired by the gunner, spent, and steers to her', () => {
   assert.ok(r.events.some(e => e.kind === 'launch' && e.side === 'us'));
   const t = r.state.torps[0];
   assert.ok(t && radarRange(s) > Math.hypot(t.p.x - 30, t.p.y - 60), 'closer to her than it began');
+});
+
+// ---------- Task 5: fire control, projection and error ----------
+
+test('worn sensors widen the error; resilience holds 40% sensors near 0.7 km; accuracy halves it', () => {
+  const at = (sensors, fit = {}) => api.radarError({ sensors, fit });
+  assert.ok(Math.abs(at(1) - 0.5) < 1e-9); assert.ok(Math.abs(at(0.4) - 1.25) < 1e-9);
+  assert.ok(Math.abs(at(0.4, { resilience: true }) - RADAR.RESILIENT) < 1e-9);
+  assert.ok(Math.abs(at(1, { accuracy: true }) - 0.25) < 1e-9);
+  assert.ok(at(0.7) > at(1) && at(0.7) < at(0.4));
+});
+
+test('her true position is inside her band at every projected cycle, over many seeds', () => {
+  for (let seed = 1; seed <= 60; seed++) {
+    const rand = seeded(seed), s = place(fight({ types: ['corsair'] }), { x: 8, y: 45 });  // inside JINK, so she burns and jinks
+    const proj = api.radarProject(s, {}, 4, api.radarSeen(s, rand));
+    let st = s;
+    for (let k = 1; k <= 4; k++) {
+      st = radarCycle(st, {}, rand).state;
+      const at = proj.tracks[1][k], off = Math.hypot(st.ships[1].p.x - at.p.x, st.ships[1].p.y - at.p.y);
+      assert.ok(off <= at.band + 1e-9, `seed ${seed}, cycle ${k}: ${off} km off, band ${at.band}`);
+    }
+  }
+});
+
+test('the bands widen as they run forward', () => {
+  const t = api.radarProject(place(fight(), { x: 0, y: 40 }), {}, 4).tracks[1];
+  for (let k = 1; k < t.length; k++) assert.ok(t[k].band > t[k - 1].band);
+});
+
+test('a comms lock narrows the error on her and bends her projected track toward her habit', () => {
+  const s = place(fight(), { x: 0, y: 40 }); s.ships[1].a = { x: 0.01, y: 0 };  // she has been burning across
+  const locked = plain(s); locked.lockOn = true;
+  assert.ok(api.radarError(locked) < api.radarError(s));
+  const coast = api.radarProject(s, {}, 2).tracks[1][2].p, habit = api.radarProject(locked, {}, 2).tracks[1][2].p;
+  assert.ok(habit.x > coast.x + 1, `bent ${habit.x - coast.x} km toward her burn`);
+});
+
+test('a blind cycle loses her past BLIND', () => {
+  const far = place(fight(), { x: 0, y: 40 }), near = place(fight(), { x: 0, y: 8 });
+  far.blind = true; near.blind = true;
+  assert.equal(api.radarSeen(far, LOW)[0], null);
+  assert.ok(api.radarSeen(near, LOW)[0]);
+});
+
+test('closest approach and the solution are ranges, low under high', () => {
+  const s = place(fight(), { x: 3, y: 40 }); s.ships[1].v = { x: 0, y: -0.5 };
+  const p = api.radarProject(s, {}, 4);
+  assert.ok(p.cpa && p.cpa.min <= p.cpa.max && p.cpa.at > 0);
+  assert.ok(p.solution[0] <= p.solution[1] && p.solution[1] > 0);
+  const t = plain(s); t.torps.push({ id: 7, side: 'her', p: { x: 0, y: 30 }, v: { x: 0, y: 0 }, target: 0 });
+  const imp = api.radarProject(t, {}, 4).impacts[0];
+  assert.ok(imp.at[0] <= imp.at[1]); assert.equal(imp.hits, 'yes', 'nothing between it and us');
+});
+
+// ---------- Task 6: her, the captain, the crew and the ends ----------
+
+// Plays a fight to its end with the crew on every post, or to `most` cycles.
+const play = (s, rand, levels = { pilot: 2, gunner: 2, engineer: 2, comms: 2 }, most = 80) => {
+  let st = s, events = [];
+  while (!radarEnd(st) && st.cycle < most) { const r = radarCycle(st, api.radarAuto(st, levels, rand), rand); st = r.state; events = events.concat(plain(r.events)); }
+  return { state: st, events, end: radarEnd(st) };
+};
+const { radarEnd } = api;
+
+test('a raider with her lock whole comes alongside and the fight ends boarded; with it shot away she cannot', () => {
+  const s = fight({ opening: 'short' }), unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;  // nothing of ours to stop her coming on
+  const whole = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
+  assert.ok(whole.events.some(e => e.kind === 'alongside') && whole.end === 'boarded', `ended ${whole.end}`);
+  for (let seed = 1; seed <= 20; seed++) {
+    const shot = plain(s); shot.foes[0].parts.lock.hp = 0;
+    const r = play(shot, seeded(seed));
+    assert.notEqual(r.end, 'boarded', `seed ${seed}`);
+    assert.ok(!r.events.some(e => e.kind === 'alongside'));
+  }
+});
+
+test('a corsair arms a cycle before she fires, and the arming is an event', () => {
+  const s = place(fight({ types: ['corsair'] }), { x: 0, y: 150 }); s.foes[0].launcher = true; s.foes[0].torps = 4; s.foes[0].parts.launcher = { hp: 10, max: 10 };
+  const one = radarCycle(s, {}, LOW), two = radarCycle(one.state, {}, LOW);
+  assert.ok(one.events.some(e => e.kind === 'armed'), 'armed in the first cycle');
+  assert.ok(!one.events.some(e => e.kind === 'launch' && e.side === 'her'), 'and fires nothing in it');
+  assert.equal(two.events.filter(e => e.kind === 'launch' && e.side === 'her').length, FIGHT.SALVO, 'her salvo the next');
+  assert.equal(two.state.foes[0].torps, 4 - FIGHT.SALVO);
+  assert.equal(api.radarFoe(place(s, { x: 0, y: 200 }), 0, LOW).kind, 'close', 'not past TORP_LAUNCH');
+});
+
+test('a raider pair: with one crippled, the other fights on and her lock alone decides boarding', () => {
+  const pair = () => radarFight({ me: side(230, 2, { pdc: true, launcher: true }, { torps: 2 }), foes: [side(150, 1), side(150, 1)], types: ['raider', 'raider'], nerve: 3, opening: 'short' });
+  const s = plain(pair()); s.foes[0].armor = 0;  // the first is out
+  assert.equal(radarEnd(s), null, 'not over while the second is up');
+  const lockless = plain(s); lockless.foes[1].parts.lock.hp = 0;  // the crippled one's lock is whole, the live one's is gone
+  for (let seed = 1; seed <= 10; seed++) assert.notEqual(play(lockless, seeded(seed)).end, 'boarded', `seed ${seed}: the out ship does not board`);
+  const unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;
+  const boards = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
+  assert.equal(boards.end, 'boarded'); assert.equal(boards.events.find(e => e.kind === 'alongside').foe, 1, 'the live one');
+  const both = plain(s); both.foes[1].armor = 0;
+  assert.equal(radarEnd(both), 'crippled', 'over once both are out');
+});
+
+test('called-out torpedoes about to hit lead the captain to evade; a cautious captain badly hurt breaks off', () => {
+  const s = fight(), soon = { torps: [{ side: 'her', hits: 'yes', at: [0.5, 0.8] }] };
+  assert.equal(api.radarCaptain(s, 3, soon), 'evade');
+  assert.equal(api.radarCaptain(s, 5, soon), 'evade', 'whatever her nerve');
+  assert.equal(api.radarCaptain(s, 3, { torps: [{ side: 'her', hits: 'no', at: [0.5, 0.8] }] }), 'hold', 'not one that misses');
+  const hurt = plain(s); hurt.me.armor = Math.round(hurt.me.maxArmor * 0.3);
+  assert.equal(api.radarCaptain(hurt, 1), 'break');
+  assert.equal(api.radarCaptain(hurt, 3), 'open');
+  const ahead = plain(s); ahead.foes[0].armor = Math.round(ahead.foes[0].maxArmor * 0.4);
+  assert.equal(api.radarCaptain(ahead, 5), 'engage'); assert.equal(api.radarCaptain(ahead, 3), 'engage', 'a lead of 30 points');
+});
+
+test('each order sets the power split, inside the units there are', () => {
+  for (const [k, o] of Object.entries(api.RADAR_ORDERS)) assert.equal(o.power.drive + o.power.guns + o.power.pdc, RADAR.POWER, k);
+  assert.deepEqual(plain(api.radarCrew(fight(), 'engineer', 2, 'evade', LOW).power), plain(api.RADAR_ORDERS.evade.power));
+});
+
+test('the crew pilot coasts nose-on near the range to hold, and burns to it otherwise', () => {
+  const near = place(fight(), { x: 0, y: api.RADAR_ORDERS.hold.range + 3 });
+  const coast = api.radarCrew(near, 'pilot', 5, 'hold', LOW);
+  assert.equal(coast.burn, null); assert.ok(Math.abs(coast.turnTo) < 1e-9, 'nose on her');
+  const far = api.radarCrew(place(fight(), { x: 0, y: 50 }), 'pilot', 5, 'hold', LOW);
+  assert.ok(far.burn && Math.abs(far.burn.dir) < 1e-9, 'burns toward her, where it was put at level 5');
+  const low = api.radarCrew(place(fight(), { x: 0, y: 50 }), 'pilot', 0, 'hold', LOW);
+  assert.ok(Math.abs(((low.burn.dir + 540) % 360) - 180 + 0) <= RADAR.SCATTER + 1e-9, 'level 0 lands up to SCATTER off');
+});
+
+test('an order\'s cost is shown before it is carried out: opening the range takes the gun off her', () => {
+  const s = place(fight(), { x: 0, y: 30 });
+  const cost = plain(api.radarCost(s, 'open'));
+  assert.deepEqual([cost.bears, cost.why], [false, 'driveAway']);
+  assert.equal(Math.abs(((cost.endFacing + 540) % 360) - 180), RADAR.TURN, 'the turn away, as far as it goes in a cycle, either way round');
+  assert.equal(api.radarCost(place(fight(), { x: 0, y: 22 }), 'hold').bears, true);
+});
+
+test('every fight ends one of the named ways by the cycle cap', () => {
+  const ENDS = ['crippled', 'broke', 'away', 'escaped', 'boarded', 'lost', 'ran'];
+  const kinds = [['raider'], ['corsair'], ['cutter'], ['raider', 'raider']];
+  for (let seed = 1; seed <= 200; seed++) {
+    const rand = seeded(seed), types = kinds[seed % kinds.length], foes = types.map(t => side(t === 'cutter' ? 260 : 150, t === 'cutter' ? 2 : 1, t === 'corsair' ? { launcher: true } : {}, t === 'corsair' ? { torps: 4 } : {}));
+    const s = radarFight({ me: side(230, 2, { pdc: true, launcher: true }, { torps: 2 }), foes, types, nerve: 1 + (seed % 5), opening: seed % 3 ? 'long' : 'short', rand });
+    const r = play(s, rand, { pilot: seed % 6, gunner: seed % 6, engineer: 2, comms: 2 }, api.radarCap(s) + 1);
+    assert.ok(ENDS.includes(r.end), `seed ${seed} (${types}): ${r.end} at cycle ${r.state.cycle}`);
+    assert.ok(r.state.cycle <= api.radarCap(s));
+  }
+});
+
+// ---------- Task 7: when real time pauses itself ----------
+
+test('it pauses on a launch, a hit and coming into gun range once, and never on a locked gun or a coast', () => {
+  const ev = kinds => kinds.map(k => (typeof k === 'string' ? { kind: k } : k));
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'her' }]))), ['launched']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'us' }]))), [], 'not our own');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), ['hit']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['gunLocked', 'cycle', 'miss', 'hit']))), [], 'a locked gun, a cycle, our own shots');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))).sort(), ['armed', 'pdcSoon']);
+  // gun range: said by the step once a fight
+  let st = place(fight(), { x: 0, y: RADAR.GUN_PAUSE + 0.2 }); st.ships[1].v = { x: 0, y: -1 };
+  const seen = [];
+  for (let k = 0; k < 3; k++) { const r = radarCycle(st, { burn: null, turnTo: 0 }, LOW); st = r.state; seen.push(plain(r.events).filter(e => e.kind === 'gunRange').length); }
+  assert.deepEqual(seen, [1, 0, 0]);
+});
+
+test('an order change pauses only into or out of evade or break-off', () => {
+  const change = (from, to) => plain(api.radarPauses(null, null, [{ kind: 'order', from, to }]));
+  assert.deepEqual(change('hold', 'evade'), ['plan']); assert.deepEqual(change('evade', 'hold'), ['plan']); assert.deepEqual(change('hold', 'break'), ['plan']);
+  assert.deepEqual(change('hold', 'engage'), [], 'one that only refines the plan');
+  const r = radarCycle(fight(), { order: 'evade' }, LOW);
+  assert.ok(plain(r.events).some(e => e.kind === 'order' && e.from === 'hold' && e.to === 'evade'), 'the step says the change');
 });

@@ -41,7 +41,15 @@ const RADAR = {
   COAST: 10,           // km of the range to hold inside which the crew pilot coasts nose-on (6 closing to engage)
   COAST_ENGAGE: 6,
   SUGGEST: [0.35, 0.7],  // a suggestion to the captain taken at level 0 and at level 5
-  TURNS: 50            // cycles from the long opening before the less whole side breaks off
+  TURNS: 50,           // cycles from the long opening before the less whole side breaks off (fewer from the short: radarCap)
+  // her side (the builder's, from the spec's words, to be tuned in Part 4)
+  HER_ACCEL: 0.02,     // km/s/s at full throttle; she points where she burns (no gate), which the builder takes as her crew's skill
+  HELD: { raider: 0, corsair: 30, cutter: 25, destroyer: 25 },  // km each type works to: a raider comes alongside while her lock is whole
+  LOCKLESS: 10,        // km a raider with her lock gone holds at, as today's closes only to close range
+  ALONGSIDE: 1,        // km: a ship with her lock whole that comes within this of ours boards
+  GUN_RANGE: 35,       // km: her guns fire inside this, once a cycle
+  SCATTER: 20,         // degrees a crew pilot's burn can land off at level 0; none at level 5
+  EVADE_SOON: 1.5      // cycles: a torpedo comms calls out that will hit inside this sends the captain to evade
 };
 
 const radarDt = () => RADAR.TURN_S / RADAR.SUB;
@@ -52,23 +60,38 @@ const radarDir = (from, to) => radarNorm(Math.atan2(to.x - from.x, to.y - from.y
 const radarDist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 const radarUnit = d => ({ x: Math.sin(d * Math.PI / 180), y: Math.cos(d * Math.PI / 180) });
 
-// A fight at the meeting: our ship at the centre and still, each foe on a bearing (0 here; Task 6 takes it from the dice) closing at CLOSING km a cycle.
-// `me` and `foes` are shipSide's sides; `fit` the fire-control upgrades; `sensors` the ship's sensors' condition, 0 to 1.
-function radarFight({ me, foes, nerve, opening = 'long', fit = { accuracy: false, resilience: false }, sensors = 1 }) {
-  const at = opening === 'short' ? RADAR.MEET_SHORT : RADAR.MEET, closing = RADAR.CLOSING / RADAR.TURN_S;
-  const theirs = foes.map(() => ({ p: { x: 0, y: at }, v: { x: 0, y: -closing }, facing: 180 }));
+// A fight at the meeting: our ship at the centre and still, each foe on a bearing (0 with no `rand`; with it, from the dice, a pair's second a little
+// round from the first) closing at CLOSING km a cycle. `me` and `foes` are shipSide's sides and `types` their kinds (FOE_TYPES); `fit` the fire-control
+// upgrades; `sensors` the ship's sensors' condition, 0 to 1.
+function radarFight({ me, foes, nerve, types = foes.map(() => 'raider'), opening = 'long', fit = { accuracy: false, resilience: false }, sensors = 1, rand = null }) {
+  const at = opening === 'short' ? RADAR.MEET_SHORT : RADAR.MEET, closing = RADAR.CLOSING / RADAR.TURN_S, bearing = rand ? rand() * 360 : 0;
+  const theirs = foes.map((f, i) => { const b = radarNorm(bearing + 12 * i), u = radarUnit(b); return { p: { x: u.x * at, y: u.y * at }, v: { x: -u.x * closing, y: -u.y * closing }, a: { x: 0, y: 0 }, facing: radarNorm(b + 180) }; });
   return {
-    kind: 'radar', me: radarClone(me), foes: radarClone(foes), nerve, opening, fit: { ...fit }, sensors,
-    t: 0, step: 0, cycle: 0, ships: [{ p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, facing: 0 }, ...theirs],
-    torps: [], nextTorp: 1, heat: 0, locked: false, lockedAt: null, fired: 0, torpFired: false, order: null, fc: 'gun', pdcArc: { dir: 0, width: 90 }, power: { drive: 2, guns: 2, pdc: 2 },
+    kind: 'radar', me: radarClone(me), foes: radarClone(foes), types: [...types], nerve, opening, fit: { ...fit }, sensors,
+    t: 0, step: 0, cycle: 0, ships: [{ p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 }, facing: 0 }, ...theirs],
+    torps: [], nextTorp: 1, heat: 0, locked: false, lockedAt: null, fired: 0, torpFired: false, order: 'hold', fc: 'gun', pdcArc: { dir: 0, width: 90 }, power: { drive: 2, guns: 2, pdc: 2 },
+    foeOrders: [], armed: foes.map(() => false), herFired: foes.map(() => false), boarded: false, ranged: false,
+    lockOn: false, spoofing: false, herSpoof: false, blind: false,  // this cycle's comms: our lock on her, our spoof, her spoof (no foe spoofs yet), the board blind past BLIND
     log: [], events: [], spent: []
   };
 }
 
+const radarHull = side => (side.maxArmor ? side.armor / side.maxArmor : 0);
+const radarOut = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);  // shipEnd's `out`: no hull, or no guns and no drive
+const radarCap = state => (state.opening === 'short' ? Math.round(RADAR.TURNS - (RADAR.MEET - RADAR.MEET_SHORT) / RADAR.CLOSING) : RADAR.TURNS);
+
 const radarRange = (state, i = 1) => radarDist(state.ships[0].p, state.ships[i].p);
 
-// The board's error on her, km (Task 5 adds the comms lock, her spoof and the upgrades): straight through ERROR between full sensors and 40%.
-const radarError = state => { const s = Math.max(0, Math.min(1, state.sensors)), [full, worn] = RADAR.ERROR; return full + (worn - full) * (1 - s) / 0.6; };
+// The board's error on her, km: straight through ERROR between full sensors and 40% (to RESILIENT at 40% with the resilience upgrade); the accuracy
+// upgrade takes it to ACCURACY at full sensors (and the same share below); our comms lock on her halves it, and her spoof doubles it.
+function radarError(state) {
+  const s = Math.max(0, Math.min(1, state.sensors)), fit = state.fit || {}, [full, worn] = RADAR.ERROR, at40 = fit.resilience ? RADAR.RESILIENT : worn;
+  let e = full + (at40 - full) * (1 - s) / 0.6;
+  if (fit.accuracy) e *= RADAR.ACCURACY / full;
+  if (state.lockOn) e *= 0.5;
+  if (state.herSpoof) e *= 2;
+  return e;
+}
 
 const radarBears = (state, i = 1) => Math.abs(radarTurnBy(state.ships[0].facing, radarDir(state.ships[0].p, state.ships[i].p))) <= RADAR.BEAR;
 
@@ -105,26 +128,49 @@ function radarNear(a, b) {
 // Where a torpedo steers: at its target's track, led by the time it takes to get there.
 const radarLead = (torp, ship) => { const t = radarDist(torp.p, ship.p) / RADAR.TORP_SPEED; return { x: ship.p.x + ship.v.x * t, y: ship.p.y + ship.v.y * t }; };
 
+// Our hull's motion for a step: it turns toward `want` at TURN a cycle, and the drive lights only with the nose inside GATE of the burn. Used by the step
+// and by the projection, so the board projects our ship by the same rules it moves by.
+function radarMoveUs(ship, burn, want, power, drive, dt) {
+  if (want !== null && want !== undefined) { const d = radarTurnBy(ship.facing, want), most = RADAR.TURN * dt / RADAR.TURN_S; ship.facing = radarNorm(ship.facing + Math.max(-most, Math.min(most, d))); }
+  let a = { x: 0, y: 0 };
+  if (burn && burn.throttle > 0 && drive && Math.abs(radarTurnBy(ship.facing, burn.dir)) <= RADAR.GATE) { const u = radarUnit(burn.dir), g = RADAR.ACCEL * Math.min(1, burn.throttle) * (power / 2); a = { x: u.x * g, y: u.y * g }; }
+  return a;
+}
+const radarCoast = (ship, a, dt) => { ship.p = { x: ship.p.x + ship.v.x * dt + a.x * dt * dt / 2, y: ship.p.y + ship.v.y * dt + a.y * dt * dt / 2 }; ship.v = { x: ship.v.x + a.x * dt, y: ship.v.y + a.y * dt }; ship.a = a; };
+
 // One step of the fight. `orders`: { burn: { dir, throttle } | null, turnTo: dir | null, fc: 'gun' | 'pdc', aim: { foe, part, at: {x, y} } | null, fire, pdcArc,
-// torp: foe | null, power, comms, level } (level: the gunner's, for the spread). A torpedo is { id, side: 'us' | 'her', p, v, target } (target: a ship's index).
+// torp: foe | null, power, comms: 'watch' | 'lock' | 'spoof', commsFailed, order, level } (level: the gunner's, for the spread; commsFailed: the comms check's
+// result, from the caller's handCheck). Her orders are hers (radarFoe), set at a cycle's first step. A torpedo is { id, side: 'us' | 'her', p, v, target, warned }.
 function radarStep(state, orders, rand) {
   const st = radarClone(state), dt = radarDt(), o = orders || {}, events = [], now = Math.round(st.step * dt * 1e6) / 1e6, at = () => now;  // a step's time is its count's, not the carried t
   const me = st.ships[0], first = st.step % RADAR.SUB === 0;
-  if (o.power && first) st.power = { ...o.power };  // power is set a cycle at a time, as the fire control is; the burn and the PDC's arc change at any step
-  if (o.pdcArc) st.pdcArc = { ...o.pdcArc };
-  // move: our hull turns toward the ordered direction (or the burn's), and the drive lights only with the nose inside GATE of the burn
-  const want = o.turnTo !== undefined && o.turnTo !== null ? o.turnTo : o.burn ? o.burn.dir : null;
-  if (want !== null) { const d = radarTurnBy(me.facing, want), most = RADAR.TURN * dt / RADAR.TURN_S; me.facing = radarNorm(me.facing + Math.max(-most, Math.min(most, d))); }
-  let a = { x: 0, y: 0 };
-  if (o.burn && o.burn.throttle > 0 && st.me.parts.drive.hp > 0 && Math.abs(radarTurnBy(me.facing, o.burn.dir)) <= RADAR.GATE) {
-    const u = radarUnit(o.burn.dir), g = RADAR.ACCEL * Math.min(1, o.burn.throttle) * (st.power.drive / 2);
-    a = { x: u.x * g, y: u.y * g };
+  // a cycle's start: power, comms and the captain's order are set for the cycle; she chooses hers; an armed corsair fires her salvo, another arms
+  if (first) {
+    if (o.power) st.power = { ...o.power };  // power is set a cycle at a time, as the fire control is; the burn and the PDC's arc change at any step
+    const tried = o.comms === 'lock' || o.comms === 'spoof';
+    st.lockOn = o.comms === 'lock' && !o.commsFailed; st.spoofing = o.comms === 'spoof' && !o.commsFailed; st.blind = tried && !!o.commsFailed;
+    if (o.order && o.order !== st.order) { events.push({ at: at(), kind: 'order', from: st.order, to: o.order }); st.order = o.order; }
+    st.foeOrders = st.foes.map((f, i) => radarFoe(st, i, rand));
+    for (const [i, fo] of st.foeOrders.entries()) {
+      const f = st.foes[i], ship = st.ships[i + 1];
+      if (fo.kind === 'arm') { st.armed[i] = true; events.push({ at: at(), kind: 'armed', foe: i, n: fo.n }); }
+      if (fo.kind === 'salvo') {
+        st.armed[i] = false;
+        for (let k = 0; k < fo.n; k++) { const t = { id: st.nextTorp++, side: 'her', p: { ...ship.p }, v: { x: 0, y: 0 }, target: 0, warned: false }; st.torps.push(t); events.push({ at: at(), kind: 'launch', side: 'her', torp: t.id, foe: i }); }
+        f.torps -= fo.n;
+      }
+    }
   }
-  const was = st.ships.map(s => ({ ...s.p }));  // where each ship began the step, for a torpedo's closest approach over it
-  for (const [i, s] of st.ships.entries()) {
-    const ax = i === 0 ? a.x : 0, ay = i === 0 ? a.y : 0;
-    s.p = { x: s.p.x + s.v.x * dt + ax * dt * dt / 2, y: s.p.y + s.v.y * dt + ay * dt * dt / 2 };
-    s.v = { x: s.v.x + ax * dt, y: s.v.y + ay * dt };
+  if (o.pdcArc) st.pdcArc = { ...o.pdcArc };
+  // move: our hull by the orders; each of hers by her burn; then the torpedoes, each steering at its target's track
+  const was = st.ships.map(s => ({ ...s.p }));  // where each ship began the step, for a closest approach over it
+  const want = o.turnTo !== undefined && o.turnTo !== null ? o.turnTo : o.burn ? o.burn.dir : null;
+  radarCoast(me, radarMoveUs(me, o.burn, want, st.power.drive, st.me.parts.drive.hp > 0, dt), dt);
+  for (const [i, f] of st.foes.entries()) {
+    const ship = st.ships[i + 1], fo = st.foeOrders[i] || {}, burn = fo.burn;
+    let a = { x: 0, y: 0 };
+    if (burn && f.parts.drive.hp > 0) { const u = radarUnit(burn.dir), g = RADAR.HER_ACCEL * Math.min(1, burn.throttle); a = { x: u.x * g, y: u.y * g }; ship.facing = burn.dir; }
+    radarCoast(ship, a, dt);
   }
   const paths = st.torps.map(t => {
     const aim = radarLead(t, st.ships[t.target]), d = radarUnit(radarDir(t.p, aim));
@@ -133,6 +179,10 @@ function radarStep(state, orders, rand) {
     t.p = { x: t.p.x + t.v.x * dt, y: t.p.y + t.v.y * dt };
     return { torp: t, from, to: t.p };
   });
+  // sensors: she comes into gun range (said once a fight); one of her torpedoes will reach the PDC's reach before this cycle is out (said once a torpedo)
+  if (!st.ranged && st.foes.some((f, i) => !radarOut(f) && radarRange(st, i + 1) <= RADAR.GUN_PAUSE)) { st.ranged = true; events.push({ at: at(), kind: 'gunRange' }); }
+  const left = RADAR.TURN_S - ((st.step % RADAR.SUB) + 1) * dt;
+  for (const t of st.torps) if (t.side === 'her' && !t.warned && radarDist(t.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * left) { t.warned = true; events.push({ at: at(), kind: 'pdcSoon', torp: t.id }); }
   // fire control: committed to the gun or the PDC at the start of a cycle, for the whole of it
   if (first) st.fc = o.fc === 'pdc' ? 'pdc' : 'gun';
   // fire: the gun, once a cycle for each gun it has, when it is ordered, bears, is not locked and has weapons left; our torpedo when ordered and held
@@ -157,9 +207,19 @@ function radarStep(state, orders, rand) {
   }
   if (o.torp !== undefined && o.torp !== null && !st.torpFired && st.me.torps > 0 && st.me.launcher && st.me.parts.launcher && st.me.parts.launcher.hp > 0 && st.ships[o.torp + 1]) {
     st.me.torps--; st.torpFired = true;  // one a cycle
-    const t = { id: st.nextTorp++, side: 'us', p: { ...me.p }, v: { x: 0, y: 0 }, target: o.torp + 1 };
+    const t = { id: st.nextTorp++, side: 'us', p: { ...me.p }, v: { x: 0, y: 0 }, target: o.torp + 1, warned: false };
     st.torps.push(t);
     events.push({ at: at(), kind: 'launch', side: 'us', torp: t.id, foe: o.torp });
+  }
+  // her fire: her guns once a cycle inside GUN_RANGE, at the part her order names; her spread from the range and the board's stock error, doubled by our spoof
+  const herHits = [];
+  for (const [i, f] of st.foes.entries()) {
+    const fo = st.foeOrders[i] || {}, km = radarRange(st, i + 1);
+    if (!fo.fire || st.herFired[i] || radarOut(f) || f.parts.weapons.hp <= 0 || km > RADAR.GUN_RANGE) continue;
+    st.herFired[i] = true;
+    const spread = km * RADAR.SPREAD_KM + RADAR.ERROR[0] * (st.spoofing ? 2 : 1), chance = Math.min(1, (RADAR.HIT_R / spread) ** 2);
+    if (rand() < chance) herHits.push({ foe: i, part: fo.part || 'hull', dmg: Math.round(f.guns * (FIGHT.FOE_DMG[0] + rand() * (FIGHT.FOE_DMG[1] - FIGHT.FOE_DMG[0])) * f.dmgMult * radarFalloff(km)) });
+    else events.push({ at: at(), kind: 'missUs', foe: i });
   }
   // point defence: hers at us, through the arc, while the fire control is on the PDC; a stowed PDC never fires
   const gone = new Set();
@@ -168,11 +228,12 @@ function radarStep(state, orders, rand) {
     const chance = radarPdcKill(st.pdcArc, from, to, me.p, st.power.pdc);
     if (chance && rand() < chance) { gone.add(torp.id); events.push({ at: at(), kind: 'pdcKill', torp: torp.id }); }
   }
-  // damage: the gun's hits, then each torpedo that reached its target this step (nearest point of its path within TORP_HIT)
+  // damage: the gun's hits, hers, then each torpedo that reached its target this step (their closest approach over it within TORP_HIT)
   for (const h of hits) {
     const side = st.foes[h.to - 1], took = dealDamage(side, side.parts[h.part] || h.part === 'hull' ? h.part : 'hull', h.dmg);
     events.push({ at: at(), kind: 'hit', foe: h.to - 1, part: h.part, dmg: took, km: h.km });
   }
+  for (const h of herHits) events.push({ at: at(), kind: 'hitUs', foe: h.foe, part: h.part, dmg: dealDamage(st.me, st.me.parts[h.part] || h.part === 'hull' ? h.part : 'hull', h.dmg) });
   for (const { torp, from, to } of paths) {
     if (gone.has(torp.id)) continue;
     const ship = st.ships[torp.target], start = was[torp.target];
@@ -184,14 +245,20 @@ function radarStep(state, orders, rand) {
     }
   }
   st.torps = st.torps.filter(t => !gone.has(t.id));
+  // alongside: a ship of hers with her lock and drive whole, not breaking off, that comes within ALONGSIDE of ours over the step boards
+  for (const [i, f] of st.foes.entries()) {
+    const ship = st.ships[i + 1], fo = st.foeOrders[i] || {};
+    if (st.boarded || radarOut(f) || f.parts.lock.hp <= 0 || f.parts.drive.hp <= 0 || fo.kind === 'break') continue;
+    if (radarNear({ x: was[i + 1].x - was[0].x, y: was[i + 1].y - was[0].y }, { x: ship.p.x - me.p.x, y: ship.p.y - me.p.y }) <= RADAR.ALONGSIDE) { st.boarded = true; events.push({ at: at(), kind: 'alongside', foe: i }); }
+  }
   st.step++;
   st.t = Math.max(st.t, Math.round(st.step * dt * 1e6) / 1e6);
   // the cycle's bookkeeping, at its last step: heat bleeds; a lock holds through the cycle after the one it came in, and comes off once the heat is back
-  // under the cap; the gun and the launcher may fire again
+  // under the cap; the gun, the launcher and her guns may fire again
   if (st.step % RADAR.SUB === 0) {
     st.heat = Math.max(0, st.heat - FIGHT.HEAT_VENT);
     if (st.locked && st.cycle > st.lockedAt && st.heat <= RADAR.HEAT_CAP) { st.locked = false; st.lockedAt = null; }
-    st.fired = 0; st.torpFired = false;
+    st.fired = 0; st.torpFired = false; st.herFired = st.foes.map(() => false);
     st.cycle++;
     events.push({ at: at(), kind: 'cycle', cycle: st.cycle });
   }
@@ -212,3 +279,190 @@ function radarAdvance(state, orders, seconds, rand) {
 
 // The rest of the cycle the state is in: to the end of its last step.
 const radarCycle = (state, orders, rand) => radarAdvance(state, orders, (Math.floor(state.step / RADAR.SUB) + 1) * RADAR.TURN_S - state.t, rand);
+
+// ---------- fire control: what the board shows (Task 5) ----------
+
+// Each foe's contact as the board sees it: off her true position by up to the error, her velocity as she makes it. Past BLIND on a blind cycle, nothing.
+function radarSeen(state, rand) {
+  const e = radarError(state);
+  return state.foes.map((f, i) => {
+    const ship = state.ships[i + 1];
+    if (state.blind && radarRange(state, i + 1) > RADAR.BLIND) return null;
+    const r = e * Math.sqrt(rand()), th = rand() * 2 * Math.PI;
+    return { p: { x: ship.p.x + r * Math.sin(th), y: ship.p.y + r * Math.cos(th) }, v: { ...ship.v }, a: { ...ship.a } };
+  });
+}
+
+// The board's projection, `cycles` ahead, at each cycle's end: our track by our orders and the rules we move by (no band: our own ship is known); each of
+// hers from what the board sees (`seen`, radarSeen's; her true contact without it), coasting, or on her present burn with a comms lock on her (her habit),
+// in a band of the error plus all she could burn off it since (HER_ACCEL). Closest approach and each torpedo's impact are ranges over those bands; the
+// gun's solution is the chance a shot lands, from its spread, low with the aim off by the error and high with it on her.
+function radarProject(state, orders, cycles = 4, seen = null) {
+  const o = orders || {}, dt = radarDt(), e = radarError(state), want = o.turnTo !== undefined && o.turnTo !== null ? o.turnTo : o.burn ? o.burn.dir : null;
+  const us = radarClone(state.ships[0]), hers = state.foes.map((f, i) => { const c = seen && seen[i] ? seen[i] : state.ships[i + 1]; return c ? { p: { ...c.p }, v: { ...c.v }, a: state.lockOn ? { ...(c.a || { x: 0, y: 0 }) } : { x: 0, y: 0 } } : null; });
+  const band = t => e + RADAR.HER_ACCEL * t * t / 2;
+  const tracks = [[{ p: { ...us.p }, band: 0 }], ...hers.map(h => (h ? [{ p: { ...h.p }, band: band(0) }] : []))];
+  const steps = cycles * RADAR.SUB, path = [];
+  for (let k = 1; k <= steps; k++) {
+    radarCoast(us, radarMoveUs(us, o.burn, want, state.power.drive, state.me.parts.drive.hp > 0, dt), dt);
+    for (const h of hers) if (h) radarCoast(h, h.a, dt);
+    path.push({ t: k * dt, us: { ...us.p }, hers: hers.map(h => (h ? { ...h.p } : null)) });
+    if (k % RADAR.SUB === 0) { tracks[0].push({ p: { ...us.p }, band: 0 }); hers.forEach((h, i) => { if (h) tracks[i + 1].push({ p: { ...h.p }, band: band(k * dt) }); }); }
+  }
+  const first = hers.findIndex((h, i) => h && !radarOut(state.foes[i]));
+  let cpa = null;
+  if (first >= 0) {
+    const near = path.reduce((b, s) => { const d = radarDist(s.us, s.hers[first]); return d < b.d ? { d, t: s.t } : b; }, { d: radarDist(tracks[0][0].p, tracks[first + 1][0].p), t: 0 });  // from where the projection began
+    cpa = { min: Math.max(0, near.d - band(near.t)), max: near.d + band(near.t), at: near.t / RADAR.TURN_S };
+  }
+  const impacts = state.torps.map(t => {
+    const target = t.target === 0 ? path.map(s => s.us) : path.map(s => s.hers[t.target - 1]), p = { ...t.p };
+    let best = { d: Infinity, t: 0 };
+    for (const [k, s] of path.entries()) {
+      const aim = target[k]; if (!aim) break;
+      const u = radarUnit(radarDir(p, aim)); p.x += u.x * RADAR.TORP_SPEED * dt; p.y += u.y * RADAR.TORP_SPEED * dt;
+      const d = radarDist(p, aim); if (d < best.d) best = { d, t: s.t };
+      if (d <= RADAR.TORP_HIT) break;
+    }
+    const b = t.target === 0 ? 0 : band(best.t), spread = b / RADAR.TORP_SPEED / RADAR.TURN_S;
+    return { torp: t.id, side: t.side, at: [Math.max(0, best.t / RADAR.TURN_S - spread), best.t / RADAR.TURN_S + spread], hits: best.d + b <= RADAR.TORP_HIT ? 'yes' : best.d - b <= RADAR.TORP_HIT ? 'may' : 'no' };
+  });
+  const s = first >= 0 ? radarSpread(state, o.level || 0, first + 1) : Infinity, chance = r => Math.min(1, (Math.max(0, r) / s) ** 2);
+  const solution = first >= 0 && radarBears(state, first + 1) ? [chance(RADAR.HIT_R - e), chance(RADAR.HIT_R)] : [0, 0];
+  return { tracks, cpa, impacts, solution };
+}
+
+// ---------- her, the captain, the crew and the ends (Task 6) ----------
+
+// Her orders for a cycle, by her kind (spec, "Her"; foeMove in fight.js for today's): badly hurt or with no guns she breaks off while her drive can take her
+// away; a corsair with torpedoes arms inside TORP_LAUNCH (a cycle ahead, every FIGHT.SALVO_EVERY) and fires a salvo the cycle after; outside JINK she comes
+// on as she was met, and inside it she burns to the range her kind works at (HELD; a raider alongside while her lock is whole, LOCKLESS without it),
+// jinking; her guns fire inside GUN_RANGE, at our drive if we are the faster, at our hull while she closes, else at our guns while they last.
+function radarFoe(state, i, rand) {
+  const f = state.foes[i], ship = state.ships[i + 1], me = state.ships[0], type = (state.types && state.types[i]) || 'raider';
+  if (radarOut(f)) return { kind: 'out', burn: null, fire: false };
+  const km = radarDist(ship.p, me.p), toUs = radarDir(ship.p, me.p), armed = f.parts.weapons.hp > 0, drive = f.parts.drive.hp > 0, lock = f.parts.lock.hp > 0;
+  if (drive && (radarHull(f) < (f.breakAt || FIGHT.BREAK) || !armed)) return { kind: 'break', burn: { dir: radarNorm(toUs + 180), throttle: 1 }, fire: armed, part: 'hull' };
+  const launcher = f.launcher && f.parts.launcher && f.parts.launcher.hp > 0 && f.torps > 0;
+  let kind = 'close', n = 0;
+  if (launcher && state.armed[i]) { kind = 'salvo'; n = Math.min(FIGHT.SALVO, f.torps); }
+  else if (launcher && km <= RADAR.TORP_LAUNCH && state.cycle % FIGHT.SALVO_EVERY === 0) { kind = 'arm'; n = Math.min(FIGHT.SALVO, f.torps); }
+  const held = type === 'raider' ? (lock ? 0 : RADAR.LOCKLESS) : (RADAR.HELD[type] !== undefined ? RADAR.HELD[type] : RADAR.HELD.cutter);
+  let burn = null;
+  const jink = (rand() - 0.5) * 60;  // drawn every cycle, so her dice do not hang on where she is
+  if (drive && km <= RADAR.JINK) {
+    const u = radarUnit(toUs), closingNow = (ship.v.x - me.v.x) * u.x + (ship.v.y - me.v.y) * u.y, wantClosing = Math.max(-0.6, Math.min(0.6, (km - held) / (2 * RADAR.TURN_S)));
+    const dv = wantClosing - closingNow;
+    burn = { dir: radarNorm((dv >= 0 ? toUs : toUs + 180) + jink), throttle: Math.min(1, Math.abs(dv) / (RADAR.HER_ACCEL * RADAR.TURN_S)) };
+  }
+  const part = state.me.parts.drive.hp > 0 && state.me.speed > f.speed ? 'drive' : km > held + 5 ? 'hull' : state.me.parts.weapons.hp > 0 ? 'weapons' : 'hull';
+  return { kind, n, burn, fire: armed, part };
+}
+
+// The captain's orders: each sets the power split, the comms stance, the range the pilot holds (null: away) and the pilot's wedge (degrees of burn either
+// side of the line the order wants; a coast trims up to `trim` of throttle).
+const RADAR_ORDERS = {
+  engage: { power: { drive: 2, guns: 3, pdc: 1 }, comms: 'lock', range: 12, wedge: 90, trim: 0.3 },
+  hold: { power: { drive: 2, guns: 2, pdc: 2 }, comms: 'watch', range: 20, wedge: 90, trim: 0.3 },
+  open: { power: { drive: 4, guns: 1, pdc: 1 }, comms: 'watch', range: 60, wedge: 90, trim: 0.3 },
+  break: { power: { drive: 5, guns: 0, pdc: 1 }, comms: 'spoof', range: null, wedge: 90, trim: 0.3 },
+  evade: { power: { drive: 3, guns: 0, pdc: 3 }, comms: 'spoof', range: 20, wedge: 90, trim: 0.3 }
+};
+
+// The captain's order for a cycle, after comms has reported (`read.torps`: what is known of her torpedoes, as radarProject's impacts): a torpedo that will
+// hit inside EVADE_SOON sends any captain to evade; then by nerve, as captainMove: a cautious one (1, 2) badly hurt against a less hurt foe breaks off, and
+// opens the range hurt; a steady one (3) opens badly hurt and closes with a lead of 30 points; a bold one (4, 5) closes on a more hurt foe.
+function radarCaptain(state, nerve, read = { torps: [] }) {
+  if ((read.torps || []).some(t => t.side === 'her' && t.hits !== 'no' && t.at[0] <= RADAR.EVADE_SOON)) return 'evade';
+  const up = state.foes.filter(f => !radarOut(f)), mine = radarHull(state.me), hers = up.length ? up.reduce((a, f) => a + radarHull(f), 0) / up.length : 0;
+  if (nerve >= 4) return hers < mine ? 'engage' : 'hold';
+  if (nerve >= 1 && nerve <= 2) return mine < 0.4 && hers > mine ? 'break' : mine < 0.6 ? 'open' : 'hold';
+  if (nerve === 3) return mine < 0.4 ? 'open' : mine - hers >= 0.3 ? 'engage' : 'hold';
+  return 'hold';
+}
+
+// The nearest of hers still up, as an index into foes, or -1.
+const radarNearest = state => state.foes.reduce((b, f, i) => (radarOut(f) ? b : b < 0 || radarRange(state, i + 1) < radarRange(state, b + 1) ? i : b), -1);
+
+// What a crew hand at a post does this cycle under the order, at their level (0 to 5), as part of the orders. The pilot coasts nose-on while within COAST of
+// the range to hold (COAST_ENGAGE closing to engage) and not closing fast, and makes short burns otherwise, landing up to SCATTER off at level 0; the
+// gunner fires at her hull (at her lock while a raider with it whole closes inside JINK), sets the arc at the nearest of her torpedoes and puts the fire
+// control on the PDC when one will reach it this cycle, and fires a torpedo inside JINK; the engineer gives the order's power, and comms its stance.
+function radarCrew(state, post, level, order, rand) {
+  const o = RADAR_ORDERS[order] || RADAR_ORDERS.hold, i = radarNearest(state), me = state.ships[0];
+  if (post === 'engineer') return { power: { ...o.power } };
+  if (post === 'comms') return { comms: o.comms };
+  if (i < 0) return {};
+  const her = state.ships[i + 1], km = radarRange(state, i + 1), toHer = radarDir(me.p, her.p);
+  if (post === 'pilot') {
+    const off = (rand() - 0.5) * 2 * RADAR.SCATTER * Math.max(0, 1 - level / 5);
+    if (order === 'break' || o.range === null) return { burn: { dir: radarNorm(toHer + 180 + off), throttle: 1 }, turnTo: null };
+    if (order === 'evade') return { burn: { dir: radarNorm(toHer + 90 + off), throttle: 1 }, turnTo: null };
+    const u = radarUnit(toHer), closing = (her.v.x - me.v.x) * -u.x + (her.v.y - me.v.y) * -u.y;  // positive while the range comes down
+    const room = order === 'engage' ? RADAR.COAST_ENGAGE : RADAR.COAST;
+    if (Math.abs(km - o.range) <= room && Math.abs(closing) < 0.3) return { burn: null, turnTo: toHer };
+    return { burn: { dir: radarNorm((km > o.range ? toHer : toHer + 180) + off), throttle: 1 }, turnTo: null };
+  }
+  if (post === 'gunner') {
+    const lockFirst = (state.types[i] || 'raider') === 'raider' && state.foes[i].parts.lock.hp > 0 && km <= RADAR.JINK;
+    const soon = state.torps.filter(t => t.side === 'her').sort((a, b) => radarDist(a.p, me.p) - radarDist(b.p, me.p))[0];
+    const pdc = !!soon && state.me.pdc && radarDist(soon.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * RADAR.TURN_S;
+    return { fire: true, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun', pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
+      torp: km <= RADAR.JINK && state.me.torps > 0 ? i : null, level };
+  }
+  return {};
+}
+
+// What an order does to the gun before it is carried out: where the hull will face at the cycle's end under the pilot's burn for it, whether the gun will
+// bear on her then, and why not (a key for the page's words: the drive points away from her to do this).
+function radarCost(state, order) {
+  const i = radarNearest(state);
+  if (i < 0) return { endFacing: state.ships[0].facing, bears: false, why: null };
+  const p = radarCrew(state, 'pilot', 5, order, () => 0.5), want = p.turnTo !== undefined && p.turnTo !== null ? p.turnTo : p.burn ? p.burn.dir : state.ships[0].facing;
+  const d = radarTurnBy(state.ships[0].facing, want), endFacing = radarNorm(state.ships[0].facing + Math.max(-RADAR.TURN, Math.min(RADAR.TURN, d)));
+  const bears = Math.abs(radarTurnBy(endFacing, radarDir(state.ships[0].p, state.ships[i + 1].p))) <= RADAR.BEAR;
+  return { endFacing, bears, why: bears ? null : 'driveAway' };
+}
+
+// A cycle's orders when the crew work every post (the fight tool and the tests; the page puts the hand's own post in place of the crew's): the captain's
+// order on what the board shows, and each post at its level. `levels`: { pilot, gunner, engineer, comms }.
+function radarAuto(state, levels = {}, rand) {
+  const read = { torps: radarProject(state, {}, 2).impacts };
+  const order = radarCaptain(state, state.nerve, read), out = { order };
+  for (const post of ['engineer', 'comms', 'pilot', 'gunner']) Object.assign(out, radarCrew(state, post, levels[post] || 0, order, rand));
+  return out;
+}
+
+// The fight's end, or null, in today's names (shipEnd in fight.js), so everything after it (shipFightEnd) works unchanged: lost (our hull gone); boarded
+// (she came alongside with her lock whole); crippled (each of hers out); away (each of hers left breaking off with her guns gone and her hull whole) and
+// broke (each breaking off), once past GUN_RANGE; escaped (each of hers past ESCAPE); at the cap the less whole side breaks off, ran if it is us.
+function radarEnd(state) {
+  if (state.me.armor <= 0) return 'lost';
+  if (state.boarded) return 'boarded';
+  const up = state.foes.map((f, i) => ({ f, i })).filter(x => !radarOut(x.f));
+  if (!up.length) return 'crippled';
+  const breaking = ({ f, i }) => state.foeOrders[i] && state.foeOrders[i].kind === 'break' && f.parts.drive.hp > 0 && radarRange(state, i + 1) > RADAR.GUN_RANGE;
+  if (up.every(breaking)) return up.every(({ f }) => f.parts.weapons.hp <= 0 && radarHull(f) >= (f.breakAt || FIGHT.BREAK)) ? 'away' : 'broke';
+  if (up.every(({ i }) => radarRange(state, i + 1) > RADAR.ESCAPE)) return 'escaped';
+  if (state.cycle < radarCap(state)) return null;
+  const hers = up.reduce((a, { f }) => a + radarHull(f), 0) / up.length;
+  return radarHull(state.me) < hers ? 'ran' : 'broke';
+}
+
+// ---------- when real time pauses itself (Task 7) ----------
+
+// Why the fight pauses itself on what just happened, as keys for the page's words: only on new events, never on a standing condition (a locked gun, a coast).
+// She comes into gun range is said once a fight (the step says it once); an order change pauses only into or out of evade or break-off.
+function radarPauses(prev, next, events) {
+  const why = new Set();
+  for (const e of events || []) {
+    if (e.kind === 'armed') why.add('armed');
+    if (e.kind === 'launch' && e.side === 'her') why.add('launched');
+    if (e.kind === 'pdcSoon') why.add('pdcSoon');
+    if (e.kind === 'hitUs' || (e.kind === 'impact' && e.side === 'her')) why.add('hit');
+    if (e.kind === 'call') why.add('call');
+    if (e.kind === 'gunRange') why.add('gunRange');
+    if (e.kind === 'order' && ['evade', 'break'].some(k => e.from === k || e.to === k)) why.add('plan');
+  }
+  return [...why];
+}
