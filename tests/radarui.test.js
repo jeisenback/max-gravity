@@ -79,6 +79,22 @@ test('pressing play at 16x runs the fight until she arms and then launches, and 
   await done();
 });
 
+test('a pause on a cycle\'s last step still plans the next cycle, so it runs on its own orders', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    Settings.radarFight = true; radarGame(); radarBattle();
+    const g = G.radar, pauses = radarPauses, plan = radarPlan, planned = [];
+    window.radarPauses = (prev, next, events) => (next.step === RADAR.SUB ? ['hit'] : pauses(prev, next, events));  // a pause on the cycle's last step
+    window.radarPlan = x => { planned.push(x.s.state.step); plan(x); };
+    g.running = true; radarRun(g, RADAR.TURN_S);
+    window.radarPauses = pauses; window.radarPlan = plan;
+    return { sub: RADAR.SUB, step: g.s.state.step, running: g.running, why: g.why, planned };
+  });
+  assert.deepEqual(r, { sub: r.sub, step: r.sub, running: false, why: ['hit'], planned: [r.sub] });
+  await done();
+});
+
 test('pressing a speed changes how far a frame advances the fight; the zoom buttons set the reach and auto gives it back', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);

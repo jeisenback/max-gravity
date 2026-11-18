@@ -74,9 +74,9 @@ function radarAfter(r, was, events) {
     radarStop(); shipFightEnd(s, end); finishEvent();
     return true;
   }
+  if (s.state.step % RADAR.SUB === 0) radarPlan(r);  // a new cycle's plan, before any pause, so the cycle after it runs on its own orders
   const why = radarPauses(was, s.state, events);
   if (why.length) { r.running = false; r.why = why; radarPaintBar(r); return true; }
-  if (s.state.step % RADAR.SUB === 0) radarPlan(r);
   return false;
 }
 const radarStop = () => { G.radar = null; };
