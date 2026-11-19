@@ -279,7 +279,7 @@ const play = (s, rand, levels = { pilot: 2, gunner: 2, engineer: 2, comms: 2 }, 
 const { radarEnd } = api;
 
 test('a raider with her lock whole comes alongside and the fight ends boarded; with it shot away she cannot', () => {
-  const s = fight({ opening: 'short' }), unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;  // nothing of ours to stop her coming on
+  const s = fight({ opening: 'short' }), unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.parts.drive.hp = 0; unarmed.me.torps = 0;  // nothing of ours to stop her coming on: no guns, and no drive to keep the range with
   const whole = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
   assert.ok(whole.events.some(e => e.kind === 'alongside') && whole.end === 'boarded', `ended ${whole.end}`);
   for (let seed = 1; seed <= 20; seed++) {
@@ -306,7 +306,7 @@ test('a raider pair: with one crippled, the other fights on and her lock alone d
   assert.equal(radarEnd(s), null, 'not over while the second is up');
   const lockless = plain(s); lockless.foes[1].parts.lock.hp = 0;  // the crippled one's lock is whole, the live one's is gone
   for (let seed = 1; seed <= 10; seed++) assert.notEqual(play(lockless, seeded(seed)).end, 'boarded', `seed ${seed}: the out ship does not board`);
-  const unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;
+  const unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.parts.drive.hp = 0; unarmed.me.torps = 0;  // no guns and no drive to keep the range with
   const boards = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
   assert.equal(boards.end, 'boarded'); assert.equal(boards.events.find(e => e.kind === 'alongside').foe, 1, 'the live one');
   const both = plain(s); both.foes[1].armor = 0;
@@ -489,4 +489,10 @@ test('her guns\' first hit of the fight is marked as the first, and only it', ()
   for (let k = 0; k < 3; k++) { const r = radarCycle(s, {}, () => 0.1); s = r.state; firsts.push(...plain(r.events).filter(e => e.kind === 'hitUs').map(e => !!e.first)); }
   assert.ok(firsts.length >= 2, 'she hit more than once');
   assert.deepEqual(firsts, [true, ...firsts.slice(1).map(() => false)]);
+});
+
+test('a ship that manoeuvres across her line is harder for her guns to hit', () => {
+  const hits = vx => { let n = 0; for (let k = 0; k < 200; k++) { const s = held(fight(), { x: 0, y: 25 }); s.ships[0].v = { x: vx, y: 0 }; const r = radarStep(s, {}, seeded(k)); n += plain(r.events).filter(e => e.kind === 'hitUs').length; } return n; };
+  const still = hits(0), moving = hits(0.4);
+  assert.ok(moving < still * 0.7, `still ${still} hits in 200, moving across ${moving}`);
 });

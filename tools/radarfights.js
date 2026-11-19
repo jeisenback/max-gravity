@@ -12,7 +12,7 @@ const { answerRadar } = require('./answer');
 
 const R = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
   ['FIGHT', 'RADAR', 'SHIPS', 'FOE_TYPES', 'shipSide', 'radarFight', 'radarCycle', 'radarAuto', 'radarEnd', 'radarPauses', 'radarNearest', 'radarRange', 'radarDist', 'radarDir',
-    'radarNorm', 'radarOut', 'radarHull', 'radarScatter']);
+    'radarNorm', 'radarUnit', 'radarOut', 'radarHull', 'radarScatter', 'radarCap']);
 
 const GOOD = ['crippled', 'broke', 'escaped'], LOST = ['ran', 'lost'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost', 'standoff'];  // standoff: none of the named ends by the trial's own limit (the rules should never give one)
 // The types she comes as, as the game meets them: a raider and a corsair far out, a navy cutter and destroyer at gun range (a patrol's stop, the short opening), a raider pair.
@@ -48,14 +48,14 @@ function radarTrial({ type, post, policy, level = 2, crew = 2, sensors = 1, fit 
   const levels = { pilot: crew, gunner: crew, engineer: crew, comms: crew, [post]: level }, play = POLICIES[post][policy], paused = [];
   for (let k = 0; k < 4 * R.RADAR.TURNS; k++) {
     const end = R.radarEnd(s);
-    if (end) return { end, cycles: s.cycle, paused };
+    if (end) return { end, cycles: s.cycle, paused, capped: s.cycle >= R.radarCap(s) };
     const crewOrders = R.radarAuto(s, levels, rand), mine = play(s, crewOrders, rand);
     if (post === 'pilot' && mine.burn) mine.burn = R.radarScatter(mine.burn, level, rand);
     const was = s, r = R.radarCycle(s, { ...crewOrders, ...mine, level: post === 'gunner' ? level : crewOrders.level }, rand);
     s = r.state;
     if (R.radarPauses(was, s, r.events).length) paused.push(s.cycle);
   }
-  return { end: 'standoff', cycles: s.cycle, paused };
+  return { end: 'standoff', cycles: s.cycle, paused, capped: true };
 }
 
 // A seed's trials: `n` fights of each type for each policy at the post. Returns tallies by `policy|type`, to be summed over seeds.
@@ -66,7 +66,7 @@ function radarFights({ seed = 1, n = 100, post = 'gunner', level = 2, crew = 2, 
     for (let k = 0; k < n; k++) {
       const f = radarTrial({ type, post, policy, level, crew, sensors, fit, rand });
       t.n++; t[f.end] = (t[f.end] || 0) + 1; t.cycles += f.cycles;
-      if (f.cycles >= R.RADAR.TURNS - 1 && (f.end === 'ran' || f.end === 'broke')) t.capped++;
+      if (f.capped) t.capped++;
       for (let j = 1; j < f.paused.length; j++) t.gaps.push(f.paused[j] - f.paused[j - 1]);
     }
   }

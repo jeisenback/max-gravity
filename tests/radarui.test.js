@@ -243,7 +243,8 @@ test('the gun-or-PDC tile changes what fires from the next cycle, not this one; 
 test('the pilot drags the burn: outside the wedge it is held to its edge, and it lands within the hand\'s scatter of where it was put', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  const w = await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); radarTick(0); return { wedge: G.radar.wedge, geo: G.radar.geo, scatter: radarScatterOf(radarLevels().pilot) }; });
+  // our ship opening the range from her, so the order plots a burn back toward her
+  const w = await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); G.radar.s.state.ships[0].v = { x: 0, y: -0.5 }; radarPlan(G.radar); radarTick(0); return { wedge: G.radar.wedge, geo: G.radar.geo, scatter: radarScatterOf(radarLevels().pilot) }; });
   assert.ok(w.wedge.dir !== null, 'far out, the order plots a burn toward her');
   const box = await page.locator('canvas.radar').boundingBox(), out = (w.wedge.dir + 90) * Math.PI / 180;  // a quarter turn off the plotted line: outside the wedge
   await page.mouse.move(box.x + w.geo.cx + 60 * Math.sin(out), box.y + w.geo.cy - 60 * Math.cos(out));

@@ -291,7 +291,7 @@ function radarDraw(c, r) {
     if (!n) return;
     const q = px(pt.p); g.fillStyle = t ? RADAR_INK.her : RADAR_INK.track; g.beginPath(); g.arc(q.x, q.y, 2, 0, 2 * Math.PI); g.fill();
     if (t && pt.band * k > 2) { g.strokeStyle = 'rgba(255,106,74,0.35)'; g.beginPath(); g.arc(q.x, q.y, pt.band * k, 0, 2 * Math.PI); g.stroke(); }
-    hovers.push({ ...q, text: radarSay(t ? 'track.her' : 'track.us', { n: radarSay(n === 1 ? 'cycle' : 'cycles', { n }) }) });
+    if (t || Math.hypot(q.x - cx, q.y - cy) > RADAR_UI.HOVER) hovers.push({ ...q, text: radarSay(t ? 'track.her' : 'track.us', { n: radarSay(n === 1 ? 'cycle' : 'cycles', { n }) }) });  // our track's dots only clear of the ship, as the ghost is
   }));
   if (proj.cpa) labels.push(radarSay(proj.cpa.at < 0.05 ? 'closest.now' : 'closest', { lo: Math.round(proj.cpa.min), hi: Math.round(proj.cpa.max), at: proj.cpa.at.toFixed(1) }));  // now: the range is opening
   // the torpedoes, each on its way to its target; the nearest of hers labelled with its impact

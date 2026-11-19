@@ -48,6 +48,7 @@ const RADAR = {
   LOCKLESS: 10,        // km a raider with her lock gone holds at, as today's closes only to close range
   ALONGSIDE: 1,        // km: a ship with her lock whole that comes within this of ours boards
   GUN_RANGE: 35,       // km: her guns fire inside this, once a cycle
+  GUN_DMG: 1,          // a gun's damage on the radar, both sides', as a share of the old fight's (FIGHT.GUN_DMG, FIGHT.FOE_DMG): a cycle is one shot a mount, where a turn was a volley
   GUN_POWER: 2,        // units of power at which our gun does its plain damage; more hits harder in proportion, less softer
   SCATTER: 20,         // degrees a crew pilot's burn can land off at level 0; none at level 5
   EVADE_SOON: 1.5      // cycles: a torpedo comms calls out that will hit inside this sends the captain to evade
@@ -97,6 +98,12 @@ function radarError(state) {
 }
 
 const radarBears = (state, i = 1) => Math.abs(radarTurnBy(state.ships[0].facing, radarDir(state.ships[0].p, state.ships[i].p))) <= RADAR.BEAR;
+
+// A ship's speed across the line between two ships, km/s, relative to the other: what spreads a shot between them.
+function radarAcross(a, b) {
+  const line = radarUnit(radarDir(a.p, b.p)), v = { x: a.v.x - b.v.x, y: a.v.y - b.v.y }, along = v.x * line.x + v.y * line.y;
+  return Math.sqrt(Math.max(0, v.x * v.x + v.y * v.y - along * along));
+}
 
 // The spread of a shot, km: it grows with range, with our own speed off her line, and with the board's error, and the gunner's level takes some off.
 function radarSpread(state, level, i = 1) {
@@ -204,7 +211,7 @@ function radarStep(state, orders, rand) {
       const km = radarRange(st, target), part = (o.aim && o.aim.part) || 'hull';
       if (radarDist(land, her.p) <= RADAR.HIT_R) {
         const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, hi = FIGHT.GUN_DMG[1], roll = lo + rand() * (hi - lo);
-        hits.push({ to: target, part, dmg: Math.round(roll * st.me.dmgMult * (st.power.guns / RADAR.GUN_POWER) * radarFalloff(km) * radarAimMult(km, part)), km });  // more power to the guns hits harder, as an overcharge did (the owner, 2026-11-19), and runs hotter
+        hits.push({ to: target, part, dmg: Math.round(roll * RADAR.GUN_DMG * st.me.dmgMult * (st.power.guns / RADAR.GUN_POWER) * radarFalloff(km) * radarAimMult(km, part)), km });  // more power to the guns hits harder, as an overcharge did (the owner, 2026-11-19), and runs hotter
       } else events.push({ at: at(), kind: 'miss', foe: target - 1, km });
       if (st.heat > RADAR.HEAT_CAP && !st.locked) { st.locked = true; st.lockedAt = st.cycle; events.push({ at: at(), kind: 'overheat' }); }
     }
@@ -215,14 +222,15 @@ function radarStep(state, orders, rand) {
     st.torps.push(t);
     events.push({ at: at(), kind: 'launch', side: 'us', torp: t.id, foe: o.torp });
   }
-  // her fire: her guns once a cycle inside GUN_RANGE, at the part her order names; her spread from the range and the board's stock error, doubled by our spoof
+  // her fire: her guns once a cycle inside GUN_RANGE, at the part her order names; her spread from the range, our speed across her line (a ship that
+  // manoeuvres under her guns is harder to hit, as hers is for ours: the owner, 2026-11-19) and the board's stock error, doubled by our spoof
   const herHits = [];
   for (const [i, f] of st.foes.entries()) {
     const fo = st.foeOrders[i] || {}, km = radarRange(st, i + 1);
     if (!fo.fire || st.herFired[i] || radarOut(f) || f.parts.weapons.hp <= 0 || km > RADAR.GUN_RANGE) continue;
     st.herFired[i] = true;
-    const spread = km * RADAR.SPREAD_KM + RADAR.ERROR[0] * (st.spoofing ? 2 : 1), chance = Math.min(1, (RADAR.HIT_R / spread) ** 2);
-    if (rand() < chance) herHits.push({ foe: i, part: fo.part || 'hull', dmg: Math.round(radarMounts(f) * (FIGHT.FOE_DMG[0] + rand() * (FIGHT.FOE_DMG[1] - FIGHT.FOE_DMG[0])) * f.dmgMult * radarFalloff(km)) });
+    const spread = km * RADAR.SPREAD_KM + radarAcross(me, st.ships[i + 1]) * RADAR.SPREAD_BURN + RADAR.ERROR[0] * (st.spoofing ? 2 : 1), chance = Math.min(1, (RADAR.HIT_R / spread) ** 2);
+    if (rand() < chance) herHits.push({ foe: i, part: fo.part || 'hull', dmg: Math.round(RADAR.GUN_DMG * radarMounts(f) * (FIGHT.FOE_DMG[0] + rand() * (FIGHT.FOE_DMG[1] - FIGHT.FOE_DMG[0])) * f.dmgMult * radarFalloff(km)) });
     else events.push({ at: at(), kind: 'missUs', foe: i });
   }
   // point defence: hers at us, through the arc, while the fire control is on the PDC; a stowed PDC never fires
@@ -400,7 +408,7 @@ function radarCaptain(state, nerve, read = { torps: [] }) {
 const radarNearest = state => state.foes.reduce((b, f, i) => (radarOut(f) ? b : b < 0 || radarRange(state, i + 1) < radarRange(state, b + 1) ? i : b), -1);
 
 // What a crew hand at a post does this cycle under the order, at their level (0 to 5), as part of the orders. The pilot coasts nose-on while within COAST of
-// the range to hold (COAST_ENGAGE closing to engage) and not closing fast, and makes short burns otherwise, landing up to SCATTER off at level 0; the
+// the range to hold (COAST_ENGAGE closing to engage) and not closing fast, and while she breaks off, and makes short burns otherwise, landing up to SCATTER off at level 0; the
 // gunner fires at her hull (at her lock while a raider with it whole closes inside JINK), sets the arc at the nearest of her torpedoes and puts the fire
 // control on the PDC when one will reach it this cycle, and fires a torpedo inside JINK; the engineer gives the order's power, and comms its stance.
 function radarCrew(state, post, level, order, rand) {
@@ -412,17 +420,23 @@ function radarCrew(state, post, level, order, rand) {
   if (post === 'pilot') {
     const off = (rand() - 0.5) * 2 * RADAR.SCATTER * Math.max(0, 1 - level / 5);
     if (order === 'break' || o.range === null) return { burn: { dir: radarNorm(toHer + 180 + off), throttle: 1 }, turnTo: null };
+    if (state.foeOrders[i] && state.foeOrders[i].kind === 'break') return { burn: null, turnTo: toHer };  // she is breaking off: let her go, nose on her, rather than chase her back into the fight
     if (order === 'evade') return { burn: { dir: radarNorm(toHer + 90 + off), throttle: 1 }, turnTo: null };
     const u = radarUnit(toHer), closing = (her.v.x - me.v.x) * -u.x + (her.v.y - me.v.y) * -u.y;  // positive while the range comes down
     const room = order === 'engage' ? RADAR.COAST_ENGAGE : RADAR.COAST;
     if (Math.abs(km - o.range) <= room && Math.abs(closing) < 0.3) return { burn: null, turnTo: toHer };
-    return { burn: { dir: radarNorm((km > o.range ? toHer : toHer + 180) + off), throttle: 1 }, turnTo: null };
+    // a burn for the motion the range wants relative to her: straight at or away from her, no faster than she was met at, and none across her line, so the
+    // ship neither overshoots her nor drifts round her
+    const most = RADAR.CLOSING / RADAR.TURN_S, want = Math.max(-most, Math.min(most, (km - o.range) / (2 * RADAR.TURN_S)));
+    const dv = { x: want * u.x - (me.v.x - her.v.x), y: want * u.y - (me.v.y - her.v.y) }, size = Math.hypot(dv.x, dv.y);
+    if (size < 0.05) return { burn: null, turnTo: toHer };
+    return { burn: { dir: radarNorm(radarDir({ x: 0, y: 0 }, dv) + off), throttle: Math.min(1, size / (RADAR.ACCEL * RADAR.TURN_S)) }, turnTo: null };
   }
   if (post === 'gunner') {
     const lockFirst = (state.types[i] || 'raider') === 'raider' && state.foes[i].parts.lock.hp > 0 && km <= RADAR.JINK;
     const soon = state.torps.filter(t => t.side === 'her').sort((a, b) => radarDist(a.p, me.p) - radarDist(b.p, me.p))[0];
     const pdc = !!soon && state.me.pdc && radarDist(soon.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * RADAR.TURN_S;
-    return { fire: true, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun', pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
+    return { fire: km <= RADAR.GUN_RANGE, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun',  // no shot spent, nor heat, at a range it will not hit at pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
       torp: km <= RADAR.JINK && state.me.torps > 0 ? i : null, level };
   }
   return {};

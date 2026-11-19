@@ -110,7 +110,8 @@ function answerDeck(s, read = true, charge = read) {
 // `R` the radar rules (js/radar.js, loaded in Node by tools/radarfights.js), and it returns the post's orders in place of the crew's:
 // - gunner: the PDC when one of her torpedoes will reach its reach this cycle, its arc on the nearest; else the gun, at a raider's lock while she closes with it whole, at
 //   a corsair's launcher while she has torpedoes, at the hull otherwise; a torpedo at the most hurt of hers inside JINK;
-// - pilot: across the line of a torpedo that will hit inside two cycles; away from a raider closing with her lock whole inside her board's reach; else the order's plot.
+// - pilot: across the line of a torpedo that will hit inside two cycles; away from a raider closing with her lock whole inside her board's reach; across her
+//   line every other cycle while her guns reach us (the other, the gun bears); else the order's plot.
 function answerRadar(s, post, orders, R) {
   const me = s.ships[0], i = R.radarNearest(s);
   if (i < 0) return {};
@@ -121,13 +122,17 @@ function answerRadar(s, post, orders, R) {
   if (post === 'gunner') {
     const part = raiderClosing && km <= R.RADAR.JINK ? 'lock' : her.launcher && her.parts.launcher && her.parts.launcher.hp > 0 && her.torps > 0 ? 'launcher' : 'hull';
     const weak = s.foes.map((f, j) => j).filter(j => !R.radarOut(s.foes[j])).sort((a, b) => R.radarHull(s.foes[a]) - R.radarHull(s.foes[b]))[0];
-    return { fire: true, fc: soon && s.me.pdc ? 'pdc' : 'gun', aim: { foe: i, part }, pdcArc: soon ? { dir: R.radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
+    return { fire: km <= R.RADAR.GUN_RANGE, fc: soon && s.me.pdc ? 'pdc' : 'gun', aim: { foe: i, part }, pdcArc: soon ? { dir: R.radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
       torp: km <= R.RADAR.JINK && s.me.torps > 0 ? weak : null };
   }
   if (post === 'pilot') {
     const near = hers.find(t => R.radarDist(t.p, me.p) <= R.RADAR.TORP_SPEED * R.RADAR.TURN_S * 2);
     if (near) return { burn: { dir: R.radarNorm(R.radarDir(me.p, near.p) + 90), throttle: 1 }, turnTo: null };
     if (raiderClosing && km <= R.RADAR.LOCKLESS) return { burn: { dir: R.radarNorm(toHer + 180), throttle: 1 }, turnTo: null };
+    if (km <= R.RADAR.GUN_RANGE && her.parts.weapons.hp > 0 && s.cycle % 2 === 1) {  // under her guns, every other cycle: across her line, on the side we are already moving to
+      const u = R.radarUnit(R.radarNorm(toHer + 90)), side = me.v.x * u.x + me.v.y * u.y >= 0 ? 90 : -90;
+      return { burn: { dir: R.radarNorm(toHer + side), throttle: 1 }, turnTo: null };
+    }
     return { burn: orders.burn, turnTo: orders.turnTo };
   }
   return {};
