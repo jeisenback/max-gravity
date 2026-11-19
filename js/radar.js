@@ -48,6 +48,7 @@ const RADAR = {
   LOCKLESS: 10,        // km a raider with her lock gone holds at, as today's closes only to close range
   ALONGSIDE: 1,        // km: a ship with her lock whole that comes within this of ours boards
   GUN_RANGE: 35,       // km: her guns fire inside this, once a cycle
+  GUN_POWER: 2,        // units of power at which our gun does its plain damage; more hits harder in proportion, less softer
   SCATTER: 20,         // degrees a crew pilot's burn can land off at level 0; none at level 5
   EVADE_SOON: 1.5      // cycles: a torpedo comms calls out that will hit inside this sends the captain to evade
 };
@@ -71,6 +72,7 @@ function radarFight({ me, foes, nerve, types = foes.map(() => 'raider'), opening
     t: 0, step: 0, cycle: 0, ships: [{ p: { x: 0, y: 0 }, v: { x: 0, y: 0 }, a: { x: 0, y: 0 }, facing: 0 }, ...theirs],
     torps: [], nextTorp: 1, heat: 0, locked: false, lockedAt: null, fired: 0, torpFired: false, order: 'hold', fc: 'gun', pdcArc: { dir: 0, width: 90 }, power: { drive: 2, guns: 2, pdc: 2 },
     foeOrders: [], armed: foes.map(() => false), herFired: foes.map(() => false), boarded: false, ranged: false,
+    struck: false,  // her guns have hit us this fight
     lockOn: false, spoofing: false, herSpoof: false, blind: false,  // this cycle's comms: our lock on her, our spoof, her spoof (no foe spoofs yet), the board blind past BLIND
     log: [], events: [], spent: []
   };
@@ -202,7 +204,7 @@ function radarStep(state, orders, rand) {
       const km = radarRange(st, target), part = (o.aim && o.aim.part) || 'hull';
       if (radarDist(land, her.p) <= RADAR.HIT_R) {
         const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, hi = FIGHT.GUN_DMG[1], roll = lo + rand() * (hi - lo);
-        hits.push({ to: target, part, dmg: Math.round(roll * st.me.dmgMult * radarFalloff(km) * radarAimMult(km, part)), km });
+        hits.push({ to: target, part, dmg: Math.round(roll * st.me.dmgMult * (st.power.guns / RADAR.GUN_POWER) * radarFalloff(km) * radarAimMult(km, part)), km });  // more power to the guns hits harder, as an overcharge did (the owner, 2026-11-19), and runs hotter
       } else events.push({ at: at(), kind: 'miss', foe: target - 1, km });
       if (st.heat > RADAR.HEAT_CAP && !st.locked) { st.locked = true; st.lockedAt = st.cycle; events.push({ at: at(), kind: 'overheat' }); }
     }
@@ -235,7 +237,7 @@ function radarStep(state, orders, rand) {
     const side = st.foes[h.to - 1], took = dealDamage(side, side.parts[h.part] || h.part === 'hull' ? h.part : 'hull', h.dmg);
     events.push({ at: at(), kind: 'hit', foe: h.to - 1, part: h.part, dmg: took, km: h.km });
   }
-  for (const h of herHits) events.push({ at: at(), kind: 'hitUs', foe: h.foe, part: h.part, dmg: dealDamage(st.me, st.me.parts[h.part] || h.part === 'hull' ? h.part : 'hull', h.dmg) });
+  for (const h of herHits) { events.push({ at: at(), kind: 'hitUs', foe: h.foe, part: h.part, dmg: dealDamage(st.me, st.me.parts[h.part] || h.part === 'hull' ? h.part : 'hull', h.dmg), ...(st.struck ? {} : { first: true }) }); st.struck = true; }  // first: her guns' first hit of the fight, the one that pauses it (the owner, 2026-11-19)
   for (const { torp, from, to } of paths) {
     if (gone.has(torp.id)) continue;
     const ship = st.ships[torp.target], start = was[torp.target];
@@ -346,8 +348,8 @@ function radarProject(state, orders, cycles = 4, seen = null) {
 
 // Her orders for a cycle, by her kind (spec, "Her"; foeMove in fight.js for today's): badly hurt or with no guns she breaks off while her drive can take her
 // away; a corsair with torpedoes arms inside TORP_LAUNCH (a cycle ahead, every FIGHT.SALVO_EVERY) and fires a salvo the cycle after; outside JINK she comes
-// on as she was met, and inside it she burns to the range her kind works at (HELD; a raider alongside while her lock is whole, LOCKLESS without it),
-// jinking; her guns fire inside GUN_RANGE, at our drive if we are the faster, at our hull while she closes, else at our guns while they last.
+// on at the rate she was met at, burning for us when we open the range, and inside it she burns to the range her kind works at (HELD; a raider alongside
+// while her lock is whole, LOCKLESS without it), jinking; her guns fire inside GUN_RANGE, at our drive if we are the faster, at our hull while she closes, else at our guns while they last.
 function radarFoe(state, i, rand) {
   const f = state.foes[i], ship = state.ships[i + 1], me = state.ships[0], type = (state.types && state.types[i]) || 'raider';
   if (radarOut(f)) return { kind: 'out', burn: null, fire: false };
@@ -364,6 +366,9 @@ function radarFoe(state, i, rand) {
     const u = radarUnit(toUs), closingNow = (ship.v.x - me.v.x) * u.x + (ship.v.y - me.v.y) * u.y, wantClosing = Math.max(-0.6, Math.min(0.6, (km - held) / (2 * RADAR.TURN_S)));
     const dv = wantClosing - closingNow;
     burn = { dir: radarNorm((dv >= 0 ? toUs : toUs + 180) + jink), throttle: Math.min(1, Math.abs(dv) / (RADAR.HER_ACCEL * RADAR.TURN_S)) };
+  } else if (drive) {  // outside JINK she comes on at the rate she was met at, and burns straight for us to get it back when we open the range
+    const u = radarUnit(toUs), dv = RADAR.CLOSING / RADAR.TURN_S - ((ship.v.x - me.v.x) * u.x + (ship.v.y - me.v.y) * u.y);
+    if (dv > 1e-6) burn = { dir: toUs, throttle: Math.min(1, dv / (RADAR.HER_ACCEL * RADAR.TURN_S)) };
   }
   const part = state.me.parts.drive.hp > 0 && state.me.speed > f.speed ? 'drive' : km > held + 5 ? 'hull' : state.me.parts.weapons.hp > 0 ? 'weapons' : 'hull';
   return { kind, n, burn, fire: armed, part };
@@ -487,7 +492,7 @@ function radarPauses(prev, next, events) {
     if (e.kind === 'armed') why.add('armed');
     if (e.kind === 'launch' && e.side === 'her') why.add('launched');
     if (e.kind === 'pdcSoon') why.add('pdcSoon');
-    if (e.kind === 'hitUs' || (e.kind === 'impact' && e.side === 'her')) why.add('hit');
+    if ((e.kind === 'hitUs' && e.first) || (e.kind === 'impact' && e.side === 'her')) why.add('hit');  // her guns pause it on their first hit only, a torpedo on every one (the owner, 2026-11-19)
     if (e.kind === 'call') why.add('call');
     if (e.kind === 'gunRange') why.add('gunRange');
     if (e.kind === 'order' && ['evade', 'break'].some(k => e.from === k || e.to === k)) why.add('plan');

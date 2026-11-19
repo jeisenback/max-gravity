@@ -366,7 +366,9 @@ test('it pauses on a launch, a hit and coming into gun range once, and never on 
   const ev = kinds => kinds.map(k => (typeof k === 'string' ? { kind: k } : k));
   assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'her' }]))), ['launched']);
   assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'us' }]))), [], 'not our own');
-  assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), ['hit']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'hitUs', first: true }]))), ['hit'], 'her guns\' first hit');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), [], 'her guns\' later hits do not pause it (the owner, 2026-11-19)');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'impact', side: 'her' }]))), ['hit'], 'every torpedo does');
   assert.deepEqual(plain(api.radarPauses(null, null, ev(['gunLocked', 'cycle', 'miss', 'hit']))), [], 'a locked gun, a cycle, our own shots');
   assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))).sort(), ['armed', 'pdcSoon']);
   // gun range: said by the step once a fight
@@ -473,4 +475,18 @@ test('the gun\'s solution is for the one it is aimed at: with a pair, aimed at t
   assert.deepEqual(plain(radarProject(s, {}, 1).solution), [0, 0], 'unaimed: the first of hers, who does not bear');
   const aimed = plain(radarProject(s, { aim: { foe: 1, part: 'hull' } }, 1).solution);
   assert.ok(aimed[1] > 0, `aimed at her consort, who bears: ${aimed}`);
+});
+
+test('more power to the guns hits harder: a shot on the engage order\'s guns does the half again of one on hold\'s', () => {
+  const s = place(fight(), { x: 0, y: 10 }), RADAR_ORDERS = api.RADAR_ORDERS;
+  const dmg = power => { const st = plain(s); st.power = { ...power }; return plain(radarStep(st, { fire: true, power }, () => 0.5).events).find(e => e.kind === 'hit').dmg; };
+  const hold = dmg(RADAR_ORDERS.hold.power), engage = dmg(RADAR_ORDERS.engage.power);
+  assert.equal(engage, Math.round(hold * RADAR_ORDERS.engage.power.guns / RADAR.GUN_POWER), `${engage} against ${hold}`);
+});
+
+test('her guns\' first hit of the fight is marked as the first, and only it', () => {
+  let s = held(fight(), { x: 0, y: 10 }); const firsts = [];
+  for (let k = 0; k < 3; k++) { const r = radarCycle(s, {}, () => 0.1); s = r.state; firsts.push(...plain(r.events).filter(e => e.kind === 'hitUs').map(e => !!e.first)); }
+  assert.ok(firsts.length >= 2, 'she hit more than once');
+  assert.deepEqual(firsts, [true, ...firsts.slice(1).map(() => false)]);
 });
