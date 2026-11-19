@@ -142,7 +142,7 @@ test('the hand killed mid-cycle stops the fight at that step and queues the endi
   const { page, ev, errors, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.radarFight = true; radarGame(); radarBattle(); placeHer(20);
+    Settings.radarFight = true; radarGame(); radarBattle(); placeHer(20); RADAR.HIT_R = 1e3;  // every shot lands, so her first volley hits
     const real = fightTook; window.fightTook = (s, events) => { real(s, events); if (events.some(e => e.who === 'foe' && e.dmg > 0)) handDies(s, 'hurt'); };
   });
   await page.click('[data-action="radarPlay"]');

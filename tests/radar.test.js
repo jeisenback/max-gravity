@@ -109,8 +109,8 @@ test('a cycle ends with its bookkeeping: the cycle counts on and the gun may fir
 test('a shot at her lock at 40 km loses damage to the aim penalty; the same shot at her hull lands in full', () => {
   const s = place(fight(), { x: 0, y: 40 }), lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * s.me.skill;
   const shot = part => plain(cycles(s, { fire: true, aim: { foe: 0, part } }, 1, LOW).events).filter(e => e.kind === 'hit').map(e => e.dmg);
-  assert.deepEqual(shot('hull'), [1, 1].map(() => Math.round(lo * radarFalloff(40))), 'the hull: the falloff only');
-  assert.deepEqual(shot('lock'), [1, 1].map(() => Math.round(lo * radarFalloff(40) * radarAimMult(40, 'lock'))), 'her lock: the falloff and the aim penalty');
+  assert.deepEqual(shot('hull'), [1, 1].map(() => Math.round(lo * RADAR.GUN_DMG * radarFalloff(40))), 'the hull: the falloff only');
+  assert.deepEqual(shot('lock'), [1, 1].map(() => Math.round(lo * RADAR.GUN_DMG * radarFalloff(40) * radarAimMult(40, 'lock'))), 'her lock: the falloff and the aim penalty');
   assert.equal(radarAimMult(40, 'hull'), 1); assert.equal(radarAimMult(40, 'weapons'), 1);
   assert.equal(radarAimMult(40, 'lock'), FIGHT.AIM_MULT.long); assert.equal(radarAimMult(3, 'lock'), FIGHT.AIM_MULT.knife);
 });
@@ -424,7 +424,7 @@ test('a ship fires only the mounts still working: one mount of two shot away, on
   const s = held(fight(), { x: 0, y: 10 }); s.me.parts.weapons.hp = FIGHT.PART_HP.weapons;  // two guns, one mount's hp left
   assert.equal(cycles(s, { fire: true }, 1, LOW).events.filter(e => e.kind === 'hit' || e.kind === 'miss').length, 1);
   const two = held(radarFight({ me: side(230, 2), foes: [side(150, 2)], nerve: 3 }), { x: 0, y: 10 }), one = plain(two); one.foes[0].parts.weapons.hp = FIGHT.PART_HP.weapons;
-  const took = st => plain(cycles(st, {}, 1, () => 0.999).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);
+  const took = st => plain(cycles(st, {}, 1, () => 0.001).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);  // low dice: her shots land
   const [full] = took(two), [half] = took(one);
   assert.ok(full && half && Math.abs(full / half - 2) < 0.05, `two mounts ${full}, one ${half}`);
 });

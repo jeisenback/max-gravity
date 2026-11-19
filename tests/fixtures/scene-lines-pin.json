@@ -28199,7 +28199,7 @@
     "close": "Turn 5: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund."
    },
    {
-    "radar": "Play 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Paused: She's loading torpedoes. She's launched. A torpedo reaches the point defence this cycle. We're hit. Someone's calling you. She's in gun range. The captain's changed the plan. Her range 30 km, closingShe's arming 2 inbound, first in 0.5 to 0.5 cycles Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 7 to 29%Spread 1.8 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
+    "radar": "Play 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Paused: She's loading torpedoes. She's launched. A torpedo reaches the point defence this cycle. We're hit. Someone's calling you. She's in gun range. The captain's changed the plan. Her range 30 km, closingShe's arming 2 inbound, first in 0.5 to 0.5 cycles Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 0 to 13%Spread 1.4 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
     "aria": [
      "Fight controls",
      "The radar: our ship at the centre, her contact, the projected tracks and the torpedoes.",
@@ -28236,7 +28236,7 @@
     ]
    },
    {
-    "radar": "Pause 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 7 to 29%Spread 1.8 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
+    "radar": "Pause 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Running at 16x Her range 30 km, opening Nothing inbound Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 0 to 13%Spread 1.4 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
     "aria": [
      "Fight controls",
      "The radar: our ship at the centre, her contact, the projected tracks and the torpedoes.",
@@ -28310,7 +28310,7 @@
    },
    {
     "post": "gunner",
-    "console": "Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 11 to 43%Spread 1.5 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence.",
+    "console": "Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 0 to 21%Spread 1.1 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence.",
     "drawn": [
      "50 km to the edge",
      "The Pirate \"Bitter Grin\", 12 km",
@@ -28336,7 +28336,7 @@
    },
    {
     "post": "gunner",
-    "console": "Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoGoing this cycle Solution 11 to 43%Spread 1.5 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence.",
+    "console": "Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoGoing this cycle Solution 0 to 21%Spread 1.1 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence.",
     "drawn": [
      "50 km to the edge",
      "The Pirate \"Bitter Grin\", 12 km",
