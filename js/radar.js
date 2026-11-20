@@ -55,6 +55,7 @@ const RADAR = {
   JINK_OFF: 25,        // degrees off her line a pilot can burn and still keep the gun bearing on her (under BEAR and GATE): a jink that keeps shooting
   SCATTER: 20,         // degrees a crew pilot's burn can land off at level 0; none at level 5
   LOCK_AT: 0,          // km: inside this the gunner shoots a raider's lock as she comes alongside, her hull before it. 0, as measured (#1347): her hull is the better target at every range
+  PAUSE_GAP: 2,        // cycles after an automatic pause in which no other one stops the fight (radarQuiet)
   EVADE_SOON: 1.5      // cycles: a torpedo comms calls out that will hit inside this sends the captain to evade
 };
 
@@ -516,3 +517,8 @@ function radarPauses(prev, next, events) {
   }
   return [...why];
 }
+
+// The pauses that stop the fight: none within PAUSE_GAP cycles of the last automatic pause, the last of them included (the owner, 2026-11-20), so that a run of new events close
+// together (a corsair's launch, the evade, her torpedoes reaching the PDC) stops it once. The ones held back are on the timeline all the same. `last` is the
+// fight time of the last pause, or null; `now` the fight time now.
+const radarQuiet = (why, last, now) => (last !== null && last !== undefined && now - last <= RADAR.PAUSE_GAP * RADAR.TURN_S ? [] : why);

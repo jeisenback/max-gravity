@@ -12,7 +12,7 @@ const { answerRadar } = require('./answer');
 
 const R = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
   ['FIGHT', 'RADAR', 'SHIPS', 'FOE_TYPES', 'shipSide', 'radarFight', 'radarCycle', 'radarAuto', 'radarEnd', 'radarPauses', 'radarNearest', 'radarRange', 'radarDist', 'radarDir',
-    'radarNorm', 'radarUnit', 'radarOut', 'radarHull', 'radarScatter', 'radarCap', 'radarCrew']);
+    'radarNorm', 'radarUnit', 'radarOut', 'radarHull', 'radarScatter', 'radarCap', 'radarCrew', 'radarQuiet']);
 
 const GOOD = ['crippled', 'broke', 'escaped'], LOST = ['ran', 'lost'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost', 'standoff'];  // standoff: none of the named ends by the trial's own limit (the rules should never give one)
 // The types she comes as, as the game meets them: a raider and a corsair far out, a navy cutter and destroyer at gun range (a patrol's stop, the short opening), a raider pair.
@@ -53,7 +53,7 @@ function radarTrial({ type, post, policy, level = 2, crew = 2, sensors = 1, fit 
     if (post === 'pilot' && mine.burn) mine.burn = R.radarScatter(mine.burn, level, rand);
     const was = s, r = R.radarCycle(s, { ...crewOrders, ...mine, level: post === 'gunner' ? level : crewOrders.level }, rand);
     s = r.state;
-    if (R.radarPauses(was, s, r.events).length) paused.push(s.cycle);
+    if (R.radarQuiet(R.radarPauses(was, s, r.events), paused.length ? paused[paused.length - 1] * R.RADAR.TURN_S : null, s.cycle * R.RADAR.TURN_S).length) paused.push(s.cycle);  // as the page stops it (radarui.js)
   }
   return { end: 'standoff', cycles: s.cycle, paused, capped: true };
 }

@@ -24,7 +24,7 @@ function radarHeadStart(state, edge, band) {
 // The scene. The view's state (G.radar) is made with the fight and kept across redraws of the same fight; it opens paused, at the fastest speed.
 function radarFightEvent(s) {
   if (!G.radar || G.radar.s !== s) {
-    G.radar = { s, orders: {}, crew: {}, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], zoom: null, feed: [], hover: null, ring: null, shown: {},
+    G.radar = { s, orders: {}, crew: {}, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], lastPause: null, zoom: null, feed: [], hover: null, ring: null, shown: {},
       post: radarPost(), hand: { aim: { foe: 0, part: 'hull' }, fc: 'gun', fire: true, torp: false, arc: null, coast: 'turn', plot: null, burn: null }, wedge: null, drag: null };
     radarPlan(G.radar);
   }
@@ -102,8 +102,8 @@ function radarAfter(r, was, events) {
     return true;
   }
   if (s.state.step % RADAR.SUB === 0) radarPlan(r);  // a new cycle's plan, before any pause, so the cycle after it runs on its own orders
-  const why = radarPauses(was, s.state, events);
-  if (why.length) { r.running = false; r.why = why; radarPaintBar(r); return true; }
+  const why = radarQuiet(radarPauses(was, s.state, events), r.lastPause, s.state.t);  // none close after the last (radar.js)
+  if (why.length) { r.running = false; r.why = why; r.lastPause = s.state.t; radarPaintBar(r); return true; }
   return false;
 }
 const radarStop = () => { G.radar = null; };

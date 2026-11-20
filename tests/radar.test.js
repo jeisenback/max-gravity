@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf', 'radarQuiet']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -495,4 +495,11 @@ test('a ship that manoeuvres across her line is harder for her guns to hit', () 
   const hits = vx => { let n = 0; for (let k = 0; k < 200; k++) { const s = held(fight(), { x: 0, y: 25 }); s.ships[0].v = { x: vx, y: 0 }; const r = radarStep(s, {}, seeded(k)); n += plain(r.events).filter(e => e.kind === 'hitUs').length; } return n; };
   const still = hits(0), moving = hits(0.4);
   assert.ok(moving < still * 0.7, `still ${still} hits in 200, moving across ${moving}`);
+});
+
+test('no automatic pause within PAUSE_GAP cycles of the last one; after it, they stop the fight again (the owner, 2026-11-20)', () => {
+  const { radarQuiet } = api, gap = RADAR.PAUSE_GAP * RADAR.TURN_S;
+  assert.deepEqual(plain(radarQuiet(['launched'], null, 100)), ['launched'], 'the first');
+  assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap)), [], 'within the gap, its end included');
+  assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap + 1)), ['plan'], 'once the gap is past');
 });

@@ -65,7 +65,7 @@ const G = {
   cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; with aim, zoom and span, what it aims at down the run, its scale and the view's height in world units, #1182; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
   burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, tutorial, comms lines, a downtime scene's tags, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
-  radar: null,        // the ship fight on the radar while its scene is open ({ s: the fight, orders: this cycle's, seen, cost, running, speed, why: the reasons it stopped, zoom, feed: what has happened, hover, ring, shown, drawn }), null otherwise, see radarui.js
+  radar: null,        // the ship fight on the radar while its scene is open ({ s: the fight, orders: this cycle's, seen, cost, running, speed, why: the reasons it stopped, lastPause: the fight time it last stopped itself, zoom, feed: what has happened, hover, ring, shown, drawn }), null otherwise, see radarui.js
   dock: null,         // the port inspection played out in the cutaway at the dock while its scene is open ({ page: 'open' | 'result', t: seconds on the page, clock: seconds since it opened, choice, beat, clamps, sealed }), null otherwise, see dock.js
 };
 
