@@ -370,7 +370,7 @@ test('it pauses on a launch, a hit and coming into gun range once, and never on 
   assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), [], 'her guns\' later hits do not pause it (the owner, 2026-11-19)');
   assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'impact', side: 'her' }]))), ['hit'], 'every torpedo does');
   assert.deepEqual(plain(api.radarPauses(null, null, ev(['gunLocked', 'cycle', 'miss', 'hit']))), [], 'a locked gun, a cycle, our own shots');
-  assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))).sort(), ['armed', 'pdcSoon']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))), ['pdcSoon'], 'her arming does not pause it, her launch does (the owner, 2026-11-20)');
   // gun range: said by the step once a fight
   let st = place(fight(), { x: 0, y: RADAR.GUN_PAUSE + 0.2 }); st.ships[1].v = { x: 0, y: -1 };
   const seen = [];
@@ -378,9 +378,9 @@ test('it pauses on a launch, a hit and coming into gun range once, and never on 
   assert.deepEqual(seen, [1, 0, 0]);
 });
 
-test('an order change pauses only into or out of evade or break-off', () => {
+test('an order change pauses only into evade or break-off, not out of them (the owner, 2026-11-20)', () => {
   const change = (from, to) => plain(api.radarPauses(null, null, [{ kind: 'order', from, to }]));
-  assert.deepEqual(change('hold', 'evade'), ['plan']); assert.deepEqual(change('evade', 'hold'), ['plan']); assert.deepEqual(change('hold', 'break'), ['plan']);
+  assert.deepEqual(change('hold', 'evade'), ['plan']); assert.deepEqual(change('hold', 'break'), ['plan']); assert.deepEqual(change('evade', 'hold'), [], 'out of evade');
   assert.deepEqual(change('hold', 'engage'), [], 'one that only refines the plan');
   const r = radarCycle(fight(), { order: 'evade' }, LOW);
   assert.ok(plain(r.events).some(e => e.kind === 'order' && e.from === 'hold' && e.to === 'evade'), 'the step says the change');

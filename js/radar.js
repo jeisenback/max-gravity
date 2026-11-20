@@ -502,17 +502,17 @@ function radarEnd(state) {
 // ---------- when real time pauses itself (Task 7) ----------
 
 // Why the fight pauses itself on what just happened, as keys for the page's words: only on new events, never on a standing condition (a locked gun, a coast).
-// She comes into gun range is said once a fight (the step says it once); an order change pauses only into or out of evade or break-off.
+// She comes into gun range is said once a fight (the step says it once). Her arming does not pause it, her launch does; an order change pauses it only into
+// evade or break-off, not out of them (the owner, 2026-11-20: a corsair's salvo paused it four or five times in as many cycles). They go on the timeline all the same.
 function radarPauses(prev, next, events) {
   const why = new Set();
   for (const e of events || []) {
-    if (e.kind === 'armed') why.add('armed');
     if (e.kind === 'launch' && e.side === 'her') why.add('launched');
     if (e.kind === 'pdcSoon') why.add('pdcSoon');
     if ((e.kind === 'hitUs' && e.first) || (e.kind === 'impact' && e.side === 'her')) why.add('hit');  // her guns pause it on their first hit only, a torpedo on every one (the owner, 2026-11-19)
     if (e.kind === 'call') why.add('call');
     if (e.kind === 'gunRange') why.add('gunRange');
-    if (e.kind === 'order' && ['evade', 'break'].some(k => e.from === k || e.to === k)) why.add('plan');
+    if (e.kind === 'order' && ['evade', 'break'].includes(e.to)) why.add('plan');
   }
   return [...why];
 }

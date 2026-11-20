@@ -59,7 +59,7 @@ test('the opening is short where today\'s fight starts inside mid range (a patro
   await done();
 });
 
-test('pressing play at 16x runs the fight until she arms and then launches, and it pauses each time saying so', async () => {
+test('pressing play at 16x runs the fight past her arming until she launches, and it pauses then saying so', async () => {
   const { page, ev, errors, done } = await open();
   await ev(helpers);
   await ev(() => { Settings.radarFight = true; radarGame('corsair'); radarBattle(); placeHer(RADAR.TORP_LAUNCH - 5); });
@@ -67,12 +67,9 @@ test('pressing play at 16x runs the fight until she arms and then launches, and 
   assert.equal(await ev(() => G.radar.running), false, 'it opens paused');
   await page.click('[data-action="radarPlay"]');
   await stopped(page);
-  assert.deepEqual(await ev(() => G.radar.why), ['armed']);
-  assert.match(await page.textContent('.radar-sit'), /Paused: She's loading torpedoes\./);
-  await page.click('[data-action="radarPlay"]');
-  await stopped(page);
-  const r = await ev(() => ({ why: G.radar.why, torps: G.radar.s.state.torps.length, cycle: G.radar.s.state.cycle }));
-  assert.ok(r.why.includes('launched'), r.why.join());
+  const r = await ev(() => ({ why: G.radar.why, torps: G.radar.s.state.torps.length, armed: G.radar.feed.some(e => e.kind === 'armed') }));
+  assert.deepEqual(r.why, ['launched'], 'her arming does not stop it (the owner, 2026-11-20); her launch does');
+  assert.ok(r.armed, 'her arming is on the timeline');
   assert.ok(r.torps > 0, 'her torpedoes are on the radar');
   assert.match(await page.textContent('.radar-sit'), /She's launched\./);
   assert.match(await page.textContent('.radar-last'), /launches\./);

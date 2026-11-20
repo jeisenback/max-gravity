@@ -855,7 +855,7 @@ const SCENE_LINES = {
     'radar.controls': 'Fight controls', 'radar.radar': 'The radar: our ship at the centre, her contact, the projected tracks and the torpedoes.',
     'radar.play': 'Play', 'radar.pause': 'Pause', 'radar.speed': '{n}x', 'radar.zoom': '{km} km', 'radar.zoom.auto': 'Auto zoom', 'radar.reach': '{km} km to the edge',
     'radar.clock': 'Cycle {cycle}, {s} s', 'radar.running': 'Running at {n}x', 'radar.paused': 'Paused',
-    'radar.why.armed': 'She\'s loading torpedoes.', 'radar.why.launched': 'She\'s launched.', 'radar.why.pdcSoon': 'A torpedo reaches the point defence this cycle.', 'radar.why.hit': 'We\'re hit.',
+    'radar.why.launched': 'She\'s launched.', 'radar.why.pdcSoon': 'A torpedo reaches the point defence this cycle.', 'radar.why.hit': 'We\'re hit.',
     'radar.why.call': 'Someone\'s calling you.', 'radar.why.gunRange': 'She\'s in gun range.', 'radar.why.plan': 'The captain\'s changed the plan.',
     'radar.range': 'Her range {km} km, {way}', 'radar.closing': 'closing', 'radar.opening': 'opening', 'radar.arming': 'She\'s arming',
     'radar.threat': '{n} inbound, first in {lo} to {hi} cycles', 'radar.threat.none': 'Nothing inbound',
