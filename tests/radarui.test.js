@@ -59,7 +59,7 @@ test('the opening is short where today\'s fight starts inside mid range (a patro
   await done();
 });
 
-test('pressing play at 16x runs the fight until she arms and then launches, and it pauses each time saying so', async () => {
+test('pressing play at 16x runs the fight past her arming until she launches, and it pauses then saying so', async () => {
   const { page, ev, errors, done } = await open();
   await ev(helpers);
   await ev(() => { Settings.radarFight = true; radarGame('corsair'); radarBattle(); placeHer(RADAR.TORP_LAUNCH - 5); });
@@ -67,12 +67,9 @@ test('pressing play at 16x runs the fight until she arms and then launches, and 
   assert.equal(await ev(() => G.radar.running), false, 'it opens paused');
   await page.click('[data-action="radarPlay"]');
   await stopped(page);
-  assert.deepEqual(await ev(() => G.radar.why), ['armed']);
-  assert.match(await page.textContent('.radar-sit'), /Paused: She's loading torpedoes\./);
-  await page.click('[data-action="radarPlay"]');
-  await stopped(page);
-  const r = await ev(() => ({ why: G.radar.why, torps: G.radar.s.state.torps.length, cycle: G.radar.s.state.cycle }));
-  assert.ok(r.why.includes('launched'), r.why.join());
+  const r = await ev(() => ({ why: G.radar.why, torps: G.radar.s.state.torps.length, armed: G.radar.feed.some(e => e.kind === 'armed') }));
+  assert.deepEqual(r.why, ['launched'], 'her arming does not stop it (the owner, 2026-11-20); her launch does');
+  assert.ok(r.armed, 'her arming is on the timeline');
   assert.ok(r.torps > 0, 'her torpedoes are on the radar');
   assert.match(await page.textContent('.radar-sit'), /She's launched\./);
   assert.match(await page.textContent('.radar-last'), /launches\./);
@@ -142,7 +139,7 @@ test('the hand killed mid-cycle stops the fight at that step and queues the endi
   const { page, ev, errors, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.radarFight = true; radarGame(); radarBattle(); placeHer(20);
+    Settings.radarFight = true; radarGame(); radarBattle(); placeHer(20); RADAR.HIT_R = 1e3;  // every shot lands, so her first volley hits
     const real = fightTook; window.fightTook = (s, events) => { real(s, events); if (events.some(e => e.who === 'foe' && e.dmg > 0)) handDies(s, 'hurt'); };
   });
   await page.click('[data-action="radarPlay"]');
@@ -243,7 +240,8 @@ test('the gun-or-PDC tile changes what fires from the next cycle, not this one; 
 test('the pilot drags the burn: outside the wedge it is held to its edge, and it lands within the hand\'s scatter of where it was put', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  const w = await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); radarTick(0); return { wedge: G.radar.wedge, geo: G.radar.geo, scatter: radarScatterOf(radarLevels().pilot) }; });
+  // our ship opening the range from her, so the order plots a burn back toward her
+  const w = await ev(() => { Settings.radarFight = true; radarGame('raider', 'pilot'); radarBattle(); G.radar.s.state.ships[0].v = { x: 0, y: -0.5 }; radarPlan(G.radar); radarTick(0); return { wedge: G.radar.wedge, geo: G.radar.geo, scatter: radarScatterOf(radarLevels().pilot) }; });
   assert.ok(w.wedge.dir !== null, 'far out, the order plots a burn toward her');
   const box = await page.locator('canvas.radar').boundingBox(), out = (w.wedge.dir + 90) * Math.PI / 180;  // a quarter turn off the plotted line: outside the wedge
   await page.mouse.move(box.x + w.geo.cx + 60 * Math.sin(out), box.y + w.geo.cy - 60 * Math.cos(out));

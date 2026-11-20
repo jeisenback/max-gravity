@@ -9,6 +9,7 @@
 // `--moves` gives the hand the gunner's three moves (vent, lead, split) for the ship fights, or the ones listed after it (any of FIGHT_MOVES, the post ladders' eight among them); without it she knows none, and the numbers are the ones before the moves.
 // `--deck-only` leaves the ship fights out, so the deck fights are played on the same draws as the deck test (tests/distribution/fights.test.js).
 // With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
+//   node tools/fights.js --radar ...  plays the fight on the radar instead (tools/radarfights.js, #1347), in plain Node; --set KEY=value,... tries a number of RADAR's.
 //   npm run fights
 // Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead, by gun policy and by the type she is; for each deck fight, how often you win and who is hurt, by crew, by the
 // post's skill level, by the party that comes aboard (her type), by the hand's policy and by the foe's grade, and for the navy's party the standing a fight cost, the credits it cost (the citation or the search's fine) and how often it ended in a search. Not part of `npm test`.
@@ -233,7 +234,15 @@ function report(runs) {
 
 module.exports = { fights, report };
 
-if (require.main === module) {
+if (require.main === module && process.argv.includes('--radar')) {  // the fight on the radar, in plain Node (tools/radarfights.js)
+  const { radarFights, radarReport } = require('./radarfights');
+  const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
+  const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), post = arg('post') || 'gunner';
+  const fit = Object.fromEntries((arg('fit') || '').split(',').filter(Boolean).map(k => [k, true]));
+  const o = { n: Number(arg('n') || 100), post, level: Number(arg('level') || 2), sensors: Number(arg('sensors') || 1), fit };
+  for (const kv of (arg('set') || '').split(',').filter(Boolean)) { const [k, v] = kv.split('='); require('./radarfights').R.RADAR[k] = JSON.parse(v); }  // --set KEY=value,...: try a number of RADAR's for this run
+  radarReport(seeds.map(seed => radarFights({ ...o, seed })), o);
+} else if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
   const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider', owner = process.argv.includes('--owner');
   const asked = arg('moves');

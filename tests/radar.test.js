@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf', 'radarQuiet']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -109,8 +109,8 @@ test('a cycle ends with its bookkeeping: the cycle counts on and the gun may fir
 test('a shot at her lock at 40 km loses damage to the aim penalty; the same shot at her hull lands in full', () => {
   const s = place(fight(), { x: 0, y: 40 }), lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * s.me.skill;
   const shot = part => plain(cycles(s, { fire: true, aim: { foe: 0, part } }, 1, LOW).events).filter(e => e.kind === 'hit').map(e => e.dmg);
-  assert.deepEqual(shot('hull'), [1, 1].map(() => Math.round(lo * radarFalloff(40))), 'the hull: the falloff only');
-  assert.deepEqual(shot('lock'), [1, 1].map(() => Math.round(lo * radarFalloff(40) * radarAimMult(40, 'lock'))), 'her lock: the falloff and the aim penalty');
+  assert.deepEqual(shot('hull'), [1, 1].map(() => Math.round(lo * RADAR.GUN_DMG * radarFalloff(40))), 'the hull: the falloff only');
+  assert.deepEqual(shot('lock'), [1, 1].map(() => Math.round(lo * RADAR.GUN_DMG * radarFalloff(40) * radarAimMult(40, 'lock'))), 'her lock: the falloff and the aim penalty');
   assert.equal(radarAimMult(40, 'hull'), 1); assert.equal(radarAimMult(40, 'weapons'), 1);
   assert.equal(radarAimMult(40, 'lock'), FIGHT.AIM_MULT.long); assert.equal(radarAimMult(3, 'lock'), FIGHT.AIM_MULT.knife);
 });
@@ -279,7 +279,7 @@ const play = (s, rand, levels = { pilot: 2, gunner: 2, engineer: 2, comms: 2 }, 
 const { radarEnd } = api;
 
 test('a raider with her lock whole comes alongside and the fight ends boarded; with it shot away she cannot', () => {
-  const s = fight({ opening: 'short' }), unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;  // nothing of ours to stop her coming on
+  const s = fight({ opening: 'short' }), unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.parts.drive.hp = 0; unarmed.me.torps = 0;  // nothing of ours to stop her coming on: no guns, and no drive to keep the range with
   const whole = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
   assert.ok(whole.events.some(e => e.kind === 'alongside') && whole.end === 'boarded', `ended ${whole.end}`);
   for (let seed = 1; seed <= 20; seed++) {
@@ -306,7 +306,7 @@ test('a raider pair: with one crippled, the other fights on and her lock alone d
   assert.equal(radarEnd(s), null, 'not over while the second is up');
   const lockless = plain(s); lockless.foes[1].parts.lock.hp = 0;  // the crippled one's lock is whole, the live one's is gone
   for (let seed = 1; seed <= 10; seed++) assert.notEqual(play(lockless, seeded(seed)).end, 'boarded', `seed ${seed}: the out ship does not board`);
-  const unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.torps = 0;
+  const unarmed = plain(s); unarmed.me.parts.weapons.hp = 0; unarmed.me.parts.drive.hp = 0; unarmed.me.torps = 0;  // no guns and no drive to keep the range with
   const boards = play(unarmed, () => 0.5, { pilot: 0, gunner: 0, engineer: 0, comms: 0 });
   assert.equal(boards.end, 'boarded'); assert.equal(boards.events.find(e => e.kind === 'alongside').foe, 1, 'the live one');
   const both = plain(s); both.foes[1].armor = 0;
@@ -366,9 +366,11 @@ test('it pauses on a launch, a hit and coming into gun range once, and never on 
   const ev = kinds => kinds.map(k => (typeof k === 'string' ? { kind: k } : k));
   assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'her' }]))), ['launched']);
   assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'launch', side: 'us' }]))), [], 'not our own');
-  assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), ['hit']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'hitUs', first: true }]))), ['hit'], 'her guns\' first hit');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['hitUs']))), [], 'her guns\' later hits do not pause it (the owner, 2026-11-19)');
+  assert.deepEqual(plain(api.radarPauses(null, null, ev([{ kind: 'impact', side: 'her' }]))), ['hit'], 'every torpedo does');
   assert.deepEqual(plain(api.radarPauses(null, null, ev(['gunLocked', 'cycle', 'miss', 'hit']))), [], 'a locked gun, a cycle, our own shots');
-  assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))).sort(), ['armed', 'pdcSoon']);
+  assert.deepEqual(plain(api.radarPauses(null, null, ev(['armed', 'pdcSoon']))), ['pdcSoon'], 'her arming does not pause it, her launch does (the owner, 2026-11-20)');
   // gun range: said by the step once a fight
   let st = place(fight(), { x: 0, y: RADAR.GUN_PAUSE + 0.2 }); st.ships[1].v = { x: 0, y: -1 };
   const seen = [];
@@ -376,9 +378,9 @@ test('it pauses on a launch, a hit and coming into gun range once, and never on 
   assert.deepEqual(seen, [1, 0, 0]);
 });
 
-test('an order change pauses only into or out of evade or break-off', () => {
+test('an order change pauses only into evade or break-off, not out of them (the owner, 2026-11-20)', () => {
   const change = (from, to) => plain(api.radarPauses(null, null, [{ kind: 'order', from, to }]));
-  assert.deepEqual(change('hold', 'evade'), ['plan']); assert.deepEqual(change('evade', 'hold'), ['plan']); assert.deepEqual(change('hold', 'break'), ['plan']);
+  assert.deepEqual(change('hold', 'evade'), ['plan']); assert.deepEqual(change('hold', 'break'), ['plan']); assert.deepEqual(change('evade', 'hold'), [], 'out of evade');
   assert.deepEqual(change('hold', 'engage'), [], 'one that only refines the plan');
   const r = radarCycle(fight(), { order: 'evade' }, LOW);
   assert.ok(plain(r.events).some(e => e.kind === 'order' && e.from === 'hold' && e.to === 'evade'), 'the step says the change');
@@ -422,7 +424,7 @@ test('a ship fires only the mounts still working: one mount of two shot away, on
   const s = held(fight(), { x: 0, y: 10 }); s.me.parts.weapons.hp = FIGHT.PART_HP.weapons;  // two guns, one mount's hp left
   assert.equal(cycles(s, { fire: true }, 1, LOW).events.filter(e => e.kind === 'hit' || e.kind === 'miss').length, 1);
   const two = held(radarFight({ me: side(230, 2), foes: [side(150, 2)], nerve: 3 }), { x: 0, y: 10 }), one = plain(two); one.foes[0].parts.weapons.hp = FIGHT.PART_HP.weapons;
-  const took = st => plain(cycles(st, {}, 1, () => 0.999).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);
+  const took = st => plain(cycles(st, {}, 1, () => 0.001).events).filter(e => e.kind === 'hitUs').map(e => e.dmg);  // low dice: her shots land
   const [full] = took(two), [half] = took(one);
   assert.ok(full && half && Math.abs(full / half - 2) < 0.05, `two mounts ${full}, one ${half}`);
 });
@@ -473,4 +475,31 @@ test('the gun\'s solution is for the one it is aimed at: with a pair, aimed at t
   assert.deepEqual(plain(radarProject(s, {}, 1).solution), [0, 0], 'unaimed: the first of hers, who does not bear');
   const aimed = plain(radarProject(s, { aim: { foe: 1, part: 'hull' } }, 1).solution);
   assert.ok(aimed[1] > 0, `aimed at her consort, who bears: ${aimed}`);
+});
+
+test('more power to the guns hits harder: a shot on the engage order\'s guns does the half again of one on hold\'s', () => {
+  const s = place(fight(), { x: 0, y: 10 }), RADAR_ORDERS = api.RADAR_ORDERS;
+  const dmg = power => { const st = plain(s); st.power = { ...power }; return plain(radarStep(st, { fire: true, power }, () => 0.5).events).find(e => e.kind === 'hit').dmg; };
+  const hold = dmg(RADAR_ORDERS.hold.power), engage = dmg(RADAR_ORDERS.engage.power);
+  assert.equal(engage, Math.round(hold * RADAR_ORDERS.engage.power.guns / RADAR.GUN_POWER), `${engage} against ${hold}`);
+});
+
+test('her guns\' first hit of the fight is marked as the first, and only it', () => {
+  let s = held(fight(), { x: 0, y: 10 }); const firsts = [];
+  for (let k = 0; k < 3; k++) { const r = radarCycle(s, {}, () => 0.1); s = r.state; firsts.push(...plain(r.events).filter(e => e.kind === 'hitUs').map(e => !!e.first)); }
+  assert.ok(firsts.length >= 2, 'she hit more than once');
+  assert.deepEqual(firsts, [true, ...firsts.slice(1).map(() => false)]);
+});
+
+test('a ship that manoeuvres across her line is harder for her guns to hit', () => {
+  const hits = vx => { let n = 0; for (let k = 0; k < 200; k++) { const s = held(fight(), { x: 0, y: 25 }); s.ships[0].v = { x: vx, y: 0 }; const r = radarStep(s, {}, seeded(k)); n += plain(r.events).filter(e => e.kind === 'hitUs').length; } return n; };
+  const still = hits(0), moving = hits(0.4);
+  assert.ok(moving < still * 0.7, `still ${still} hits in 200, moving across ${moving}`);
+});
+
+test('no automatic pause within PAUSE_GAP cycles of the last one; after it, they stop the fight again (the owner, 2026-11-20)', () => {
+  const { radarQuiet } = api, gap = RADAR.PAUSE_GAP * RADAR.TURN_S;
+  assert.deepEqual(plain(radarQuiet(['launched'], null, 100)), ['launched'], 'the first');
+  assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap)), [], 'within the gap, its end included');
+  assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap + 1)), ['plan'], 'once the gap is past');
 });
