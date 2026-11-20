@@ -110,8 +110,8 @@ function answerDeck(s, read = true, charge = read) {
 // `R` the radar rules (js/radar.js, loaded in Node by tools/radarfights.js), and it returns the post's orders in place of the crew's:
 // - gunner: the PDC when one of her torpedoes will reach its reach this cycle, its arc on the nearest; else the gun, at a raider's lock as she comes alongside with it whole (LOCK_AT), at
 //   a corsair's launcher while she has torpedoes, at the hull otherwise; a torpedo at the most hurt of hers inside JINK;
-// - pilot: across the line of a torpedo that will hit inside two cycles; nose on her and no burn while she breaks off, so she can go; a lone raider, the
-//   order's own plot; a cutter or a pair, in close at ANSWER_CLOSE, braking to arrive, where the gun does not miss; a corsair, at her under her guns; each burn
+// - pilot: across the line of a torpedo that will hit inside two cycles; a lone raider, the order's own plot; nose on her and no burn while she breaks
+//   off, so she can go; a cutter or a pair, in close at ANSWER_CLOSE, braking to arrive, where the gun does not miss; a corsair, at her under her guns; each burn
 //   jinked to the other side of her line each cycle, inside the gun's bearing (JINK_OFF), but against two of hers; else the order's plot.
 function answerRadar(s, post, orders, R) {
   const me = s.ships[0], i = R.radarNearest(s);
@@ -129,10 +129,10 @@ function answerRadar(s, post, orders, R) {
   if (post === 'pilot') {
     const near = hers.find(t => R.radarDist(t.p, me.p) <= R.RADAR.TORP_SPEED * R.RADAR.TURN_S * 2);
     if (near) return { burn: { dir: R.radarNorm(R.radarDir(me.p, near.p) + 90), throttle: 1 }, turnTo: null };
-    if ((s.foeOrders[i] || {}).kind === 'break') return { burn: null, turnTo: toHer };  // she breaks off: let her go
     const pair = s.foes.filter(f => !R.radarOut(f)).length > 1;  // two of hers come in on two lines: a jink off one is no jink off the other
-    const jink = b => (b && !pair ? { ...b, dir: R.radarNorm(b.dir + (s.cycle % 2 ? 1 : -1) * R.RADAR.JINK_OFF) } : b);  // each cycle to the other side of her line, the gun still bearing
     if (!her.launcher && !pair && (s.types[i] || 'raider') === 'raider') return { burn: orders.burn, turnTo: orders.turnTo };  // a lone raider: the order's plot, the gun on her
+    if ((s.foeOrders[i] || {}).kind === 'break') return { burn: null, turnTo: toHer };  // she breaks off: let her go
+    const jink = b => (b && !pair ? { ...b, dir: R.radarNorm(b.dir + (s.cycle % 2 ? 1 : -1) * R.RADAR.JINK_OFF) } : b);  // each cycle to the other side of her line, the gun still bearing
     if (!her.launcher) {  // a cutter or a pair, no torpedoes to fear: in close, where the gun does not miss, faster than the crew close, braking to arrive and not fly past her, jinking
       const want = Math.max(0, Math.min(R.RADAR.ANSWER_CLOSE, (km - R.RADAR.COAST_ENGAGE) / R.RADAR.TURN_S)), u = R.radarUnit(toHer), her1 = s.ships[i + 1];
       const dv = { x: want * u.x - (me.v.x - her1.v.x), y: want * u.y - (me.v.y - her1.v.y) }, size = Math.hypot(dv.x, dv.y);

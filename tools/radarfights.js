@@ -58,11 +58,12 @@ function radarTrial({ type, post, policy, level = 2, crew = 2, sensors = 1, fit 
   return { end: 'standoff', cycles: s.cycle, paused, capped: true };
 }
 
-// A seed's trials: `n` fights of each type for each policy at the post. Returns tallies by `policy|type`, to be summed over seeds.
+// A seed's trials: `n` fights of each type for each policy at the post, every policy on the same dice for a type (common random numbers), so that two
+// policies that play alike score alike and a difference between them is the play's. Returns tallies by `policy|type`, to be summed over seeds.
 function radarFights({ seed = 1, n = 100, post = 'gunner', level = 2, crew = 2, sensors = 1, fit = {}, policies = Object.keys(POLICIES[post]), types = Object.keys(TYPES) } = {}) {
   const out = {};
   for (const policy of policies) for (const type of types) {
-    const rand = seeded(seed * 1000 + policies.indexOf(policy) * 50 + types.indexOf(type)), t = out[`${policy}|${type}`] = { n: 0, cycles: 0, capped: 0, gaps: [] };
+    const rand = seeded(seed * 1000 + types.indexOf(type)), t = out[`${policy}|${type}`] = { n: 0, cycles: 0, capped: 0, gaps: [] };
     for (let k = 0; k < n; k++) {
       const f = radarTrial({ type, post, policy, level, crew, sensors, fit, rand });
       t.n++; t[f.end] = (t[f.end] || 0) + 1; t.cycles += f.cycles;
