@@ -440,7 +440,8 @@ function radarCrew(state, post, level, order, rand) {
     const lockFirst = (state.types[i] || 'raider') === 'raider' && state.foes[i].parts.lock.hp > 0 && km <= RADAR.LOCK_AT;
     const soon = state.torps.filter(t => t.side === 'her').sort((a, b) => radarDist(a.p, me.p) - radarDist(b.p, me.p))[0];
     const pdc = !!soon && state.me.pdc && radarDist(soon.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * RADAR.TURN_S;
-    return { fire: km <= RADAR.JINK, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun',  // the crew hold fire until she is close enough to hit often pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
+    // the crew hold fire until she is close enough to hit often
+    return { fire: km <= RADAR.JINK, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun', pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
       torp: km <= RADAR.JINK && state.me.torps > 0 ? i : null, level };
   }
   return {};
