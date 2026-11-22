@@ -7,7 +7,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
-const { screen, choose } = require('./journey');
+const { screen, choose, playRadar } = require('./journey');
 
 after(closeBrowser);
 
@@ -38,6 +38,24 @@ test('journey: a ship fight played through the panel to an end', async () => {
   assert.doesNotMatch(end, /ORDERS TO THE GUNS/, `the fight closed within ${turns} turns`);
   assert.doesNotMatch(end, /Battle Stations/, 'the panel gave way to the fight\'s end');
   assert.ok(turns >= 1 && last < start, `her armor on screen fell from ${start} to ${last}`);
+  assert.deepEqual(errors, []);
+  await done();
+});
+
+// The same raider met with the radar fight on (its setting, js/radarui.js, #1368): played at 16x, Play and Play again at each pause, to its end. The
+// situation bar shows her hull at each press; the radar gives way to the fight's end.
+test('journey: a ship fight on the radar played to an end', async () => {
+  const { page, ev, errors, done } = await open({ seed: 1 });
+  await ev(() => { Settings.radarFight = true; });
+  await ev(raider);
+  const first = await screen(page);
+  assert.match(first, /Battle Stations/); assert.match(first, /Cycle 1, 0 s/);
+  const hers = text => Number((text.match(/\bhers (\d+)%/) || [])[1]);
+  const seen = await playRadar(page);
+  const end = await screen(page);
+  assert.doesNotMatch(end, /Cycle \d+, \d+ s/, 'the radar gave way to the fight\'s end');
+  assert.ok(seen.length >= 1, 'Play was pressed');
+  assert.ok(seen.map(hers).every(n => n >= 0 && n <= 100), `her hull is on the situation bar at each press: ${seen.map(hers).join(', ')}`);
   assert.deepEqual(errors, []);
   await done();
 });
