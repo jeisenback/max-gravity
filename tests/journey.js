@@ -31,12 +31,29 @@ const choose = (page, label) => press(page.locator('#panel'), label, 'choice');
 
 // The scene dialog's buttons a player can press now (its choices, or Continue after a result).
 const sceneButtons = page => page.locator('#panel').getByRole('button', { disabled: false }).filter({ visible: true });
-const sceneOpen = page => page.evaluate(() => [...document.querySelectorAll('#panel [data-action=choose], #panel [data-action=continue]')].some(b => b.offsetParent && !b.disabled));
+const sceneOpen = page => page.evaluate(() => [...document.querySelectorAll('#panel [data-action=choose], #panel [data-action=continue], #panel [data-action=radarPlay]')].some(b => b.offsetParent && !b.disabled));
 
-// Answers whatever scenes are open until none is: a panel's choice that ends its turn (marked primary: Fire, Fight) when it has one, else the first
-// choice a player can take that is not a pick within a row (a gun's target, where to stand), which would leave the scene as it is.
+// The ship fight on the radar (js/radarui.js, #1368), as a player plays it: Play, and Play again each time it pauses itself, until the radar gives way to
+// the fight's end. Its Play is not a scene's choice, so the scene helpers leave it to this. Returns the screen's text at each press, for what it showed.
+const radarOpen = page => page.locator('#panel [data-action=radarPlay]').isVisible();
+async function playRadar(page, ms = 90000) {
+  const end = Date.now() + ms, seen = [];
+  while (await radarOpen(page)) {
+    if (Date.now() > end) throw new Error(`the radar fight did not end in ${ms} ms; the screen shows:\n${(await screen(page)).slice(0, 1500)}`);
+    const play = page.locator('#panel [data-action=radarPlay]');
+    seen.push(await screen(page));
+    if ((await play.innerText()).trim() === 'Play') await play.click();
+    await page.waitForFunction(() => { const b = document.querySelector('#panel [data-action=radarPlay]'); return !b || !b.offsetParent || b.textContent.trim() === 'Play'; }, null, { timeout: Math.max(1, end - Date.now()), polling: 100 }).catch(() => {});
+  }
+  return seen;
+}
+
+// Answers whatever scenes are open until none is: a fight on the radar played to its end (playRadar); a panel's choice that ends its turn (marked
+// primary: Fire, Fight) when it has one, else the first choice a player can take that is not a pick within a row (a gun's target, where to stand),
+// which would leave the scene as it is.
 async function answerScenes(page, most = 60) {
   for (let i = 0; i < most && (await sceneOpen(page)); i++) {
+    if (await radarOpen(page)) { await playRadar(page); continue; }
     const primary = page.locator('#panel button.primary:not([disabled])').filter({ visible: true });
     await ((await primary.count()) ? primary.first() : page.locator('#panel button:not([disabled]):not([aria-pressed])').filter({ visible: true }).first()).click();
   }
@@ -62,4 +79,4 @@ async function runBurn(page, until, ms = 90000) {
   }
 }
 
-module.exports = { screen, waitText, button, choose, answerScenes, runBurn };
+module.exports = { screen, waitText, button, choose, answerScenes, playRadar, runBurn };
