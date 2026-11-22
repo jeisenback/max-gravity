@@ -62,7 +62,7 @@ async function answerScenes(page, most = 60) {
 // Waits in the page until the screen matches, a scene can be answered, or (with `ahead`) the burn's run-ahead button is up. One function, written out,
 // since the game's Content Security Policy has no eval.
 const burnWait = (page, until, ahead, ms) => page.waitForFunction(([src, flags, ahead]) => new RegExp(src, flags).test(document.body.innerText)
-  || [...document.querySelectorAll('#panel [data-action=choose], #panel [data-action=continue]')].some(b => b.offsetParent && !b.disabled)
+  || [...document.querySelectorAll('#panel [data-action=choose], #panel [data-action=continue], #panel [data-action=radarPlay]')].some(b => b.offsetParent && !b.disabled)  // a fight on the radar too
   || (ahead && !!(document.querySelector('#bspeed [title="Run ahead (4)"]') || {}).offsetParent), [until.source, until.flags, ahead], { timeout: Math.max(1, ms), polling: 100 }).catch(() => {});
 
 // Plays a burn to its end the way a player hurries one: answers each scene, and once the burn's run-ahead button is up (the keys are live in a burn
