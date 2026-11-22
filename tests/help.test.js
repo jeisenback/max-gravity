@@ -85,7 +85,7 @@ test('a new hired game shows the one-time tips again, and a save from before kee
 test('a hired hand\'s "Fights during burns" describes the fight as it plays, not the card duel', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => helpText(helpTopics().find(h => h.id === 'combat')).join(' '));
-  assert.match(r, /turn by turn/); assert.match(r, /aim each gun/); assert.match(r, /then Fire/);
+  assert.match(r, /on the radar/); assert.match(r, /aim the gun/); assert.match(r, /pauses itself/);
   assert.match(r, /your post's two abilities/i, 'the post\'s abilities on the deck');
   assert.doesNotMatch(r, /card duel|initiative|PDCs/, 'the duel is not explained to a hand');
   await done();

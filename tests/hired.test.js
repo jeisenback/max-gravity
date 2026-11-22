@@ -562,10 +562,10 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
     const hand = { sign: sceneSay('scene:sign-on', 'post.gunner', { cap: 'Captain X' }), weapons: weaponsPanel(), projects: projectsHtml('gunner') };
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' });
     const owner = { weapons: weaponsPanel(), projects: projectsHtml('gunner') };
-    return { hand, owner, hiredNow: !!hired() };
+    return { hand, owner, hiredNow: !!hired(), cap: RADAR.HEAT_CAP };
   });
   assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /how you meet her is your call/);
-  assert.match(r.hand.weapons, /The fight/); assert.match(r.hand.weapons, /over 4 a gun locks for a turn/); assert.doesNotMatch(r.hand.weapons, /Fire deck|Threats|Answers/, 'a hand does not fight with the deck (#851)'); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
+  assert.match(r.hand.weapons, /The fight/); assert.match(r.hand.weapons, new RegExp(`over ${r.cap} the gun locks until it bleeds off`)); assert.doesNotMatch(r.hand.weapons, /Fire deck|Threats|Answers/, 'a hand does not fight with the deck (#851)'); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
   assert.equal(r.hiredNow, false); assert.match(r.owner.weapons, /Fire deck/); assert.doesNotMatch(r.owner.weapons, /The fight/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
   await done();
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 // Authored engagements for a hired hand, and for an owner who kept a post (#721), in place of the card duel (duel.js) when pirates or a hostile patrol make contact.
-// The contact is fought turn by turn on the sensor board (fightui.js); what is here is around it: the foe's style, the crippled ship that drifts beside you
+// The contact is fought on the radar (fightui.js, radarui.js); what is here is around it: the foe's style, the crippled ship that drifts beside you
 // after it, the Gunner's orders, the cost note on a choice, and the distress-call ambush that springs a fight. A corsair fights with torpedoes and a raider
 // with grapples, and the lines read differently for each. An owner has no captain: what goes to the captain's regard (and the lines that name her) is the
 // hand's, and the owner's is the log and their own post. Loaded after boarders.js; only called into at runtime.
