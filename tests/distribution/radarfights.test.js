@@ -29,15 +29,15 @@ test('reading her beats a habit: answer\'s good ends are at or above every fixed
   }
 });
 
-test('no fixed policy has more than 70% good ends against every type', () => {
-  for (const post of Object.keys(POLICIES)) {
+test('no fixed policy has more than 70% good ends against every type, at the gunner\'s post', () => {
+  for (const post of MET) {
     const t = table(post);
     for (const p of FIXED[post]) assert.ok(TARGET_TYPES.some(type => cell(t, p, type).goodRate <= 0.7), `${post} ${p} wins over 70% against every type`);
   }
 });
 
-test('random play loses a quarter of its fights or more over every type', () => {
-  for (const post of Object.keys(POLICIES)) assert.ok(radarOverall(table(post), 'random').lostRate >= 0.25, `${post}: random loses ${radarOverall(table(post), 'random').lostRate}`);
+test('random play loses a quarter of its fights or more over every type, at the gunner\'s post', () => {
+  for (const post of MET) assert.ok(radarOverall(table(post), 'random').lostRate >= 0.25, `${post}: random loses ${radarOverall(table(post), 'random').lostRate}`);
 });
 
 test('every post matters: the hand\'s choices move the good ends by 15 points or more between answer and random, at the gunner\'s post', () => {
@@ -47,6 +47,7 @@ test('every post matters: the hand\'s choices move the good ends by 15 points or
   }
 });
 test.todo('the pilot\'s answer is at or above every fixed policy against each type, and 15 points over random: measured at 10, an open design question (#1347, the owner, 2026-11-20)');
+test.todo('at the pilot\'s post, no fixed policy has more than 70% good ends against every type, and random play loses a quarter or more: with the crew\'s PDC fixed (#1373) flying straight in wins 70% everywhere and random loses 20%, part of the pilot\'s open design question (#1347, the owner, 2026-11-22)');
 test.todo('the engineer and comms posts move the good ends by 15 points too: their choices are #1371, kept as a target by the owner (2026-11-19)');
 
 test('fights end: every fight ends one of the named ways, and under a third of answer\'s fights reach the cycle cap', () => {

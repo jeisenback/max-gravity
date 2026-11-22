@@ -503,3 +503,14 @@ test('no automatic pause within PAUSE_GAP cycles of the last one; after it, they
   assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap)), [], 'within the gap, its end included');
   assert.deepEqual(plain(radarQuiet(['plan'], 100, 100 + gap + 1)), ['plan'], 'once the gap is past');
 });
+
+test('a crew gunner who turns to the point defence sets its arc on the torpedo coming in, not where it was (#1373)', () => {
+  const { radarCrew } = api;
+  const s = place(fight(), { x: 0, y: 30 }), torp = { id: 9, side: 'her', p: { x: 15, y: 0 }, v: { x: 0, y: 0 }, target: 0, warned: false };
+  s.torps.push(torp);  // off her line, inside a cycle of the PDC's reach
+  const o = plain(radarCrew(s, 'gunner', 2, 'hold', LOW));
+  assert.equal(o.fc, 'pdc');
+  assert.deepEqual(o.pdcArc, { dir: 90, width: 60 }, 'the arc on the torpedo, due starboard');
+  const none = plain(radarCrew(place(fight(), { x: 0, y: 30 }), 'gunner', 2, 'hold', LOW));
+  assert.deepEqual(none.pdcArc, { dir: 0, width: 90 }, 'with none coming, at her');
+});
