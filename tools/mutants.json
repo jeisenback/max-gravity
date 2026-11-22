@@ -10,9 +10,9 @@
   },
   {
     "name": "heat-never-bleeds",
-    "file": "js/fight.js",
-    "find": "st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);",
-    "replace": "st.heat = Math.max(0, heat);"
+    "file": "js/radar.js",
+    "find": "st.heat = Math.max(0, st.heat - FIGHT.HEAT_VENT);",
+    "replace": "st.heat = Math.max(0, st.heat);"
   },
   {
     "name": "fight-damage-not-kept",

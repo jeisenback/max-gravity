@@ -110,15 +110,15 @@ function gunnerySvg() {
 }
 
 // The Weapons station as a console: the armament on the display, the fire deck beside it, and the gunner's post along the bottom.
-// The parts of the fight a hand plays turn by turn (fight.js, fightui.js), with this ship's numbers (#851).
+// The parts of the fight a hand plays on the radar (radar.js, radarui.js), with this ship's numbers (#851).
 function fightCard() {
-  const me = ship(), moves = knownMoves(career()), pct = x => Math.round(x * 100);
+  const me = ship(), moves = knownMoves(career());
   return conCard('The fight', [
-    conRead('Guns', `${me.guns}, aimed at her weapons, drive, lock or hull`),
-    conRead('Heat', `a shot adds 1, overcharged ${FIGHT.OVER_HEAT}; over ${FIGHT.HEAT_CAP} a gun locks for a turn`),
+    conRead('Guns', `${me.guns}, aimed at her hull or a part by a mark on her contact`),
+    conRead('Heat', `over ${RADAR.HEAT_CAP} the gun locks until it bleeds off, ${FIGHT.HEAT_VENT} a cycle`),
     ...(me.launcher ? [conRead('Torpedoes', role().canTrade ? `${Math.min(TORP_MAX, G.state.torpedoes || 0)} of ${TORP_MAX}` : `${torpsShown()}, ${sceneSay('scene:screens', 'torps.kept', { n: HAND_TORPS })}`)] : []),  // on a captain's ship, hers (#956)
-    conRead('Turret', me.pdc ? `held back, it takes ${pct(heldCut())}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
-    conRead('Moves', moves.length ? moves.map(id => fightSay(`move.name.${id}`)).join(', ') : 'none yet: the crew teach them on a burn'),
+    conRead('Point defence', me.pdc ? 'the fire control runs the gun or the point defence each cycle, never both' : 'none fitted'),
+    conRead('Moves', moves.length ? `${moves.map(id => fightSay(`move.name.${id}`)).join(', ')}: learned, and not yet offered on the radar` : 'none yet: the crew teach them on a burn'),
   ].join(''));
 }
 

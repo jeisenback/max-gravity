@@ -2,303 +2,119 @@
  {
   "id": "raid:raider:gunner",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
-    "armor": 440,
-    "band": 2
-   },
-   {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 8, she hits your hull for 10, she hits your hull for 16.",
-    "armor": 418,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her hull for 11, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
-    "armor": 354,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 354,
-    "band": null
-   }
+   "A miss at 250 km.",
+   "A miss at 249 km.",
+   "A miss at 238 km.",
+   "A miss at 237 km.",
+   "A miss at 226 km.",
+   "A miss at 225 km.",
+   "A miss at 214 km.",
+   "A miss at 213 km.",
+   "A miss at 202 km.",
+   "A miss at 201 km.",
+   "A miss at 190 km.",
+   "A miss at 189 km.",
+   "A miss at 178 km.",
+   "A miss at 177 km.",
+   "A miss at 166 km.",
+   "A miss at 165 km.",
+   "A miss at 154 km.",
+   "A miss at 153 km.",
+   "A miss at 142 km.",
+   "A miss at 141 km.",
+   "A miss at 130 km.",
+   "A miss at 129 km.",
+   "A miss at 118 km.",
+   "A miss at 117 km.",
+   "A miss at 106 km.",
+   "A miss at 105 km.",
+   "A miss at 94 km.",
+   "Hit on her hull at 93 km, 9.",
+   "A miss at 82 km.",
+   "A miss at 81 km.",
+   "A miss at 70 km.",
+   "A miss at 69 km.",
+   "A miss at 58 km.",
+   "A miss at 57 km.",
+   "A miss at 46 km.",
+   "A miss at 45 km.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our hull, 23.",
+   "A miss at 34 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "A miss at 33 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" hits our hull, 25.",
+   "Captain Vance: open the range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 23.",
+   "The Pirate \"Hungry Hook\" hits our hull, 36.",
+   "Her consort hits our hull, 27.",
+   "You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.",
+   "Captain Vance: break off.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" hits our hull, 34.",
+   "Her consort hits our hull, 16."
   ],
+  "armor": 187,
   "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
+   "title": "Battle Stations",
+   "text": "The Pirate \"Hungry Hook\" hits our hull, 34.</p><p>Her consort hits our hull, 16.</p><p>The raider's plume falls back on the board until the sensors lose it.",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Stand down"
    ]
   }
  },
  {
   "id": "raid:raider:pilot",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
-    "armor": 440,
-    "band": 2
-   },
-   {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 8, she hits your hull for 10, she hits your hull for 16.",
-    "armor": 418,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her hull for 11, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
-    "armor": 354,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 354,
-    "band": null
-   }
+   "A miss at 58 km.",
+   "Torpedo away.",
+   "A miss at 57 km.",
+   "A miss at 46 km.",
+   "Torpedo away.",
+   "Hit on her hull at 45 km, 11.",
+   "Our torpedo hits her, 15.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 34 km, 12.",
+   "Hit on her hull at 33 km, 9.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 32.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 26.",
+   "Hit on her hull at 4 km, 19.",
+   "Hit on her hull at 4 km, 26.",
+   "Hit on her hull at 4 km, 23.",
+   "Her consort hits our weapons, 35.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 4 km, 7."
   ],
-  "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
-   "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
-   ]
-  }
- },
- {
-  "id": "raid:raider:engineer",
-  "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
-  "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
-    "armor": 440,
-    "band": 2
-   },
-   {
-    "text": "Turn 2: you hit her hull for 9, you hit her hull for 9, she hits your hull for 10, she hits your hull for 16.",
-    "armor": 418,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her hull for 12, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
-    "armor": 354,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 354,
-    "band": null
-   }
-  ],
-  "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
-   "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
-   ]
-  }
- },
- {
-  "id": "raid:raider:comms",
-  "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
-  "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
-    "armor": 440,
-    "band": 2
-   },
-   {
-    "text": "Turn 2: you hit her hull for 9, you hit her hull for 9, she hits your hull for 10, she hits your hull for 16.",
-    "armor": 418,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her hull for 12, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
-    "armor": 354,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 354,
-    "band": null
-   }
-  ],
-  "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
-   "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
-   ]
-  }
- },
- {
-  "id": "raid:corsair:gunner",
-  "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
-  "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 3: you hit her hull for 8, you hit her hull for 7.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 4: you hit her hull for 8, you hit her hull for 10, she hits your hull for 50.",
-    "armor": 387,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: you hit her hull for 9, you hit her hull for 9, she hits your hull for 22.",
-    "armor": 338,
-    "band": 2
-   },
-   {
-    "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her hull for 9, you hit her hull for 13.",
-    "armor": 260,
-    "band": 2
-   }
-  ],
+  "armor": 440,
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 9, you hit her hull for 13.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Her consort fires and misses.</p><p>Hit on her hull at 4 km, 7.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -321,73 +137,299 @@
   }
  },
  {
-  "id": "raid:corsair:pilot",
+  "id": "raid:raider:engineer",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 3: you hit her hull for 8, you hit her hull for 7.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 4: you hit her hull for 8, you hit her hull for 10, she hits your hull for 50.",
-    "armor": 387,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: you hit her hull for 9, you hit her hull for 9, she hits your hull for 22.",
-    "armor": 338,
-    "band": 2
-   },
-   {
-    "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her hull for 9, you hit her hull for 13.",
-    "armor": 260,
-    "band": 2
-   }
+   "A miss at 58 km.",
+   "Torpedo away.",
+   "A miss at 57 km.",
+   "A miss at 46 km.",
+   "Torpedo away.",
+   "Hit on her hull at 45 km, 12.",
+   "Our torpedo hits her, 15.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 34 km, 12.",
+   "Hit on her hull at 33 km, 10.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 32.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 26.",
+   "Hit on her hull at 4 km, 21.",
+   "Hit on her hull at 5 km, 27.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 4 km, 24.",
+   "Hit on her hull at 4 km, 3."
   ],
+  "armor": 440,
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 9, you hit her hull for 13.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Hit on her hull at 4 km, 24.</p><p>Hit on her hull at 4 km, 3.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "labels": [
+    "Stand down"
+   ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
+  }
+ },
+ {
+  "id": "raid:raider:comms",
+  "title": "Battle Stations",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.",
+  "labels": [],
+  "turns": [
+   "A miss at 58 km.",
+   "Torpedo away.",
+   "A miss at 57 km.",
+   "A miss at 46 km.",
+   "Torpedo away.",
+   "Hit on her hull at 45 km, 12.",
+   "Our torpedo hits her, 15.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 34 km, 12.",
+   "Hit on her hull at 33 km, 10.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 32.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Her consort hits our weapons, 26.",
+   "Hit on her hull at 4 km, 21.",
+   "Hit on her hull at 5 km, 27.",
+   "Her consort fires and misses.",
+   "Hit on her hull at 4 km, 24.",
+   "Hit on her hull at 4 km, 3."
+  ],
+  "armor": 440,
+  "end": {
+   "title": "Battle Stations",
+   "text": "Hit on her hull at 4 km, 24.</p><p>Hit on her hull at 4 km, 3.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "labels": [
+    "Stand down"
+   ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
+  }
+ },
+ {
+  "id": "raid:corsair:gunner",
+  "title": "Battle Stations",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
+  "labels": [],
+  "turns": [
+   "A miss at 250 km.",
+   "A miss at 249 km.",
+   "A miss at 238 km.",
+   "A miss at 237 km.",
+   "A miss at 226 km.",
+   "A miss at 225 km.",
+   "A miss at 214 km.",
+   "A miss at 213 km.",
+   "A miss at 202 km.",
+   "A miss at 201 km.",
+   "A miss at 190 km.",
+   "A miss at 189 km.",
+   "A miss at 178 km.",
+   "A miss at 177 km.",
+   "A miss at 166 km.",
+   "A miss at 165 km.",
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "A miss at 154 km.",
+   "A miss at 153 km.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "A miss at 142 km.",
+   "A miss at 141 km.",
+   "A miss at 130 km.",
+   "A miss at 129 km.",
+   "Captain Vance: evade.",
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "A torpedo hits our hull, 28.",
+   "A torpedo hits our hull, 20.",
+   "Captain Vance: hold at 20 km.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "A miss at 87 km.",
+   "A miss at 86 km.",
+   "A miss at 86 km.",
+   "A miss at 85 km.",
+   "Captain Vance: evade.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "A torpedo hits our hull, 27.",
+   "A torpedo hits our hull, 29.",
+   "Mateo is hurt.",
+   "Captain Vance: open the range.",
+   "A miss at 69 km.",
+   "A miss at 69 km.",
+   "A miss at 65 km.",
+   "A miss at 65 km.",
+   "A miss at 62 km.",
+   "A miss at 62 km.",
+   "A miss at 63 km.",
+   "A miss at 64 km.",
+   "A miss at 69 km.",
+   "A miss at 70 km.",
+   "A miss at 52 km.",
+   "A miss at 52 km.",
+   "A miss at 47 km.",
+   "Hit on her hull at 47 km, 6.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 55 km.",
+   "A miss at 55 km.",
+   "A miss at 55 km.",
+   "Hit on her hull at 55 km, 7.",
+   "A miss at 52 km.",
+   "A miss at 52 km.",
+   "A miss at 53 km.",
+   "A miss at 53 km.",
+   "A miss at 53 km.",
+   "A miss at 53 km.",
+   "A miss at 47 km.",
+   "Hit on her hull at 47 km, 5.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 54 km.",
+   "A miss at 54 km.",
+   "A miss at 54 km.",
+   "A miss at 54 km.",
+   "A miss at 49 km.",
+   "A miss at 48 km.",
+   "The Pirate \"Hungry Hook\" hits our hull, 28.",
+   "Captain Vance: break off.",
+   "The Pirate \"Hungry Hook\" fires and misses."
+  ],
+  "armor": 327,
+  "end": {
+   "title": "Battle Stations",
+   "text": "Captain Vance: break off.</p><p>The Pirate \"Hungry Hook\" fires and misses.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.",
+   "labels": [
+    "Stand down"
+   ]
+  },
+  "mem": [
+   "9 Jul 2214: We had to run from a fight with you at the post."
+  ],
+  "fx": {
+   "p1": -1
+  }
+ },
+ {
+  "id": "raid:corsair:pilot",
+  "title": "Battle Stations",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
+  "labels": [],
+  "turns": [
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "The point defence gets one.",
+   "Captain Vance: hold at 20 km.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "The point defence gets one.",
+   "Captain Vance: hold at 20 km.",
+   "A miss at 48 km.",
+   "Torpedo away.",
+   "A miss at 47 km.",
+   "Torpedo away.",
+   "Hit on her hull at 37 km, 11.",
+   "A miss at 37 km.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 31 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 30 km, 11.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 28 km.",
+   "Hit on her hull at 28 km, 14.",
+   "A miss at 28 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 42.",
+   "A miss at 28 km.",
+   "A miss at 29 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 29 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 30 km, 18.",
+   "Hit on her hull at 30 km, 18.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 30 km.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 27 km, 17.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 21.",
+   "Hit on her hull at 26 km, 18.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 28 km.",
+   "A miss at 34 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 35 km, 10."
+  ],
+  "armor": 440,
+  "end": {
+   "title": "Battle Stations",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>Hit on her hull at 35 km, 10.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -412,160 +454,193 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 8.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 4: you hit her hull for 9, you hit her hull for 10, she hits your hull for 50.",
-    "armor": 387,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 22.",
-    "armor": 338,
-    "band": 2
-   },
-   {
-    "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her hull for 10, you hit her hull for 14.",
-    "armor": 260,
-    "band": 2
-   }
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "The point defence gets one.",
+   "Captain Vance: hold at 20 km.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "A torpedo hits our hull, 28.",
+   "Captain Vance: hold at 20 km.",
+   "Torpedo away.",
+   "Torpedo away.",
+   "Our torpedo hits her, 16.",
+   "Our torpedo hits her, 16.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 28 km.",
+   "A miss at 28 km.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 31.",
+   "Hit on her hull at 27 km, 18.",
+   "A miss at 28 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 28 km, 21.",
+   "Hit on her hull at 29 km, 15.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 30.",
+   "A miss at 29 km.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 30 km.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 65.",
+   "The Pirate \"Hungry Hook\" hits our hull, 47.",
+   "The Pirate \"Hungry Hook\" hits our hull, 33.",
+   "Captain Vance: open the range.",
+   "The Pirate \"Hungry Hook\" hits our hull, 39.",
+   "Captain Vance: break off.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses."
   ],
+  "armor": 294,
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 10, you hit her hull for 14.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>The Pirate \"Hungry Hook\" fires and misses.</p><p>You open the range, and her last torpedo burns out well short of you.",
    "labels": [
     "Stand down"
    ]
-  },
-  "mem": [
-   "9 Jul 2214: You stood us up to a raid and she broke off.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates."
-  ],
-  "fx": {
-   "p1": 1,
-   "c:ines": 1,
-   "c:tomas": 1,
-   "p2": -1,
-   "c:cato": -1,
-   "p3": 1
   }
  },
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Launcher",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 8.",
-    "armor": 440,
-    "band": 3
-   },
-   {
-    "text": "Turn 4: you hit her hull for 9, you hit her hull for 10, she hits your hull for 50.",
-    "armor": 387,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 22.",
-    "armor": 338,
-    "band": 2
-   },
-   {
-    "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her hull for 10, you hit her hull for 14.",
-    "armor": 260,
-    "band": 2
-   }
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "The Pirate \"Hungry Hook\" is loading 2.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "The point defence gets one.",
+   "Captain Vance: hold at 20 km.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "The Pirate \"Hungry Hook\" launches.",
+   "Captain Vance: evade.",
+   "One of hers will reach the point defence this cycle.",
+   "One of hers will reach the point defence this cycle.",
+   "The point defence gets one.",
+   "A torpedo hits our hull, 28.",
+   "Captain Vance: hold at 20 km.",
+   "Torpedo away.",
+   "Torpedo away.",
+   "Our torpedo hits her, 16.",
+   "Our torpedo hits her, 16.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 28 km.",
+   "A miss at 28 km.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 31.",
+   "Hit on her hull at 27 km, 18.",
+   "A miss at 28 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 28 km, 21.",
+   "Hit on her hull at 29 km, 15.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 30.",
+   "A miss at 29 km.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 30 km.",
+   "A miss at 27 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 65.",
+   "The Pirate \"Hungry Hook\" hits our hull, 47.",
+   "The Pirate \"Hungry Hook\" hits our hull, 33.",
+   "Captain Vance: open the range.",
+   "The Pirate \"Hungry Hook\" hits our hull, 39.",
+   "Captain Vance: break off.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses."
   ],
+  "armor": 294,
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 10, you hit her hull for 14.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>The Pirate \"Hungry Hook\" fires and misses.</p><p>You open the range, and her last torpedo burns out well short of you.",
+   "labels": [
+    "Stand down"
+   ]
+  }
+ },
+ {
+  "id": "raid:cutter:gunner",
+  "title": "Battle Stations",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
+  "labels": [],
+  "turns": [
+   "A miss at 40 km.",
+   "Hit on her hull at 39 km, 10.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "Hit on her hull at 25 km, 17.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 44.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 18.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 16.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 14.",
+   "Hit on her hull at 25 km, 15.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 66.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 17.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 18.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 20.",
+   "A miss at 29 km.",
+   "The Pirate \"Hungry Hook\" fires and misses."
+  ],
+  "armor": 440,
+  "end": {
+   "title": "Battle Stations",
+   "text": "A miss at 29 km.</p><p>The Pirate \"Hungry Hook\" fires and misses.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -588,215 +663,201 @@
   }
  },
  {
-  "id": "raid:cutter:gunner",
-  "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
-  "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11, she hits your hull for 37.",
-    "armor": 440,
-    "band": 1
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 13, she hits your hull for 42.",
-    "armor": 440,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 440,
-    "band": null
-   }
-  ],
-  "end": {
-   "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
-   "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
-   ]
-  }
- },
- {
   "id": "raid:cutter:pilot",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11, she hits your hull for 37.",
-    "armor": 440,
-    "band": 1
-   },
-   {
-    "text": "Turn 2: you hit her hull for 11, you hit her hull for 13, she hits your hull for 42.",
-    "armor": 440,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 440,
-    "band": null
-   }
+   "A miss at 40 km.",
+   "Torpedo away.",
+   "Hit on her hull at 39 km, 10.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 15.",
+   "Torpedo away.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 17.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 18.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" hits our weapons, 50.",
+   "Hit on her hull at 25 km, 16.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 18.",
+   "A miss at 26 km.",
+   "A miss at 26 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 26 km.",
+   "A miss at 26 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 26 km.",
+   "A miss at 26 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 18.",
+   "A miss at 26 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 14.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 31 km."
   ],
+  "armor": 440,
   "end": {
-   "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "title": "Battle Stations",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>A miss at 31 km.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
   "id": "raid:cutter:engineer",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11, she hits your hull for 37.",
-    "armor": 440,
-    "band": 1
-   },
-   {
-    "text": "Turn 2: you hit her hull for 12, you hit her hull for 13, she hits your hull for 42.",
-    "armor": 440,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 440,
-    "band": null
-   }
+   "A miss at 40 km.",
+   "Torpedo away.",
+   "Hit on her hull at 39 km, 11.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 15.",
+   "Torpedo away.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 17.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 19.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 16.",
+   "Hit on her hull at 25 km, 17.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 18.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 17.",
+   "A miss at 26 km.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 30 km."
   ],
+  "armor": 440,
   "end": {
-   "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "title": "Battle Stations",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>A miss at 30 km.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
   "id": "raid:cutter:comms",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-  "labels": [
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 1: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Gun 2: normal charge",
-   "Hull",
-   "Weapons",
-   "Drive",
-   "Lock",
-   "Hold",
-   "Turret: fire with the guns",
-   "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-  ],
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
+  "labels": [],
   "turns": [
-   {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11, she hits your hull for 37.",
-    "armor": 440,
-    "band": 1
-   },
-   {
-    "text": "Turn 2: you hit her hull for 12, you hit her hull for 13, she hits your hull for 42.",
-    "armor": 440,
-    "band": 0
-   },
-   {
-    "text": "",
-    "armor": 440,
-    "band": null
-   }
+   "A miss at 40 km.",
+   "Torpedo away.",
+   "Hit on her hull at 39 km, 11.",
+   "The Pirate \"Hungry Hook\" is in gun range.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 15.",
+   "Torpedo away.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Our torpedo hits her, 13.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 17.",
+   "A miss at 25 km.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 19.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 16.",
+   "Hit on her hull at 25 km, 17.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 25 km, 18.",
+   "A miss at 25 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "Hit on her hull at 26 km, 17.",
+   "A miss at 26 km.",
+   "A miss at 30 km.",
+   "The Pirate \"Hungry Hook\" fires and misses.",
+   "A miss at 30 km."
   ],
+  "armor": 440,
   "end": {
-   "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "title": "Battle Stations",
+   "text": "The Pirate \"Hungry Hook\" fires and misses.</p><p>A miss at 30 km.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
@@ -925,7 +986,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -935,7 +996,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1049,7 +1110,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1059,7 +1120,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1175,7 +1236,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1185,7 +1246,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1299,7 +1360,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1309,7 +1370,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1425,7 +1486,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1435,7 +1496,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1549,7 +1610,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1559,7 +1620,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1675,7 +1736,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1685,7 +1746,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14."
     ],
     "mem": []
    },
@@ -1799,7 +1860,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },
@@ -1809,7 +1870,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11."
     ],
     "mem": []
    },

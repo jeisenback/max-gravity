@@ -9,15 +9,15 @@ simulation (#45).
 
 ## Future state
 
-Piloting and real-time combat are the least interesting part of the game. The captain
-decides, and the crew flies.
+The hired hand's ship fight is real time with pause, as a strategic layer (the owner's decision, #1348): the
+captain still decides, and the crew still fly by order. Steering by hand is not the game.
 
 - **One combat system.** The card duel is the only fight, in burns and in classic
   flight. With no crewed gunner, the captain plays it with their own skill. The
   real-time fight is retired: in burns (#52, done), in local space (#55), and in the
-  story set pieces (#56). Since then the hired hand's fights are the turn-based ship
-  fight and deck fight on the sensor board (the section at the end, #786), and the card
-  duel is the owner's, parked with the owner game (`ROADMAP.md`).
+  story set pieces (#56). Since then the hired hand's fights are the ship fight on the
+  radar (real time with pause, #1348) and the turn-based deck fight (the section at the end), and the
+  card duel is the owner's, parked with the owner game (`ROADMAP.md`).
 - **Automated flight.** Departing, docking, landing and closing on a disabled ship are
   choices, and the autopilot flies them. The flight screen stays as a backdrop but is
   never steered (#53).
@@ -235,72 +235,51 @@ played.
 
 ## A hired hand's engagements
 
-In the hired-hand chapter a pirate contact or a navy stop is not the card duel. It is fought turn by turn (`js/fight.js`, the
-engine, pure; `js/fightui.js`, the panel), as the turn-combat design sets out
-(`docs/superpowers/specs/2026-10-20-turn-combat-design.md`, #786). An owner who kept a post (`lockPost()`) fights the same way
-(`js/duel.js` startDuel); an owner who was never a hand keeps the card duel above. Bounties and hunters are still the card duel.
+In the hired-hand chapter a pirate contact or a navy stop is not the card duel. It is fought on the radar, in real time with
+pause (`js/radar.js`, the rules, pure; `js/radarui.js`, the page; `js/fightui.js`, its start and its ends), as the radar fight's
+design sets out (`docs/superpowers/specs/2026-11-16-radar-ship-fight-design.md`, #1345 to #1348). An owner who kept a post
+(`lockPost()`) fights the same way, with the captain's order picked at a steady nerve (`js/duel.js` startDuel); an owner who was
+never a hand keeps the card duel above. Bounties and hunters are still the card duel.
 
 ### The ship fight
 
-The panel is the sensor board (`js/board.js`) with both sides' bars under it: armor, and the weapons, drive and lock,
-each with its own bar. Each turn her move and the captain's are shown first (a broadside at a part, closing, a pin on your
-drive, coming alongside, breaking off; the captain closes, holds or opens the range by the captain card's nerve). The hand aims
-each ready gun at a part or holds it, the torpedo and the turret where they are fitted, and presses Fire. Damage is rolled in a
-range, cut at long range and harder close in; each shot adds heat, two bleed off a turn, and over the cap a gun locks for the
-next turn. A part at zero stops what it does: no weapons, fewer shots; no drive, no change of range; no lock, no boarding. One
-line a turn goes in the log.
+The fight runs in order cycles of 20 seconds (`RADAR.TURN_S`), each in 24 fixed steps (`RADAR.SUB`), watched at 1x, 2x or 16x
+and paused at any time (Space, or the play button). At the start of each cycle the captain picks an order by the captain card's
+nerve (engage, hold at 20 km, open the range, break off, evade: `RADAR_ORDERS`), and the crew work every post but the hand's to
+it (`radarAuto`). The hand works the gunner's post (the gun or the point defence, the aim at her hull or a part, hold fire, a
+torpedo, the point defence's arc) or the pilot's (the burn inside the order's wedge, landing within the hand's scatter, and when
+coasting whether to turn to her); at the engineer's or comms post the crew have it for now (#1371). The page is a top bar, a
+situation bar, the radar with the order's cost under it, the hand's console, and the timeline of what has happened.
 
-She is met at forty kilometers, long range (a raider, a corsair), or thirty, mid range (a patrol), moved by the contact's own move
-(`js/engage.js`) or the ambush (`js/engagements.js`, below). It ends crippled (her weapons and drive gone: dead in space, to
-board her or let her drift; a navy ship breaks off instead), broken off, escaped (you open past long range), boarded (the deck
-fight), your hull gone, or at the eighth turn (`FIGHT.TURNS`) one side breaks off: she does if she is the less whole, and else
-the captain runs, a lost fight. There is no standoff. A ship whose guns are gone and whose hull is whole gets away (a weak end, not
-a win). In the fight both sides' armor is 0.45 of the ship's (`FIGHT.POOL`, #814; the point defence's condition and parts scale the hand's, #1208), so that a fight usually ends
-before the eighth turn; the armor the hauler loses there comes back to the ship divided by it (seven lost in the fight is sixteen
-at the yard), and a fight never repairs it or takes it under 1. A heavy turn (the damage her guns do to
-your hull, which is not pooled, is over a fifth of your real maximum armor, about 44% of the hull you have in the fight) can cost a
-casualty and hurt the hand; after the tune below only her salvo, unanswered, reaches it (about two times in five), and with the turret held back it never does. The numbers are
+The fight stops itself, and says why, when she launches, when a torpedo will reach the point defence this cycle, when her guns
+first hit us (only the first: the owner, 2026-11-19) and at every torpedo that hits us, as she comes into gun range, and when the
+captain goes into evade or break off (`radarPauses`); never twice within two cycles (`RADAR.PAUSE_GAP`, the end included), the
+ones held back still on the timeline. Her arming does not stop it.
+
+She is met far out (250 km, a raider or a corsair) or close (40 km: a patrol, an ambush, a contact move that went wrong:
+`js/range.js`, `js/engage.js`), and a head start from the contact is a free first volley, ours at her weapons or hers at our hull.
+It ends crippled (her weapons and drive gone: dead in space, to board her or let her drift; a navy ship breaks off instead),
+broken off, escaped (we open past 400 km), away (her guns gone and her hull whole: she gets away, a weak end), boarded (her lock
+whole and alongside: the deck fight), the hull gone, or at the cap (50 cycles from far out, fewer from close: `radarCap`) the
+less whole side breaks off: she does if she is the less whole, and else the captain runs, a lost fight. Where each end goes is
+`shipFightEnd`. In the fight both sides' armor is 0.45 of the ship's (`FIGHT.POOL`, #814; the point defence's condition and parts
+scale the hand's, #1208); the armor the hauler loses there comes back to the ship divided by it, past the skin (`HULL_SKIN`), and
+a fight never repairs it or takes it under 1. A heavy hit (a step's damage to our hull over a fifth of the real maximum armor past
+the skin, `FIGHT.HEAVY_HIT`) can cost a casualty and hurt the hand (`fightTook`). The numbers are `RADAR` in `js/radar.js` and
 `FIGHT` and `FOE_TYPES` in `js/fight.js`.
 
 A hired hand's Ice Hauler carries a close-defense turret (her second gun) and a launcher with two torpedoes (`js/hired.js`
 setupHired), and the captain restocks the torpedoes from the ship's fund at a port with an outfitter (a save from before the
 fitting, with no launcher, buys none). The two outfits take 6 t of her hold, so she carries 114 t, not 120.
 
-Each type she can be has one threat, shown in her move, that "shoot her weapons" answers badly (the rework's design,
-`docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md`, #808):
+Each type she can be has her own way of fighting: a raider closes and comes alongside to board while her lock is whole; a
+corsair holds at 30 km and arms a salvo every fourth cycle, which the point defence answers; a navy cutter holds at 25 km with a
+thick hull; a destroyer is a ship to heave to for, not to fight (the owner's choice, #833); a raider pair is two of them, with two
+locks. Our gun spreads with range, with the gunner's level and with our speed across her line, and her guns' spread the same way.
 
-- **A raider** (one gun, fast) closes from long range and comes alongside to board while her lock is whole, on the fourth turn.
-  Her 130 armor (her 70 shields and 60 armor until #1208) is 59 in the fight, and every gun at her hull cripples her in two or three turns, before
-  she is alongside: a lone raider is beaten by hull fire, by the owner's choice (#814; at #808 she boarded it). Shooting her
-  lock as she closes stops the board too; her drive (34) is slow to shoot away at range, where an aimed shot hits for a
-  quarter (long) or 0.4 (mid), so aiming only at it is boarded about one time in four. The lock lesson is the pair's.
-- **A corsair** (two guns, four torpedoes) arms a salvo of two on the first turn and every second turn after, and fires it the
-  turn after; the board shows it a turn ahead. Holding the turret back that turn takes 60% off the salvo.
-- **A navy cutter** (thick armor). Until #1208 she got 7% of her shields back each turn, which only torpedoes and every gun
-  overcharged at her hull beat; with the shields gone she has no regeneration.
-- **A destroyer** (a patrol's, three in ten) has no regeneration and no launcher until the fight ladder (PR 3) decides how she is
-  met: the tool does not play one.
-- **A raider pair**: two shown moves and fire from both, and two locks to stop. Every gun at the hulls is boarded every time;
-  shooting the locks as they close wins.
-
-Disarming her takes about three turns of fire (her weapons are 63 a mount), and she fires at your guns while they fire, so
-the guns are a race too.
-
-A hired gunner learns three moves from the crew (`FIGHT_MOVES` in `js/fight.js`, `docs/superpowers/specs/2026-10-23-gunner-moves-design.md`),
-each ordered beside the guns and used once a fight: **vent** (the engineer teaches it) takes the heat to 0 and the locks off before
-the shots; **lead** (the pilot) takes the range penalty off one gun's aimed shot; **split** (the first officer) lets the turret
-held back for her salvo fire anyway. A move with nothing to act on is not spent. Each is a pick on the gunner's ladder (`js/picks.js`,
-`docs/superpowers/specs/2026-11-08-post-ladders-design.md`: vent at level 1, lead at 2, split at 3) and is then taught on a burn as a
-downtime choice (`MOVE_TEACH` in `js/moves.js`), once the teacher trusts the hand (`OPINION.TRUSTED`) and is aboard and unhurt. An owner is taught none.
-
-The ladders add eight more moves, each a pick at its post and used once a fight like the three (#963): **called shot** (gunner 5) puts the
-named gun's shot at the top of its range with no aim penalty; **break the intercept** (pilot 2) makes the captain's vote to open the range
-stand this turn whatever her speed; **redline** (pilot 5, the engineer teaches it) takes the ship away from the long band this turn, after the
-guns fire; **patch** (engineer 2) gives back a tenth of the fight's pooled armor (`FIGHT.PATCH`); **hot start** (engineer 3, the pilot) overcharges
-every shot this turn at a plain shot's heat; **bypass** (engineer 5) puts the drive's part back to full, so a pinned drive votes on the range
-again; **spoof** (comms 2) is a false transponder: she fires no volley and no salvo this turn, and keeps her torpedoes; **parley** (comms 5, the
-first officer) is a word on wit at mid or long range, `handCheck('wit', comms level, 'post')`: landed, every foe still up breaks off, and the
-fight ends `broke`; failed, the move is spent and she fires. A hand's fight offers the moves the hand knows, at whatever post.
+The hand's learned moves (`FIGHT_MOVES`, the post ladders in `js/picks.js`, the teaching in `js/moves.js`) are still learned, and
+carry over to the radar as once-a-fight actions with the meanings the radar fight's design gives them; they are built with the
+engineer's and comms posts (#1371), and until then the fight does not offer them.
 
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
@@ -402,89 +381,35 @@ once a fight (so does someone who owes you one).
 
 ### Measured: `npm run fights`
 
-`tools/fights.js` plays the ship fight and both deck fights over many seeded trials (`npm run fights`: 5 seeds of 200, a hired
-gunner on Hester's ship with nine aboard) and reports, for the ship fight, the spread of ends by where the guns aim and by
-matchup, and for the deck fights how often they are won and who is hurt, by crew, the post's level, the hand's policy and her
-grade. It is run by hand and is not part of `npm test`; `tests/distribution/fights.test.js` checks the targets that matter in the soak (#786, R36; moved out of `npm test` in #753). From
-the run that wrote this section (after the final review's tune, #808):
+`tools/fights.js` plays both deck fights over many seeded trials (`npm run fights`: a hired gunner on Hester's ship with nine
+aboard) and reports how often they are won and who is hurt, by crew, the post's level, the hand's policy and her grade; with
+`--radar` it plays the ship fight on the radar (`tools/radarfights.js`) and reports the spread of its ends by the hand's policy and
+the type she is. It is run by hand and is not part of `npm test`; `tests/distribution/fights.test.js` checks the targets that matter in the soak (#786, R36; moved out of `npm test` in #753). From
+the runs that wrote this section:
 
-- **The ship fight** (#814: `node tools/fights.js --seeds 1,2,3,4,5 --n 100 --ship-only`, 5 seeds of 100 pirates and 50 navy
-  cutters for each gun policy, at `FIGHT.POOL` 0.45). The six fixed policies (`random`; `focus`, her weapons; `drive`, her drive
-  then her weapons; `lock`, her lock then her weapons; `hull`, every gun at her hull; `hullhold`, the same with the turret held
-  back on her salvo) fire the turret and the torpedoes at her hull; `answer` reads her shown move: it holds the turret back when
-  she fires a salvo, aims at her lock while she closes or pins with it whole, sends a torpedo at the foe with the least armor
-  left, against a navy ship runs every gun the heat allows overcharged at her hull, and else aims at her hull. (Until #1208 it held
-  its torpedoes until her shields were down, and the overcharge was for a ship whose shields came back.) Good ends are crippled, broken off and escaped; a lost fight is the captain running
-  or the hull gone.
+- **The ship fight on the radar** (#1347, #1348: `node tools/fights.js --radar --seeds 1,2,3 --n 100`, 3 seeds of 100 of each type for each
+  policy, every policy on the same dice for a type; the rules played by cycles in plain Node, `tools/radarfights.js`). The crew work every post
+  but the hand's at level 2, and the hand's post is played by a policy at level 2. At the gunner's post: `random` draws each choice; `hull`
+  fires the gun at her hull and a torpedo inside 60 km; `lock` aims at her lock while it is whole; `pdc` runs the point defence at her;
+  `answer` (`tools/answer.js answerRadar`) reads her shown threat: the point defence when one of her torpedoes will reach it this cycle,
+  else the gun, at a raider's lock as she comes alongside with it whole, at a corsair's launcher while she has torpedoes, at the hull
+  otherwise, and a torpedo at the most hurt of hers inside 60 km. Good ends are crippled, broken off and escaped; a lost fight is the
+  captain running or the hull gone.
 
-  | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |
-  |---|---|---|---|---|---|---|---|
-  | a raider | 88% / 0% / 4.8 | 0% / 0% / 4.0 | 76% / 0% / 5.5 | 0% / 0% / 6.0 | 100% / 0% / 2.3 | 100% / 0% / 2.4 | 100% / 0% / 4.8 |
-  | a corsair | 10% / 80% / 7.8 | 0% / 0% / 7.9 | 5% / 94% / 7.8 | 0% / 97% / 7.9 | 99% / 0% / 4.7 | 100% / 0% / 5.7 | 100% / 0% / 7.5 |
-  | a cutter | 21% / 44% / 6.3 | 0% / 0% / 3.0 | 0% / 10% / 3.5 | 0% / 99% / 8.0 | 0% / 0% / 3.0 | 0% / 0% / 3.0 | 100% / 0% / 5.3 |
-  | a raider pair | 16% / 9% / 5.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 0% / 100% / 8.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 95% / 5% / 7.9 |
-  | over every type | 32% / 38% / 6.1 | 0% / 0% / 4.7 | 18% / 30% / 5.2 | 0% / 77% / 7.5 | 49% / 0% / 3.5 | 49% / 0% / 3.7 | 99% / 1% / 6.2 |
+  | Against (good / lost / cycles) | random | hull | lock | pdc | answer |
+  |---|---|---|---|---|---|
+  | a raider | 42% / 28% / 32.6 | 96% / 0% / 20.5 | 64% / 19% / 29.5 | 1% / 62% / 39.3 | 96% / 0% / 20.5 |
+  | a corsair | 10% / 90% / 49.5 | 45% / 55% / 43.4 | 18% / 82% / 47.3 | 6% / 94% / 49.7 | 68% / 32% / 38.9 |
+  | a cutter | 11% / 89% / 31.9 | 65% / 35% / 17.3 | 27% / 73% / 27.7 | 2% / 98% / 32.0 | 65% / 35% / 17.3 |
+  | a raider pair | 1% / 46% / 30.0 | 46% / 18% / 27.3 | 3% / 56% / 32.4 | 0% / 45% / 30.7 | 47% / 15% / 26.5 |
+  | a destroyer | 2% / 98% / 28.5 | 5% / 95% / 28.1 | 2% / 98% / 29.1 | 1% / 99% / 28.4 | 5% / 95% / 28.1 |
+  | over every type (good / lost / at cap) | 13% / 70% / 59% | 51% / 41% / 31% | 23% / 66% / 50% | 2% / 80% / 66% | 56% / 36% / 26% |
 
-  The rest of the ends: every gun at her hull, the turret held or not, cripples a lone raider every time and breaks a corsair
-  off (92%), and is boarded by a cutter or a pair every time; aiming at her weapons ends in her getting away (a raider 32%, a
-  corsair 97%) or a boarding; aiming at her drive is boarded by a raider 24%, by a cutter 90% and by a pair every time; random
-  play is boarded 29% over every type. Random play loses 20% of the real armor a fight over every type (62% against a corsair,
-  0.2% against a raider), and the hand is killed in 1% of random fights (2% against a corsair). The best fixed policy is hull
-  fire against a lone raider and a corsair, and random against a cutter and a pair; none wins more than 70% against every type
-  (hull fire wins none against a cutter); `answer` is at or above the best of them against each type, ties hull fire at 100%
-  against a lone raider (the owner's choice, #814) and a corsair, and is well above all of them over every type (99% against
-  hull fire's 49%). Against a corsair her lesson is the hull, not the fight (the owner's choice, #815): hull fire that ignores
-  her salvo still wins 99%, but loses 12.4% of the real armor a fight against 2.1% with the turret held back, and each salvo
-  it takes unanswered is a heavy turn for the crew. Her salvo is left as it is, since it is already the main source of the
-  hand's hurts in the soak. A fight lasts 5.3 turns on the mean over every policy and type, and 14% of `answer`'s fights reach the turn
-  cap (none against a raider or a cutter, 8% against a corsair, 64% against a pair; 97% over every type before the pool, at
-  #808, when most of its wins were on points at the cap).
-  A navy destroyer (three patrol stops in ten, and met only by a ship hostile with that navy) is not in the table: she is a ship
-  to heave to for, not to fight (the owner's choice, #833), and the tool plays her as its own trials to show it. At three seeds
-  of 100 no policy has more than 5% good ends against her (random play 5%, `answer` none). `answer` fights her to the cap
-  until the captain runs (99%), and loses 55% of the hull a fight. Every gun at her hull or her weapons is boarded by her every
-  time (a search and its fine). Heaving to at the contact (engage.js) is the way out, and it lifts the standing back to -10,
-  above the -15 line that sends the patrols.
-  The values, against Task 7's: every damage and part bar is about 0.7 of them, so that kills are slower and a raider's run to
-  the knife is a race: your guns 8 to 14 (12 to 20), hers 7 to 18 (10 to 26), your torpedo 12 to 18 and hers 20 to 30
-  (`SALVO_DMG`, split from `TORP_DMG`; both 30 to 45), her weapons 63 a mount (90), the drive 34 (50), the lock 7 (10), the
-  launcher 10 (15), the cutter's shields back 7% a turn (an eighth); and since #814 both sides' shields and armor are 0.45 of
-  the ship's. The rest are Task 7's. At #808, before the pool, `answer`'s every rule counted:
-  without the lock it was boarded by every type every time; without the torpedoes and the overcharge the cutter beat it 75
-  times in 100; without the turret held back a corsair beat it 4 times in 100, and the hand was hurt in 13% of the fights
-  rather than 1%.
-- **The gunner moves** (`node tools/fights.js --seeds 1,2,3,4,5 --n 200 --ship-only`, then with `--moves`, which gives the hand all
-  three, or `--moves lead` and the like for one). With the moves come two more policies that use them without reading her move
-  for it: `randmove` (random, with a random usable move each turn) and `eager` (her lock and then her weapons, the turret held
-  on her salvo, and the first usable move at its first chance). The fixed policies order no move, so their rows do not change.
-  `answer` (tools/answer.js) splits the turret on her salvo, vents when that frees a locked gun, leads an aimed shot where
-  there is a range penalty, and against a ship whose shields come back runs every gun hot past the cap while vent is unspent.
-
-  | `answer` against (good / hull lost / turns / at cap) | no moves | all three | the one move alone |
-  |---|---|---|---|
-  | a raider | 100% / 2.0% / 4.81 / 0% | 100% / 2.0% / 4.02 / 0% | lead: 100% / 2.1% / 4.01 / 0% |
-  | a corsair | 100% / 5.6% / 7.42 / 5% | 100% / 3.8% / 6.18 / 0% | split: 100% / 4.2% / 6.57 / 0% |
-  | a cutter | 100% / 0.0% / 5.32 / 0% | 100% / 0.0% / 4.88 / 0% | vent: 100% / 0.0% / 4.91 / 0% |
-  | a raider pair | 94% / 7.0% / 7.92 / 62% | 98% / 2.3% / 7.73 / 60% | lead: 98% / 2.4% / 7.74 / 66% |
-  | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.53 / 10% | |
-
-  The post ladders' eight (#963; `node tools/fights.js --seeds 1,2,3 --n 100 --ship-only --moves called-shot,patch,spoof,parley`, 3 seeds
-  of 100): `answer` orders none of them, so its rows are the no-move rows again (a raider 100% / 0.4% / 4.77 / 0%, a corsair 100% / 4.3% /
-  7.44 / 5%, a cutter 100% / 0.0% / 5.31 / 0%, a raider pair 96% / 5.8% / 7.91 / 50%), and the same run with `--moves` (the gunner's three)
-  gives the table above to the digit, so the engine's new moves moved nothing for the old ones. For a player who does not read her move
-  they are worth more than the three: `randmove` with the four has 50% good ends over every type (24% with the three) and loses 8.4% of
-  the hull a fight (26.8%), since a parley or a spoof ends or empties a turn whatever the aim; it still loses 31% of its fights. `eager` with
-  the four has 18% good ends (0%), the corsair and the pair broken off by a parley at its first chance.
-
-  Split against a corsair ends the fight sooner (7.4 to 6.6 turns, none at the cap); lead against a pair wins more (94% to 98%)
-  and loses a third as much hull (7.0% to 2.4%); lead also cripples a corsair more often (19% to 42% of her ends), at a cost: alone it raises answer's hull lost against a corsair (5.6% to 6.3%). Vent against a cutter turns
-  a break-off into a cripple: running hot while it can vent, `answer` cripples her 75% of the time (1% without), in 4.9 turns
-  (5.3); without vent known, or once it is spent, the heat budget keeps every gun at or under the cap as before. With all
-  three, `randmove` is good 36% and loses 44% over every type (random without them: 31% and 39%), and `eager` is good 1% and
-  loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
-  downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
-  play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
-- **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade,charge,setpiece,navy`, the deck
+  The soak checks the gunner's targets (`tests/distribution/radarfights.test.js`): `answer` at or above every fixed policy against each
+  type, no fixed policy over 70% good ends against every type, random play losing a quarter or more, and `answer` 15 points or more over
+  random. A navy destroyer is left out of the targets, as in the old fight's: she is a ship to heave to for, not to fight (#833). At the
+  pilot's post the targets are not met, and are an open design question (#1347): over every type `random` 66% good and 34% lost, `hold` 53% good and 39% lost, `close` 68% good and 16% lost, `answer` 65% good and 31% lost.
+- **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --groups party,level,grade,charge,setpiece,navy`, the deck
   test's own runs: tests/distribution/fights.test.js; each cell plays on its own stream, seeded from the run's seed and the cell's name, so a
   change to one cell moves no other's numbers). A hand at level 2, her grade 0; a raider boards us at a full run and a corsair
   at a half one, as in the game, and the navy's party is started from a patrol cutter's boarding as the game starts it; each cell is won with two standing / five, then the mean turns. The fixed policies go where the fight is, reading neither the rush nor the charge: `shoot` fires there, `cover` makes

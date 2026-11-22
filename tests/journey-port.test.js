@@ -1,13 +1,13 @@
 'use strict';
 
-// A journey (tests/journey.js, #1329): a raider's fight on a burn, played through the battle panel to its close, the burn run on to port, and then the
+// A journey (tests/journey.js, #1329): a raider's fight on a burn, played on the radar to its end, the burn run on to port, and then the
 // hull on the ship's page and the savings on the character page read from the screen; the page reloaded and the game continued from the title menu,
 // and both read the same. The planted bug `never-saves` (tools/mutants.json) must fail it.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
-const { screen, waitText, button, choose, answerScenes, runBurn } = require('./journey');
+const { screen, waitText, button, answerScenes, playRadar, runBurn } = require('./journey');
 
 after(closeBrowser);
 
@@ -35,8 +35,8 @@ async function figures(page) {
 test('journey: back in port, the fight\'s cost and the pay on screen, and a reload keeps them', async () => {
   const { page, ev, errors, done } = await open({ title: true, seed: 1 });
   await ev(raider);
-  for (let t = 0; t < 30 && /ORDERS TO THE GUNS/.test(await screen(page)); t++) await choose(page, /^Fire/);
-  assert.doesNotMatch(await screen(page), /ORDERS TO THE GUNS/, 'the fight closed');
+  await playRadar(page);
+  assert.doesNotMatch(await screen(page), /Cycle \d+, \d+ s/, 'the fight closed');
   await answerScenes(page);
   await runBurn(page, /DOCKED · PALLAS/i);
   await answerScenes(page);

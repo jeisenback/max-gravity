@@ -29,7 +29,7 @@ test('a keep choice runs, then redraws the dialog with the event it returns, wit
   await done();
 });
 
-// ---------- the ship fight's panel, in place of the raid (js/fightui.js) ----------
+// ---------- the ship fight's start and ends (js/fightui.js), fought on the radar (js/radarui.js) ----------
 
 const helpers = () => {
   window.fightGame = (post = 'gunner', shipId = 'raider') => {
@@ -46,114 +46,31 @@ const helpers = () => {
   };
   window.battle = () => { startDuel({ kind: 'pirate' }, false); const e = G.nextEvent; G.nextEvent = null; openEvent(e); return G.dialog.event.fight; };
   window.choiceAt = label => G.dialog.choices.findIndex(c => c.label.startsWith(label));
-  window.pickAt = (row, label) => G.dialog.choices.findIndex(c => c.row === row && c.label === label);  // a target in a gun's row (gun1, gun2, torp)
-  window.rowsShown = () => [...document.querySelectorAll('#panel .choice-row')].map(r => [r.querySelector('.row-label').textContent, [...r.querySelectorAll('button.on')].map(b => b.textContent)]);
-  window.aimAt = part => { const s = G.dialog.event.fight; G.dialog = null; openEvent(shipFightEvent(s, { guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part })), torp: null, pdc: 'fire' })); };  // every gun on one part (the guns start on her hull)
+  window.endAs = (s, end) => { G.radar = null; G.dialog = null; G.nextEvent = null; shipFightEnd(s, end); return G.nextEvent; };  // the fight on the radar ending, as radarui.js ends it
 };
 
-test('battle stations opens the fight panel with both sides\' bars, her move and the captain\'s, and one order per gun', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = fightGame('gunner'); const s = battle(), f = s.state;
-    const bars = document.querySelector('#panel .event-body svg.bars');
-    return {
-      title: G.dialog.event.title, duel: !!G.duel, read: G.dialog.event.read, labels: G.dialog.choices.map(c => c.label), keep: G.dialog.choices.map(c => !!c.keep),
-      board: !!document.querySelector('#panel .event-body svg.board'), bars: bars && bars.getAttribute('aria-label'),
-      guns: f.me.guns, ready: gunsReady(f), band: RANGE_BANDS[f.band], text: G.dialog.event.text,
-      // the orders flow with the scene under their heading, and only Fire is pinned, as the primary button (#846)
-      flow: [...document.querySelectorAll('#panel .choices.flow > button')].map(b => b.textContent.split(':')[0]), heading: (document.querySelector('#panel .choices.flow .group') || {}).textContent, rows: rowsShown(),
-      picks: [...document.querySelectorAll('#panel .choice-row')].map(r => [...r.querySelectorAll('button')].map(b => b.textContent).join(' | ')), pressed: [...document.querySelectorAll('#panel .choice-row button')].map(b => b.getAttribute('aria-pressed')).join(''),
-      pinned: [...document.querySelectorAll('#panel .choices:not(.flow) button')].map(b => [b.textContent.split(':')[0], b.classList.contains('primary')]),
-      bars12: [...bars.querySelectorAll('text')].every(t => +t.getAttribute('font-size') >= 11), intact: [...bars.querySelectorAll('rect')].filter(x => x.getAttribute('fill') === '#ff6a4a').length,
-    };
-  });
-  assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 6 to 14 damage\. Holding the turret back takes 40 percent off her volley, for one gun's shot\. Captain Vance: holding the range\.$/, r.read);
-  assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
-  assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
-  // each gun and the torpedo is a row of targets, one click picks one and nothing goes round (#916, #917); Fire says what it will do
-  const row = ['Hull', 'Weapons', 'Drive', 'Lock', 'Hold'];
-  assert.deepEqual(r.labels, [...row, 'Gun 1: normal charge', ...row, 'Gun 2: normal charge', ...row, 'Turret: fire with the guns', 'Fire: 2 guns at her hull, torpedo held, heat 2 of 4']);
-  assert.ok(r.keep.every(Boolean), 'every order and Fire redraw in place');
-  assert.deepEqual(r.rows.map(([l, on]) => [l.replace(/a hit does \d+ to \d+/, 'a hit does N to M'), on]), [['Gun 1: a hit does N to M', ['Hull']], ['Gun 2: a hit does N to M', ['Hull']], ['Torpedo, 2 left', ['Hold']]], 'the guns start on her hull, the torpedo held');
-  assert.deepEqual(r.picks, Array(3).fill(row.join(' | ')), 'a raider has no launcher to aim at');
-  assert.equal(r.pressed, ['true', 'false', 'false', 'false', 'false', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'].join(''), 'the target picked is marked for a screen reader too');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: armor 198 of 198, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: armor 59 of 59, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
-  assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
-  assert.deepEqual(r.flow, ['Gun 1', 'Gun 2', 'Turret'], 'the charges and the turret, in the flow of the scene with the rows');
-  assert.equal(r.heading, 'Orders to the guns');
-  assert.deepEqual(r.pinned, [['Fire', true]], 'only Fire is pinned, and it is the primary button');
-  assert.ok(r.bars12, 'the bars\' labels are 11 or more in the picture (about 12px on a phone)');
-  assert.equal(r.intact, 0, 'no part at full is drawn in the red of damage');
-  await done();
-});
-
-test('setting a gun\'s target keeps the panel where it was scrolled (#970)', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 1280, height: 600 } });
-  await ev(helpers);
-  await ev(() => { fightGame('gunner'); battle(); document.querySelector(`[data-action="choose"][data-arg="${pickAt('gun2', 'Weapons')}"]`).scrollIntoView({ block: 'center' }); });  // the second gun's row in view, as a player scrolls to it
-  const before = await ev(() => document.getElementById('panel').scrollTop);
-  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun2', 'Weapons'))}"]`);
-  const r = await ev(() => ({ at: document.getElementById('panel').scrollTop, picked: rowsShown()[1][1] }));
-  assert.ok(before > 0, 'the scene is longer than a short window');
-  assert.deepEqual(r, { at: before, picked: ['Weapons'] }, 'the pick is drawn in place, with the rows where they were');
-  await done();
-});
-
-test('setting a gun\'s target redraws in place; Fire resolves a turn and the log gains a line', async () => {
-  const { page, ev, done } = await open();
-  await ev(helpers);
-  await ev(() => { fightGame('gunner'); battle(); });
-  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun1', 'Drive'))}"]`);
-  const a = await ev(() => ({ result: !!document.querySelector('#event-result'), rows: rowsShown(), fire: G.dialog.choices[choiceAt('Fire')].label, title: G.dialog.event.title, turn: G.dialog.event.fight.state.turn }));
-  assert.deepEqual(a, { result: false, rows: [['Gun 1: a hit does 2 to 3', ['Drive']], ['Gun 2: a hit does 7 to 11', ['Hull']], ['Torpedo, 2 left', ['Hold']]], fire: 'Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4', title: 'Battle Stations', turn: 0 });
-  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun1', 'Drive'))}"]`);
-  assert.deepEqual(await ev(() => rowsShown()[0]), ['Gun 1: a hit does 2 to 3', ['Drive']], 'a second click on the target picked keeps it: nothing goes round');
-  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun2', 'Hold'))}"]`);
-  assert.deepEqual(await ev(() => [rowsShown()[1], G.dialog.choices[choiceAt('Fire')].label]), [['Gun 2: holding fire', ['Hold']], 'Fire: gun 1 at her drive, torpedo held, heat 1 of 4'], 'a gun on hold says so, and Fire counts one shot');
-  await ev(() => { const d = G.dialog.event.fight.state.foes[0].parts.drive; d.hp = d.max = 100; });  // one shot cannot take her drive, so she can close as she said (the roll moves with the page's frames)
-  const fire = await ev(() => G.dialog.choices.findIndex(c => c.label.startsWith('Fire')));
-  await page.click(`[data-action="choose"][data-arg="${fire}"]`);
-  const b = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, log: s.state.log.length, last: s.state.log[s.state.log.length - 1], text: G.dialog.event.text, drive: s.state.foes[0].parts.drive.hp, band: RANGE_BANDS[s.state.band] }; });
-  assert.equal(b.result, false, 'no result page between turns'); assert.equal(b.turn, 1); assert.equal(b.log, 2, 'the opening and the first turn');
-  assert.match(b.last, /^Turn 1: you hit her drive for \d+/, b.last); assert.ok(b.text.endsWith(b.last), 'the panel shows the newest line last');
-  assert.ok(b.drive < 100, 'the shot is on her drive'); assert.equal(b.band, 'mid', 'she closed a band, as she said she would');
-  await done();
-});
-
-test('a fight played to each end lands in its scene: crippled to dead in space, boarded to the lock, lost to the taken consequences', async () => {
+test('a fight\'s end lands in its scene: crippled to dead in space, boarded to the lock, lost to the taken consequences and the close', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    // crippled: her weapons gone, her drive one shot from gone, the gun on it
-    fightGame('gunner'); let s = battle();
-    s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 1; s.state.band = RANGE_BANDS.indexOf('close');
-    aimAt('drive');  // the guns at her drive
-    s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };
-    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapple arms go slack|drive cone splits/.test(G.nextEvent.text) };
-    // boarded: alongside, her lock whole, and her shown move is the boarding
-    fightGame('gunner'); s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
-    out.boarded = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapples bang on the hull/.test(G.nextEvent.text) };
-    // lost: the hull is one point from gone, and her broadside is at it
-    const st = fightGame('gunner'), h = hired(); h.fund = 1000; const cap = person(h.captain), op = cap.opinion;
-    s = battle(); s.state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // two guns would shoot away her weapons (20) before she fires
-    Object.assign(s.state.me, { armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
+    fightGame('gunner'); let next = endAs(battle(), 'crippled');
+    out.crippled = { next: next && next.title, line: !!next && /grapple arms go slack|drive cone splits/.test(next.text) };
+    fightGame('gunner'); next = endAs(battle(), 'boarded');
+    out.boarded = { next: next && next.title, line: !!next && /grapples bang on the hull/.test(next.text) };
+    fightGame('gunner'); const h = hired(); h.fund = 1000; const cap = person(h.captain), op = cap.opinion;
     const real = Math.random; Math.random = () => 0.99;  // the captain is not lost on her bridge (a roll of one in three)
-    const ret = chooseEvent(choiceAt('Fire')), close = G.nextEvent; Math.random = real;
-    out.lost = { ret, title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op, armor: hullLeftOf(st.armor, ship().armor) };
-    finishEvent(); out.lost.shown = G.dialog && G.dialog.event.title; out.lost.labels = G.dialog.choices.map(c => c.label);
-    out.lost.down = chooseEvent(0); out.lost.then = G.nextEvent;
+    const close = endAs(battle(), 'lost'); Math.random = real;
+    out.lost = { title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op };
+    openEvent(close); out.lost.labels = G.dialog.choices.map(c => c.label); out.lost.down = chooseEvent(0); out.lost.then = G.nextEvent;
     return out;
   });
-  assert.deepEqual(r.crippled, { ret: null, next: 'Dead in Space', line: true });
-  assert.deepEqual(r.boarded, { ret: null, next: 'The Lock', line: true }, 'the deck fight opens at the lock');
-  assert.equal(r.lost.ret, null); assert.equal(r.lost.title, 'Battle Stations');
+  assert.deepEqual(r.crippled, { next: 'Dead in Space', line: true });
+  assert.deepEqual(r.boarded, { next: 'The Lock', line: true }, 'the deck fight opens at the lock');
+  assert.equal(r.lost.title, 'Battle Stations');
   assert.match(r.lost.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox because there's no choice, and they take 300 cr of the ship's fund and go\./);
   assert.equal(r.lost.fund, 700); assert.equal(r.lost.opinion, -1, 'the captain marks it');
-  assert.equal(r.lost.armor, 0, 'the hull at its last point: nothing left past the skin (HULL_SKIN, #1208)');
-  assert.equal(r.lost.shown, 'Battle Stations', 'the close is shown on the panel'); assert.deepEqual(r.lost.labels, ['Stand down']); assert.equal(r.lost.down, null); assert.equal(r.lost.then, null, 'and nothing follows it');
+  assert.deepEqual(r.lost.labels, ['Stand down']); assert.equal(r.lost.down, null); assert.equal(r.lost.then, null, 'and nothing follows it');
   await done();
 });
 
@@ -166,15 +83,16 @@ test('a head start from the contact screen is a free first volley: ours at her w
       const st = fightGame('gunner'), armor = st.armor;
       startShipFight({ kind: 'pirate' }, false, { edge, shift, text: 'Battle stations.' });
       const s = G.nextEvent.fight, f = s.state;
-      out[name] = { weapons: f.foes[0].parts.weapons.hp, hull: f.me.armor, full: f.me.maxArmor, band: RANGE_BANDS[f.band], turn: f.turn, last: f.log[f.log.length - 1], armor: st.armor === armor };
+      out[name] = { weapons: f.foes[0].parts.weapons.hp, hull: f.me.armor, full: f.me.maxArmor, opening: f.opening, kind: f.kind, last: f.log[f.log.length - 1], armor: st.armor === armor };
     }
     return out;
   });
   assert.ok(r.ahead.weapons < 63 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
-  assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+, you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
+  assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+, you hit her weapons for \d+\.$/); assert.equal(r.ahead.opening, 'long', 'fifty kilometers: met far out');
+  assert.equal(r.ahead.kind, 'radar', 'the fight is on the radar');
   assert.ok(r.behind.weapons === 63 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
-  assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.band, 'mid', 'thirty kilometers');
-  assert.ok(r.even.weapons === 63 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
+  assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.opening, 'short', 'thirty kilometers: met inside mid range');
+  assert.ok(r.even.weapons === 63 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.opening, 'long');
   await done();
 });
 
@@ -201,11 +119,8 @@ test('a save made mid-raid in an old version loads with no fight open and no err
 const deckHelpers = () => {
   // Math.random answers from a list, then 0.99: 0.01 passes a chance, 0.99 fails it.
   window.rolls = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };
-  // boarded from a ship fight: alongside, her lock whole, and her shown move is the boarding; returns the deck panel opened
-  window.boarded = () => {
-    const s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
-    chooseEvent(choiceAt('Fire')); const deck = G.nextEvent; G.nextEvent = null; openEvent(deck); return deck.fight;
-  };
+  // boarded from a ship fight (her lock whole, she came alongside); returns the deck panel opened
+  window.boarded = () => { const deck = endAs(battle(), 'boarded'); G.nextEvent = null; openEvent(deck); return deck.fight; };
 };
 
 test('being boarded opens the deck panel: heads and cover by section, the hand\'s place, their shown move', async () => {
@@ -474,115 +389,7 @@ test('repelled, taken, and an assault won or lost each settle through the existi
   await done();
 });
 
-test('her shown move says what answers it, where the ship has it: the turret for a salvo or a volley, her launcher before she fires, her lock before she boards (#850)', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner', 'corsair'); const s = battle(), orders = { guns: [null, null], torp: null, pdc: 'fire' }, out = {};
-    const read = foe => { s.shown = { foe: [foe], captain: { kind: 'hold' } }; return shipFightEvent(s, orders).read; };
-    out.pdc = !!s.state.me.pdc;
-    out.salvo = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.arm = read({ kind: 'arm', n: 2 });
-    out.board = read({ kind: 'board' }); out.volley = read({ kind: 'broadside', target: 'weapons', dmg: [10, 20] });
-    s.state.me.pdc = false; out.noTurret = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.armNo = read({ kind: 'arm', n: 2 });
-    return out;
-  });
-  assert.ok(r.pdc, 'the ship has a turret');
-  assert.match(r.salvo, /Hold the turret back: it takes 60 percent off a salvo\./);
-  assert.match(r.arm, /hold the turret back then, or aim at her launcher now/);
-  assert.match(r.board, /Hit her lock and she can't board\./);
-  assert.match(r.volley, /takes 40 percent off her volley, for one gun's shot/);
-  assert.doesNotMatch(r.noTurret, /turret/, 'no turret, no turret hint'); assert.match(r.armNo, /aim at her launcher now/);
-  await done();
-});
-
 // ---------- the rework's orders and ends (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md) ----------
-
-test('against a corsair the panel offers her launcher as a target, and her arming is shown above the board', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner', 'corsair'); const s = battle();
-    const first = G.dialog.choices.map(c => c.label);
-    s.shown = { foe: [{ kind: 'arm', n: 2 }], captain: { kind: 'hold' } }; openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'lock' }, null], torp: null, pdc: 'fire' }));
-    const arming = G.dialog.event.read;
-    const picks = G.dialog.choices.filter(c => c.row === 'gun1').map(c => c.label);
-    openEvent(chooseEvent(pickAt('gun1', 'Launcher'))); const afterLock = rowsShown()[0];  // gun 1: from the lock to her launcher
-    s.shown = { foe: [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }], captain: { kind: 'hold' } }; openEvent(shipFightEvent(s, { guns: [null, null], torp: null, pdc: 'fire' }));
-    const salvo = G.dialog.event.read;
-    const bars = document.querySelector('svg.bars').getAttribute('aria-label');
-    fightGame('gunner', 'raider'); const t = battle();
-    const reach = []; let o = { foe: 0, part: 'lock' };
-    openEvent(shipFightEvent(t, { guns: [o, null], torp: null, pdc: 'fire' })); reach.push(...G.dialog.choices.filter(c => c.row === 'gun1').map(c => c.label));
-    return { first, arming, picks, afterLock, salvo, bars, reach };
-  });
-  assert.match(r.arming, /is loading torpedoes: 2 next turn\./, r.arming);
-  assert.deepEqual(r.picks, ['Hull', 'Weapons', 'Drive', 'Lock', 'Launcher', 'Hold'], 'her launcher is a target');
-  assert.match(r.afterLock[0], /^Gun 1: a hit does \d+ to \d+$/); assert.deepEqual(r.afterLock[1], ['Launcher'], 'a click on it aims there');
-  assert.match(r.salvo, /fires a salvo of 2 at your hull, 60 to 90\./, r.salvo);
-  assert.match(r.bars, /launcher 10 of 10/, 'her launcher has its bar');
-  assert.deepEqual(r.reach, ['Hull', 'Weapons', 'Drive', 'Lock', 'Hold'], 'a raider has no launcher to offer');
-  await done();
-});
-
-test('a gun can be overcharged and the Fire label counts the heat it adds', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); battle();
-    const labels = () => G.dialog.choices.map(c => c.label).filter(l => /^(Gun|Fire)/.test(l));
-    const before = labels();
-    openEvent(chooseEvent(choiceAt('Gun 1: normal charge')));  // gun 1: overcharge on
-    const on = labels();
-    openEvent(chooseEvent(pickAt('gun1', 'Drive')));  // a new target, the charge stays
-    const kept = labels(), row = rowsShown()[0][1];
-    return { before, on, kept, row };
-  });
-  assert.deepEqual(r.before, ['Gun 1: normal charge', 'Gun 2: normal charge', 'Fire: 2 guns at her hull, torpedo held, heat 2 of 4']);
-  assert.deepEqual(r.on, ['Gun 1: overcharged, heat 2', 'Gun 2: normal charge', 'Fire: 2 guns at her hull, torpedo held, heat 3 of 4'], 'one gun overcharged adds one more heat than a plain shot');
-  assert.deepEqual(r.kept, ['Gun 1: overcharged, heat 2', 'Gun 2: normal charge', 'Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 3 of 4']); assert.deepEqual(r.row, ['Drive']);
-  await done();
-});
-
-test('a gun aimed at the launcher lands on the hull of a ship that has none', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
-    const s = battle(), [lead, consort] = s.state.foes, was = [lead.armor, consort.armor];
-    s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
-    let threw = null;
-    try { fireTurn(s, { guns: [{ foe: 0, part: 'launcher' }], torp: null, pdc: 'fire' }); } catch (e) { threw = String(e); }
-    const [a, b] = s.state.foes;
-    return { threw, lead: a.armor - was[0], consort: b.armor - was[1], last: s.state.log[s.state.log.length - 1], launcher: !!a.parts.launcher };
-  });
-  assert.equal(r.threw, null); assert.equal(r.launcher, false);
-  assert.ok(r.lead < 0, `the lead's hull is hit: ${JSON.stringify(r)}`); assert.equal(r.consort, 0);
-  assert.match(r.last, /you hit her hull for \d+/, r.last);
-  await done();
-});
-
-test('with no torpedoes and no fund to restock, the torpedo order is not offered and the turret still is', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = fightGame('gunner'); st.torpedoes = 0; hired().fund = 0;
-    battle(); return G.dialog.choices.map(c => c.label);
-  });
-  assert.ok(!r.some(l => /torpedo/i.test(l)), r.join('|')); assert.ok(r.includes('Turret: fire with the guns'), r.join('|'));
-  await done();
-});
-
-test('a save from before the fitting fights with one gun and Fire', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = fightGame('gunner'); delete st.outfits.pdc; delete st.outfits.launcher;
-    battle(); return G.dialog.choices.map(c => c.label);
-  });
-  assert.equal(r.filter(l => l.startsWith('Gun')).map(l => l.slice(0, 5)).filter((l, i, a) => a.indexOf(l) === i).join(), 'Gun 1', 'one gun (and its charge toggle)');
-  assert.ok(!r.some(l => /torpedo|^Turret/i.test(l)), r.join('|')); assert.match(r[r.length - 1], /^Fire/);
-  await done();
-});
 
 test('the captain running ends the fight as a loss and she getting away gives no experience', async () => {
   const { ev, done } = await open();
@@ -697,16 +504,14 @@ test('armor lost in a fight past its skin comes back to the ship at full scale, 
   await done();
 });
 
-test('a ship at real armor 1 starts the fight at 1, and the first Fire does not end it lost', async () => {
+test('a ship at real armor 1 starts the fight at 1, and a cycle with her out of range does not end it lost', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const st = fightGame('gunner'); st.armor = 1;
     const s = battle(), start = s.state.me.armor;
-    s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };  // she does not shoot this turn
-    const real = Math.random; Math.random = () => 0.99;
-    const ret = chooseEvent(choiceAt('Fire')); Math.random = real;
-    return { start, ret, end: shipEnd(s.state), armor: st.armor, over: G.nextEvent && G.nextEvent.title };
+    s.state = radarCycle(s.state, {}, () => 0.99).state;  // she is met far out: no shot reaches us in the first cycle
+    return { start, end: radarEnd(s.state), armor: st.armor };
   });
   assert.equal(r.start, 1, 'the fight armor is at least 1');
   assert.notEqual(r.end, 'lost', JSON.stringify(r)); assert.equal(r.armor, 1);
@@ -745,31 +550,6 @@ test('with an empty hold nothing is jettisoned and nothing throws', async () => 
 });
 
 // ---------- the final review's fixes (#786) ----------
-
-test('in a pack fight, a shot at her hull or her lock goes to the ship still in it, not to the one crippled', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    const out = {};
-    for (const part of ['hull', 'lock']) {
-      fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
-      const s = battle(), [lead, consort] = s.state.foes;
-      lead.parts.weapons.hp = 0; lead.parts.drive.hp = 0;  // the lead is crippled: out of the fight, with her armor left
-      const was = [lead.armor + lead.parts.lock.hp, consort.armor + consort.parts.lock.hp];
-      s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
-      fireTurn(s, { guns: [{ foe: 0, part }], torp: null, pdc: 'fire' });
-      const [a, b] = s.state.foes;
-      out[part] = { lead: a.armor + a.parts.lock.hp - was[0], consort: b.armor + b.parts.lock.hp - was[1], line: s.state.log[s.state.log.length - 1] };
-    }
-    return out;
-  });
-  for (const part of ['hull', 'lock']) {
-    assert.equal(r[part].lead, 0, `${part}: the crippled lead is not hit`);
-    assert.ok(r[part].consort < 0, `${part}: the consort is: ${JSON.stringify(r[part])}`);
-    assert.match(r[part].line, new RegExp(`you hit her consort's ${part} for \\d+`), r[part].line);
-  }
-  await done();
-});
 
 test('a head start that hurts the hand bills the clinic to the hand\'s own credits, not the ship\'s fund', async () => {
   const { ev, done } = await open();
@@ -851,7 +631,7 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
     const now = () => { const e = G.dialog && G.dialog.event; return e && e.fight ? e.fight : null; };
     for (const id of ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol']) {
       item(id).setup(); const f = now();
-      out[id] = { title: G.dialog.event.title, kind: f && f.state.kind, foes: f && f.state.foes.length, ship: f && f.foe.shipId, grade: f && f.grade, patrol: f && f.spec.kind === 'patrol', torp: G.dialog.choices.some(c => /orpedo/.test(c.label)), post: hired().post };
+      out[id] = { title: G.dialog.event.title, kind: f && f.state.kind, foes: f && f.state.foes.length, ship: f && f.foe.shipId, grade: f && f.grade, patrol: f && f.spec.kind === 'patrol', torp: !!(f && f.state.foes[0].torps > 0), post: hired().post };
     }
     item('deck-repel').setup(); out.repel = { kind: now() && now().state.kind, assault: now() && now().state.assault, grade: now() && now().state.grade };
     item('deck-navy').setup(); out.navy = { kind: now().state.kind, party: now().state.party, assault: now().state.assault, grade: now().state.grade, gov: now().d.foe.gov, ship: now().d.foe.shipId, text: G.dialog.event.text, read: G.dialog.event.read || '' };
@@ -864,7 +644,7 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
     out.lateIds = UAT_ITEMS.filter(i => i.group === 'Turn-based fights, late chapter').map(i => i.id);
     return out;
   });
-  for (const id of ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol']) { assert.equal(r[id].title, 'Battle Stations', id); assert.equal(r[id].kind, 'ship', id); assert.equal(r[id].post, 'gunner', id); }
+  for (const id of ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol']) { assert.equal(r[id].title, 'Battle Stations', id); assert.equal(r[id].kind, 'radar', id); assert.equal(r[id].post, 'gunner', id); }
   assert.deepEqual([r['fight-raider'].ship, r['fight-raider'].foes], ['raider', 1]);
   assert.equal(r['fight-pack'].foes, 2, 'two raiders in company');
   assert.deepEqual([r['fight-veteran'].ship, r['fight-veteran'].grade, r['fight-veteran'].torp], ['corsair', 2, true]);
@@ -882,123 +662,26 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
 
 // ---------- the fight perks (picks.js, #963): marksman, pd-watch and cover-eye for a gunner, brace and lane-sense for a pilot ----------
 
-test('the fight perks read the picks taken: a level more at the guns, half off her volley, three points of cover, a tenth more on a run, ten km more at contact', async () => {
+test('the fight perks read the picks taken: a level more at the guns, three points of cover, a tenth more on a run, ten km more at contact', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
     fightGame('gunner'); const g0 = battle(), repel = () => repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half').state.coverMade;
-    out.before = { skill: g0.state.me.skill, hold: g0.state.me.pdcHold, made: repel() }; out.pdcHold = FIGHT.PDC_HOLD;
+    out.before = { skill: g0.state.me.skill, made: repel() };
     takePick(career(), 'marksman'); takePick(career(), 'pd-watch'); takePick(career(), 'cover-eye'); const g1 = battle();
-    out.after = { skill: g1.state.me.skill, hold: g1.state.me.pdcHold, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
-    fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), band0 = RANGE_BANDS[battle().state.band];
+    out.after = { skill: g1.state.me.skill, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
+    fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), open0 = battle().state.opening;
     takePick(career(), 'brace'); takePick(career(), 'lane-sense');
-    out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), band0, band1: RANGE_BANDS[battle().state.band] };
+    out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), open0, open1: battle().state.opening };
     return out;
   });
-  assert.deepEqual([r.after.skill - r.before.skill, r.before.hold, r.after.hold, r.before.made, r.after.made, r.after.perks], [1, r.pdcHold, 0.5, 2, 3, [true, false]]);
-  assert.deepEqual(r.pilot, { flee: 10, band0: 'mid', band1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km, 40 with the pick');
+  assert.deepEqual([r.after.skill - r.before.skill, r.before.made, r.after.made, r.after.perks], [1, 2, 3, [true, false]]);
+  assert.deepEqual(r.pilot, { flee: 10, open0: 'short', open1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km (inside mid range), 40 with the pick');
   await done();
 });
 
-// ---------- the gunner moves on the panel (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 3) ----------
-
-test('a known move shows on the panel, applies on Fire, and shows spent after', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); hired().moves = ['vent'];
-    const s = battle(); s.state.locked = [0]; s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'weapons' }, { foe: 0, part: 'weapons' }], torp: null, pdc: 'fire' }));
-    const labels = () => G.dialog.choices.map(c => c.label), at = () => G.dialog.choices.findIndex(c => c.label.includes('Vent the guns'));
-    const before = labels();
-    openEvent(chooseEvent(at()));  // order it
-    const ordered = labels(), fire = G.dialog.choices.length - 1;
-    const shotsReady = gunsReady(s.state);
-    openEvent(chooseEvent(fire));
-    const after = labels(), log = s.state.log[s.state.log.length - 1], spent = G.dialog.choices[at()];
-    return { before, ordered, after, log, known: s.known, state: s.state.spent, heat: s.state.heat, locked: s.state.locked, shotsReady, spentOff: !!(spent.can && !spent.can()) };
-  });
-  assert.deepEqual(r.known, ['vent']);
-  assert.match(r.before.find(l => l.startsWith('Vent the guns')), /^Vent the guns: heat 3 to 0, locks off/);
-  assert.match(r.ordered.find(l => l.includes('Vent the guns')), /^Vent the guns.*\(ordered\)$/);
-  assert.equal(r.shotsReady, 1, 'a gun was locked');
-  assert.deepEqual(r.state, ['vent']);
-  assert.match(r.log, /you vent the guns/);
-  assert.equal(r.locked.length, 0); assert.ok(r.heat <= 2, 'the heat of the two shots only');
-  assert.ok(r.after.includes('Vent the guns: spent')); assert.equal(r.spentOff, true, 'a spent move is greyed');
-  await done();
-});
-
-test('no move is offered to a hand who knows none or on a save without moves, and a hand at another post is offered the ones they know', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    const offered = (post, moves) => {
-      fightGame(post); if (moves) hired().moves = moves; else delete hired().moves;
-      const s = battle(); s.state.heat = 3; s.state.locked = [0]; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-      let threw = null; try { openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'drive' }, null], torp: null, pdc: 'hold' })); } catch (e) { threw = String(e); }
-      return { threw, known: s.known, moves: G.dialog.choices.map(c => c.label).filter(l => /Vent|Lead|Split/.test(l)) };
-    };
-    return { none: offered('gunner', []), nonGunner: offered('engineer', ['vent', 'lead', 'split']), absent: offered('gunner', null), pure: [knownMoves(null), knownMoves({}), knownMoves({ moves: ['lead'] })] };
-  });
-  for (const k of ['none', 'nonGunner', 'absent']) assert.equal(r[k].threw, null, k);
-  for (const k of ['none', 'absent']) { assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
-  assert.deepEqual(r.nonGunner.known, ['vent', 'lead', 'split']); assert.equal(r.nonGunner.moves.length, 3, 'an engineer who knows them is offered them (the picks are the post\'s, so only in a test)');
-  assert.deepEqual(r.pure, [[], [], ['lead']]);
-  await done();
-});
-
-test('lead names a gun, shows its damage with no range penalty, and the turn leads that shot', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); hired().moves = ['lead', 'split'];
-    const s = battle(); s.state.band = RANGE_BANDS.indexOf('long'); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], torp: null, pdc: 'fire' }));
-    const lead = () => G.dialog.choices.findIndex(c => /Lead the shot/.test(c.label)), label = () => G.dialog.choices[lead()].label;
-    const off = label(), plain = shotRange(s.state, { foe: 0, part: 'drive' }), led = shotRange(s.state, { foe: 0, part: 'drive' }, true);
-    openEvent(chooseEvent(lead())); const one = label();
-    openEvent(chooseEvent(lead())); const two = label();
-    openEvent(chooseEvent(lead())); const back = label();
-    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], torp: null, pdc: 'hold' }));
-    const split = G.dialog.choices.find(c => /Split the turret/.test(c.label)).label;
-    return { off, one, two, back, plain, led, split };
-  });
-  assert.match(r.off, /^Lead the shot: name a gun/);
-  assert.ok(r.led[1] > r.plain[1], 'at long range the aimed shot is hit by the range penalty');
-  assert.equal(r.one, `Lead the shot, gun 1: ${r.led[0]} to ${r.led[1]} damage with no range penalty, once a fight (ordered)`);
-  assert.match(r.two, /^Lead the shot, gun 2: .*\(ordered\)$/);
-  assert.equal(r.back, r.off, 'the toggle goes round to none');
-  assert.match(r.split, /^Split the turret: /);
-  await done();
-});
-
-test('lead is idle where there is no range penalty, the led gun shows the led range, and a retargeted gun is not shown as led', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); hired().moves = ['lead'];
-    const s = battle(); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-    const labels = orders => { openEvent(shipFightEvent(s, orders)); return G.dialog.choices.map(c => c.rowLabel || c.label); };  // a gun's row says its range
-    const drive = { foe: 0, part: 'drive' }, two = { guns: [drive, drive], torp: null, pdc: 'fire' };
-    s.state.band = RANGE_BANDS.indexOf('close');
-    const close = labels({ ...two, move: 'lead', gun: 0 }).find(l => /Lead the shot/.test(l));
-    s.state.band = RANGE_BANDS.indexOf('long');
-    const led = shotRange(s.state, drive, true), plain = shotRange(s.state, drive);
-    const ordered = labels({ ...two, move: 'lead', gun: 0 });
-    const launcher = { foe: 0, part: 'launcher' };
-    delete s.state.foes[0].parts.launcher;
-    const gone = labels({ guns: [launcher, drive], torp: null, pdc: 'fire', move: 'lead', gun: 0 }).find(l => /Lead the shot/.test(l));
-    return { close, led, plain, ordered: ordered.filter(l => /damage|a hit does/.test(l)), gone };
-  });
-  assert.match(r.close, /nothing to act on/);
-  assert.ok(r.ordered.some(l => l.includes(`a hit does ${r.led[0]} to ${r.led[1]}`) && !/Lead the shot/.test(l)), `the led gun shows the led range: ${JSON.stringify(r.ordered)}`);
-  assert.ok(r.ordered.some(l => l.includes(`a hit does ${r.plain[0]} to ${r.plain[1]}`) && !/Lead the shot/.test(l)), 'the other gun keeps its penalty');
-  assert.match(r.gone, /^Lead the shot: name a gun/, 'gun 1 still has an aimed shot; gun 0 was retargeted to the hull and is not shown as led');
-  assert.doesNotMatch(r.gone, /ordered/);
-  await done();
-});
+// ---------- the gunner moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md) ----------
 
 test('a hand who buys the ship keeps the moves', async () => {
   const { ev, done } = await open();
@@ -1008,102 +691,12 @@ test('a hand who buys the ship keeps the moves', async () => {
   await done();
 });
 
-test('the Fire label counts the heat of a split as the engine does, and a split with no shot to save is greyed', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); hired().moves = ['split'];
-    const s = battle(); s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-    const guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], splitAt = () => G.dialog.choices.findIndex(c => /^Split the turret/.test(c.label));
-    openEvent(shipFightEvent(s, { guns, torp: null, pdc: 'hold' }));
-    openEvent(chooseEvent(splitAt()));  // ordered
-    const label = G.dialog.choices[G.dialog.choices.length - 1].label;
-    openEvent(shipFightEvent(s, { guns: [null, null], torp: null, pdc: 'hold', move: 'split' }));
-    const idle = G.dialog.choices[splitAt()];
-    openEvent(shipFightEvent(s, { guns, torp: null, pdc: 'hold', move: 'split' }));
-    openEvent(chooseEvent(G.dialog.choices.length - 1));  // Fire
-    return { label, idle: [idle.label, !!(idle.can && !idle.can())], locked: s.state.locked.length, spent: s.state.spent };
-  });
-  assert.equal(r.label, 'Fire: 2 guns at her drive, torpedo held, heat 5 of 4, and a gun locks next turn', 'two shots on top of 3: the turret still fires');
-  assert.equal(r.locked, 1, 'and the engine locked the gun');
-  assert.deepEqual(r.spent, ['split']);
-  assert.deepEqual(r.idle, ['Split the turret: nothing to act on this turn', true]);
-  await done();
-});
-
 // ---------- the panel reads true (the owner, 2026-11-07): the bars stay in view and say what each turn took; the sidebar follows the fight; the gun orders read as orders ----------
-
-test('the fight\'s bars are their own block, pinned at the top of the panel, and after a turn each says what it lost', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); battle(); aimAt('weapons'); const s = G.dialog.event.fight, f0 = s.state;
-    const block = document.querySelector('#panel .event-body .fight-bars'), sticky = block && getComputedStyle(block).position;
-    const inBoard = !!document.querySelector('#panel .event-body svg.board + svg.bars, #panel .event-body svg.board svg.bars');
-    UI.act('choose', String(choiceAt('Fire')));
-    const f = G.dialog.event.fight.state, label = (document.querySelector('#panel .fight-bars svg.bars') || { getAttribute: () => '' }).getAttribute('aria-label');
-    return { block: !!block, sticky, inBoard, label, lost: f0.foes[0].parts.weapons.hp - f.foes[0].parts.weapons.hp };
-  });
-  await done();
-  assert.equal(r.block, true); assert.equal(r.sticky, 'sticky'); assert.equal(r.inBoard, false);
-  assert.ok(r.lost > 0, 'her weapons took the hit');
-  assert.ok(r.label.includes(`weapons ${126 - r.lost}`) || /weapons \d+ of \d+, down \d+/.test(r.label), r.label);
-  assert.match(r.label, new RegExp(`weapons \\d+ of \\d+, down ${r.lost}`));
-});
 
 test('while a ship fight is up the sidebar shows the fight\'s own armor, the numbers the panel shows', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { fightGame('gunner'); const s = battle(); UI.act('choose', String(choiceAt('Fire'))); const me = G.dialog.event.fight.state.me; return { hud: hudHull(G.player, G.dialog), me: [me.armor, me.maxArmor], none: (G.dialog = null, hudHull({ armor: 6, maxArmor: 9 }, null)) }; });
+  const r = await ev(() => { fightGame('gunner'); battle(); const me = G.dialog.event.fight.state.me; return { hud: hudHull(G.player, G.dialog), me: [me.armor, me.maxArmor], none: (G.dialog = null, hudHull({ armor: 6, maxArmor: 9 }, null)) }; });
   await done();
   assert.deepEqual(r.hud, r.me); assert.deepEqual(r.none, [6, 9]);
-});
-
-test('a gun\'s order reads as an order: what it aims at, and what a hit does', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => { fightGame('gunner'); battle(); return rowsShown().filter(([l]) => /^Gun/.test(l)); });
-  await done();
-  assert.ok(r.length >= 1);
-  for (const [l, on] of r) { assert.match(l, /^Gun \d: a hit does \d+ to \d+$/, l); assert.equal(on.length, 1, 'one target marked'); }
-});
-
-test('the guns start aimed at her hull (the owner, 2026-11-07)', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => { fightGame('gunner'); battle(); return rowsShown().filter(([l]) => /^Gun/.test(l)).map(([, on]) => on.join()); });
-  await done();
-  assert.ok(r.length >= 1);
-  for (const on of r) assert.equal(on, 'Hull');
-});
-
-test('with two moves known, ordering the second takes the order from the first: one move a turn (#1002)', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); hired().moves = ['vent', 'split'];
-    const s = battle(); s.state.locked = [0]; s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
-    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'weapons' }, { foe: 0, part: 'weapons' }], torp: null, pdc: 'hold' }));
-    const at = re => G.dialog.choices.findIndex(c => re.test(c.label)), label = re => G.dialog.choices[at(re)].label;
-    openEvent(chooseEvent(at(/^Vent the guns/))); const one = [label(/^Vent the guns/), label(/^Split the turret/)];
-    openEvent(chooseEvent(at(/^Split the turret/))); const two = [label(/^Vent the guns/), label(/^Split the turret/)];
-    return { one, two };
-  });
-  await done();
-  assert.match(r.one[0], /\(ordered\)$/); assert.doesNotMatch(r.one[1], /\(ordered\)$/);
-  assert.doesNotMatch(r.two[0], /\(ordered\)$/); assert.match(r.two[1], /\(ordered\)$/);
-});
-
-test('with pd-watch, the turret\'s cut is quoted at 50 percent where the fight applies 50: the read of her volley and the Gunnery card (#1002)', async () => {
-  const { ev, done } = await open();
-  await ev(helpers);
-  const r = await ev(() => {
-    fightGame('gunner'); const plain = Math.round(heldCut() * 100);
-    hired().picks = ['pd-watch']; const watch = Math.round(heldCut() * 100);
-    const text = fightCard().replace(/<[^>]+>/g, ' ');
-    return { plain, watch, cardAny: (text.match(/takes \d+% off her volley/) || [''])[0] };
-  });
-  await done();
-  assert.deepEqual([r.plain, r.watch], [40, 50]);
-  assert.equal(r.cardAny, 'takes 50% off her volley', r.cardAny);
 });

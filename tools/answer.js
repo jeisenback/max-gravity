@@ -1,50 +1,9 @@
 'use strict';
 
-// The ship fight's move-reading orders (#808 Task 7), shared by the fight tool's `answer` policy (tools/fights.js) and the play-through's player
-// (tools/playthrough.js). It runs in the page, so it is passed there as source text and made again with eval: it reads only its argument and the
-// game's globals (fightUp, gunsReady, canUse, turnShots, RANGE_BANDS, FIGHT). Given the fight (s, with s.state and her shown move s.shown), the turn's orders { guns, torp, pdc, move, gun }:
-// - hold the turret back when she fires a salvo;
-// - every gun at her lock while she pins or closes with it whole;
-// - a torpedo at the foe with the least armor left, whatever the type (there are no shields for it to be spent on, #1208; before them going it was held
-//   until her shields were down, #814);
-// - against a navy ship (a patrol's cutter: her thick hull, as her shields that came back were until #1208), every gun at her hull, each gun
-//   overcharged while the heat, with the shots still to come this turn, stays at or under the cap (no gun locked); while vent is known and
-//   unspent, every gun overcharged past the cap (vent takes the lock off when one comes);
-// - else every gun at her hull. (Not "her weapons": a ship whose guns are gone and whose hull is whole breaks off as 'away', a weak end; task-7-report.md.)
-// The gunner moves (s.known: the ones this fight offers; canUse is the engine's own test of whether one would apply), at most one a turn, the first of:
-// split when the turret is held for her salvo; vent when it frees a locked gun (against the navy she runs hot until then, above); lead on the first gun that aims at a part, where canUse allows (a band with an aim penalty).
-// The range, for a hand on their own bridge (#1045; fightui.js reads it only there): close when ahead on armor, open when behind and faster than her, else hold.
-function answerOrders(s) {
-  const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => (s.shown && s.shown.foe[i]) || {};
-  const salvo = live.some(i => shown(i).kind === 'salvo');
-  const lock = live.find(i => /^(pin|close)$/.test(shown(i).kind) && f.foes[i].parts.lock.hp > 0);
-  const navy = !!(s.spec && s.spec.kind === 'patrol'), down = live.slice().sort((a, b) => f.foes[a].armor - f.foes[b].armor)[0];  // (inside the function: it is passed to the page as source text)
-  const base = Array.from({ length: f.me.guns }, () => (lock !== undefined ? { foe: lock, part: 'lock' } : { foe: live[0] || 0, part: 'hull' }));
-  const orders = { guns: base, torp: down !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: down, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
-  // The move comes first, so that the overcharge budget counts the shots it gives back. Vent only when the unlocked guns would fire more shots (the engine's turnShots).
-  const known = s.known || [], aimed = base.findIndex(g => g.part !== 'hull' && g.part !== 'weapons');
-  const freed = known.length > 0 && f.locked.length > 0 && turnShots({ ...f, locked: [] }, orders).length > turnShots(f, orders).length;
-  const move = !known.length ? null : salvo && canUse(f, orders, 'split', known) ? 'split'
-    : freed && canUse(f, orders, 'vent', known) ? 'vent'
-    : aimed >= 0 && canUse(f, { ...orders, gun: aimed }, 'lead', known) ? 'lead' : null;
-  const ready = move === 'vent' ? gunsReady({ ...f, locked: [] }) : gunsReady(f);
-  const shots = Math.max(0, ready - (salvo && move !== 'split' ? 1 : 0));
-  let heat = move === 'vent' ? 0 : f.heat;
-  const hot = known.includes('vent') && !(f.spent || []).includes('vent') && move !== 'vent';  // vent still to come: run every gun hot, and vent the turn one locks
-  if (lock === undefined && navy) orders.guns = base.map((g, n) => {
-    const over = n < shots && (hot || heat + FIGHT.OVER_HEAT + Math.max(0, shots - n - 1) <= FIGHT.HEAT_CAP);
-    if (n < shots) heat += over ? FIGHT.OVER_HEAT : 1;
-    return { ...g, over };
-  });
-  if (move) orders.move = move;
-  if (move === 'lead') orders.gun = aimed;
-  const mine = f.me.armor / f.me.maxArmor, foes = live.map(i => f.foes[i]);
-  const hers = foes.length ? foes.reduce((n, x) => n + x.armor, 0) / foes.reduce((n, x) => n + x.maxArmor, 0) : 0;
-  orders.range = mine > hers ? 'close' : mine < hers && foes.every(x => f.me.speed > x.speed) ? 'open' : 'hold';
-  return orders;
-}
+// The hands' answers to what the fight shows: the deck fight's (the fight tool's `answer` deck policy, tools/fights.js, and the play-through's player) and the
+// radar fight's (tools/radarfights.js). The ship fight's old move-reading orders went with the old fight (#1348).
 
-// The deck fight's answer (the fight tool's `answer` deck policy, tools/fights.js), self-contained on the game's globals as answerOrders is (ADJ, REACH, DECK, BRIDGE,
+// The deck fight's answer, self-contained on the game's globals, as it runs in the page and is passed there as source text (ADJ, REACH, DECK, BRIDGE,
 // BACK, FORWARD, repelOrders, isHatch, navyBoarding). Given the fight (s, with s.state and their shown move s.shown), the hand's plan { stand, act, shootAt, order, at } (fightui.js deckFightEvent):
 // - on a shown rush, stand in the section it goes through (via) when it is in reach, the hand's section or one next to it; otherwise order a hatch at via
 //   when one is on offer (the pilot's or the engineer's: isHatch);
@@ -106,7 +65,7 @@ function answerDeck(s, read = true, charge = read) {
   return plan;
 }
 
-// The radar fight's policy for the hand's post (#1347): it reads her shown threat, as answerOrders does the old fight's. `orders` are the crew's for the cycle (radarAuto),
+// The radar fight's policy for the hand's post (#1347): it reads her shown threat. `orders` are the crew's for the cycle (radarAuto),
 // `R` the radar rules (js/radar.js, loaded in Node by tools/radarfights.js), and it returns the post's orders in place of the crew's:
 // - gunner: the PDC when one of her torpedoes will reach its reach this cycle, its arc on the nearest; else the gun, at a raider's lock as she comes alongside with it whole (LOCK_AT), at
 //   a corsair's launcher while she has torpedoes, at the hull otherwise; a torpedo at the most hurt of hers inside JINK;
@@ -144,4 +103,4 @@ function answerRadar(s, post, orders, R) {
   return {};
 }
 
-module.exports = { answerOrders, answerDeck, answerRadar };
+module.exports = { answerDeck, answerRadar };

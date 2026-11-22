@@ -2,7 +2,7 @@
 
 // Chapter two's soak (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md): a hand signs the share, goes on, takes the bridge (#1045),
 // and flies the co-op's Ore Runner on the board's contracts for a stretch of days, buying its own fuel and repairs, with the burn's contact
-// answered as chapter one's soak answers it (a fight fought with the orders as they stand, anything else at random). It reports the pay a day into the
+// answered as chapter one's soak answers it (a fight on the radar run to its end, a deck fight fought with the orders as they stand, anything else at random). It reports the pay a day into the
 // co-op's fund, the runs, the raids, the hull lost and who was lost. Not part of `npm test`: tests/distribution/fights.test.js and pacing.test.js read it.
 //   node tools/soaktwo.js --seeds 1,2,3 --days 60
 
@@ -25,9 +25,14 @@ async function chapterTwo([days]) {
     for (let k = 0; G.dialog && k < 60; k++) {
       const d = G.dialog;
       if (ENDINGS.test(d.event.title)) return d.event.title;
+      if (radarShowing()) {  // a ship fight on the radar: run to its end with the post on its opening orders, as chapter one's soak runs it (soak.js)
+        for (let n = 0; radarShowing() && n < 8 * RADAR.TURNS; n++) { G.radar.running = true; radarRun(G.radar, RADAR.TURN_S); }
+        if (radarShowing()) { G.radar = null; finishEvent(); }
+        continue;
+      }
       const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
       if (!ok.length) break;
-      const fire = d.event.fight ? ok.find(i => /^(Fire\b|Fight$)/.test(d.choices[i].label)) : undefined;
+      const fire = d.event.fight ? ok.find(i => /^Fight$/.test(d.choices[i].label)) : undefined;  // a deck fight is fought with the orders as they stand
       const i = first ? ok[0] : fire !== undefined ? fire : pickOf(ok), c = d.choices[i];
       const res = chooseEvent(i);
       if (c.keep && res) { openEvent(res); continue; }

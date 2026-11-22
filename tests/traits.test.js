@@ -204,9 +204,9 @@ test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner me
     const pay = () => { const c = contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost); const cr = st.credits; c.run(); return cr - st.credits; };
     st.credits = 200000; const plainPay = pay(); st.credits = 200000; const plainFine = heaveToFine();
     h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
-    const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return f.state.opening; };
     h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
-    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return f.state.opening; };
     h.record = {}; const plainNavy = navyBand(); h.record = { fightsRan: 3 }; out.navy = [plainNavy, navyBand()];
     const payGate = () => !contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost).can();
     st.credits = 3000; h.record = {}; out.gate = [payGate()]; h.record = { fines: 2 }; out.gate.push(payGate());
@@ -214,7 +214,7 @@ test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner me
   });
   assert.ok(r.pay[0] > 0 && r.pay[1] === Math.round(r.pay[0] / 2), `the pay-off ${r.pay}`);
   assert.equal(r.fine[1], Math.round(r.fine[0] * 1.2), `the fine ${r.fine}`);
-  assert.deepEqual(r.band, ['long', 'mid'], 'a raider at 40 km, 30 with Runner');
+  assert.deepEqual(r.band, ['long', 'short'], 'a raider at 40 km, 30 with Runner: met inside mid range');
   assert.equal(r.navy[1], r.navy[0], 'Runner: pirates close faster, a patrol does not (#1010)');
   assert.deepEqual(r.gate.map(Boolean), [true, false], 'with 3,000 cr: the pay-off of 5,000 is closed, and Marked\'s 2,500 is open (#1010)');
   await done();

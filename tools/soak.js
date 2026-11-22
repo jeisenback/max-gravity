@@ -21,7 +21,8 @@
 // is the game's own, arrive() in game.js; with --frames the whole burn runs in the game's transit update, so the comms chatter of a burn is counted, and the live flight loop
 // is played in each system too, so the traffic's sensors, kills and hails are).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
-// A ship fight is fought with the orders as they stand, and a deck fight by the fight tool's answer (tools/answer.js answerDeck: tools/fights.js), each turn.
+// A ship fight is fought on the radar with the hand's post on its opening orders (radarui.js), a cycle at a time to its end, and a deck fight by the fight
+// tool's answer (tools/answer.js answerDeck: tools/fights.js), each turn.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run), the captain's loss (Without a Captain) or the hand put ashore (Put Ashore). Each starts a new game, so the chapter is over
 // and the soak stops there. The totals follow the last seed. Not part of `npm test`.
@@ -104,7 +105,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const answer = async () => {
       let kept = false;  // the dialog is a kept choice's redraw (a fight panel's next turn, or an order changed): a step of the same scene, not a new one
       const most = H ? 40 : 8;  // the scenes one answer plays before the rest are closed unanswered (with hooks, they are reported: H.stuck)
-      for (let k = 0, redraws = 0, panel = false; G.dialog && k < most && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept || panel ? redraws++ : k++) {  // a fight's panels do not count against the scenes: nor do a card duel's exchanges (up to DUEL_ROUNDS of them, before any boarding)
+      for (let k = 0, redraws = 0, panel = false; G.dialog && k < most && redraws < 8 * 2 * DECK.TURNS; kept || panel ? redraws++ : k++) {  // a deck fight's panels do not count against the scenes: nor do a card duel's exchanges (up to DUEL_ROUNDS of them, before any boarding)
         const d = G.dialog; panel = /^Contact: exchange \d/.test(d.event.title);
         if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { if (H) await H.scene(d, -1, false); ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         if (!kept) {  // a redraw is counted once, with its scene
@@ -113,9 +114,14 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         }
         kept = false;
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
+        if (radarShowing()) {  // the ship fight on the radar has no choices: it is run to its end, a cycle at a time, through each of its pauses (radarui.js)
+          for (let n = 0; radarShowing() && n < 8 * RADAR.TURNS; n++) { if (H) await H.scene(d, -1, false); G.radar.running = true; radarRun(G.radar, RADAR.TURN_S); }
+          if (radarShowing()) { bad.push('radar fight left open'); G.radar = null; finishEvent(); }
+          continue;  // its end opened the next scene (shipFightEnd)
+        }
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
-          const fire = d.event.fight ? ok.find(i => /^(Fire\b|Fight$)/.test(d.choices[i].label)) : undefined;  // a ship fight or a deck fight is fought with the orders as they stand (fightui.js)
+          const fire = d.event.fight ? ok.find(i => /^Fight$/.test(d.choices[i].label)) : undefined;  // a deck fight is fought with the orders as they stand (fightui.js)
           const s = d.event.fight, deck = !H && deckAnswer && s && s.state.kind === 'deck' && fire !== undefined;  // a deck fight's turn is fought with the answer's plan (deckFightEvent drawn with it)
           const i = H ? H.pick(d, ok) : fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
           if (H) await H.scene(d, i, kept);
