@@ -10777,7 +10777,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  the fire control runs the gun or the point defence each cycle, never both    Moves  none yet: the crew teach them on a burn   ",
+    "text": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  reaches 9 km; the fire control runs the gun or it each cycle, never both    Moves  none yet: the crew teach them on a burn   ",
     "next": null
    }
   ],
@@ -25234,7 +25234,7 @@
     "labels": []
    },
    {
-    "card": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  the fire control runs the gun or the point defence each cycle, never both    Moves  Vent the guns, Lead the shot, Split the turret, Called shot, Break the intercept, Redline, Patch, Hot start, Bypass, Spoof, Parley: learned, and not yet offered on the radar   "
+    "card": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  reaches 9 km; the fire control runs the gun or it each cycle, never both    Moves  Vent the guns, Lead the shot, Split the turret, Called shot, Break the intercept, Redline, Patch, Hot start, Bypass, Spoof, Parley: learned, and not yet offered on the radar   "
    },
    {
     "title": "Battle Stations",

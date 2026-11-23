@@ -266,7 +266,7 @@ function radarDraw(c, r) {
   g.strokeStyle = 'rgba(207,227,255,0.18)';
   for (const side of [-1, 1]) { const d = dir(me.facing + side * RADAR.BEAR, reach * k); g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + d.x, cy + d.y); g.stroke(); }
   const arc = st.pdcArc, a0 = (arc.dir - arc.width / 2 - 90) * Math.PI / 180, a1 = (arc.dir + arc.width / 2 - 90) * Math.PI / 180;
-  g.fillStyle = st.fc === 'pdc' ? 'rgba(74,163,255,0.25)' : 'rgba(74,163,255,0.1)'; g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, Math.max(4, RADAR.PDC_R * k), a0, a1); g.closePath(); g.fill();
+  g.fillStyle = st.fc === 'pdc' ? 'rgba(74,163,255,0.25)' : 'rgba(74,163,255,0.1)'; g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, Math.max(4, radarPdcReach(st) * k), a0, a1); g.closePath(); g.fill();
   const handles = [], marks = [];
   if (r.post === 'gunner') {  // the arc's two ends, at a fixed size so they can be taken at any zoom; dashed while the fire control is on the gun (the PDC stowed)
     const ga = r.hand.arc || r.orders.pdcArc || arc;

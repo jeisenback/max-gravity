@@ -12,7 +12,7 @@ const { answerRadar } = require('./answer');
 
 const R = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
   ['FIGHT', 'RADAR', 'SHIPS', 'FOE_TYPES', 'shipSide', 'radarFight', 'radarCycle', 'radarAuto', 'radarEnd', 'radarPauses', 'radarNearest', 'radarRange', 'radarDist', 'radarDir',
-    'radarNorm', 'radarUnit', 'radarOut', 'radarHull', 'radarScatter', 'radarCap', 'radarCrew', 'radarQuiet']);
+    'radarNorm', 'radarUnit', 'radarOut', 'radarHull', 'radarScatter', 'radarCap', 'radarCrew', 'radarQuiet', 'radarPdcReach']);
 
 const GOOD = ['crippled', 'broke', 'escaped'], LOST = ['ran', 'lost'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost', 'standoff'];  // standoff: none of the named ends by the trial's own limit (the rules should never give one)
 // The types she comes as, as the game meets them: a raider and a corsair far out, a navy cutter and destroyer at gun range (a patrol's stop, the short opening), a raider pair.

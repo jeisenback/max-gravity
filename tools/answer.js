@@ -77,7 +77,7 @@ function answerRadar(s, post, orders, R) {
   if (i < 0) return {};
   const her = s.foes[i], km = R.radarRange(s, i + 1), toHer = R.radarDir(me.p, s.ships[i + 1].p);
   const hers = s.torps.filter(t => t.side === 'her').sort((a, b) => R.radarDist(a.p, me.p) - R.radarDist(b.p, me.p));
-  const soon = hers.find(t => R.radarDist(t.p, me.p) - R.RADAR.PDC_R <= R.RADAR.TORP_SPEED * R.RADAR.TURN_S);
+  const soon = hers.find(t => R.radarDist(t.p, me.p) - R.radarPdcReach(s) <= R.RADAR.TORP_SPEED * R.RADAR.TURN_S);
   const raiderClosing = (s.types[i] || 'raider') === 'raider' && her.parts.lock.hp > 0;
   if (post === 'gunner') {
     const part = raiderClosing && km <= R.RADAR.LOCK_AT ? 'lock' : her.launcher && her.parts.launcher && her.parts.launcher.hp > 0 && her.torps > 0 ? 'launcher' : 'hull';

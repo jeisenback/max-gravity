@@ -15,6 +15,12 @@
     "replace": "st.heat = Math.max(0, st.heat);"
   },
   {
+    "name": "pd-watch-reaches-no-further",
+    "file": "js/fightui.js",
+    "find": "if (handPerk('pd-watch')) mine.pdcReach = RADAR.PDC_WATCH;",
+    "replace": "if (handPerk('pd-watch')) mine.pdcReach = RADAR.PDC_R;"
+  },
+  {
     "name": "fight-damage-not-kept",
     "file": "js/fightui.js",
     "find": "st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor - HULL_SKIN * me.maxArmor) / (s.armor0.scale || FIGHT.POOL))));",
