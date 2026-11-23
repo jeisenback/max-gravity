@@ -2,8 +2,8 @@
 
 // Plays the words of the ship fight, the ambush and the boarding beats (#478; the deck fight, #786), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
 // playBeats runs in the page: it plays every scene the beats can show and every choice with the dice set to win and then to lose, in a fresh hired game each time,
-// and returns what was said, in a fixed order, so two runs of the same game give the same record. The ship fight (fightui.js) is played to its end with every gun
-// at her weapons (the 'focus' policy of tools/fights.js), a turn at a time.
+// and returns what was said, in a fixed order, so two runs of the same game give the same record. The ship fight is played on the radar (radarui.js) to its end
+// with the hand's post on its opening orders, a cycle at a time.
 const playBeats = () => {
   const out = [];
   const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };  // 0 wins a chance and picks the first of a list; 0.99 fails it
@@ -36,12 +36,10 @@ const playBeats = () => {
       startDuel({ kind: 'pirate' }, false); const ev = G.nextEvent; G.nextEvent = null;
       const rec = { id: `raid:${shipId}:${post}`, title: ev.title, text: sceneText(ev), labels: labelsOf(ev), turns: [] };
       openEvent(ev);
-      while (G.dialog && G.dialog.choices.some(c => /^Fire/.test(c.label)) && rec.turns.length < 12) {
-        const t = chooseEvent(G.dialog.choices.findIndex(c => /^Fire/.test(c.label)));
-        if (t) openEvent(t); else finishEvent();
-        const s = G.dialog && G.dialog.event.fight && G.dialog.event.fight.state.kind === 'ship' ? G.dialog.event.fight : null;  // a boarding opens the deck fight, which is recorded at the end
-        rec.turns.push({ text: s ? s.state.log[s.state.log.length - 1] : '', armor: st.armor, band: s ? s.state.band : null });
-      }
+      const r = G.radar;  // the fight on the radar, run to its end with the post on its opening orders, a cycle at a time through its pauses (radarui.js)
+      for (let n = 0; radarShowing() && n < 8 * RADAR.TURNS; n++) { G.radar.running = true; radarRun(G.radar, RADAR.TURN_S); }
+      rec.turns = r ? r.feed.map(e => e.text) : [];  // its timeline, in words
+      rec.armor = st.armor;
       rec.end = G.dialog ? { title: G.dialog.event.title, text: sceneText(G.dialog.event), labels: labelsOf(G.dialog.event) } : null;
       Object.assign(rec, left(b0));
       G.dialog = null; G.nextEvent = null;

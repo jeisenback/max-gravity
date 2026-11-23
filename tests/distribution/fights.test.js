@@ -1,8 +1,8 @@
 'use strict';
 
-// The fights' targets, over many seeded trials of tools/fights.js: the ship fight by the type she is, with the gunner moves and without, and the deck fight
-// by the party that comes aboard (COMBAT.md). Many-seed checks, so they are in the soak (npm run soak, nightly on main) and not in npm test (#753, the owner's
-// choice, 2026-10-28): run them by hand when a change touches the fights, as CLAUDE.md says. The tool's quick check and the answer's own rules stay in
+// The deck fights' targets, over many seeded trials of tools/fights.js, by the party that comes aboard (COMBAT.md). The ship fight is on the radar since
+// #1348, and its targets are tests/distribution/radarfights.test.js. Many-seed checks, so they are in the soak (npm run soak, nightly on main) and not in npm test (#753, the owner's
+// choice, 2026-10-28): run them by hand when a change touches the fights, as CLAUDE.md says. The tool's quick check stays in
 // tests/fights.test.js.
 //
 // Profiles:  none: the fight tool (tools/fights.js) and chapter two's soak (tools/soaktwo.js) use no soak player (tools/soak.js SOAK_PROFILES, #1199).
@@ -16,98 +16,6 @@ const { load } = require('../nodecontext');
 after(closeBrowser);
 const DECK_N = 400, DECK_SEEDS = [1, 2, 3, 4];  // deck fights a cell in the deck test, on each of four seeds played side by side (1,600 a cell: the margins of #832)
 
-// The ship fight's targets (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md, "How we know it worked"; #808; #814's FIGHT.POOL), read from the tool's
-// table by the type she is (a raider, a corsair, a navy cutter, a raider pair), on two seeds of 200 played side by side (about 130 to 300 fights a policy and type);
-// the figures in brackets are at three seeds of 100 (COMBAT.md has five):
-// - no fixed aim (random, focus, drive, lock, hull, hullhold) has more than 70% good ends (crippled, broken off, escaped) against every type, and the best fixed
-//   aim is not the same against every type (hull fire against a lone raider and a corsair, random against a cutter and a pair);
-// - the policy that reads her shown move (answer) has good ends at or above every fixed aim's against each type, and above all of them over every type
-//   (99% against hull fire's 52%). Two ties, as measured: the lone raider (hull fire 100% against answer's 100%) and the corsair (hull fire 99% against answer's 100%). A lone raider is beaten by hull fire, so there answer only ties it: the owner's choice (#814), as a smaller pool
-//   halves her hull and every gun at it cripples her before she is alongside. The lock lesson is the raider pair's: every gun at the hull, the turret held or
-//   not, is boarded at least half the time (every time), and answer, at the locks, wins (93%);
-// - random play loses ('ran' or 'lost') a quarter of its fights or more over every type (38%), and loses real hull: at least 5% of it a fight (19%);
-// - a fight lasts five to eight turns on the mean over every policy and type (5.3), and under a third of answer's fights reach the turn cap (32%: a corsair
-//   and a pair still run long); every fight ends one of the named ways, so there is no standoff.
-// The lock fights started directly are left out (lock: false). The hand is killed in at most 3 random fights in a hundred (1%).
-const SHIP_N = 200, SHIP_SEEDS = [1, 2];
-let shipRuns = null;  // the ship fights without the moves, played once for the two tests that read them
-const shipFights = () => (shipRuns = shipRuns || Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false }))));
-const byMatch = runs => {  // the seeds' rows by policy and type, summed
-  const m = {};
-  for (const x of runs) for (const [k, t] of Object.entries(x.match)) { const acc = m[k] = m[k] || {}; for (const [f, v] of Object.entries(t)) acc[f] = (acc[f] || 0) + v; }
-  return m;
-};
-test('no fixed aim wins against every type of ship and the best one differs by type, reading her move is never beaten, hull fire alone loses to a raider pair\'s board, random play loses a quarter of its fights and real hull, and a fight lasts five to eight turns and mostly ends before the cap', async () => {
-  const runs = await shipFights();
-  for (const x of runs) assert.deepEqual(x.errors, []);
-  const m = byMatch(runs);
-  const TYPES = ['raider', 'corsair', 'cutter', 'raider pair'], FIXED = ['random', 'focus', 'drive', 'lock', 'hull', 'hullhold'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];
-  const row = (p, type) => m[`${p}|${type}`], good = t => t.good / t.n;
-  for (const type of TYPES) for (const p of [...FIXED, 'answer']) {
-    const t = row(p, type);
-    assert.ok(t && t.n >= 80, `${p} against a ${type}: ${t ? t.n : 0} fights`);
-    assert.equal(ENDS.reduce((n, e) => n + (t[e] || 0), 0) + t.died, t.n, `${p} against a ${type}: every fight ends one of the named ways (no standoff)`);
-  }
-  for (const p of FIXED) assert.ok(TYPES.some(type => good(row(p, type)) <= 0.7), `${p} has more than 70% good ends against every type: ${TYPES.map(type => good(row(p, type)).toFixed(2)).join(', ')}`);
-  const best = TYPES.map(type => FIXED.slice().sort((a, b) => good(row(b, type)) - good(row(a, type)))[0]);
-  assert.ok(new Set(best).size >= 2, `the best fixed aim is ${best[0]} against every type`);
-  TYPES.forEach((type, i) => assert.ok(good(row('answer', type)) >= good(row(best[i], type)), `against a ${type}: answer ${good(row('answer', type)).toFixed(2)}, ${best[i]} ${good(row(best[i], type)).toFixed(2)}`));
-  for (const p of ['hull', 'hullhold']) { const t = row(p, 'raider pair'); assert.ok(t.boarded / t.n >= 0.5, `${p} against a raider pair: boarded ${(t.boarded / t.n).toFixed(2)}, good ${good(t).toFixed(2)}`); }
-  const over = p => { const all = {}; for (const type of TYPES) for (const [f, v] of Object.entries(row(p, type))) all[f] = (all[f] || 0) + v; return all; };
-  const ans = over('answer');
-  for (const p of FIXED) { const t = over(p); assert.ok(good(ans) > good(t), `over every type: answer ${good(ans).toFixed(2)}, ${p} ${good(t).toFixed(2)}`); }
-  assert.ok(ans.atCap / ans.n < 1 / 3, `${(ans.atCap / ans.n).toFixed(2)} of answer's fights reach the turn cap`);
-  const rnd = over('random');
-  assert.ok(rnd.lostFight / rnd.n >= 0.25, `random play loses ${(rnd.lostFight / rnd.n).toFixed(2)} of its fights`);
-  assert.ok(rnd.hull / rnd.n >= 0.05, `random play loses ${(100 * rnd.hull / rnd.n).toFixed(2)}% of the hull a fight`);
-  assert.ok(rnd.died / rnd.n <= 0.03, `the hand is killed in ${(rnd.died / rnd.n).toFixed(3)} of random fights`);
-  const every = [...FIXED, 'answer'].map(over), turns = every.reduce((n, t) => n + t.rounds, 0) / every.reduce((n, t) => n + t.n, 0);
-  assert.ok(turns >= 5 && turns <= 8, `a fight lasts ${turns.toFixed(2)} turns on the mean`);
-});
-
-// A navy destroyer (three patrol stops in ten, met only by a ship hostile with that navy) is a ship to heave to for, not to fight (the owner, 2026-10-28, #833):
-// against her no policy, the answer among them, has more than 10% good ends (random play, the best of them, has 3% to 5%), and the answer, which fights her to the cap until the captain runs, loses a
-// third of the hull or more a fight. Heaving to at the contact is the way out (engage.js), and it lifts the standing back above the line that sends the patrols.
-test('a navy destroyer is not beaten by any plan, and fighting her costs the hull: she is a ship to heave to for', async () => {
-  const m = byMatch(await shipFights());
-  for (const p of ['random', 'focus', 'drive', 'lock', 'hull', 'hullhold', 'answer']) {
-    const t = m[`${p}|destroyer`];
-    assert.ok(t && t.n >= 80, `${p} against a destroyer: ${t ? t.n : 0} fights`);
-    assert.ok(t.good / t.n <= 0.1, `${p} against a destroyer: ${(t.good / t.n).toFixed(2)} good ends`);
-  }
-  const ans = m['answer|destroyer'];
-  assert.ok(ans.hull / ans.n >= 1 / 3, `answer against a destroyer loses ${(100 * ans.hull / ans.n).toFixed(1)}% of the hull a fight`);
-});
-
-// The gunner moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 4), the same fights with all three known (moves: true), beside the ones
-// above without them; the figures in brackets are at five seeds of 200 (COMBAT.md):
-// - a move is worth having: answer, which reads her move, does better with them against the type each answers. Split against a corsair: good ends are 100%
-//   either way, so it is the turns (7.42 to 6.18) and the turn cap (5% to 0%). Lead against a raider pair: good ends (94% to 98%) and the hull lost (7.0% to 2.3%).
-//   Vent against a cutter: the move rule runs every gun hot while it can vent, so she is crippled rather than broken off (1% to 75% of the ends; 5.32 to 4.88 turns);
-// - a move is a choice, not a free win: no other policy with the moves has more good ends than answer against any type, among them two that use the moves
-//   without reading her move for it, randmove (random aims and a random usable move: 36% good over every type) and eager (the first usable move at
-//   its first chance: 1%); and random play with the moves still loses a quarter of its fights or more (randmove 44%).
-test('with the moves, each helps against its type, no fixed plan beats reading her move, and random play still loses a quarter', async () => {
-  const [plain, runs] = await Promise.all([shipFights(), Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false, moves: true })))]);
-  for (const x of runs) assert.deepEqual(x.errors, []);
-  const was = byMatch(plain), m = byMatch(runs), TYPES = ['raider', 'corsair', 'cutter', 'raider pair'];
-  const good = t => t.good / t.n, turns = t => t.rounds / t.n, hull = t => t.hull / t.n, cap = t => t.atCap / t.n;
-  const over = (rows, p) => { const all = {}; for (const type of TYPES) for (const [f, v] of Object.entries(rows[`${p}|${type}`])) all[f] = (all[f] || 0) + v; return all; };
-  const f2 = x => x.toFixed(2);
-  const [c0, c1] = [was, m].map(r => r['answer|corsair']), [p0, p1] = [was, m].map(r => r['answer|raider pair']);
-  assert.ok(good(c1) >= good(c0) && turns(c1) < turns(c0) && cap(c1) <= cap(c0), `split against a corsair: good ${f2(good(c0))} to ${f2(good(c1))}, turns ${f2(turns(c0))} to ${f2(turns(c1))}, at cap ${f2(cap(c0))} to ${f2(cap(c1))}`);
-  assert.ok(good(p1) >= good(p0) && hull(p1) < hull(p0), `lead against a raider pair: good ${f2(good(p0))} to ${f2(good(p1))}, hull ${f2(hull(p0))} to ${f2(hull(p1))}`);
-  const [k0, k1] = [was, m].map(r => r['answer|cutter']), crip = t => (t.crippled || 0) / t.n;
-  assert.ok(good(k1) >= good(k0) && crip(k1) >= crip(k0) + 0.3, `vent against a cutter: good ${f2(good(k0))} to ${f2(good(k1))}, crippled ${f2(crip(k0))} to ${f2(crip(k1))}`);
-  const a0 = over(was, 'answer'), a1 = over(m, 'answer');
-  assert.ok(good(a1) >= good(a0) && hull(a1) < hull(a0), `over every type: answer good ${f2(good(a0))} to ${f2(good(a1))}, hull ${f2(hull(a0))} to ${f2(hull(a1))}`);
-  const others = [...new Set(Object.keys(m).map(k => k.split('|')[0]))].filter(p => p !== 'answer');
-  for (const p of ['randmove', 'eager']) assert.ok(others.includes(p), `the ${p} policy is played`);
-  for (const type of TYPES) for (const p of others) assert.ok(good(m[`${p}|${type}`]) <= good(m[`answer|${type}`]), `against a ${type} with the moves: ${p} ${f2(good(m[`${p}|${type}`]))}, answer ${f2(good(m[`answer|${type}`]))}`);
-  const rnd = over(m, 'randmove');
-  assert.ok(rnd.lostFight / rnd.n >= 0.25, `random play with the moves loses ${f2(rnd.lostFight / rnd.n)} of its fights`);
-});
-
 // The deck fight both ways, against a raider party (docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md, Section 3, and the owner's ruling on the
 // assault, 2026-10-24: boarding her is a short, risky push; the corsair's and the navy's targets come with their signatures), on four seeds of 400 played side
 // by side, at level 2. Repelling them, with two crew and with five:
@@ -120,10 +28,10 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 // - with two crew the answer wins more than every fixed policy, and at least 60%; with five it wins at least 90%, and no fixed policy wins more (with five crew, by more than 0.02);
 // - its fights last 2.5 turns or more on the mean;
 // - random play with five crew costs at most 0.15 a fight more dead by her grade than measured with the bosun's first aid aboard (0.15, 0.21 and 0.21, #879): fewer is allowed.
-// The ship fights are left out (raid: false), and only the groups asked are played (each cell on its own seeded stream); the corsair's checks, on the same runs, are the test after this one.
+// Only the groups asked are played (each cell on its own seeded stream); the corsair's checks, on the same runs, are the test after this one.
 let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
 const deckFights = async () => {
-  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade', 'charge', 'navy'] }))));
+  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, groups: ['party', 'level', 'grade', 'charge', 'navy'] }))));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const r = {};  // the seeds' tallies summed, cell by cell
   for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
@@ -132,7 +40,7 @@ const deckFights = async () => {
 const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
 // Dead a fight by her grade. They were 0.32, 0.44, 0.49 and 0.36, 0.49, 0.55 before the parties (the spec's "Why"), with no medic among the five crew; since
 // #879 the five are the bosun's ship, and his first aid (crew.js roleHolder) takes the loss odds from 1.3 to 0.5 (losses.js), so they are measured again
-// (tools/fights.js --seeds 1,2,3 --n 400 --deck-only, the owner, 2026-11-01).
+// (tools/fights.js --seeds 1,2,3 --n 400, the owner, 2026-11-01).
 const DEAD = { repel: [0.16, 0.18, 0.21], assault: [0.15, 0.21, 0.21] };
 const CORSAIR_REPEL_DEAD = 0.18;  // random play repelling a corsair with five crew (#832: 0.40 with no medic; 0.16 to 0.20 with the bosun's first aid, #879)
 // The checks both parties share, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it, and its turns.

@@ -12,12 +12,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { open, closeBrowser } = require('../tests/helpers');
 const { chapter } = require('./soak');
-const { answerOrders } = require('./answer');
 
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
-// - Ship fight: the orders that read her shown move (tools/answer.js, the fight tool's `answer`): the turret held back against her salvo, her lock while she
-//   closes or pins with it, a torpedo at the foe with the least armor left, overcharged guns at a navy ship, else her hull; the gunner move it chooses, if the hand knows one;
-//   then Fire, each turn.
+// - Ship fight: on the radar (radarui.js), played to its end by the chapter with the hand's post on its opening orders (soak.js chapter); its close by Stand down.
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
 //   rather than let go. Ties are the seed's.
@@ -45,39 +42,7 @@ function policy(d, ok, memo) {
       if (order !== undefined && label(order) === fightSay('deck.order.none')) return order;
       return last;  // Fight
     }
-    // The orders tools/answer.js gives (window.__answer, set by setup), clicked toward choice by choice: each ready gun's target (a row of them, the one picked
-    // marked, fightui.js), its charge, the torpedo's target, the turret and the moves, then Fire.
-    const want = window.__answer(s), vented = d.choices.some(c => c.label === fightSay('move.on', { label: fightSay('move.vent', { heat: f.heat }) }));
-    const ready = gunsReady(vented ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns, so the panel shows an order for each (fightui.js)
-    const pickIn = (k, o) => {  // the row of targets starting at k: the index to click for o (null holds), or the row's end once o is the one marked
-      let end = k; while (end < d.choices.length && d.choices[end].row && d.choices[end].row === d.choices[k].row) end++;
-      const i = d.choices.findIndex((c, j) => j >= k && j < end && c.label === fightSay(o ? `aim.${o.part}` : 'aim.hold'));
-      return i < 0 || !d.choices[i].on ? { click: i < 0 ? k : i } : { end };
-    };
-    let at = 0;
-    for (let n = 0; n < ready; n++) {
-      const g = want.guns[n], p = pickIn(at, g);
-      if (p.click !== undefined) return p.click;  // the target
-      at = p.end;
-      if (g) { if (label(at) !== fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: n + 1, heat: FIGHT.OVER_HEAT })) return at; at++; }  // the charge
-    }
-    if (f.me.launcher && f.me.torps > 0) { const p = pickIn(at, want.torp); if (p.click !== undefined) return p.click; at = p.end; }
-    if (f.me.pdc) { if (label(at) !== fightSay(want.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire')) return at; at++; }
-    // The known moves, between the turret and Fire, one choice each (fightui.js moveChoices): the one the orders chose is ordered (lead on its gun), the others not.
-    // A move greyed (spent, or nothing to act on) is passed over.
-    for (const id of (s.known || []).filter(k => FIGHT_MOVES[k])) {
-      const c = d.choices[at], open = !c.can || c.can();
-      if (open) {
-        const on = l => fightSay('move.on', { label: l });
-        const mine = id === 'vent' ? on(fightSay('move.vent', { heat: f.heat }))
-          : id === 'split' ? on(fightSay('move.split', (([lo, hi]) => ({ lo, hi }))(shotRange(f, turnShots(f, want, true)[gunsReady(f) - 1].o))))
-          : want.move === 'lead' ? on(fightSay('move.lead', (([lo, hi]) => ({ n: want.gun + 1, lo, hi }))(shotRange(f, { ...want.guns[want.gun], over: !!want.guns[want.gun].over }, true)))) : fightSay('move.lead.off');
-        const ordered = id === 'lead' ? c.label !== fightSay('move.lead.off') : c.label === mine;
-        if (want.move === id ? c.label !== mine : ordered) return at;
-      }
-      at++;
-    }
-    return last;  // Fire
+    return last;
   }
   if (dealOpen() && wantsYard() && label(last) === sceneSay('scene:pitch', 'never.label')) return last;  // Never mind: the yard first
   if (memo.avoid && ok.some(i => label(i) !== memo.avoid)) ok = ok.filter(i => label(i) !== memo.avoid);  // buying in: the walk away from the yard's desk is not taken
@@ -96,9 +61,8 @@ function policy(d, ok, memo) {
 }
 
 // The hooks, put on the page as window.__pt before the chapter starts (soak.js chapter names what each is for). `o`: { video, speed, maxDays, sceneMs, resultMs }.
-function setup([policySrc, answerSrc, o]) {
+function setup([policySrc, o]) {
   const choose = (0, eval)(`(${policySrc})`), memo = {};
-  window.__answer = (0, eval)(`(${answerSrc})`);  // the ship fight's orders (tools/answer.js), for the player
   // The page's own dice, for what it draws and plays while the chapter waits on a frame, a timer or a screenshot: the game's dice are untouched by them.
   let a = 0x2545f491;
   const viewRand = () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
@@ -133,7 +97,7 @@ function setup([policySrc, answerSrc, o]) {
     for (const id of x.crew.filter(i => !y.crew.includes(i) && !y.memorial.includes(nameOf(i)))) out.push(`${nameOf(id)} is gone from the crew`);
     return out;
   };
-  const P = window.__pt = { live: true, records: [], shots: 0, stopped: null, pay: 0, fights: new Map(), burnRec: null, before: null, last: null, since: 0, taught: [], used: {}, traits: [] };
+  const P = window.__pt = { live: true, records: [], shots: 0, stopped: null, pay: 0, fights: new Map(), burnRec: null, before: null, last: null, since: 0, taught: [], traits: [] };
   const push = r => { P.records.push(r); return r; };
   const shot = name => (o.shots === false ? null : yieldTo(window.__ptShot(`${String(++P.shots).padStart(3, '0')}-${slug(name)}`)));
   const begin = () => {
@@ -145,11 +109,10 @@ function setup([policySrc, answerSrc, o]) {
   };
   // the pay of the chapter: what the wage and the share put in the hand's savings at each arrival (game.js payCrew, hired.js settleRun)
   for (const name of ['payCrew', 'settleRun']) { const real = window[name]; window[name] = function () { const c0 = G.state.credits, out = real.apply(this, arguments); P.pay += Math.max(0, G.state.credits - c0); return out; }; }
-  // the gunner moves: each taught on a burn (moves.js), and each use in a fight, as the engine applies it (fight.js resolveShipTurn, a move event)
+  // the gunner moves: each taught on a burn (moves.js)
   { const real = ACTIVITIES.teach.run; ACTIVITIES.teach.run = function () { const out = real.apply(this, arguments), m = (career() || {}).moves || []; if (out) P.taught.push({ id: m[m.length - 1], day: day() }); return out; }; }
   // the traits earned (traits.js): each as its moment is told (hired.js traitNote), by the day
   { const real = window.traitNote; window.traitNote = function (id) { const h = hired(), had = !!h && (h.traitsTold || []).includes(id), out = real.apply(this, arguments); if (h && !had && (h.traitsTold || []).includes(id)) P.traits.push({ id, day: day() }); return out; }; }
-  { const real = window.resolveShipTurn; window.resolveShipTurn = function () { const r = real.apply(this, arguments); for (const e of r.events) if (e.move) P.used[e.move] = (P.used[e.move] || 0) + 1; return r; }; }
   // how each fight ended (fightui.js): the ship fight's end, and the deck fight's
   { const se = window.shipFightEnd; window.shipFightEnd = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return se.apply(this, arguments); }; }
   { const dc = window.deckClose; window.deckClose = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return dc.apply(this, arguments); }; }
@@ -162,7 +125,7 @@ function setup([policySrc, answerSrc, o]) {
     const f = s.state;
     if (f.kind === 'deck') return [`You stand in ${deckTitle(s, f.hand)}. Ours against theirs: ${f.sections.map((x, i) => (x ? `${deckTitle(s, i)} ${x.mine} to ${x.theirs}` : '')).filter(Boolean).join(', ')}.`];
     const side = (x, name) => `${name}: armor ${x.armor}/${x.maxArmor}, ${['weapons', 'drive', 'lock'].map(k => `${k} ${x.parts[k].hp}/${x.parts[k].max}`).join(', ')}`;
-    return [`${side(f.me, 'You')}, heat ${f.heat}/${FIGHT.HEAT_CAP}${f.me.launcher ? `, torpedoes ${f.me.torps}` : ''}`, ...f.foes.map((x, i) => side(x, i ? 'Her consort' : 'Her'))];
+    return [`${side(f.me, 'You')}${f.me.launcher ? `, torpedoes ${f.me.torps}` : ''}`, ...f.foes.map((x, i) => side(x, i ? 'Her consort' : 'Her'))];
   };
   Object.assign(P, {
     done() { if (hired() && day() >= o.maxDays) P.limit = `stopped at the day limit (${o.maxDays} days)`; return !!(P.stopped || P.limit); },
@@ -176,13 +139,14 @@ function setup([policySrc, answerSrc, o]) {
       begin();
       const ev = d.event, s = ev.fight;
       P.before = snap();
-      if (s) {  // a fight's panel: a turn of the log, once each time the log has grown
+      if (s) {  // a fight's panel: a turn of the log (a cycle of the radar's), once each time the log has grown
         let r = P.fights.get(s);
         if (!r) { r = push({ k: 'fight', kind: s.state.kind === 'deck' ? 'deck' : 'ship', day: day(), place: where(), title: ev.title, turns: [], seen: 0, end: null }); P.fights.set(s, r); if (P.burnRec) P.burnRec.events.push(`${r.kind} fight: ${ev.title}`); }
         if (s.state.log.length > r.seen || !r.turns.length) {
-          r.turns.push({ n: s.state.turn, read: plain(ev.read || ''), lines: s.state.log.slice(r.seen).map(plain), bars: bars(s), order: plain(d.choices[i].label) });
+          const n = s.state.kind === 'radar' ? s.state.cycle : s.state.turn;
+          r.turns.push({ n, read: plain(ev.read || ''), lines: s.state.log.slice(r.seen).map(plain), bars: bars(s), order: i >= 0 ? plain(d.choices[i].label) : '' });
           r.seen = s.state.log.length;
-          await shot(`${r.kind}-fight-turn-${s.state.turn}`);
+          await shot(`${r.kind}-fight-turn-${n}`);
         }
         return o.video ? nextFrame() : null;
       }
@@ -292,7 +256,7 @@ function transcript(recs, r, meta) {
     `- Ending: ${ending}`,
     `- Lost or left: ${r.losses.length ? r.losses.map(l => `${l.who} ${l.what} day ${l.day} (${l.why})`).join('; ') : 'nobody'}`,
     `- Fights: ${fights.length} (ship ${fights.filter(f => f.kind === 'ship').length}, deck ${fights.filter(f => f.kind === 'deck').length}); won ${fights.filter(won).length}, lost ${fights.filter(lost).length}, other ${fights.filter(f => !won(f) && !lost(f)).length}: ${fights.map(f => `${f.kind} ${f.end || 'unsettled'}`).join(', ') || 'none'}`,
-    `- Gunner moves: learned ${(meta.taught || []).map(t => `${t.id} day ${t.day}`).join(', ') || 'none'}; used in the fights ${['vent', 'lead', 'split'].map(id => `${id} ${(meta.used || {})[id] || 0}`).join(', ')}`,
+    `- Gunner moves: learned ${(meta.taught || []).map(t => `${t.id} day ${t.day}`).join(', ') || 'none'}`,
     `- Traits earned: ${(meta.traits || []).map(t => `${t.id} day ${t.day}`).join(', ') || 'none'}`,
     `- Scenes: ${recs.filter(x => x.k === 'scene').length}; landings: ${recs.filter(x => x.k === 'land').length}`,
     `- Page errors: ${meta.errors.length ? meta.errors.join('; ') : 'none'}`,
@@ -308,18 +272,18 @@ async function playthrough({ seed = 1, captain = 'hester', speed = 10, out = nul
   const t0 = Date.now(), videoDir = video ? path.join(dir, '.video') : null;
   const { page, ctx, ev, errors } = await open({ seed, debt: true, brief: true, stall: 0, video: videoDir });
   await page.exposeFunction('__ptShot', async name => { await page.screenshot({ path: path.join(dir, 'shots', `${name}.png`) }); });  // nothing goes back: the picture as a value is a long trip to the page
-  await ev(setup, [policy.toString(), answerOrders.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
+  await ev(setup, [policy.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
   let r, threw = null;
   try { r = await ev(chapter, [legs, captain, false, 'gunner', true, null, true, '__pt']); } catch (e) { threw = e; }
-  const P = await page.evaluate(() => ({ records: __pt.records.map(x => { const { seen, ...rest } = x; return rest; }), pay: __pt.pay, stopped: __pt.stopped, limit: __pt.limit, taught: __pt.taught, used: __pt.used, traits: __pt.traits }));
+  const P = await page.evaluate(() => ({ records: __pt.records.map(x => { const { seen, ...rest } = x; return rest; }), pay: __pt.pay, stopped: __pt.stopped, limit: __pt.limit, taught: __pt.taught, traits: __pt.traits }));
   r = r || { runs: 0, credits: 0, losses: [], bad: [`threw: ${threw && threw.message}`], ending: null, stuck: 0 };
   const v = page.video();
   await ctx.close();
   if (v) { await v.saveAs(path.join(dir, 'run.webm')); await v.delete(); fs.rmSync(videoDir, { recursive: true, force: true }); }
-  const tr = transcript(P.records, r, { seed, captain, pay: P.pay, stopped: P.stopped || P.limit, errors, taught: P.taught, used: P.used, traits: P.traits });
+  const tr = transcript(P.records, r, { seed, captain, pay: P.pay, stopped: P.stopped || P.limit, errors, taught: P.taught, traits: P.traits });
   fs.writeFileSync(path.join(dir, 'transcript.md'), tr.text);
   const secs = Math.round((Date.now() - t0) / 1000);
-  return { dir, secs, days: tr.days, legs: r.runs, ending: tr.ending, errors, bad: r.bad, records: P.records, stopped: P.stopped, taught: P.taught, used: P.used, traits: P.traits, video: v ? fs.statSync(path.join(dir, 'run.webm')).size : 0 };
+  return { dir, secs, days: tr.days, legs: r.runs, ending: tr.ending, errors, bad: r.bad, records: P.records, stopped: P.stopped, taught: P.taught, traits: P.traits, video: v ? fs.statSync(path.join(dir, 'run.webm')).size : 0 };
 }
 
 module.exports = { playthrough, policy };

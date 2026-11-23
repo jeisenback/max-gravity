@@ -1,12 +1,12 @@
 'use strict';
 
-// The ship fight on the radar, as a scene (docs/superpowers/specs/2026-11-16-radar-ship-fight-design.md, "The page"; plan Part 2, #1345), behind the setting
-// Settings.radarFight until the switch-over. startShipFight (fightui.js) builds the sides as today and opens radarFightEvent; the fight runs in real time from
-// the game's frame hook (radarTick), a step at a time through radar.js, and stops itself at each of radarPauses' reasons, saying why. The crew work every post
-// (radarAuto) until Part 3 gives the hand theirs. What a step costs the ship goes through today's fightTook, and an end through today's shipFightEnd, so
-// everything after the fight is unchanged. The page is a top bar (play and pause, the speeds, the zoom), the situation bar, the canvas radar with the
-// captain's order's cost under it, and the timeline; they are drawn once with the scene and kept up to date in place, each frame. The fight is kept with the
-// scene, as today's is, so nothing of it is in the save. The words are the 'scene:fight' lines under 'radar.' (hiredscenes.js). Loaded after radar.js.
+// The ship fight on the radar, as a scene (docs/superpowers/specs/2026-11-16-radar-ship-fight-design.md, "The page"; #1345, the only ship fight since #1348).
+// startShipFight (fightui.js) builds the sides and opens radarFightEvent; the fight runs in real time from the game's frame hook (radarTick), a step at a time
+// through radar.js, and stops itself at each of radarPauses' reasons, saying why. The crew work every post but the hand's (radarAuto); the hand works the
+// gunner's or the pilot's (#1346). What a step costs the ship goes through fightTook, and an end through shipFightEnd. The page is a top bar (play and pause,
+// the speeds, the zoom), the situation bar, the canvas radar with the captain's order's cost under it, the hand's post, and the timeline; they are drawn once
+// with the scene and kept up to date in place, each frame. The fight is kept with the scene, so nothing of it is in the save. The words are the
+// 'scene:fight' lines under 'radar.' (hiredscenes.js). Loaded after radar.js.
 
 const RADAR_UI = { FADE: 3, LAST: 6, RATIO: 0.62, HOVER: 14, ARC: 40, ARC_MIN: 10, ARC_MAX: 180, WEDGE: 90 };  // cycles an event's mark fades over; events listed in words; the radar's height to its width; px a hover finds a thing within; px out to the PDC arc's ends; its narrowest and widest, degrees; px a full-throttle burn reaches
 const radarSay = (key, vars) => sceneSay('scene:fight', `radar.${key}`, vars);
@@ -96,8 +96,7 @@ function radarAfter(r, was, events) {
   if (s.handDied) { radarStop(); finishEvent(); return true; }  // the hand is dead: the ending is queued (boarders.js)
   const end = radarEnd(s.state);
   if (end) {
-    const i = Math.max(0, radarNearest(s.state));
-    s.state = { ...s.state, kind: 'ship', band: bandIndex(radarRange(s.state, i + 1)), turn: s.state.cycle, locked: [], log: [...s.state.log, ...r.feed.slice(-2).map(e => e.text)] };  // in today's shape, for the close's panel (shipFightEnd)
+    s.state = { ...s.state, log: [...s.state.log, ...r.feed.slice(-2).map(e => e.text)] };  // its last lines, for the close's panel (shipFightEnd)
     radarStop(); shipFightEnd(s, end); finishEvent();
     return true;
   }

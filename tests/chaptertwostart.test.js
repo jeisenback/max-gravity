@@ -172,7 +172,7 @@ test('a fight that ends the hand\'s life in chapter two ends the run as in chapt
   assert.doesNotMatch(r.text, /undefined|NaN|Hester|Captain/);
 });
 
-// ---------- #1045: chapter one's stories stop at the signing, and the range is the hand's order ----------
+// ---------- #1045: chapter one's stories stop at the signing ----------
 
 test('chapter one\'s stories stop at the signing: the chapter condition, the strike\'s scenes on Hester\'s ship, and the mission arcs\' offers', async () => {
   const { ev, done } = await open();
@@ -189,24 +189,6 @@ test('chapter one\'s stories stop at the signing: the chapter condition, the str
   assert.deepEqual(r.shape, ['condition chapter needs a chapter number']); assert.deepEqual(r.two, [true, false]);
   assert.deepEqual(r.strike, [1, 1, 1, 1, null, null], 'Hester\'s ship\'s part of the strike is chapter one\'s; the crates landed and the end read no captain');
   assert.equal(r.would, true, 'the Hall has one for the ship'); assert.equal(r.arcs, 0, 'and none is offered to a hand on their own bridge');
-});
-
-test('the range orders: shown on the hand\'s own bridge with Hold first chosen, and the order is the range Fire plays; not in chapter one', async () => {
-  const { ev, done } = await open();
-  await ev(helpers); await ev(started);
-  const r = await ev(() => {
-    const fight = () => { hired().raidTold = true; G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false); const e = G.nextEvent; G.nextEvent = null; return e; };
-    coopAt(); const e = fight(); const s = e.fight, rows = e.choices.filter(c => c.row === 'range');
-    const shown = rows.map(c => ({ label: c.label, on: c.on }));
-    s.state.me.speed = 1e6; s.state.band = 2; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 1] }], captain: { kind: 'hold' } };
-    fireTurn(s, { guns: [null], torp: null, pdc: 'fire', range: 'open' }); const opened = s.state.band;
-    return { shown, opened };
-  });
-  const one = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; hired().raidTold = true; G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false); const e = G.nextEvent; G.nextEvent = null; return { rows: e.choices.filter(c => c.row === 'range').length, read: e.read }; });
-  await done();
-  assert.equal(r.shown.length, 3); assert.deepEqual(r.shown.map(x => x.on), [false, true, false], 'Hold, until the player orders another');
-  assert.match(r.shown[0].label, /^Close \(/); assert.equal(r.opened, 3, 'Open, faster than her: the range opens');
-  assert.equal(one.rows, 0, 'chapter one: the range is the captain\'s'); assert.match(one.read, /Captain Vance: (holding|closing|opening) the range\./);
 });
 
 // ---------- Task 5: last-seen prices ----------

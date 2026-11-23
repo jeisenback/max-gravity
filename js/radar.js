@@ -85,8 +85,8 @@ function radarFight({ me, foes, nerve, types = foes.map(() => 'raider'), opening
 }
 
 const radarHull = side => (side.maxArmor ? side.armor / side.maxArmor : 0);
-const radarOut = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);  // shipEnd's `out`: no hull, or no guns and no drive
-const radarMounts = side => Math.max(0, Math.min(side.guns, Math.ceil(side.parts.weapons.hp / FIGHT.PART_HP.weapons)));  // the mounts still working, as gunsReady and foeVolley count them
+const radarOut = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);  // out of the fight: no hull, or no guns and no drive
+const radarMounts = side => Math.max(0, Math.min(side.guns, Math.ceil(side.parts.weapons.hp / FIGHT.PART_HP.weapons)));  // the mounts still working, as foeVolley counts them
 const radarCap = state => (state.opening === 'short' ? Math.round(RADAR.TURNS - (RADAR.MEET - RADAR.MEET_SHORT) / RADAR.CLOSING) : RADAR.TURNS);
 
 const radarRange = (state, i = 1) => radarDist(state.ships[0].p, state.ships[i].p);
@@ -117,7 +117,7 @@ function radarSpread(state, level, i = 1) {
 }
 const radarFalloff = km => (RADAR.FALLOFF.find(([past]) => km > past) || [0, 1])[1];
 const radarBand = km => (RADAR.AIM_BANDS.find(([under]) => km < under) || [0, 'long'])[1];
-const RADAR_AIMED = ['drive', 'lock', 'launcher'];  // the small parts an aimed shot loses damage on at range, as AIMED in fight.js
+const RADAR_AIMED = ['drive', 'lock', 'launcher'];  // the small parts an aimed shot loses damage on at range
 const radarAimMult = (km, part = 'drive') => (RADAR_AIMED.includes(part) ? FIGHT.AIM_MULT[radarBand(km)] : 1);
 
 // The PDC's chance to kill a torpedo that moves from `from` to `to` in a step: by the km of that segment inside the arc and the reach, sampled along it so a
@@ -357,7 +357,7 @@ function radarProject(state, orders, cycles = 4, seen = null) {
 
 // ---------- her, the captain, the crew and the ends (Task 6) ----------
 
-// Her orders for a cycle, by her kind (spec, "Her"; foeMove in fight.js for today's): badly hurt or with no guns she breaks off while her drive can take her
+// Her orders for a cycle, by her kind (spec, "Her"; the old fight's foeMove before #1348): badly hurt or with no guns she breaks off while her drive can take her
 // away; a corsair with torpedoes arms inside TORP_LAUNCH (a cycle ahead, every SALVO_EVERY cycles) and fires a salvo the cycle after; outside JINK she comes
 // on at the rate she was met at, burning for us when we open the range, and inside it she burns to the range her kind works at (HELD; a raider alongside
 // while her lock is whole, LOCKLESS without it), jinking; her guns fire inside GUN_RANGE, at our drive if we are the faster, at our hull while she closes, else at our guns while they last.
@@ -396,7 +396,7 @@ const RADAR_ORDERS = {
 };
 
 // The captain's order for a cycle, after comms has reported (`read.torps`: what is known of her torpedoes, as radarProject's impacts): a torpedo that will
-// hit inside EVADE_SOON sends any captain to evade; then by nerve, as captainMove: a cautious one (1, 2) badly hurt against a less hurt foe breaks off, and
+// hit inside EVADE_SOON sends any captain to evade; then by nerve, as the old fight's captain did: a cautious one (1, 2) badly hurt against a less hurt foe breaks off, and
 // opens the range hurt; a steady one (3) opens badly hurt and closes with a lead of 30 points; a bold one (4, 5) closes on a more hurt foe.
 function radarCaptain(state, nerve, read = { torps: [] }) {
   if ((read.torps || []).some(t => t.side === 'her' && t.hits !== 'no' && t.at[0] <= RADAR.EVADE_SOON)) return 'evade';
@@ -485,7 +485,7 @@ function radarAuto(state, levels = {}, rand) {
   return out;
 }
 
-// The fight's end, or null, in today's names (shipEnd in fight.js), so everything after it (shipFightEnd) works unchanged: lost (our hull gone); boarded
+// The fight's end, or null, in the old fight's names, so everything after it (shipFightEnd) works as it did: lost (our hull gone); boarded
 // (she came alongside with her lock whole); crippled (each of hers out); away (each of hers left breaking off with her guns gone and her hull whole) and
 // broke (each breaking off), once past GUN_RANGE; escaped (each of hers past ESCAPE); at the cap the less whole side breaks off, ran if it is us.
 function radarEnd(state) {

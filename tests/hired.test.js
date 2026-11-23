@@ -469,7 +469,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     out.mine = { minePaid, fundMoved };
     // The contact (a patrol: no option fits a pilot, as a pirate's would): the captain answers, and pays from the ship's purse.
     h.fund = 200000; let contactMine = 0;
-    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Pact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
+    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Pact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !radarShowing() && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the fight on the radar that may follow is the radar's tests' own */ G.radar = null; if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
     out.contactMine = contactMine;
     // Your own post's event is yours; another post's is the captain's.
     G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
@@ -562,10 +562,10 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
     const hand = { sign: sceneSay('scene:sign-on', 'post.gunner', { cap: 'Captain X' }), weapons: weaponsPanel(), projects: projectsHtml('gunner') };
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' });
     const owner = { weapons: weaponsPanel(), projects: projectsHtml('gunner') };
-    return { hand, owner, hiredNow: !!hired() };
+    return { hand, owner, hiredNow: !!hired(), cap: RADAR.HEAT_CAP };
   });
   assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /how you meet her is your call/);
-  assert.match(r.hand.weapons, /The fight/); assert.match(r.hand.weapons, /over 4 a gun locks for a turn/); assert.doesNotMatch(r.hand.weapons, /Fire deck|Threats|Answers/, 'a hand does not fight with the deck (#851)'); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
+  assert.match(r.hand.weapons, /The fight/); assert.match(r.hand.weapons, new RegExp(`over ${r.cap} the gun locks until it bleeds off`)); assert.doesNotMatch(r.hand.weapons, /Fire deck|Threats|Answers/, 'a hand does not fight with the deck (#851)'); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
   assert.equal(r.hiredNow, false); assert.match(r.owner.weapons, /Fire deck/); assert.doesNotMatch(r.owner.weapons, /The fight/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
   await done();
 });

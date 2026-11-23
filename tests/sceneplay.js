@@ -499,91 +499,37 @@ const playScenes = () => {
     const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Pact' } : {}), ladder: step.id });
     return { ...ev, choices: [] };
   });
-  // ---------- the ship fight (fightui.js): its panels, a move of each kind, every order, and each end, from states set by hand; last, so the
-  // foes it makes do not move the ids above ----------
+  // ---------- the ship fight (fightui.js, on the radar since #1348): its openings, the head start and each end, from states set by hand; then the radar's
+  // page (radarui.js); last, so the foes it makes do not move the ids above ----------
   if (!window.__only || /scene:fight/.test(window.__only)) {
     const rec = { id: 'scene:fight', plays: [] };
     try {
-      const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
+      const panel = ev => rec.plays.push({ title: ev.title, text: ev.text, labels: labelsOf(ev) });  // the radar's scene: its opening and its log (its page is played below)
       const orders = (o = {}) => ({ guns: [{ foe: 0, part: 'weapons' }], torp: null, pdc: 'fire', ...o });
       const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Pact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
-      const turn = (s, o, foe, captain = { kind: 'hold' }) => {  // one Fire with the moves set; what it shows next, or the scene it queued and what it left
-        const cap = person(hired().captain), m0 = (cap.memories || []).length;
-        s.shown = { foe: s.state.foes.map(() => foe), captain }; G.nextEvent = null;
-        const ev = fireTurn(s, o), next = G.nextEvent; G.nextEvent = null;
-        rec.plays.push({ log: s.state.log.slice(-1)[0], next: next && { title: next.title, text: next.text, labels: labelsOf(next) }, mem: (cap.memories || []).slice(m0) });
-        if (ev) panel(ev);
+      const end = (s, e) => {  // an end, as the radar ends it (radarui.js radarAfter, shipFightEnd): the scene it opens, and the captain's memory of it
+        const cap = person(hired().captain), m0 = (cap.memories || []).length; G.radar = null; G.nextEvent = null;
+        shipFightEnd(s, e); const next = G.nextEvent; G.nextEvent = null;
+        rec.plays.push({ end: e, next: next && { title: next.title, text: next.text, labels: labelsOf(next) }, mem: (cap.memories || []).slice(m0) });
       };
       { fresh(); hired().raidTold = true; uatBurn('Ceres Station', 'pallas'); const make = makeEnemy; makeEnemy = sp => { const f = make(sp); seq([0.01]); return f; }; let text; try { text = startShipFight({ kind: 'pirate', shipId: 'raider' }, true); } finally { makeEnemy = make; Math.random = real; } rec.plays.push({ run: text }); }  // a clear run: the days it costs
       for (const shipId of ['raider', 'corsair', 'cutter']) for (const day of [0, 1]) panel(start(shipId, { day }));  // the openings, by style and by the day
+      { fresh(); hired().moves = Object.keys(FIGHT_MOVES); rec.plays.push({ card: fightCard().replace(/<[^>]+>/g, ' ') }); }  // the moves learned, by name, on the bridge's Weapons card
       panel(start('raider', { edge: 1 })); panel(start('raider', { edge: -1 }));  // the head start, each way
-      // her moves, two of her, and the captain's: shown on the panel before they are made
-      for (const [foe, captain] of [[{ kind: 'broadside', target: 'weapons', dmg: [10, 18] }, { kind: 'close' }], [{ kind: 'pin', target: 'drive', dmg: [8, 14] }, { kind: 'open' }], [{ kind: 'board' }, { kind: 'hold' }], [{ kind: 'break' }, { kind: 'hold' }], [{ kind: 'close', target: 'hull', dmg: [10, 17] }, { kind: 'hold' }], [{ kind: 'arm', n: 2 }, { kind: 'hold' }], [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }, { kind: 'hold' }]]) {
-        const s = start('raider').fight; s.state.foes.push(JSON.parse(JSON.stringify(s.state.foes[0]))); s.shown = { foe: [foe, foe], captain };
-        panel(shipFightEvent(s, orders()));
-      }
-      { const s = start('raider').fight; s.state.me.pdc = false; s.shown = { foe: [{ kind: 'arm', n: 2 }], captain: { kind: 'hold' } }; panel(shipFightEvent(s, orders())); }  // a ship with no turret: her launcher is the answer (#850)
-      // every order: a gun at each part and holding, the torpedo, the turret both ways, and Fire over the heat cap
-      { fresh(); hired().raidTold = true; G.state.outfits = { launcher: 1, pdc: 1 }; G.state.torpedoes = 2; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'raider' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
-        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'lock' }, null], torp: { foe: 0, part: 'hull' }, pdc: 'hold' })));
-        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'drive' }, { foe: 0, part: 'hull' }] })));
-        s.state.heat = 4; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'drive' }, { foe: 0, part: 'hull' }] }))); s.state.heat = 0;
-        turn(s, orders({ guns: [null, null], torp: { foe: 0, part: 'hull' } }), { kind: 'broadside', target: 'hull', dmg: [10, 10] });  // the torpedo, and her hit
-        turn(s, orders({ guns: [null, null] }), { kind: 'hold' });  // nobody fires
-        s.state.foes[0].parts.lock.hp = 0; turn(s, orders({ guns: [{ foe: 0, part: 'lock' }, null] }), { kind: 'hold' });  // a shot at a part already gone
-        const consort = JSON.parse(JSON.stringify(s.state.foes[0])); s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; s.state.foes.push(consort); s.pack = true;
-        turn(s, orders({ guns: [{ foe: 0, part: 'hull' }, null], torp: { foe: 0, part: 'hull' } }), { kind: 'hold' });  // the lead crippled: the gun and the torpedo go to her consort
-      }
-      // each end, by style: she breaks off, she is crippled, she boards, she is lost astern, and the hull gone
+      // each end, by style: she breaks off, she boards, she is lost astern, she is crippled; a navy ship crippled breaks off
       for (const shipId of ['raider', 'corsair', 'cutter']) {
-        let s = start(shipId).fight; s.state.foes[0].armor = 5; turn(s, orders({ guns: [null] }), { kind: 'break' });
-        s = start(shipId, {}, shipId === 'cutter' ? 'patrol' : 'pirate').fight; s.state.band = 0; turn(s, orders(), { kind: 'board' });  // a cutter that boards is a patrol's, with her government (the navy's party)
-        s = start(shipId).fight; s.state.me.speed = 1e6; s.state.band = RANGE_BANDS.length - 1; turn(s, orders(), { kind: 'close' }, { kind: 'open' });
-        if (shipId !== 'cutter') { s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // only a patrol flies a cutter, and a patrol crippled breaks off (below)
+        end(start(shipId).fight, 'broke');
+        end(start(shipId, {}, shipId === 'cutter' ? 'patrol' : 'pirate').fight, 'boarded');  // a cutter that boards is a patrol's, with her government (the navy's party)
+        end(start(shipId).fight, 'escaped');
+        if (shipId !== 'cutter') end(start(shipId).fight, 'crippled');  // only a patrol flies a cutter, and a patrol crippled breaks off (below)
       }
-      { const s = start('raider', {}, 'patrol').fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // a navy ship crippled breaks off
-      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, she the worse hurt: she breaks off
-      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; s.state.me.armor = 20; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, you the worse hurt: the captain runs, and the captain's memory of it
-      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.turn = FIGHT.TURNS - 1; s.state.me.armor = 20; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the same with cargo in the hold: a third of it goes (#809)
-      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; turn(s, orders({ guns: [null] }), { kind: 'break' }); }  // her guns gone and her hull whole: she gets away
-      // a corsair: her launcher on the panel as a target, the overcharge of each gun, her arming and then her salvo played through
-      { fresh(); hired().raidTold = true; G.state.outfits = { launcher: 1, pdc: 1 }; G.state.torpedoes = 2; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'corsair' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
-        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'launcher' }, { foe: 0, part: 'hull', over: true }], torp: { foe: 0, part: 'launcher' } })));
-        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'weapons', over: true }, null] })));
-        s.state.foes[0].parts.launcher.hp = 0; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'launcher' }, null] })));  // a launcher shot away is still named
-        s.state.foes[0].parts.launcher.hp = s.state.foes[0].parts.launcher.max;
-        turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
-        turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
-      }
-      // the gunner moves (fightui.js moveChoices): a hand who knows all three sees each as an order, ordered and not, with nothing to act on, and spent; then each used in a turn
-      { fresh(); hired().raidTold = true; hired().moves = ['vent', 'lead', 'split']; G.state.outfits = { pdc: 1 }; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'raider' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
-        const guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], broadside = { kind: 'broadside', target: 'hull', dmg: [10, 10] };
-        s.state.heat = 3; s.shown = { foe: [broadside], captain: { kind: 'hold' } };
-        panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));
-        for (const move of ['vent', 'lead', 'split']) panel(shipFightEvent(s, orders({ guns, pdc: 'hold', move, gun: 0 })));
-        s.state.heat = 0; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'hull' }, null] })));  // no heat, no aimed shot, no turret held
-        for (const move of ['vent', 'lead', 'split']) { s.state.heat = 3; s.state.spent = []; turn(s, orders({ guns, pdc: 'hold', move, gun: 0 }), broadside); }
-        s.state.spent = ['vent', 'lead', 'split']; panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));  // all three spent
-      }
-      // the post ladders' eight moves (#963): each as an order at the long band with something to act on, each used in a turn; redline and a parley, landed and not, end the fight
-      { const EIGHT = ['called-shot', 'break-intercept', 'redline', 'patch', 'hot-start', 'bypass', 'spoof', 'parley'], guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'hull' }], broadside = { kind: 'broadside', target: 'hull', dmg: [10, 10] };
-        const eight = () => { const s = start('raider').fight; hired().moves = [...EIGHT]; s.known = [...EIGHT]; s.state.band = RANGE_BANDS.indexOf('long'); s.state.me.armor -= 5; s.state.me.parts.drive.hp = 1; s.shown = { foe: [broadside], captain: { kind: 'hold' } }; return s; };
-        let s = eight(); panel(shipFightEvent(s, orders({ guns })));
-        for (const move of EIGHT) panel(shipFightEvent(s, orders({ guns, move, gun: 0 })));
-        s.state.spent = [...EIGHT]; panel(shipFightEvent(s, orders({ guns }))); s.state.spent = [];  // all eight spent
-        for (const move of ['called-shot', 'break-intercept', 'patch', 'hot-start', 'bypass', 'spoof']) { s = eight(); turn(s, orders({ guns, move, gun: 0 }), broadside); }
-        s = eight(); turn(s, orders({ guns, move: 'redline' }), broadside);  // away
-        s = eight(); seq([0]); turn(s, orders({ guns, move: 'parley' }), broadside);  // the word taken: she breaks off
-        s = eight(); seq([0.99]); turn(s, orders({ guns, move: 'parley' }), broadside);  // and not
-      }
-      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
-      { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
-      { const s = start('raider').fight; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
-      // the range orders on the hand's own bridge (#1045): Close, Hold and Open with where each puts the range, at the knife and at long range (faster than her), one ordered, and shut with the drive down
-      { const s = start('raider').fight; Object.assign(hired(), { chapter: 2, bridge: true }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } }; s.state.me.speed = 1e6;
-        for (const band of [0, RANGE_BANDS.length - 1]) { s.state.band = band; panel(shipFightEvent(s, orders())); }
-        panel(shipFightEvent(s, orders({ range: 'open' })));
-        s.state.me.parts.drive.hp = 0; panel(shipFightEvent(s, orders())); }
+      end(start('raider', {}, 'patrol').fight, 'crippled');
+      for (const shipId of ['raider', 'corsair']) end(start(shipId).fight, 'ran');  // the cap, you the worse hurt: the captain runs, a lost fight
+      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; end(s, 'ran'); }  // the same with cargo in the hold: part of it dumped
+      for (const shipId of ['raider', 'corsair']) end(start(shipId).fight, 'away');  // her guns gone and her hull whole: she gets away
+      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; end(s, 'lost'); }  // the hull gone with cargo aboard
+      { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; end(s, 'lost'); }  // and a navy ship takes it as part of the levy
+      end(start('raider').fight, 'lost');
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
       const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
@@ -644,7 +590,7 @@ const playScenes = () => {
         deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
       // the fight on the radar (radarui.js, #1345): its page paused and running, every reason it stops, every order and its cost, each event's line on the
       // timeline, and every word the radar draws or shows on hover, from a state set by hand
-      { const was = Settings.radarFight; Settings.radarFight = true;
+      {
         try {
           const s = start('corsair').fight, r = G.radar, st = s.state, torp = (id, side, p, target) => ({ id, side, p, v: { x: 0, y: 0 }, target, warned: false });
           st.ships[0].v = { x: 0.5, y: 0 }; st.ships[1].p = { x: 0, y: 30 }; st.armed[0] = true; st.torps.push(torp(90, 'her', { x: 0, y: 20 }, 0), torp(91, 'her', { x: 6, y: 22 }, 0), torp(92, 'us', { x: 0, y: 5 }, 1));
@@ -662,7 +608,7 @@ const playScenes = () => {
           r.post = 'gunner'; r.orders = radarCompose(r); post(); r.hand.torp = true; r.orders = radarCompose(r); post();
           r.post = 'pilot'; r.wedge = { dir: 0, half: 45, most: 1 }; r.hand.plot = { dir: 0, throttle: 1 }; r.hand.burn = { dir: 5, throttle: 1 }; r.orders = radarCompose(r); post();
           st.ships[1].p = { x: 60, y: 0 }; r.hand.plot = null; r.hand.burn = null; r.orders = radarCompose(r); post();
-        } finally { Settings.radarFight = was; G.radar = null; }
+        } finally { G.radar = null; }
       }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);
@@ -682,7 +628,7 @@ const playScenes = () => {
   // ---------- the hurt and the fallen in a fight (boarders.js repelCasualty, hurtHand, killedHow, #796): each case won (0) and lost (0.99) on its first roll, with the causes the memorial
   // keeps; and who keeps out of a deck fight (repelCrew) ----------
   const deckOf = (assault = false) => { const foe = makeEnemy({ kind: 'pirate' }); return assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'); };
-  const shipOf = kind => ({ state: { kind: 'ship' }, spec: { kind }, hurt: new Set(), dead: [], marked: [], covered: true });
+  const shipOf = kind => ({ state: { kind: 'radar' }, spec: { kind }, hurt: new Set(), dead: [], marked: [], covered: true });
   const hit = (s, set, who) => ({ label: 'x', run() { set(s); const t = repelCasualty(s, who(s)); G.nextEvent = null; return t; } });  // the fight is made before the roll is set, so the roll is the hit's
   const mate = n => G.state.crew.map(person).filter(c => c && !c.cast)[n].id;
   run('scene:fight:casualty', {}, () => { const ours = deckOf(), hers = deckOf(true), raid = shipOf('pirate'), stop = shipOf('patrol'); return { title: 'x', text: '', choices: [

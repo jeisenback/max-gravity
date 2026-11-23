@@ -10777,7 +10777,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "  The fight   Guns  2, aimed at her weapons, drive, lock or hull    Heat  a shot adds 1, overcharged 2; over 4 a gun locks for a turn    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Turret  held back, it takes 40% off her volley and 60% off a salvo, for a gun's shot    Moves  none yet: the crew teach them on a burn   ",
+    "text": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  the fire control runs the gun or the point defence each cycle, never both    Moves  none yet: the crew teach them on a burn   ",
     "next": null
    }
   ],
@@ -12307,7 +12307,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing. Ruben puts the pencil behind his ear.",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Word on Ironheart is that a batch of Food is contaminated. Nobody's shown it is, but the price there has dropped. Ruben puts the pencil behind his ear.",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],
@@ -23356,7 +23356,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Diego signs on for the berth.",
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Priya signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore to clear a manifest.",
      "9 Jul 2214: You put Mateo ashore for a freight paper."
@@ -23371,7 +23371,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Kwame signs on for the berth.",
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Daniel signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore to clear a manifest.",
      "9 Jul 2214: You put Mateo ashore for a freight paper."
@@ -23920,9 +23920,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
+      "Play Kwame at cards (2000 cr) [50%]",
       "Ask Kwame about their work",
-      "Ask what they've heard",
-      "Ask about the posting",
+      "Ask about Hermes Foundry",
       "Leave them to their drink"
      ]
     },
@@ -23930,20 +23930,20 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
-      "mem": [
-       "9 Jul 2214: You bought me a drink at The Heat Sink."
-      ]
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame thinks about it. \"Word on Ironheart is that a batch of Food is contaminated. Nobody's shown it is, but the price there has dropped.\" \"And,\" Kwame says, before you can answer, \"A yard contract on Mars has taken the whole local supply of Electronics.\""
+      "text": "Kwame thinks about it. \"A trade fair on Boneyard brought in more Medical Supplies than anyone there can buy.\" \"And,\" Kwame says, before you can answer, \"A warehouse fire on Ironheart took most of the local stock of Water.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame lasts about a minute. \"Sorry. Is this a quiet thing? I can do quiet.\" They last another minute. Kwame talks over the end of it."
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
+      "mem": [
+       "9 Jul 2214: You asked about my work, and listened."
+      ]
      },
      {
       "j": 3,
@@ -23992,8 +23992,8 @@
      "text": "Grace Obi-Hartmann nods at you. Since you were last here, Grace has the clinic's tender papers spread on the end of the bar and is reading every clause.",
      "labels": [
       "Ask what they've heard",
-      "Ask about Hermes Foundry",
-      "Buy Grace a drink (200 cr)",
+      "Play Grace at cards (2000 cr) [50%]",
+      "Ask what's wrong",
       "Leave them to their drink"
      ]
     },
@@ -24009,18 +24009,12 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
-      "mem": [
-       "9 Jul 2214: You let me go on about Hermes Foundry."
-      ]
+      "text": "You ask, and Grace puts down the glass."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Grace plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
-      "mem": [
-       "9 Jul 2214: You let me go on about Hermes Foundry."
-      ]
+      "text": "Grace thinks about it. \"Three haulers just unloaded Medical Supplies on Boneyard. Prices there are collapsing.\""
      },
      {
       "j": 3,
@@ -24069,8 +24063,8 @@
      "text": "Kwame Haddad nods at you.",
      "labels": [
       "Ask about the posting",
-      "Sit with Kwame and say nothing",
-      "Ask Kwame about their work",
+      "Ask about Hermes Foundry",
+      "Ask Kwame about this place",
       "Leave them to their drink"
      ]
     },
@@ -24078,20 +24072,23 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame lasts about a minute. \"Sorry. Is this a quiet thing? I can do quiet.\" They last another minute. Kwame talks over the end of it."
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
+      "mem": [
+       "9 Jul 2214: You let me go on about Hermes Foundry."
+      ]
      },
      {
       "j": 1,
-      "roll": 0.5,
-      "text": "Kwame thinks about it. \"A ship carrying Medical Supplies to Juno Commons was taken by raiders two weeks ago. Nothing's come in since.\" \"And,\" Kwame says, before you can answer, \"A warehouse on The Hollows is being cleared in a hurry, and the Water is going for whatever anyone will pay.\""
-     },
-     {
-      "j": 2,
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
        "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Kwame thinks about it. \"A new import tax on Food at Enceladus has the traders holding back, and the price there is up.\" \"And,\" Kwame says, before you can answer, \"Word on Ironheart is that a batch of Luxury Goods is contaminated. Nobody's shown it is, but the price there has dropped.\""
      },
      {
       "j": 3,
@@ -24139,9 +24136,9 @@
      "title": "The Heat Sink: Ravi Achebe",
      "text": "Ravi Achebe nods at you.",
      "labels": [
-      "Play Ravi at cards (2000 cr) [50%]",
-      "Buy Ravi a drink (200 cr)",
       "Sit with Ravi and say nothing",
+      "Buy Ravi a drink (200 cr)",
+      "Play Ravi at cards (2000 cr) [50%]",
       "Leave them to their drink"
      ]
     },
@@ -24149,10 +24146,21 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Ravi wins 2,000 cr and asks you to show them where you went wrong. You can't. You finish the glass."
+      "text": "Ravi points out the table where the agency man sits on Fridays, when he does the sign-ons. Ravi asks a question about it, and then another.",
+      "mem": [
+       "9 Jul 2214: You asked about the place."
+      ]
      },
      {
       "j": 1,
+      "roll": 0.5,
+      "text": "Ravi points out the table where the agency man sits on Fridays, when he does the sign-ons. Ravi asks a question about it, and then another.",
+      "mem": [
+       "9 Jul 2214: You asked about the place."
+      ]
+     },
+     {
+      "j": 2,
       "roll": 0.5,
       "text": "\"I wasn't going to do this for long,\" Ravi says. \"That was nine years ago.\" Ravi asks a question about it, and then another.",
       "mem": [
@@ -24160,17 +24168,9 @@
       ]
      },
      {
-      "j": 2,
-      "roll": 0.5,
-      "text": "Ravi sits with their hands flat on the bar. After a while they stop checking the board. Ravi sits back on the stool for the first time.",
-      "mem": [
-       "9 Jul 2214: You sat with me and didn't make me talk."
-      ]
-     },
-     {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Which way are you headed?\" Ravi asks, as you go."
+      "text": "Ravi half stands when you do, and sits again. \"Right. Yes. Safe burn.\""
      }
     ]
    },
@@ -24213,9 +24213,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask about the posting",
+      "Play Kwame at cards (2000 cr) [50%]",
       "Sit with Kwame and say nothing",
-      "Ask about Hermes Foundry",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -24223,25 +24223,25 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
-      "mem": [
-       "12 Jul 2214: You let me go on about Hermes Foundry."
-      ]
+      "text": "Kwame sets a photo on the bar between you, and you both look at it. Kwame talks over the end of it."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Kwame thinks about it. \"A warehouse on Boneyard is being cleared in a hurry, and the Medical Supplies is going for whatever anyone will pay.\" \"And,\" Kwame says, before you can answer, \"A yard contract on The Hollows has taken the whole local supply of Water.\""
+      "text": "Kwame thinks about it. \"Three haulers just unloaded Refined Metals on Eros Old Town. Prices there are collapsing.\" \"And,\" Kwame says, before you can answer, \"Word on Earth is that a batch of Water is contaminated. Nobody's shown it is, but the price there has dropped.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame wins 2,000 cr, and puts it in an envelope with a name on it. You finish the glass."
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
+      "mem": [
+       "12 Jul 2214: You asked about my work, and listened."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24313,9 +24313,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask about the posting",
-      "Ask Kwame about this place",
-      "Ask what they've heard",
+      "Ask Kwame about their work",
+      "Sit with Kwame and say nothing",
+      "Buy Kwame a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -24323,28 +24323,28 @@
      {
       "j": 0,
       "roll": 0.5,
+      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
+      "mem": [
+       "9 Jul 2214: You bought me a drink at The Heat Sink."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
        "9 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
-      "j": 1,
-      "roll": 0.5,
-      "text": "Kwame plays like someone who learned on long watches, slow and never in a hurry. 2,000 cr, and you can't find where you went wrong. You finish the glass."
-     },
-     {
       "j": 2,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
-      "mem": [
-       "9 Jul 2214: You asked about my work, and listened."
-      ]
+      "text": "Kwame keeps talking, and keeps winning. \"Sorry, was that a raise? That's 2,000, then.\" You finish the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24416,8 +24416,8 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask about the posting",
-      "Ask about Hermes Foundry",
+      "Ask what they've heard",
+      "Sit with Kwame and say nothing",
       "Buy Kwame a drink (200 cr)",
       "Leave them to their drink"
      ]
@@ -24426,31 +24426,31 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
-      "mem": [
-       "20 Jul 2214: You bought me a drink at The Heat Sink."
-      ]
-     },
-     {
-      "j": 1,
-      "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
        "20 Jul 2214: You let me go on about Hermes Foundry."
       ]
      },
      {
+      "j": 1,
+      "roll": 0.5,
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
+      "mem": [
+       "20 Jul 2214: You asked about my work, and listened."
+      ]
+     },
+     {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
+      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
       "mem": [
-       "20 Jul 2214: You bought me a drink at The Heat Sink."
+       "20 Jul 2214: You asked about my work, and listened."
       ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24500,9 +24500,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask about Hermes Foundry",
+      "Ask Kwame about this place",
+      "Play Kwame at cards (2000 cr) [50%]",
       "Ask what they've heard",
-      "Ask Kwame about their work",
       "Leave them to their drink"
      ]
     },
@@ -24510,18 +24510,12 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
-      "mem": [
-       "9 Jul 2214: You let me go on about Hermes Foundry."
-      ]
+      "text": "Kwame sets a photo on the bar between you, and you both look at it. Kwame talks over the end of it."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
-      "mem": [
-       "9 Jul 2214: You asked about my work, and listened."
-      ]
+      "text": "Kwame lasts about a minute. \"Sorry. Is this a quiet thing? I can do quiet.\" They last another minute. Kwame talks over the end of it."
      },
      {
       "j": 2,
@@ -24534,7 +24528,7 @@
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24577,9 +24571,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Ask Kwame about this place",
-      "Sit with Kwame and say nothing",
       "Play Kwame at cards (2000 cr) [50%]",
+      "Sit with Kwame and say nothing",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -24587,31 +24581,25 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
-      "mem": [
-       "6 Jan 2215: You asked about my work, and listened."
-      ]
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
+      "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
-       "6 Jan 2215: You asked about my work, and listened."
+       "6 Jan 2215: You let me go on about Hermes Foundry."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Kwame asks whether your hold gets inspected at every port, or just some.",
-      "mem": [
-       "6 Jan 2215: You bought me a drink at The Heat Sink."
-      ]
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
+      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
      }
     ]
    },
@@ -24654,9 +24642,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
+      "Ask about Hermes Foundry",
+      "Ask Kwame about their work",
       "Ask Kwame about this place",
-      "Sit with Kwame and say nothing",
-      "Buy Kwame a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -24664,18 +24652,10 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "Kwame thinks about it. \"A festival on Ironheart has used up the Machine Parts, and the next shipment is a month out.\" \"And,\" Kwame says, before you can answer, \"Word on Juno Commons is that a batch of Electronics is contaminated. Nobody's shown it is, but the price there has dropped.\""
+      "text": "You ask, and Kwame puts down the glass."
      },
      {
       "j": 1,
-      "roll": 0.5,
-      "text": "\"I wasn't going to do this for long,\" Kwame says. \"That was nine years ago.\" Kwame tells the next table about it, and you're in the story.",
-      "mem": [
-       "16 Aug 2214: You asked about my work, and listened."
-      ]
-     },
-     {
-      "j": 2,
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
@@ -24683,9 +24663,14 @@
       ]
      },
      {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Kwame thinks about it. \"Warehouses on Ironheart are overflowing with Machine Parts. Sellers are dumping it cheap.\" \"And,\" Kwame says, before you can answer, \"A ship carrying Luxury Goods to Ceres Station was taken by raiders two weeks ago. Nothing's come in since.\""
+     },
+     {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -24728,9 +24713,9 @@
      "title": "The Heat Sink: Kwame Haddad",
      "text": "Kwame Haddad nods at you.",
      "labels": [
-      "Play Kwame at cards (2000 cr) [50%]",
-      "Sit with Kwame and say nothing",
+      "Buy Kwame a drink (200 cr)",
       "Ask about the posting",
+      "Ask about Hermes Foundry",
       "Leave them to their drink"
      ]
     },
@@ -24738,10 +24723,15 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "Kwame thinks about it. \"Customs on Boneyard seized a shipment of Medical Supplies. The buyers there are short.\" \"And,\" Kwame says, before you can answer, \"A ship carrying Luxury Goods to Eros Old Town was taken by raiders two weeks ago. Nothing's come in since.\""
      },
      {
       "j": 1,
+      "roll": 0.5,
+      "text": "Kwame wins 2,000 cr, and puts it in an envelope with a name on it. You finish the glass."
+     },
+     {
+      "j": 2,
       "roll": 0.5,
       "text": "Kwame plays you a message from Hermes Foundry: an old man in a kitchen, reading out the football scores. \"My dad. He records them twice, in case the first one doesn't go.\"",
       "mem": [
@@ -24749,14 +24739,9 @@
       ]
      },
      {
-      "j": 2,
-      "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
-     },
-     {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Oh, one more thing,\" Kwame says, and it's three more things, and you're at the door before the last one."
+      "text": "\"If you're ever on Hermes Foundry,\" Kwame says, and doesn't finish."
      }
     ]
    },
@@ -25054,7 +25039,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Ravi, comes aboard with the hiring slip still in hand and has to step over the bucket.",
+    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Priya, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -25122,7 +25107,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Daniel, has signed on for the berth.",
+    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Ravi, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -25143,7 +25128,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Leila, has signed on for the berth.",
+    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Ravi, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -25220,641 +25205,52 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider at forty kilometers and closing, with no transponder and her drive running hot.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair at forty kilometers with her tubes open, and the sensors show them loaded. She doesn't hurry.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
-    "labels": [
-     "Gun 1: a hit does 8 to 12: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 8 to 12: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won't be a third.",
-    "labels": [
-     "Gun 1: a hit does 8 to 12: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 8 to 12: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
+   },
+   {
+    "card": "  The fight   Guns  2, aimed at her hull or a part by a mark on her contact    Heat  over 5 the gun locks until it bleeds off, 2 a cycle    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Point defence  the fire control runs the gun or the point defence each cycle, never both    Moves  Vent the guns, Lead the shot, Split the turret, Called shot, Break the intercept, Redline, Patch, Hot start, Bypass, Spoof, Parley: learned, and not yet offered on the radar   "
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>You fire first: you hit her weapons for 8, you hit her weapons for 9.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 8.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: 2 guns at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
+    "labels": []
    },
    {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your weapons, 10 to 18 damage. Her consort: broadside at your weapons, 10 to 18 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: closing the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": guns on your drive to pin you, 8 to 14 damage. Her consort: guns on your drive to pin you, 8 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: opening the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": coming alongside to board. Her consort: coming alongside to board. Hit her lock and she can't board. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": turning to break off. Her consort: turning to break off. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 10 to 17 damage. Her consort: closing, and firing at your hull as she comes, 10 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her consort is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" fires a salvo of 2 at your hull, 60 to 90. Her consort fires a salvo of 2 at your hull, 60 to 90. Hold the turret back: it takes 60 percent off a salvo. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: hold it to cut her volley",
-     "Fire: gun 1 at her lock, torpedo at her hull, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 6 of 4, and a gun locks next turn"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: your torpedo hits her hull for 14, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your torpedo hits her hull for 14, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Torpedo, 1 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: guns held, torpedo at her hull, heat 0 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 2: no hits.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your torpedo hits her hull for 14, she hits your hull for 10.</p><p>Turn 2: no hits.",
-    "labels": [
-     "Gun 1: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Torpedo, 1 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: guns held, torpedo held, heat 0 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 3: nothing left of the lock to hit.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "Turn 1: your torpedo hits her hull for 14, she hits your hull for 10.</p><p>Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Torpedo, 1 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her lock, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 4: you hit her consort's hull for 7, your torpedo hits her consort's hull for 13.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "Her consort: closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.</p><p>Turn 4: you hit her consort's hull for 7, your torpedo hits her consort's hull for 13.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her hull, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: no hits.",
+    "end": "broke",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: no hits.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -25864,7 +25260,7 @@
     ]
    },
    {
-    "log": "Turn 1: you hit her weapons for 12.",
+    "end": "boarded",
     "next": {
      "title": "The Lock",
      "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
@@ -25878,10 +25274,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: you hit her weapons for 8.",
+    "end": "escaped",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you hit her weapons for 8.</p><p>The raider's plume falls back on the board until the sensors lose it.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The raider's plume falls back on the board until the sensors lose it.",
      "labels": [
       "Stand down"
      ]
@@ -25889,7 +25285,7 @@
     "mem": []
    },
    {
-    "log": "Turn 1: nothing left of the weapons to hit.",
+    "end": "crippled",
     "next": {
      "title": "Dead in Space",
      "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Bitter Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
@@ -25901,10 +25297,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: no hits.",
+    "end": "broke",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -25914,7 +25310,7 @@
     ]
    },
    {
-    "log": "Turn 1: you hit her weapons for 12.",
+    "end": "boarded",
     "next": {
      "title": "The Lock",
      "text": "She closes while your drive is slow and seals a boarding tube to your lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
@@ -25928,10 +25324,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: you hit her weapons for 8.",
+    "end": "escaped",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: you hit her weapons for 8.</p><p>You open the range, and her last torpedo burns out well short of you.",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>You open the range, and her last torpedo burns out well short of you.",
      "labels": [
       "Stand down"
      ]
@@ -25939,7 +25335,7 @@
     "mem": []
    },
    {
-    "log": "Turn 1: nothing left of the weapons to hit.",
+    "end": "crippled",
     "next": {
      "title": "Dead in Space",
      "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Bitter Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
@@ -25951,10 +25347,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: no hits.",
+    "end": "broke",
     "next": {
      "title": "Battle Stations",
-     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>Turn 1: no hits.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>She breaks off, and on the open band a voice says, \"Your registry has been logged.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -25964,7 +25360,7 @@
     ]
    },
    {
-    "log": "Turn 1: you hit her weapons for 13.",
+    "end": "boarded",
     "next": {
      "title": "The Lock",
      "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.",
@@ -25978,10 +25374,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: you hit her weapons for 8.",
+    "end": "escaped",
     "next": {
      "title": "Battle Stations",
-     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>Turn 1: you hit her weapons for 8.</p><p>You open the range past her guns, and her hail goes unanswered until she drops off the board.",
+     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>You open the range past her guns, and her hail goes unanswered until she drops off the board.",
      "labels": [
       "Stand down"
      ]
@@ -25989,10 +25385,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: nothing left of the weapons to hit.",
+    "end": "crippled",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: nothing left of the weapons to hit.</p><p>Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -26002,36 +25398,10 @@
     ]
    },
    {
-    "log": "Turn 8: no hits.",
+    "end": "ran",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 8: no hits.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
-     "labels": [
-      "Stand down"
-     ]
-    },
-    "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off."
-    ]
-   },
-   {
-    "log": "Turn 8: no hits.",
-    "next": {
-     "title": "Battle Stations",
-     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 8: no hits.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
-     "labels": [
-      "Stand down"
-     ]
-    },
-    "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off."
-    ]
-   },
-   {
-    "log": "Turn 8: no hits.",
-    "next": {
-     "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 8: no hits.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.",
      "labels": [
       "Stand down"
      ]
@@ -26041,10 +25411,10 @@
     ]
    },
    {
-    "log": "Turn 8: no hits.",
+    "end": "ran",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 8: no hits.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.",
      "labels": [
       "Stand down"
      ]
@@ -26054,10 +25424,10 @@
     ]
    },
    {
-    "log": "Turn 8: no hits.",
+    "end": "ran",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 8: no hits.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight. Captain Vance has 9t of Water dumped to run lighter.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight. Captain Vance has 9t of Water dumped to run lighter.",
      "labels": [
       "Stand down"
      ]
@@ -26067,10 +25437,10 @@
     ]
    },
    {
-    "log": "Turn 1: no hits.",
+    "end": "away",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: no hits.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
      "labels": [
       "Stand down"
      ]
@@ -26078,10 +25448,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: no hits.",
+    "end": "away",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
      "labels": [
       "Stand down"
      ]
@@ -26089,1076 +25459,10 @@
     "mem": []
    },
    {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 11 to 17: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 2: overcharged, heat 2",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her launcher, gun 2 at her hull, torpedo at her launcher, heat 3 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
-    "labels": [
-     "Gun 1: a hit does 11 to 17: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 1: overcharged, heat 2",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her weapons, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: gun 1 at her launcher, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: no hits.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" fires a salvo of 2 at your hull, 40 to 60. Hold the turret back: it takes 60 percent off a salvo. Captain Vance: holding the range.",
-    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.",
-    "labels": [
-     "Gun 1: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: guns held, torpedo held, heat 0 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 2: she hits your hull for 69.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
-    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.</p><p>Turn 2: she hits your hull for 69.",
-    "labels": [
-     "Gun 1: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Launcher",
-     "Hold",
-     "Turret: fire with the guns",
-     "Fire: guns held, torpedo held, heat 0 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 3 to 0, locks off, once a fight",
-     "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
-     "Fire: 2 guns at her drive, heat 4 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 3 to 0, locks off, once a fight (ordered)",
-     "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
-     "Fire: 2 guns at her drive, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 3 to 0, locks off, once a fight",
-     "Lead the shot, gun 1: 7 to 11 damage with no range penalty, once a fight (ordered)",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
-     "Fire: 2 guns at her drive, heat 4 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 3 to 0, locks off, once a fight",
-     "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight (ordered)",
-     "Fire: 2 guns at her drive, heat 5 of 4, and a gun locks next turn"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: holding fire: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Vent the guns: nothing to act on this turn",
-     "Lead the shot: nothing to act on this turn",
-     "Split the turret: nothing to act on this turn",
-     "Fire: gun 1 at her hull, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: spent",
-     "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
-     "Fire: 2 guns at her drive, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 2 to 0, locks off, once a fight",
-     "Lead the shot: spent",
-     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
-     "Fire: 2 guns at her drive, heat 3 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 2, she hits your hull for 6.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 2, she hits your hull for 6.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: heat 3 to 0, locks off, once a fight",
-     "Lead the shot: nothing to act on this turn",
-     "Split the turret: spent",
-     "Fire: gun 1 at her drive, heat 3 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 2, she hits your hull for 6.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Turret: hold it to cut her volley",
-     "Vent the guns: spent",
-     "Lead the shot: spent",
-     "Split the turret: spent",
-     "Fire: gun 1 at her drive, heat 3 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot, gun 1: 11 damage, the top of its range with no range penalty, once a fight (ordered)",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight (ordered)",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight (ordered)",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight (ordered)",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 3 to 4: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 11 to 17: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight (ordered)",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight (ordered)",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight (ordered)",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight (ordered)",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: spent",
-     "Break the intercept: spent",
-     "Redline: spent",
-     "Patch: spent",
-     "Hot start: spent",
-     "Bypass: spent",
-     "Spoof: spent",
-     "Parley: spent",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you call the shot, you hit her drive for 11, you hit her hull for 8, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you call the shot, you hit her drive for 11, you hit her hull for 8, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: spent",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you break her intercept, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
+    "end": "lost",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you break her intercept, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.</p><p>The raider's plume falls back on the board until the sensors lose it.",
-     "labels": [
-      "Stand down"
-     ]
-    },
-    "mem": []
-   },
-   {
-    "log": "Turn 1: you patch the armor, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you patch the armor, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch: spent",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you hot start the guns, you hit her drive for 3, you hit her hull for 14, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you hot start the guns, you hit her drive for 3, you hit her hull for 14, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: spent",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you bypass the drive, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you bypass the drive, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: spent",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you spoof the transponder, you hit her drive for 2, you hit her hull for 9.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you spoof the transponder, you hit her drive for 2, you hit her hull for 9.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof: spent",
-     "Parley: a word on wit, and landed she breaks off, once a fight",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: you redline the drive, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
-    "next": {
-     "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you redline the drive, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.</p><p>The raider's plume falls back on the board until the sensors lose it.",
-     "labels": [
-      "Stand down"
-     ]
-    },
-    "mem": []
-   },
-   {
-    "log": "Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.",
-    "next": {
-     "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
-     "labels": [
-      "Stand down"
-     ]
-    },
-    "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off."
-    ]
-   },
-   {
-    "log": "Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 10, she hits your hull for 10.",
-    "next": null,
-    "mem": []
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 10, she hits your hull for 10.",
-    "labels": [
-     "Gun 1: a hit does 2 to 3: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Gun 2: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 2: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Called shot: name a gun, once a fight",
-     "Break the intercept: the range opens this turn whatever her speed, once a fight",
-     "Redline the drive: the ship is away this turn, once a fight",
-     "Patch the armor: 12 back, once a fight",
-     "Hot start: every shot overcharged at a plain shot's heat, once a fight",
-     "Bypass: the drive back to full, once a fight",
-     "Spoof the transponder: she fires no volley and no salvo this turn, once a fight",
-     "Parley: spent",
-     "Fire: gun 1 at her drive, gun 2 at her hull, torpedo held, heat 2 of 4"
-    ],
-    "group": [
-     "Orders to the guns"
-    ]
-   },
-   {
-    "log": "Turn 1: she hits your hull for 1.",
-    "next": {
-     "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: she hits your hull for 1.</p><p>They're on the bridge. Captain Vance gives them the code to the strongbox because there's no choice, and they take 36,000 cr of the ship's fund and go. They take 9t of Water from the hold as well. The ship still flies.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>They're on the bridge. Captain Vance is at the console and doesn't give them the code, so they take it. They take 36,000 cr of the ship's fund and go. They take 9t of Water from the hold as well. The ship still flies. Captain Vance doesn't get up.",
      "labels": [
       "Stand down"
      ]
@@ -27168,10 +25472,10 @@
     ]
    },
    {
-    "log": "Turn 1: she hits your hull for 1.",
+    "end": "lost",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: she hits your hull for 1.</p><p>They're on the bridge. Captain Vance surrenders the ship to the Arcology Pact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The boarding officer has 9t of Water taken off as part of the levy. The cutter lets you go, with a citation.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>They're on the bridge. Captain Vance surrenders the ship to the Arcology Pact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The boarding officer has 9t of Water taken off as part of the levy. The cutter lets you go, with a citation.",
      "labels": [
       "Stand down"
      ]
@@ -27181,122 +25485,16 @@
     ]
    },
    {
-    "log": "Turn 1: she hits your hull for 1.",
+    "end": "lost",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: she hits your hull for 1.</p><p>They're on the bridge. Captain Vance gives them the code to the strongbox because there's no choice, and they take 36,000 cr of the ship's fund and go. The ship still flies.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>They're on the bridge. Captain Vance is at the console and doesn't give them the code, so they take it. They take 36,000 cr of the ship's fund and go. The ship still flies. Captain Vance doesn't get up.",
      "labels": [
       "Stand down"
      ]
     },
     "mem": [
      "9 Jul 2214: The bridge was taken on your watch."
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 10 to 15: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Range: Close (knife range next turn)",
-     "Hold (knife range next turn)",
-     "Open (close next turn)",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns",
-     "Orders to the bridge"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Range: Close (medium next turn)",
-     "Hold (long next turn)",
-     "Open (out of reach next turn)",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns",
-     "Orders to the bridge"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Range: Close (medium next turn)",
-     "Hold (long next turn)",
-     "Open (out of reach next turn)",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns",
-     "Orders to the bridge"
-    ]
-   },
-   {
-    "title": "Battle Stations",
-    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
-    "labels": [
-     "Gun 1: a hit does 7 to 11: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Gun 1: normal charge",
-     "Torpedo, 2 left: Hull",
-     "Weapons",
-     "Drive",
-     "Lock",
-     "Hold",
-     "Turret: fire with the guns",
-     "Range: the drive is down, and the range is hers",
-     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
-    ],
-    "group": [
-     "Orders to the guns",
-     "Orders to the bridge"
     ]
    },
    {
@@ -28408,99 +26606,19 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Rusted Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Hungry Tooth\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Black Hook\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Silent Hook\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
     "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.99,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0,
-    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Black Debt\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0,
-    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.99,
-    "text": "The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations. Her crew have done this before.",
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
-  "labels": [
-   "Battle stations (you take the guns)",
-   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
-   "Pay them off (10% of your credits, at least 5,000)",
-   "[{crew}] Spoof a pirate transponder",
-   "[Gunner] Put a burst across her bow [65%; opens the range]"
-  ]
- },
- {
-  "id": "scene:contact:pirate:pilot",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0,
-    "text": "Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 0,
-    "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0,
-    "text": "Mate1 runs, but the Pirate \"Silent Grin\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -28542,13 +26660,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations. Her crew have done this before.",
+    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.99,
-    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
+    "text": "The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations.",
     "next": null
    }
   ],
@@ -28559,34 +26677,34 @@
    "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[{crew}] Spoof a pirate transponder",
-   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
+   "[Gunner] Put a burst across her bow [65%; opens the range]"
   ]
  },
  {
-  "id": "scene:contact:pirate:engineer",
+  "id": "scene:contact:pirate:pilot",
   "plays": [
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Rusted Tooth\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Silent Widow\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Silent Debt\" made the intercept.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "Mate1 runs, but the Pirate \"Crimson Knife\" gets a burst in first. Battle stations. Her crew have done this before.",
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "text": "Mate1 runs, but the Pirate \"Bitter Hook\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -28616,7 +26734,87 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Silent Vulture\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "They see through it. Battle stations. The Pirate \"Bitter Vulture\" made the intercept. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Bitter Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 runs, but the Pirate \"Silent Widow\" gets a burst in first. Battle stations. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Hungry Vulture\" made the intercept.",
     "next": null
    },
    {
@@ -28628,7 +26826,7 @@
    {
     "i": 4,
     "roll": 0.99,
-    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
+    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    }
   ],
@@ -28648,19 +26846,19 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Black Widow\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Rusted Vulture\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Silent Tooth\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Silent Vulture\" made the intercept.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "Mate1 runs, but the Pirate \"Hungry Debt\" gets a burst in first. Battle stations.",
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
@@ -28696,7 +26894,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Crimson Tooth\" made the intercept.",
+    "text": "They see through it. Battle stations. The Pirate \"Bitter Widow\" made the intercept.",
     "next": null
    }
   ],
@@ -28715,7 +26913,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Arcology Pact cutter \"Patient Wager\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Brave Lantern\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -28731,7 +26929,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Arcology Pact cutter \"Lucky Anvil\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Stubborn Bargain\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -28747,13 +26945,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Ines runs, but the Arcology Pact cutter \"Stubborn Comet\" gets a burst in first. Battle stations.",
+    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
+    "text": "Ines runs, but the Arcology Pact cutter \"Patient Heron\" gets a burst in first. Battle stations.",
     "next": null
    }
   ],
@@ -28790,25 +26988,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Rusted Hook\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Hungry Grin\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Black Vulture\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Black Grin\" made the intercept. There are two of them, running in company.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Crimson Grin\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Hungry Tooth\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
     "next": null
    }
   ],
@@ -29936,7 +28134,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You talked me into the printed one for the fire control."
     ],
@@ -30002,7 +28200,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
     ],
@@ -30026,7 +28224,7 @@
    {
     "i": 2,
     "roll": 0.99,
-    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
     ],
@@ -30068,7 +28266,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 90. The fund pays 1,080 cr for the used one. You help Tomas fit it, and it goes in as it is.",
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
     "mem": [
      "9 Jul 2214: You talked me into the used one for the fire control."
     ],
@@ -30092,7 +28290,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You talked me into the printed one for the fire control."
     ],
@@ -30104,7 +28302,7 @@
    {
     "i": 2,
     "roll": 0.99,
-    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
     ],
@@ -30870,7 +29068,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
      "9 Jul 2214: You argued for the fire control part, and it held."
@@ -30935,7 +29133,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
      "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
      "9 Jul 2214: You argued for the fire control part, and it broke down."

@@ -1,27 +1,14 @@
-# Prototypes (temporary)
+# Prototype (temporary)
 
-**Temporary.** These are throwaway spikes from the combat redesign brainstorm (November 2026). They are not part of the game:
-nothing in `index.html` or `js/` loads them, no test covers them, and none of their code is meant to be reused. Delete this
-folder once the combat specs they inform are written.
+**Temporary.** This is a throwaway spike from the combat redesign brainstorm (November 2026). It is not part of the game:
+nothing in `index.html` or `js/` loads it, no test covers it, and none of its code is meant to be reused. Delete this
+folder once the boarding spec it informs is written. The radar and the threat-and-answer spikes went with the old ship fight
+(#1348): the radar fight is built from the first (`docs/superpowers/specs/2026-11-16-radar-ship-fight-design.md`).
 
-Each is one self-contained page. Open it in a desktop browser.
+It is one self-contained page. Open it in a desktop browser.
 
-- `radar-spike.html`: the ship fight played on the radar. Real motion with a facing that turns 90 degrees a turn, projected
-  tracks with closest approach and torpedo paths, fire control with honest error bands (accuracy and resilience upgrades,
-  sensor condition), the PDC arc, and posts: the captain sets the intent, the gunner works the geometry, and pilot, engineer
-  and comms carry it out with skill checks and make suggestions. Mode A plots on the radar; mode B gives the post's orders.
-  Time runs in turns, or in real time with pause (1x, 2x, 16x), pausing itself at events: a salvo armed or launched, a
-  torpedo nearing the PDC's range, a hit, a call to you, coming into gun range, a change of plan into or out of
-  evade or break-off; never on a standing condition. The gunner's fire control runs the gun or the PDC for each order
-  cycle, never both.
-  She is met at 250 km by default, with fast, long-legged torpedoes launched from about 165 km and a radar that zooms
-  (50, 150, 400 km); the 40 km fight is kept as the short opening.
 - `boarding-spike.html`: a corsair's marines boarding the Ice Hauler, fought spot by spot through her real decks (the
   layout in `js/layouts.js`). Two waves, breaching charges with their setters, hatches in the well, Hester's standing intent,
   one order a turn to a named crewmate, and every side's intent drawn before the turn is committed.
-- `answer-spike.html`: the ship fight as threat and answer. Each turn she shows what she will do (arm, a salvo, a
-  broadside at a named room, closing, a grapple, breaking off; a veteran may feint), each post answers with one action
-  from its own list at the odds shown, the captain sets the stance, and hits land on the cutaway's rooms. Built to set
-  beside `radar-spike.html`.
 
-What each was asked to answer is on the page itself, under "What to judge".
+What it was asked to answer is on the page itself, under "What to judge".

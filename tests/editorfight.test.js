@@ -43,6 +43,8 @@ const fightOf = f => f.evaluate(() => {
   return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
     day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => (c.rowLabel ? `${c.rowLabel}: ${c.label}` : c.label))]) };  // a gun's or the torpedo's row reads its label too
 });
+// Ends the fight on the radar in the frame as it ends with her away (radarui.js, shipFightEnd: an end that changes nothing itself), for its close's Stand down.
+const endAway = f => f.evaluate(() => { const s = G.dialog.event.fight; G.radar = null; shipFightEnd(s, 'away'); finishEvent(); });
 // Clicks a choice in the frame and waits for the report of it.
 async function choose(f, i) {
   await page.evaluate(() => document.querySelector('#pv-effects').replaceChildren());
@@ -71,11 +73,10 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['end.crippled.patrol', r => r.patrol, false],
     ['memory.navy', r => r.patrol, false],
     ['end.broke.gun', r => r.patrol, false],
-    ['torp.row', r => r.ship === 'corsair' && r.torps > 0, true],
+    ['open.torpedo.0', r => r.ship === 'corsair' && r.torps > 0, true],
     ['open.torpedo.1', r => r.ship === 'corsair', true],
-    ['log.mine.consort', r => r.pack, false],
     ['open.grapple.0', r => r.ship === 'raider' && !r.pack && !r.patrol, true],
-    ['part.hull', r => r.ship === 'raider' && !r.pack && !r.patrol && r.kind === 'ship', false],
+    ['part.hull', r => r.ship === 'raider' && !r.pack && !r.patrol && r.kind === 'radar', false],
     ['deck.feint', r => r.kind === 'deck' && !r.assault, false],  // a veteran's repel: shown on a push, and the first turn is a hold
     ['deck.stand', r => r.kind === 'deck' && !r.assault, true],
     ['deck.who.navy', r => r.kind === 'deck' && r.navy && !r.assault, true],  // the navy's own lines play in the navy's deck (#831)
@@ -85,13 +86,12 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['memory.searched', r => r.kind === 'deck' && r.navy, false],
     ['deck.holdfire', r => r.kind === 'deck' && !r.navy && !r.assault, false],  // the repel keeps hold fire
     ['deck.hers.0', r => r.kind === 'deck' && r.assault, false],
-    ['pdc.fire', r => r.kind === 'ship' && r.pdc, true],
     ['hurt.you', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // the hurt and the fallen play on our deck, where a head of ours down reads them (#796)
     ['hit.again.dead', r => r.kind === 'deck' && !r.assault && !r.navy, false],
     ['cover.even', r => r.kind === 'deck' && !r.assault && !r.navy, false],
     ['killed.repel.log', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // and a death's cause where it is written
     ['killed.assault.log', r => r.kind === 'deck' && r.assault, false],
-    ['killed.navy.log', r => r.kind === 'ship' && r.patrol, false],
+    ['killed.navy.log', r => r.kind === 'radar' && r.patrol, false],
   ];
   for (const [line, ok, shown] of cases) {
     await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
@@ -171,13 +171,11 @@ test('the report shows what the fight changed since Play, the armor, the fund, t
     career().hurtUntil = st.day + 10; gainSkill('gunner', 2);
     return { a: `${a.first} ${a.last}`, b: `${b.first} ${b.last}` };
   });
-  let shown = await choose(f, 0);  // a gun's target: the panel is drawn again
+  await endAway(f);
+  const shown = await choose(f, 0);  // Stand down
   for (const want of [/standing with Arcology Pact: \S+ to \S+ \(-8\)/, /armor: \d+ to \d+ \(-5\)/, /ship's fund: \S+ to \S+ \(\+100\)/, /torpedoes: \S+ to \S+ \(\+2\)/,
     new RegExp(`${names.a}: fit to hurt`), new RegExp(`${names.b}: fit to dead`), /you: fit to hurt/, /experience at the gunner post: \S+ to \S+ \(\+2\)/]) assert.match(shown, want);
-  shown = await choose(f, 0);  // another click: still everything since Play, not only what this one changed
-  assert.match(shown, /standing with Arcology Pact: \S+ to \S+ \(-8\)/);
-  assert.match(shown, /armor: \d+ to \d+ \(-5\)/);
-  assert.match(shown, /since Play/);
+  assert.match(shown, /since Play/, 'everything since Play, not only what this click changed');
 });
 
 test('a moment\'s versions say the day each plays on (#795)', async () => {
@@ -241,22 +239,19 @@ test('a deck line of a post plays with the hand at that post, and a crew gunner\
 
 test('the veteran\'s torpedoes are her loadout, not a change the fight made (#795)', async () => {
   await reload(); await select('scene:fight');
-  await page.fill('textarea[data-path="part.torp.row"]', 'Typed torpedo {left}');
+  await page.fill('textarea[data-path="part.open.torpedo.0"]', 'Typed torpedo.');
   const f = await play();
   assert.equal((await fightOf(f)).ship, 'corsair');
+  await endAway(f);
   const shown = await choose(f, 0);
   assert.doesNotMatch(shown, /torpedoes/, shown);
   assert.doesNotMatch(shown, /raided/, 'the captain remembering a raid is not reported');
 });
 
-test('lines on the consort and the first volleys get a fight that plays them, or say why not (#795)', async () => {
+test('lines on the first volleys get a fight that plays them, or say why not (#795)', async () => {
   await reload(); await select('scene:fight');
-  await page.fill('textarea[data-path="part.log.torp.consort"]', 'Typed.');
-  let r = await fightOf(await play());
-  assert.ok(r.pack && r.torps > 0, `the pair, with torpedoes aboard: ${JSON.stringify(r).slice(0, 200)}`);
-  await page.fill('textarea[data-path="part.log.torp.consort"]', '');
   await page.fill('textarea[data-path="part.first.hers"]', 'She fires first, typed: {hits}.');
-  r = await fightOf(await play());
+  const r = await fightOf(await play());
   assert.ok(r.pack && r.seen.includes('She fires first, typed'), `the pair starts a volley behind: ${r.seen.slice(0, 300)}`);
   await page.fill('textarea[data-path="part.first.hers"]', '');
   await page.fill('textarea[data-path="part.first.ours"]', 'Typed ours.');
