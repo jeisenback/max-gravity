@@ -628,7 +628,7 @@ const playScenes = () => {
   // ---------- the hurt and the fallen in a fight (boarders.js repelCasualty, hurtHand, killedHow, #796): each case won (0) and lost (0.99) on its first roll, with the causes the memorial
   // keeps; and who keeps out of a deck fight (repelCrew) ----------
   const deckOf = (assault = false) => { const foe = makeEnemy({ kind: 'pirate' }); return assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'); };
-  const shipOf = kind => ({ state: { kind: 'ship' }, spec: { kind }, hurt: new Set(), dead: [], marked: [], covered: true });
+  const shipOf = kind => ({ state: { kind: 'radar' }, spec: { kind }, hurt: new Set(), dead: [], marked: [], covered: true });
   const hit = (s, set, who) => ({ label: 'x', run() { set(s); const t = repelCasualty(s, who(s)); G.nextEvent = null; return t; } });  // the fight is made before the roll is set, so the roll is the hit's
   const mate = n => G.state.crew.map(person).filter(c => c && !c.cast)[n].id;
   run('scene:fight:casualty', {}, () => { const ours = deckOf(), hers = deckOf(true), raid = shipOf('pirate'), stop = shipOf('patrol'); return { title: 'x', text: '', choices: [

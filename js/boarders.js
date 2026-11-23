@@ -143,7 +143,7 @@ function hurtHand(s) {
 }
 
 // The memorial's cause of a death in a fight: the ship fight's (fightui.js), boarding her, or holding our own deck.
-const killedHow = s => hurtSay(`killed.${s.state && s.state.kind === 'ship' ? (s.spec.kind === 'patrol' ? 'navy' : 'raid') : s.assault ? 'assault' : 'repel'}.log`, { system: system().name });
+const killedHow = s => hurtSay(`killed.${s.state && s.state.kind === 'radar' ? (s.spec.kind === 'patrol' ? 'navy' : 'raid') : s.assault ? 'assault' : 'repel'}.log`, { system: system().name });
 
 // Someone goes down. On the hand it is the hand's hurt (hurtHand), which a friend may take once a fight. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
 // characters holds (the full build, fate.js) they are marked instead.

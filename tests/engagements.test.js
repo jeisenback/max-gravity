@@ -260,11 +260,11 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     const text = startDuel({ kind: 'patrol', gov }, false); begin();
     const out = { duel: !!G.duel, title: G.dialog.event.title, open: /navy ship/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), opening: fightNow().state.opening };
-    endAs('crippled');  // a cripple, which would leave a raider dead in space
+    const s = endAs('crippled');  // a cripple, which would leave a raider dead in space
     out.off = /calls the stop off/.test(G.dialog.event.text); out.warned = /registry has been logged/.test(G.dialog.event.text);
     out.boardable = G.dialog.event.title === 'Dead in Space'; out.pirate = repOf('Pirate');
     // A crewmate killed in the stop is logged as killed in it, not by boarders.
-    const c = st.crew.map(person).find(p => p && !p.cast); loseCrew(c, killedHow({ state: { kind: 'ship' }, spec: { kind: 'patrol' } }));
+    const c = st.crew.map(person).find(p => p && !p.cast); loseCrew(c, killedHow(s));  // the stop's own fight, as a heavy hit in it is logged (fightTook, repelCasualty)
     out.log = (st.home || {}).log.slice(-1)[0];
     return out;
   });
