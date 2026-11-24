@@ -15,6 +15,12 @@
     "replace": "st.heat = Math.max(0, st.heat);"
   },
   {
+    "name": "fitting-bought-free",
+    "file": "js/suggest.js",
+    "find": "if (r.cost) { moveMoney(-r.cost);",
+    "replace": "if (r.cost) {"
+  },
+  {
     "name": "pd-watch-reaches-no-further",
     "file": "js/fightui.js",
     "find": "if (handPerk('pd-watch')) mine.pdcReach = RADAR.PDC_WATCH;",

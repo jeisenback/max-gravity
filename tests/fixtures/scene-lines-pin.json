@@ -24071,6 +24071,45 @@
   ]
  },
  {
+  "id": "scene:screens:fit",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Captain Vance reads the yard's sheet twice and signs the order. The Fire-control accuracy suite is fitted for 40,000 cr from the ship's fund. Put a fitting to the captain You have put a fitting to the captain already at this port. Hardened fire-control sensors (30,000 cr from the ship's fund)",
+    "fx": {
+     "fund": -60000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Not with 10 cr in the fund,\" Captain Vance says. \"Ask me again when a run has paid.\"",
+    "fx": {
+     "fund": -119990
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Captain Vance does not take suggestions from a hand they do not know yet. Put a fitting to the captain Captain Vance does not take suggestions from a hand they do not know yet. Fire-control accuracy suite (40,000 cr from the ship's fund) Hardened fire-control sensors (30,000 cr from the ship's fund)",
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Weapons",
+  "text": "Put a fitting to the captain Fire-control accuracy suite (40,000 cr from the ship's fund) Hardened fire-control sensors (30,000 cr from the ship's fund)",
+  "labels": [
+   "yes",
+   "poor",
+   "deaf"
+  ]
+ },
+ {
   "id": "dayashore:walk:market",
   "plays": [
    {

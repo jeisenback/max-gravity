@@ -87,3 +87,64 @@ test('on the Port page, pressing Suggest puts the run to the captain, and the ru
   assert.equal(await page.$('[data-action=suggestRun]:not([disabled])'), null, 'and no second suggestion this stop');
   await done();
 });
+
+// ---------- putting a fitting to the captain (#1349, the owner's choice, 2026-11-24): the fire-control upgrades at a port with an outfitter, once a stop ----------
+
+const { load } = require('./nodecontext');
+const F = load(['js/data.js', 'js/suggest.js'], { Mods: { register() {} }, sceneSay: (id, key, vars) => `${key} ${JSON.stringify(vars || {})}`, fmt: n => String(n) }, ['OUTFITS', 'FIT_UPGRADES', 'fitAsk']);
+const plainOf = x => JSON.parse(JSON.stringify(x));
+
+test('fitAsk: a captain who does not listen says so and the stop is not spent; one who does buys it for its price, or says the fund will not stretch; once a stop', () => {
+  const { OUTFITS, FIT_UPGRADES, fitAsk } = F, price = OUTFITS.fcAccuracy.price;
+  assert.deepEqual(plainOf(FIT_UPGRADES), ['fcAccuracy', 'fcResilience']);
+  assert.deepEqual([OUTFITS.fcAccuracy.price, OUTFITS.fcResilience.price], [40000, 30000], 'the owner\'s prices (#1349)');
+  const game = opinion => ({ st: { day: 10, planet: 'Earth', outfits: {} }, hand: {}, cap: { last: 'Vance', opinion } });
+  let g = game(-1);
+  let r = fitAsk(g.st, g.hand, g.cap, 1, price, 'fcAccuracy');
+  assert.equal(r.cost, 0); assert.match(r.text, /^fit\.deaf /); assert.equal(g.hand.fitAsk, undefined, 'a refusal for trust does not spend the stop');
+  g = game(1);
+  r = fitAsk(g.st, g.hand, g.cap, 1, price - 1, 'fcAccuracy');
+  assert.equal(r.cost, 0); assert.match(r.text, /^fit\.poor /); assert.equal(g.st.outfits.fcAccuracy, undefined, 'nothing fitted');
+  assert.equal(fitAsk(g.st, g.hand, g.cap, 1, price, 'fcResilience').text, '', 'once a stop');
+  g = game(1);
+  r = fitAsk(g.st, g.hand, g.cap, 1, price, 'fcAccuracy');
+  assert.equal(r.cost, price, 'its price, for the caller to take from the fund'); assert.match(r.text, /^fit\.yes /); assert.equal(g.st.outfits.fcAccuracy, 1, 'fitted');
+  g.st.day += 1; assert.equal(fitAsk(g.st, g.hand, g.cap, 1, price, 'fcAccuracy').text, '', 'one fitted is not asked for again');
+  assert.equal(fitAsk(g.st, g.hand, g.cap, 1, price, 'heavy').text, '', 'only the fire-control upgrades');
+});
+
+test('on the Weapons console at a port with an outfitter, pressing an upgrade puts it to the captain, who buys it; the fight on the radar then reads it (#1349, #1327)', async () => {
+  const { page, ev, errors, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { setup('hester'); hired().fund = 100000; person(hired().captain).opinion = captainHears(); UI.render(); });
+  await goTo(page, 'weapons');
+  const before = await ev(() => ({ fund: hired().fund, bill: hired().bill || 0, fitOff: radarFit(G.state) }));
+  await page.click('[data-action=fitAsk][data-arg=fcAccuracy]');
+  const after = await ev(() => {
+    const st = G.state; hired().raidTold = true; G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false);
+    const fit = G.nextEvent.fight.state.fit; G.nextEvent = null; G.radar = null;
+    return { fund: hired().fund, bill: hired().bill || 0, fitted: st.outfits.fcAccuracy, fit, note: UI.notes.join(' '), panel: document.querySelector('#panel').innerText, open: !!document.querySelector('[data-action=fitAsk]:not([disabled])') };
+  });
+  await done();
+  assert.deepEqual(before.fitOff, { accuracy: false, resilience: false });
+  assert.equal(before.fund - after.fund, 40000, 'from the ship\'s fund'); assert.equal(after.bill - before.bill, 40000, 'on the captain\'s bill'); assert.equal(after.fitted, 1);
+  assert.deepEqual(after.fit, { accuracy: true, resilience: false }, 'the flag reaches the fight');
+  assert.match(after.note, /signs the order/, 'the captain\'s answer, as a port note'); assert.match(after.panel, /You have put a fitting to the captain already at this port/);
+  assert.equal(after.open, false, 'and no second this stop');
+  assert.deepEqual(errors, []);
+});
+
+test('the console shuts the ask, with the reason, while the captain does not listen, and offers nothing at a port with no outfitter (#1349)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    setup('hester'); person(hired().captain).opinion = captainHears() - 1;
+    const deaf = fitHtml();
+    person(hired().captain).opinion = captainHears(); const planet = currentPlanet(), had = planet.services; planet.services = had.filter(s => s !== 'outfitter');
+    const none = fitHtml(); planet.services = had;
+    return { deaf, none };
+  });
+  await done();
+  assert.match(r.deaf, /does not take suggestions/); assert.match(r.deaf, /disabled/);
+  assert.equal(r.none, '');
+});
