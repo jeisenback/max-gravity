@@ -10,7 +10,7 @@
 
 const RADAR_UI = { FADE: 3, LAST: 6, RATIO: 0.62, HOVER: 14, ARC: 40, ARC_MIN: 10, ARC_MAX: 180, WEDGE: 90 };  // cycles an event's mark fades over; events listed in words; the radar's height to its width; px a hover finds a thing within; px out to the PDC arc's ends; its narrowest and widest, degrees; px a full-throttle burn reaches
 const radarSay = (key, vars) => sceneSay('scene:fight', `radar.${key}`, vars);
-const radarFit = st => ({ accuracy: !!(st.outfits || {}).fcAccuracy, resilience: !!(st.outfits || {}).fcResilience });  // the fire-control upgrades, fitted on no ship yet (an outfit is a follow-up)
+const radarFit = st => ({ accuracy: !!(st.outfits || {}).fcAccuracy, resilience: !!(st.outfits || {}).fcResilience });  // the fire-control upgrades (data.js OUTFITS), bought by the captain when the hand puts one to them (suggest.js fitAsk, #1349)
 const radarLevels = () => Object.fromEntries(HIRED_POSTS.map(p => [p, Math.min(5, roleSkill(POSTS[p].role))]));  // each post's crew level, for radarAuto
 const RADAR_POSTS = ['gunner', 'pilot'];  // the posts the hand works on the radar (Task 10); the crew work the others for now
 const radarPost = () => (RADAR_POSTS.includes(lockPost()) ? lockPost() : null);

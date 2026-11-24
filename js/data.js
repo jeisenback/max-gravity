@@ -259,6 +259,8 @@ const OUTFITS = {
   drive:   { name: 'Drive tuning', price: 80000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
   berth:   { name: 'Passenger berth', price: 30000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
   pump:    { name: 'Pump-crew coolant bypass', price: 15000, space: 0, max: 1, kit: 'valve-keys', desc: 'The Hollows\' pump crew\'s bypass, fitted to the drive so the reaction mass runs through it twice. +60 reaction mass capacity, and no cargo space. Offered to a ship that carries the valve keys.', mod: s => { s.fuel += 60; } },
+  fcAccuracy: { name: 'Fire-control accuracy suite', price: 40000, space: 0, max: 1, desc: 'Halves the error in the fire control\'s solution, and tightens the gun. Read by the fight on the radar (radar.js).', mod: () => {} },  // #1349, the owner's price (2026-11-24)
+  fcResilience: { name: 'Hardened fire-control sensors', price: 30000, space: 0, max: 1, desc: 'Keeps worn sensors from widening the fire control\'s error. Read by the fight on the radar (radar.js).', mod: () => {} },
   spoofer: { name: 'Transponder spoofer', price: 90000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
 };
 

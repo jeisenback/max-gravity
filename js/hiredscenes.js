@@ -526,6 +526,11 @@ const SCENE_LINES = {
     'coop.leave.with': 'Signing on means leaving Captain {first} {last} and the crew behind, but {names} would sign on with you.',
     'coop.leave.alone': 'Signing on means leaving Captain {first} {last} and the crew behind, and nobody on the crew knows you well enough to come.',
     'coop.heading': 'The captain knows you have the buy-in, and is heading for Ceres. ',
+    // putting a fire-control upgrade to the captain (suggest.js fitAsk, #1349): {cap} the captain, {name} the fitting, {cost} its price, {fund} what the ship's fund holds
+    'fit.eyebrow': 'Put a fitting to the captain', 'fit.label': '{name} ({cost} cr from the ship\'s fund)',
+    'fit.deaf': '{cap} does not take suggestions from a hand they do not know yet.', 'fit.asked': 'You have put a fitting to the captain already at this port.',
+    'fit.poor': '"Not with {fund} cr in the fund," {cap} says. "Ask me again when a run has paid."',
+    'fit.yes': '{cap} reads the yard\'s sheet twice and signs the order. The {name} is fitted for {cost} cr from the ship\'s fund.',
     'torps.restock': 'The captain has the magazine filled at the yard, {n} bought for {cost} cr from the ship\'s fund.',
     'torps.kept': 'the captain keeps {n} aboard, and buys {n} at a time from the ship\'s fund',  // the Gunnery page's count on a captain's ship (#956)
     'figures.label': 'Go over the captain\'s figures with her',

@@ -467,6 +467,16 @@ const playScenes = () => {
     run(`scene:day-down:below-${key}-given`, {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk.find(x => x.key === key); st.belowFor = key; return portWordEvent(f, portFolkPerson(planet, f), st); });
   }
   run('scene:day-down:boy', {}, () => boyEvent(currentPlanet()));  // the boy comes up (part 3)
+  // ---------- a fire-control upgrade put to the captain from the Weapons console (suggest.js, #1349): the console's ask, and the captain's yes, the fund too low, and not listening ----------
+  run('scene:screens:fit', {}, () => {
+    const st = G.state, cap = hiredCaptain(), plain = x => String(x).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(), ask = () => { const r = fitAsk(st, hired(), cap, captainHears(), purse(), 'fcAccuracy'); moveMoney(-r.cost); return r.text; };
+    G.mode = 'landed'; cap.opinion = captainHears();
+    return { title: 'Weapons', text: plain(fitHtml()), choices: [
+      { label: 'yes', run() { hired().fund = 100000; return `${ask()} ${plain(fitHtml())}`; } },  // and the console then says it has been put this stop
+      { label: 'poor', run() { hired().fund = 10; return ask(); } },
+      { label: 'deaf', run() { cap.opinion = captainHears() - 1; return `${ask()} ${plain(fitHtml())}`; } },
+    ] };
+  });
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };
