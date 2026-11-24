@@ -23436,29 +23436,76 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The lower tiers are by the wall, and the lifts there take a long time. A notice in the lobby says the service charge goes up in March. Two floors up a man is mending a fan in a shop doorway, with the parts laid out on a towel, and he tells you the rent on the shop before you've asked.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "The lower tiers are by the wall, and the lifts there take a long time. A notice in the lobby says the service charge goes up in March. Two floors up a man is mending a fan in a shop doorway, with the parts laid out on a towel, and he tells you the rent on the shop before you've asked.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "The water taxi across the lagoon takes trade notes as well as scrip. Surulere's market runs down both sides of a street, under awnings and a tangle of cable from the generator on a roof. A woman selling phone parts asks if you're off the Ring. You say yes. She asks if they're hiring.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "The water taxi across the lagoon takes trade notes as well as scrip. Surulere's market runs down both sides of a street, under awnings and a tangle of cable from the generator on a roof. A woman selling phone parts asks if you're off the Ring. You say yes. She asks if they're hiring.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "The departure hall on the platform has a screen with the flights on it and four hundred seats bolted to the floor. You sit by the window and watch the lift loads go up on the sled, one every twenty minutes. The evening flight is on time.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "The departure hall on the platform has a screen with the flights on it and four hundred seats bolted to the floor. You sit by the window and watch the lift loads go up on the sled, one every twenty minutes. The evening flight is on time.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Walk the arcology's tiers",
-   "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall",
-   "Look for work"
+   "Down to the tiers (900 cr)",
+   "Down to the mainland market (900 cr)",
+   "Down to the departure hall (900 cr)"
   ]
  },
  {
@@ -23467,29 +23514,76 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You ride a glass lift up the outside of a tower because it's there, and a security contractor rides down with you to make sure that's all it is. From the top tier you can see the wall, the lagoon and the mainland behind it, and the platform out at sea where you came in.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "You ride a glass lift up the outside of a tower because it's there, and a security contractor rides down with you to make sure that's all it is. From the top tier you can see the wall, the lagoon and the mainland behind it, and the platform out at sea where you came in.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Walk the arcology's tiers",
-   "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall",
-   "Look for work"
+   "Down to the tiers (900 cr)",
+   "Down to the mainland market (900 cr)",
+   "Down to the departure hall (900 cr)"
   ]
  },
  {
@@ -23498,29 +23592,76 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A school is letting out on a middle tier, the children in two colours of uniform by the tier they live on. You buy water from a machine that wants arcology scrip, and it won't take your card the first two times.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "A school is letting out on a middle tier, the children in two colours of uniform by the tier they live on. You buy water from a machine that wants arcology scrip, and it won't take your card the first two times.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You walk down a street of flats with the washing out over it. A boy of about sixteen asks if you're from an agency. When you say no, he asks which agency you went up through, and writes the name on his hand.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "You walk down a street of flats with the washing out over it. A boy of about sixteen asks if you're from an agency. When you say no, he asks which agency you went up through, and writes the name on his hand.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You eat at the counter in the departure hall. The menu is in scrip with the trade-note price under it, a third higher. You watch the sea for most of the afternoon.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "You eat at the counter in the departure hall. The menu is in scrip with the trade-note price under it, a third higher. You watch the sea for most of the afternoon.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Walk the arcology's tiers",
-   "Cross the lagoon to the mainland market",
-   "Wait it out in the departure hall",
-   "Look for work"
+   "Down to the tiers (900 cr)",
+   "Down to the mainland market (900 cr)",
+   "Down to the departure hall (900 cr)"
   ]
  },
  {
@@ -23593,38 +23734,7 @@
     "i": 1,
     "roll": 0.5,
     "text": null,
-    "next": {
-     "title": "A Day Down",
-     "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
-     "labels": [
-      "Walk the arcology's tiers",
-      "Cross the lagoon to the mainland market",
-      "Wait it out in the departure hall",
-      "Look for work"
-     ]
-    },
-    "nextPlays": [
-     {
-      "j": 0,
-      "roll": 0.5,
-      "text": "You ride a glass lift up the outside of a tower because it's there, and a security contractor rides down with you to make sure that's all it is. From the top tier you can see the wall, the lagoon and the mainland behind it, and the platform out at sea where you came in."
-     },
-     {
-      "j": 1,
-      "roll": 0.5,
-      "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday."
-     },
-     {
-      "j": 2,
-      "roll": 0.5,
-      "text": "A man two seats down has been waiting since yesterday, because his seat was sold twice. He shows you the ticket, and the message saying it's valid, and goes back to waiting."
-     },
-     {
-      "j": 3,
-      "roll": 0.5,
-      "text": "null"
-     }
-    ]
+    "next": null
    }
   ],
   "title": "Tomas's Parcel",
@@ -23707,17 +23817,36 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The crayfish sellers are at the far end of the market, under a tarpaulin. The woman weighing it out asks who it's for, and when you say a stall on the Ring she adds a handful and charges for it.",
+    "text": null,
     "fx": {
-     "credits": -60
+     "credits": -900
     },
-    "next": null
+    "next": {
+     "title": "A Day Down",
+     "text": "Yaba at midday is loud. A stall sells fried plantain in paper, and the man who runs it tells you the generator went at five this morning and the generator man came at eleven, which is good, for a Tuesday.",
+     "labels": [
+      "Buy dried crayfish for Ngozi in Surulere (60 cr)",
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "The crayfish sellers are at the far end of the market, under a tarpaulin. The woman weighing it out asks who it's for, and when you say a stall on the Ring she adds a handful and charges for it."
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Buy dried crayfish for Ngozi in Surulere (60 cr)"
+   "Down to the mainland market (900 cr)"
   ]
  },
  {
@@ -23816,14 +23945,30 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Tunde's supplier is a lock-up under the flyover in Mushin, with seals hung on nails by size, hundreds of them, and a boy asleep on a crate by the door. The woman who runs it knows the name. \"Tunde, up on the Ring? Tell Tunde the price is going up. It's not me, it's the plane. They charge by the kilo now.\" She writes the new price on a scrap of card and gives it to you to take up.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "Tunde's supplier is a lock-up under the flyover in Mushin, with seals hung on nails by size, hundreds of them, and a boy asleep on a crate by the door. The woman who runs it knows the name. \"Tunde, up on the Ring? Tell Tunde the price is going up. It's not me, it's the plane. They charge by the kilo now.\" She writes the new price on a scrap of card and gives it to you to take up.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Find Tunde's seal supplier in Mushin"
+   "Down to see Tunde (900 cr)"
   ]
  },
  {
@@ -23854,14 +23999,30 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Obinna's mother has the ground floor of a block in Ebute Metta, with a chest freezer in the front room that she sells cold drinks from through the window. When you say where you've come from, she says \"From the Well?\" and sits you down. She gives you a malt from the freezer and won't take scrip for it. On the wall there's a photo of Obinna at about twelve, in an Orbitals shirt three sizes too big.",
-    "next": null
+    "text": null,
+    "fx": {
+     "credits": -900
+    },
+    "next": {
+     "title": "A Day Down",
+     "text": "Obinna's mother has the ground floor of a block in Ebute Metta, with a chest freezer in the front room that she sells cold drinks from through the window. When you say where you've come from, she says \"From the Well?\" and sits you down. She gives you a malt from the freezer and won't take scrip for it. On the wall there's a photo of Obinna at about twelve, in an Orbitals shirt three sizes too big.",
+     "labels": [
+      "Back up the spoke"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "null"
+     }
+    ]
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Visit Obinna's mother in Ebute Metta"
+   "Down to see Obinna (900 cr)"
   ]
  },
  {
@@ -30434,6 +30595,9 @@
     "i": 0,
     "roll": 0.5,
     "text": null,
+    "fx": {
+     "credits": -900
+    },
     "next": {
      "title": "A Sled Stuck on the Platform",
      "text": "The sled runs on a rail from the warehouse to the spaceplane's hold, and it has stopped halfway with a load of pump parts on it and the clamp locked. The crew chief has the loading schedule on her wrist. The next plane goes in fifty minutes, and the platform charges the shipper for every minute it waits. \"Day rate,\" she says, \"if you can do anything with that clamp.\"",
@@ -30469,9 +30633,9 @@
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Look for work"
+   "Down to look for work (900 cr)"
   ]
  },
  {
@@ -30481,6 +30645,9 @@
     "i": 0,
     "roll": 0.5,
     "text": null,
+    "fx": {
+     "credits": -900
+    },
     "next": {
      "title": "The Generator on the Roof",
      "text": "The generator is on the roof of a block of flats in Yaba, under a sheet of tin, and it serves three blocks by the hour. It stopped at six. The generator man, Femi, has the cover off and a phone in his other hand, and the tenants in the stairwell want to know when. \"I pay by the job,\" he says. \"If it starts, you get paid.\"",
@@ -30516,9 +30683,9 @@
    }
   ],
   "title": "A Day Down",
-  "text": "The morning spaceplane is two-thirds full: yard workers going down at the end of a contract, a woman with a crate of something kept cold, and you. Weight comes back through the seat on the way down. At the platform a ferry takes you in through the sea wall, and you have until the evening flight.",
+  "text": "",
   "labels": [
-   "Look for work"
+   "Down to look for work (900 cr)"
   ]
  },
  {
