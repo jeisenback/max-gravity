@@ -80,7 +80,6 @@ const EXEMPT = {
   sideWork: "the bar's side work is off in the shipped build: barWorkHtml returns nothing under scopeOff('barwork'), js/barwork.js",
   opSupply: "the outpost is off in the shipped build: the port draws neither the outpost nor its claim under scopeOff('owner'), js/outpost.js",
   modRemove: COMMUNITY, scenarioPlay: COMMUNITY, scenarioCancel: COMMUNITY, programSlot: PROGRAMS, programRemove: PROGRAMS, interview: INTERVIEW, interviewAsk: INTERVIEW,
-  goDown: "no button: the day down is only at Earth (DOWN_PORT), whose port view offers it as tags (downOffers, js/daydown.js); the action is kept as the way tests/daydown.test.js opens the day-down menu (#1334)",
 };
 
 const declared = declaredActions(walk(path.join(ROOT, 'js')).map(read));

@@ -1,9 +1,10 @@
 'use strict';
 
 // Going down to Lagos (#1162, docs/bible/ports.md Going down to Lagos): at the Ring, while the captain waits for a shipper (stay.js), the hand can
-// take the spaceplane down to the Lagos platform and back for a day, alone, for a seat bought from their own savings. A day down is a short menu,
-// as the day ashore is (dayashore.js): the arcology's tiers, the mainland market across the lagoon, or the platform's departure hall, each a line
-// taken in turn by the day. The words are the lines of scene:day-down (hiredscenes.js). Once a day; the night then passes as it does in a stay.
+// take the spaceplane down to the Lagos platform and back for a day, alone, for a seat bought from their own savings. Each day down is a tag on the
+// Ring's port view (downOffers, below): the arcology's tiers, the mainland market across the lagoon, the platform's departure hall, each a line taken
+// in turn by the day; the day's work below; a life below; Tomas's parcel. The words are the lines of scene:day-down (hiredscenes.js). Once a day; the
+// night then passes as it does in a stay.
 // Loaded after dayashore.js; calls into stay.js only at runtime.
 
 // The seat down and back (the owner, 2026-11-14); the port the spaceplane goes down from; dried crayfish for Ngozi from Surulere's market (#1164); and the
@@ -44,38 +45,26 @@ function boyEvent(planet) {
   ] };
 }
 // Lives below the Ring (#1164, part 4): one day down in BELOW_EVERY has a lane into the life below of one of the Ring's own people, the repairer and
-// the keeper in turn, each once: their next word at the Ring is about it (portview.js).
+// the keeper in turn, each once: their next word at the Ring is about it (portview.js). Returns the day's { key, first, run } (run takes it and says the
+// day), or null.
 const BELOW_EVERY = 4, BELOW = ['repairer', 'keeper'];
 function belowLane(st, planet) {
   const key = BELOW[Math.floor(st.day / BELOW_EVERY) % BELOW.length], layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === key);
-  if (!f || st.day % BELOW_EVERY !== 1 || (st.belowSeen || []).includes(key)) return [];
+  if (!f || st.day % BELOW_EVERY !== 1 || (st.belowSeen || []).includes(key)) return null;
   const first = portFolkPerson(planet, f).first;
-  return [{ label: lagosSay(`below.${key}.label`, { first }), run() { (st.belowSeen = st.belowSeen || []).push(key); st.belowFor = key; return lagosSay(`below.${key}.day`, { first }); } }];
+  return { key, first, run() { (st.belowSeen = st.belowSeen || []).push(key); st.belowFor = key; return lagosSay(`below.${key}.day`, { first }); } };
 }
 // Work below (part 3): the day's one of the jobs kept for Lagos (jobs.js, `down`), in turn by the day; it takes the day down, and the pay is the hand's.
 const downJob = day => { const list = JOBS.filter(j => j.down); return list[day % list.length]; };
-function dayDownEvent() {
-  const st = G.state;
-  return {
-    title: lagosSay('title'), text: lagosSay('text'), personal: true, place: 'well',  // it starts at the spoke lift, on the Ring's view
-    choices: [...DOWN_LANES.map(k => ({ label: lagosSay(`${k}.label`), run() {
-      if (k === 'market' && st.day % 3 === 0) st.metSeller = true;  // the woman selling phone parts, who asks if the Ring is hiring (portview.js, the clerk)
-      if (k === 'market' && st.day % 3 === 2 && st.metBoy === undefined) st.metBoy = st.day;  // the boy who writes the agency's name on his hand
-      return lagosSay(`${k}.${st.day % 3}`);
-    } })),
-      { label: lagosSay('work.label'), run() { G.nextEvent = jobStage(downJob(st.day), 0); return null; } },  // the day's job below, played as a station job is (jobs.js)
-      ...crayfishLane(st), ...belowLane(st, currentPlanet())],
-  };
-}
 // Tomas's parcel (#1162, part 2; docs/bible/people/tomas.md): when Tomas is aboard and trusts the hand as a visit home asks (OPINION.TRUSTED,
 // family.js), going down starts with him at the lift with a bag for his parents, Emeka and Chioma, in Surulere. Taken, the day is at their table, and
-// what the hand tells them is worth his regard and a memory; not taken, the day down goes on as it would. Not again inside VISIT_GAP days of the last.
+// what the hand tells them is worth his regard and a memory; not taken, nothing is paid and he asks again next time. Not again inside VISIT_GAP days of the last.
 const parcelDue = (st, t) => !!t && t.opinion >= OPINION.TRUSTED && st.day - (t.parentsAt === undefined ? -VISIT_GAP : t.parentsAt) >= VISIT_GAP;
 function tomasParcelEvent(t) {
   const st = G.state;
   return { title: lagosSay('parcel.title'), text: lagosSay('parcel.text'), personal: true, people: [t.id], place: 'well', choices: [
     { label: lagosSay('parcel.take'), run() { t.parentsAt = st.day; G.nextEvent = tomasParentsEvent(t); return null; } },
-    { label: lagosSay('parcel.not'), run() { G.nextEvent = dayDownEvent(); return null; } },  // the day down as it would have been
+    { label: lagosSay('parcel.not'), keep: true, run: () => null },
   ] };
 }
 function tomasParentsEvent(t) {
@@ -83,8 +72,8 @@ function tomasParentsEvent(t) {
   return { title: lagosSay('parents.title'), text: lagosSay('parents.text'), personal: true, choices: [told('kind', 1), told('true', 2)] };
 }
 
-// At a port with a view (#1193): the day's lanes as tags on the spoke lift, each the day down on its own and paid for when it is taken, in place of the
-// menu; the crayfish is a choice in the market's day, and the day's lane into a life below its own tag. Tomas's parcel is a tag over him while he is
+// At a port with a view (#1193): the day's lanes as tags on the spoke lift, each the day down on its own and paid for when it is taken; the crayfish is
+// a choice in the market's day, and the day's lane into a life below its own tag. Tomas's parcel is a tag over him while he is
 // on the view, and nothing is paid unless it is taken. Each is { key, label, who | room, lift, take }: the view's standing offers (portview.js).
 function downOffers(st, planet) {
   const h = hired(), o = G.mode === 'landed' && downOffer(st, h, planet);
@@ -94,20 +83,20 @@ function downOffers(st, planet) {
   const dayOf = (text, more = []) => ({ title: lagosSay('title'), text, personal: true, place: 'well', choices: [...more, up] });
   const lane = k => ({ key: `down:${k}`, label: lagosSay(`tag.${k}`, { fare }), room: 'well', lift: true, take() {
     pay();
-    if (k === 'market' && day % 3 === 0) st.metSeller = true;  // as the menu's market (dayDownEvent)
-    if (k === 'market' && day % 3 === 2 && st.metBoy === undefined) st.metBoy = day;
+    if (k === 'market' && day % 3 === 0) st.metSeller = true;  // the woman selling phone parts, who asks if the Ring is hiring (portview.js, the clerk)
+    if (k === 'market' && day % 3 === 2 && st.metBoy === undefined) st.metBoy = day;  // the boy who writes the agency's name on his hand
     openEvent(dayOf(lagosSay(`${k}.${day % 3}`), k === 'market' ? crayfishLane(st) : []));
   } });
-  const below = belowLane(st, planet)[0], key = BELOW[Math.floor(day / BELOW_EVERY) % BELOW.length], f = below && portLayout(planet).folk.find(x => x.key === key);
+  const below = belowLane(st, planet);
   const t = tomasAboard(), parcel = parcelDue(st, t);
   return [
     ...(parcel ? [{ key: 'down:parcel', label: lagosSay('tag.parcel', { first: t.first }), who: t.id, take() {
       const ev = tomasParcelEvent(t);
-      openEvent({ ...ev, choices: [{ ...ev.choices[0], run() { pay(); return ev.choices[0].run(); } }, { label: ev.choices[1].label, keep: true, run: () => null }] });  // the fare when it is taken
+      openEvent({ ...ev, choices: [{ ...ev.choices[0], run() { pay(); return ev.choices[0].run(); } }, ev.choices[1]] });  // the fare when it is taken
     } }] : []),
     ...DOWN_LANES.map(lane),
     { key: 'down:work', label: lagosSay('tag.work', { fare }), room: 'well', lift: true, take() { pay(); openEvent(jobStage(downJob(day), 0)); } },
-    ...(below ? [{ key: 'down:below', label: lagosSay('tag.below', { first: portFolkPerson(planet, f).first, fare }), room: 'well', lift: true, take() { pay(); openEvent(dayOf(below.run())); } }] : []),
+    ...(below ? [{ key: 'down:below', label: lagosSay('tag.below', { first: below.first, fare }), room: 'well', lift: true, take() { pay(); openEvent(dayOf(below.run())); } }] : []),
   ];
 }
 
@@ -115,12 +104,5 @@ Mods.register({
   id: 'daydown', name: 'Going down to Lagos', builtin: true,
   init(M) {
     M.on('landed', planet => { const st = G.state; if (hired() && boyDue(st, planet)) { st.boyUp = true; offerScene('people', boyEvent(planet)); } });  // among the landing's people
-    M.action('goDown', () => {
-      const st = G.state, h = hired(), o = !G.dialog && G.mode === 'landed' && downOffer(st, h, currentPlanet());
-      if (!o || o.shut) return;
-      st.credits -= DOWN_FARE; h.downDay = st.day;
-      const t = tomasAboard();
-      openEvent(parcelDue(st, t) ? tomasParcelEvent(t) : dayDownEvent());  // Tomas at the lift first, when he has something for his parents
-    });
   },
 });

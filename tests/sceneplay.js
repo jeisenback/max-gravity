@@ -442,8 +442,12 @@ const playScenes = () => {
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
     window.tiesOf = realTies;
   }
-  // ---------- a day down in Lagos (#1162): the menu on each of the three days its lines turn on, and the Port page's button and its shut line ----------
-  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); }, { skip: [3] });  // looking for work is played last (below)
+  // ---------- a day down in Lagos (#1162): the day's tags on the Ring's view (downOffers, #1193), each taken as the view takes it, on each of the three days its lines turn on ----------
+  // `keys` are the tags played; each choice takes its tag and queues the day it opens, so its words and its own choices are played as the scene after it
+  const downTags = keys => { const st = G.state, h = hired(); G.mode = 'landed'; if (!stayOf(h)) beginStay(h, 3, 'market'); st.credits = Math.max(st.credits, 5000); delete h.downDay;
+    return { title: lagosSay('title'), text: '', choices: downOffers(st, currentPlanet()).filter(o => keys.includes(o.key)).map(o => ({ label: o.label, run() {
+      G.dialog = null; o.take(); G.nextEvent = G.dialog && G.dialog.event; G.dialog = null; return null; } })) }; };
+  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; tomasAboard().opinion = 0; st.belowSeen = BELOW.slice(); return downTags(['down:tiers', 'down:market', 'down:hall']); });  // looking for work is played last (below)
   // the lanes as tags on the Ring's spoke lift, and the line that brings the hand back up (#1193)
   run('scene:day-down:tags', {}, () => ({ title: lagosSay('title'), text: [...['tiers', 'market', 'hall', 'work'].map(k => lagosSay(`tag.${k}`, { fare: fmt(DOWN_FARE) })), lagosSay('tag.below', { first: 'Ada', fare: fmt(DOWN_FARE) }), lagosSay('tag.parcel', { first: 'Tomas' })].join(' '), choices: [{ label: lagosSay('up.label'), run: () => null }] }));
   // the day ashore's entries as tags on a port's view, and the line that closes one (#1193)
@@ -451,7 +455,7 @@ const playScenes = () => {
   run('scene:day-down:parcel', {}, () => tomasParcelEvent(tomasAboard()));  // Tomas's parcel, and the day at his parents' table (part 2)
   run('scene:day-down:parents', {}, () => tomasParentsEvent(tomasAboard()));
   // something brought up (#1164, part 1): the crayfish for Ngozi, a day down after eating at her bay, and her next word with it
-  run('scene:day-down:crayfish', {}, () => { const st = G.state; st.portAte = st.day - 1; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[4]] }; });
+  run('scene:day-down:crayfish', {}, () => { const st = G.state; st.portAte = st.day - 1; return downTags(['down:market']); });  // the market's day, with the crayfish in it
   run('scene:day-down:ngozi-given', {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk[0]; st.forNgozi = true; return portWordEvent(f, portFolkPerson(planet, f), st); });
   // the woman gets placed (part 2): the clerk's word once she has been met, and her first word in her bay
   { const folk = (st, key) => { const planet = currentPlanet(), f = portLayout(planet, st).folk.find(x => x.key === key); return portWordEvent(f, portFolkPerson(planet, f), st); };
@@ -459,7 +463,7 @@ const playScenes = () => {
     run('scene:day-down:seller-given', {}, () => { const st = G.state; st.sellerAt = st.day - SELLER_DAYS; delete st.sellerMet; return folk(st, 'seller'); }); }
   // lives below the Ring (part 4): the lane on its day, and the next word of the one it was about
   for (const [key, day] of [['repairer', 1], ['keeper', 5]]) {
-    run(`scene:day-down:below-${key}`, {}, () => { const st = G.state; st.day = day; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: e.choices.slice(-1) }; });
+    run(`scene:day-down:below-${key}`, {}, () => { const st = G.state; st.day = day; return downTags(['down:below']); });
     run(`scene:day-down:below-${key}-given`, {}, () => { const st = G.state, planet = currentPlanet(), f = portLayout(planet).folk.find(x => x.key === key); st.belowFor = key; return portWordEvent(f, portFolkPerson(planet, f), st); });
   }
   run('scene:day-down:boy', {}, () => boyEvent(currentPlanet()));  // the boy comes up (part 3)
@@ -679,7 +683,7 @@ const playScenes = () => {
   run('scene:survey', {}, () => { const st = G.state, site = sites(st)['site:rock-1']; st.crew = []; hired().job = { kind: 'survey', site: site.id, client: 'Brannock Minerals', got: false }; return surveyScene(st, site); }, { rolls: [0, 0.45, 0.99] });
   run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
   // ---------- work below Lagos on a day down (#1162, part 3): each of the two jobs, last, since the skill a job gives the hand carries into the next game this file starts ----------
-  for (const d of [0, 1]) run(`scene:day-down:work:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 2) * 2 + d; G.mode = 'landed'; const e = dayDownEvent(); return { ...e, choices: [e.choices[3]] }; });
+  for (const d of [0, 1]) run(`scene:day-down:work:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 2) * 2 + d; return downTags(['down:work']); });
   // the port's official's manner at a landing, at each port that has one (#1242), and the plain note at a Guild port with none: notes, played here as
   // pages; last, as the landings leave the legacy log and the ship's life moved for the cases after them
   for (const [port, key] of Object.entries(OFFICIAL_MANNER)) run(`scene:inspection:manner:${key}`, {}, () => { uatLand(port); G.dialog = null; G.nextEvent = null; return { title: 'Landing', text: officialManner(currentPlanet()), choices: [] }; });
