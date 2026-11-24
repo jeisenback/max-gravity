@@ -276,6 +276,8 @@ Each type she can be has her own way of fighting: a raider closes and comes alon
 corsair holds at 30 km and arms a salvo every fourth cycle, which the point defence answers; a navy cutter holds at 25 km with a
 thick hull; a destroyer is a ship to heave to for, not to fight (the owner's choice, #833); a raider pair is two of them, with two
 locks. Our gun spreads with range, with the gunner's level and with our speed across her line, and her guns' spread the same way.
+The gunner's point defence watch (a pick on the gunner's ladder, `js/picks.js`) takes the point defence's reach from 9 km (`RADAR.PDC_R`) to 12
+(`RADAR.PDC_WATCH`, the owner, #1377).
 
 The hand's learned moves (`FIGHT_MOVES`, the post ladders in `js/picks.js`, the teaching in `js/moves.js`) are still learned, and
 carry over to the radar as once-a-fight actions with the meanings the radar fight's design gives them; they are built with the

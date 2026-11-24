@@ -20,7 +20,7 @@ definePick('gunner', 2, 'cover-eye', 'perk', 'An eye for cover', 'The cover you 
 definePick('gunner', 3, 'split', 'move', 'Split the turret', 'Once a fight, the held turret still fires. Cato shows you.', { move: 'split', teacher: { role: 'xo' } });
 definePick('gunner', 3, 'marksman', 'perk', 'Marksman', 'Your gunnery in a ship fight counts a level higher.', { perk: 'marksman' });
 definePick('gunner', 4, 'gunner-eye', 'stat', 'Eye', 'A point of eye.', { stat: 'eye' });
-definePick('gunner', 4, 'pd-watch', 'perk', 'Point defense watch', 'A held turret takes half off her volley, not two fifths.', { perk: 'pd-watch' });
+definePick('gunner', 4, 'pd-watch', 'perk', 'Point defense watch', 'The point defence reaches 12 km, not 9.', { perk: 'pd-watch' });
 definePick('gunner', 5, 'called-shot', 'move', 'Called shot', 'Once a fight, the named gun takes no aim penalty and rolls the top of its range.', { move: 'called-shot' });
 definePick('gunner', 5, 'gunner-nerve', 'stat', 'Nerve', 'A point of nerve.', { stat: 'nerve' });
 

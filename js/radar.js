@@ -27,6 +27,7 @@ const RADAR = {
   SPREAD_BURN: 1,      // km of spread per km/s of the shooter's speed across the line, relative to the target's, both sides' (tuned, #1347)
   SPREAD_LEVEL: 0.12,  // the share of the spread each gunner level takes off (the builder's: level 5 has 40% of level 0's)
   PDC_R: 9,            // km: the point defence's reach
+  PDC_WATCH: 12,       // km: its reach with the gunner's point defence watch (picks.js pd-watch; the owner, 2026-11-23, #1377)
   PDC_KILL: 7,         // the PDC's kill: 1 - e^-(km through the arc x this / the arc's width in degrees), so 9 km through a 90-degree arc is about even
   TORP_LAUNCH: 165,    // km: from about here her torpedoes are launched
   SALVO_EVERY: 4,      // cycles between a corsair's arming and her next (tuned, #1347) (the old fight's FIGHT.SALVO_EVERY was in turns, which are longer)
@@ -120,14 +121,16 @@ const radarBand = km => (RADAR.AIM_BANDS.find(([under]) => km < under) || [0, 'l
 const RADAR_AIMED = ['drive', 'lock', 'launcher'];  // the small parts an aimed shot loses damage on at range
 const radarAimMult = (km, part = 'drive') => (RADAR_AIMED.includes(part) ? FIGHT.AIM_MULT[radarBand(km)] : 1);
 
+// Our point defence's reach: the side's own (the pd-watch pick, fightui.js startShipFight), else PDC_R.
+const radarPdcReach = st => st.me.pdcReach || RADAR.PDC_R;
 // The PDC's chance to kill a torpedo that moves from `from` to `to` in a step: by the km of that segment inside the arc and the reach, sampled along it so a
-// torpedo that crosses the whole reach in one step is still seen. `centre` is our ship, `power` its PDC's units.
-function radarPdcKill(arc, from, to, centre = { x: 0, y: 0 }, power = 2) {
+// torpedo that crosses the whole reach in one step is still seen. `centre` is our ship, `power` its PDC's units, `reach` its reach.
+function radarPdcKill(arc, from, to, centre = { x: 0, y: 0 }, power = 2, reach = RADAR.PDC_R) {
   const N = 64, len = radarDist(from, to);
   let inside = 0;
   for (let k = 0; k < N; k++) {
     const f = (k + 0.5) / N, p = { x: from.x + (to.x - from.x) * f, y: from.y + (to.y - from.y) * f };
-    if (radarDist(p, centre) <= RADAR.PDC_R && Math.abs(radarTurnBy(arc.dir, radarDir(centre, p))) <= arc.width / 2) inside += len / N;
+    if (radarDist(p, centre) <= reach && Math.abs(radarTurnBy(arc.dir, radarDir(centre, p))) <= arc.width / 2) inside += len / N;
   }
   return inside ? 1 - Math.exp(-inside * RADAR.PDC_KILL * (power / 2) / Math.max(1, arc.width)) : 0;
 }
@@ -195,7 +198,7 @@ function radarStep(state, orders, rand) {
   // sensors: she comes into gun range (said once a fight); one of her torpedoes will reach the PDC's reach before this cycle is out (said once a torpedo)
   if (!st.ranged && st.foes.some((f, i) => !radarOut(f) && radarRange(st, i + 1) <= RADAR.GUN_PAUSE)) { st.ranged = true; events.push({ at: at(), kind: 'gunRange' }); }
   const left = RADAR.TURN_S - ((st.step % RADAR.SUB) + 1) * dt;
-  for (const t of st.torps) if (t.side === 'her' && !t.warned && radarDist(t.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * left) { t.warned = true; events.push({ at: at(), kind: 'pdcSoon', torp: t.id }); }
+  for (const t of st.torps) if (t.side === 'her' && !t.warned && radarDist(t.p, me.p) - radarPdcReach(st) <= RADAR.TORP_SPEED * left) { t.warned = true; events.push({ at: at(), kind: 'pdcSoon', torp: t.id }); }
   // fire control: committed to the gun or the PDC at the start of a cycle, for the whole of it
   if (first) st.fc = o.fc === 'pdc' ? 'pdc' : 'gun';
   // fire: the gun, once a cycle for each gun it has, when it is ordered, bears, is not locked and has weapons left; our torpedo when ordered and held
@@ -240,7 +243,7 @@ function radarStep(state, orders, rand) {
   const gone = new Set();
   for (const { torp, from, to } of paths) {
     if (torp.side !== 'her' || st.fc !== 'pdc' || !st.me.pdc) continue;
-    const chance = radarPdcKill(st.pdcArc, from, to, me.p, st.power.pdc);
+    const chance = radarPdcKill(st.pdcArc, from, to, me.p, st.power.pdc, radarPdcReach(st));
     if (chance && rand() < chance) { gone.add(torp.id); events.push({ at: at(), kind: 'pdcKill', torp: torp.id }); }
   }
   // damage: the gun's hits, hers, then each torpedo that reached its target this step (their closest approach over it within TORP_HIT)
@@ -439,7 +442,7 @@ function radarCrew(state, post, level, order, rand) {
   if (post === 'gunner') {
     const lockFirst = (state.types[i] || 'raider') === 'raider' && state.foes[i].parts.lock.hp > 0 && km <= RADAR.LOCK_AT;
     const soon = state.torps.filter(t => t.side === 'her').sort((a, b) => radarDist(a.p, me.p) - radarDist(b.p, me.p))[0];
-    const pdc = !!soon && state.me.pdc && radarDist(soon.p, me.p) - RADAR.PDC_R <= RADAR.TORP_SPEED * RADAR.TURN_S;
+    const pdc = !!soon && state.me.pdc && radarDist(soon.p, me.p) - radarPdcReach(state) <= RADAR.TORP_SPEED * RADAR.TURN_S;
     // the crew hold fire until she is close enough to hit often
     return { fire: km <= RADAR.JINK, aim: { foe: i, part: lockFirst ? 'lock' : 'hull' }, fc: pdc ? 'pdc' : 'gun', pdcArc: soon ? { dir: radarDir(me.p, soon.p), width: 60 } : { dir: toHer, width: 90 },
       torp: km <= RADAR.JINK && state.me.torps > 0 ? i : null, level };

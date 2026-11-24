@@ -117,7 +117,7 @@ function fightCard() {
     conRead('Guns', `${me.guns}, aimed at her hull or a part by a mark on her contact`),
     conRead('Heat', `over ${RADAR.HEAT_CAP} the gun locks until it bleeds off, ${FIGHT.HEAT_VENT} a cycle`),
     ...(me.launcher ? [conRead('Torpedoes', role().canTrade ? `${Math.min(TORP_MAX, G.state.torpedoes || 0)} of ${TORP_MAX}` : `${torpsShown()}, ${sceneSay('scene:screens', 'torps.kept', { n: HAND_TORPS })}`)] : []),  // on a captain's ship, hers (#956)
-    conRead('Point defence', me.pdc ? 'the fire control runs the gun or the point defence each cycle, never both' : 'none fitted'),
+    conRead('Point defence', me.pdc ? `reaches ${handPerk('pd-watch') ? RADAR.PDC_WATCH : RADAR.PDC_R} km; the fire control runs the gun or it each cycle, never both` : 'none fitted'),
     conRead('Moves', moves.length ? `${moves.map(id => fightSay(`move.name.${id}`)).join(', ')}: learned, and not yet offered on the radar` : 'none yet: the crew teach them on a burn'),
   ].join(''));
 }

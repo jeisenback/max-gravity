@@ -662,21 +662,24 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
 
 // ---------- the fight perks (picks.js, #963): marksman, pd-watch and cover-eye for a gunner, brace and lane-sense for a pilot ----------
 
-test('the fight perks read the picks taken: a level more at the guns, three points of cover, a tenth more on a run, ten km more at contact', async () => {
+test('the fight perks read the picks taken: a level more at the guns, the point defence reaching further, three points of cover, a tenth more on a run, ten km more at contact', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
     fightGame('gunner'); const g0 = battle(), repel = () => repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half').state.coverMade;
-    out.before = { skill: g0.state.me.skill, made: repel() };
+    out.before = { skill: g0.state.me.skill, reach: radarPdcReach(g0.state), made: repel(), card: fightCard().replace(/<[^>]+>/g, ' ') };
     takePick(career(), 'marksman'); takePick(career(), 'pd-watch'); takePick(career(), 'cover-eye'); const g1 = battle();
-    out.after = { skill: g1.state.me.skill, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
+    out.after = { skill: g1.state.me.skill, reach: radarPdcReach(g1.state), made: repel(), perks: [handPerk('marksman'), handPerk('trim')], card: fightCard().replace(/<[^>]+>/g, ' ') };
+    out.radar = { plain: RADAR.PDC_R, watch: RADAR.PDC_WATCH };
     fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), open0 = battle().state.opening;
     takePick(career(), 'brace'); takePick(career(), 'lane-sense');
     out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), open0, open1: battle().state.opening };
     return out;
   });
   assert.deepEqual([r.after.skill - r.before.skill, r.before.made, r.after.made, r.after.perks], [1, 2, 3, [true, false]]);
+  assert.deepEqual([r.before.reach, r.after.reach], [r.radar.plain, r.radar.watch], 'pd-watch: the point defence reaches further (the owner, #1377)');
+  assert.match(r.before.card, new RegExp(`reaches ${r.radar.plain} km`)); assert.match(r.after.card, new RegExp(`reaches ${r.radar.watch} km`), 'the Weapons card quotes the reach the fight uses');
   assert.deepEqual(r.pilot, { flee: 10, open0: 'short', open1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km (inside mid range), 40 with the pick');
   await done();
 });

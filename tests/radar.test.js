@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js'], { Mods: { register() {} } },
-  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf', 'radarQuiet']);
+  ['FIGHT', 'RADAR', 'shipSide', 'radarFight', 'radarRange', 'radarStep', 'radarAdvance', 'radarCycle', 'radarBears', 'radarSpread', 'radarFalloff', 'radarAimMult', 'radarPdcKill', 'radarPdcReach', 'radarError', 'radarNear', 'radarSeen', 'radarProject', 'radarFoe', 'radarCaptain', 'radarCrew', 'radarCost', 'radarAuto', 'radarEnd', 'radarPauses', 'radarCap', 'RADAR_ORDERS', 'radarWedge', 'radarHold', 'radarScatter', 'radarScatterOf', 'radarQuiet']);
 const { FIGHT, RADAR, shipSide, radarFight, radarRange, radarStep, radarAdvance, radarCycle, radarBears, radarFalloff, radarAimMult, radarPdcKill } = api;
 const plain = x => JSON.parse(JSON.stringify(x));  // what the vm context made, in this realm
 const LOW = () => 0;
@@ -168,6 +168,20 @@ test('a narrow arc kills more of the torpedoes inside it, and none outside it', 
   assert.ok(narrow > wide && wide > 0, `${narrow} > ${wide}`);
   assert.equal(radarPdcKill({ dir: 180, width: 30 }, from, to), 0, 'the arc the other way');
   assert.equal(radarPdcKill({ dir: 0, width: 30 }, { x: 0, y: 30 }, { x: 0, y: 20 }), 0, 'outside the reach');
+});
+
+test('the point defence reaches its side\'s own reach: a torpedo passing between PDC_R and PDC_WATCH is shot at only with the pd-watch reach (the owner, #1377)', () => {
+  const from = { x: 0, y: (RADAR.PDC_R + RADAR.PDC_WATCH) / 2 + 1 }, to = { x: 0, y: (RADAR.PDC_R + RADAR.PDC_WATCH) / 2 - 1 }, arc = { dir: 0, width: 30 };  // between the two reaches, straight in
+  assert.equal(radarPdcKill(arc, from, to), 0, 'past the plain reach');
+  assert.ok(radarPdcKill(arc, from, to, { x: 0, y: 0 }, 2, RADAR.PDC_WATCH) > 0, 'inside the watch\'s');
+  const s = fight();
+  assert.equal(api.radarPdcReach(s), RADAR.PDC_R, 'a side with no reach of its own has PDC_R');
+  s.me.pdcReach = RADAR.PDC_WATCH; assert.equal(api.radarPdcReach(s), RADAR.PDC_WATCH);
+  const torp = st => herTorp(st, { x: 0, y: from.y });  // her torpedo, where only the watch's reach holds it
+  const killed = st => plain(radarStep(st, { fc: 'pdc', pdcArc: arc }, () => 0).events).some(e => e.kind === 'pdcKill');  // one step: the torpedo is still between the two reaches
+  assert.equal(killed(torp(fight())), false, 'a fight without the reach does not shoot at it there');
+  const watched = fight(); watched.me.pdcReach = RADAR.PDC_WATCH;
+  assert.equal(killed(torp(watched)), true, 'one with it does');
 });
 
 test('with the fire control on the gun the PDC does not fire, whatever its arc; on the PDC it does', () => {
