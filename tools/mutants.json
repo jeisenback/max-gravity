@@ -79,5 +79,14 @@
     "by": [
       "the gunner aims by a mark on her contact or by its button; aimed at her lock and fired, the hit lands on her lock"
     ]
+  },
+  {
+    "name": "plan-charge-blows-past-a-hit-setter",
+    "file": "js/deckplan.js",
+    "find": "if (hitAt[c.from]) ev.push",
+    "replace": "if (false) ev.push",
+    "by": [
+      "the charge blows on the spot it was shown on, and not when the setter's spot was hit that turn"
+    ]
   }
 ]
