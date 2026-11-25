@@ -160,7 +160,7 @@ A bunk, a scanner and a cabinet of drugs: enough to set a bone, close a wound an
 
 ### Drones and probes
 
-Small craft without crews: a target drone for the range, a probe for a rock's survey (the scan, `js/sites.js`), a camera on a stick for a hull inspection. Cheap and lost often.
+Small craft without crews: a target drone for the range, a probe for a rock's survey (the scan, `js/sites.js`), a camera on a stick for a hull inspection. Cheap and lost often. A target drone is three hundred at a yard.
 
 ### The comms set
 

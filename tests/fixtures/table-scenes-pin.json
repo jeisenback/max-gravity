@@ -116,115 +116,115 @@
  },
  {
   "id": "hired:gunner-jam",
-  "title": "A Jammed Feed",
-  "text": "The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you haven't seen. It'll have to be cleared before anyone needs to shoot.",
+  "title": "The Feed",
+  "text": "The gun's feed has stopped with a round half into the breech. The fire-control board shows a feed fault and won't arm the mount until it's cleared.",
   "labels": [
-   "Strip the feed and clear it by the book",
+   "Safe the mount and strip the feed",
    "Clear it with the manual override [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
-    "text": "You safe the rack, strip the feed, and find a bent follower worn thin. You straighten it, oil the rest, and cycle the rack twenty times until it runs like a clock. (+3 experience at the gunner post.)",
+    "text": "You safe the mount, lock out the feed and strip it on the workshop bench. The follower spring is worn flat on one side. You fit the spare from the drawer and write it on the captain's parts sheet, then cycle twenty dummy rounds through before you put the mount back on the board. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
-    "text": "You hit the override and the round slams home with a clang. It runs, and keeps running. (+4 experience at the gunner post.)",
+    "text": "You run the override and the round seats with a bang. The board clears, and the next twenty cycles run. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
-    "text": "The override seats the round crooked, and you have to take the whole feed apart anyway, now with a bruise. (+1 experience at the gunner post.)",
+    "text": "The override seats the round crooked and the feed jams harder. You strip it anyway, and the spring you'd have swapped is bent now as well. The captain's parts sheet gets two lines. (+1 experience at the gunner post.)",
     "xp": 1
    }
   ]
  },
  {
   "id": "hired:gunner-drift",
-  "title": "Sights Out of True",
-  "text": "The turret has been slewing a hair to the left for a week, and tonight you proved it on the range sim. Every shot lands wide by the same small amount.",
+  "title": "The Sight",
+  "text": "On the range sim every shot lands a little to the left, by the same amount each time. It started after the last hard burn. Either the sight has shifted on its bracket, or the fire control's offset has.",
   "labels": [
-   "Boresight it against a fixed star",
-   "Apply a correction in the fire control [60%; if it fails: you learn less, and the captain marks it]"
+   "Boresight it against a star",
+   "Dial a correction into the fire control [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
-    "text": "You boresight it against a fixed star, slowly, one click at a time, until the cross and the star sit together and stay there. You log the offset for next time. (+3 experience at the gunner post.)",
+    "text": "You lock the mount, put the sight's cross on a bright star and bring the gun camera onto the same star, one click of the adjuster at a time. The bracket bolt is a quarter turn loose. You torque it and write the new offset in the gunnery log. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
-    "text": "You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It's not perfect, but it's close. (+4 experience at the gunner post.)",
+    "text": "You dial in a correction from the sim's figures. The next ten shots land inside the ring. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
-    "text": "You dial in the correction the wrong way and it doubles the error. It takes an hour to find and undo. (+1 experience at the gunner post.)",
+    "text": "You dial the correction in with the wrong sign, and the sim shows the error doubled. Finding it takes an hour of the watch. (+1 experience at the gunner post.)",
     "xp": 1
    }
   ]
  },
  {
   "id": "hired:gunner-range",
-  "title": "Practice on the Range",
-  "text": "The captain wants the guns run through their paces before the next port, and has left the range sim set to something unkind: fast targets, a lot of them, and a clock.",
+  "title": "Range Time",
+  "text": "The captain has booked the gunner an hour on the range sim before the next port, set to fast targets on a clock. The score goes in the gunnery log.",
   "labels": [
-   "Work the targets one at a time",
-   "Race the clock and take them as they come [60%; if it fails: you learn less, and the captain marks it]"
+   "Take the targets in order and let the clock go",
+   "Race the clock [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
-    "text": "You take them one at a time, in order, ignoring the clock, and by the third pass the order has become instinct. The clock is still ahead of you, but you've stopped fighting it. (+3 experience at the gunner post.)",
+    "text": "You take them one at a time, in the order the sim puts them up, and let the clock run over. On the third pass you're inside it by four seconds. The log shows three runs. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
-    "text": "You race the clock and, for once, the targets just line up. You finish with seconds in hand and a ringing in your ears. (+4 experience at the gunner post.)",
+    "text": "You take them as they come and finish with six seconds left. The log shows one run. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
-    "text": "You lose the rhythm halfway through and the targets get ahead of you. You finish a long way behind the clock. (+1 experience at the gunner post.)",
+    "text": "You lose the order halfway through and the targets stack up. The run ends forty seconds over, and that's the one in the log. (+1 experience at the gunner post.)",
     "xp": 1
    }
   ]
  },
  {
   "id": "hired:gunner-count",
-  "title": "The Count Is Off",
-  "text": "The magazine count on the board says four hundred rounds. The count you made by hand says three hundred and ninety. Someone has been in the rack, or the sensor has been lying, and either way the captain signs for the number on the board.",
+  "title": "The Count",
+  "text": "The magazine count on the board says four hundred rounds. Your count by hand says three hundred and ninety. The captain signs for the board's number when the ship takes on rounds.",
   "labels": [
    "Count the rack by hand, twice",
-   "Trust your count and correct the board [60%; if it fails: you learn less, and the captain marks it]"
+   "Set the board to your count [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
-    "text": "You count the rack round by round, and then again. It's three hundred and ninety. You find a loose sensor lead on the rack and reseat it. The board and the rack agree. (+3 experience at the gunner post.)",
+    "text": "You count the rack round by round, and then again: three hundred and ninety. Behind the rack a sensor lead has worked out of its clip. You reseat it, and the board drops to three hundred and ninety and stays there. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
-    "text": "You correct the board to your count and note why. The board agrees with the rack, and you log it. (+4 experience at the gunner post.)",
+    "text": "You set the board to three hundred and ninety and write the reason in the log. At the next port the yard's count agrees. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
-    "text": "You correct the board, and the sensor lead shorts. The board goes blank. You spend the rest of the watch counting again, by hand, with the captain watching. (+1 experience at the gunner post.)",
+    "text": "You set the board to your count. The loose lead shorts when the rack shifts, and the board goes blank. You count the rack again by hand, with the captain reading the figures back. (+1 experience at the gunner post.)",
     "xp": 1
    }
   ]
  },
  {
   "id": "hired:gunner-drone",
-  "title": "Target Drone",
-  "text": "The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It's not meant to be hit twice in a burn. You have twenty minutes of range time.",
+  "title": "The Target Drone",
+  "text": "The captain has put the target drone out on its line, an orange canister with patched dents. It's the ship's only one, and a new one is three hundred at the Ceres yard. There are twenty minutes of range time before it comes in.",
   "labels": [
-   "Take three shots and score each",
-   "Burst it and see what's left [60%; if it fails: you learn less, and the captain marks it]"
+   "Three aimed shots, scored one at a time",
+   "Burst it [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
-    "text": "You take three shots with a full minute between them and score each against the telemetry. Two hit. You write down what the third missed by, and why. (+3 experience at the gunner post.)",
+    "text": "You take three shots a minute apart and score each against the drone's telemetry. Two hit the plate. You log the third's miss distance and the lead you used. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
-    "text": "You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log. (+4 experience at the gunner post.)",
+    "text": "You fire a burst, and the plate rings on the telemetry four times. The drone comes back in on its line with a new dent. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
-    "text": "You burst it and miss with every round. The drone coasts on, unharmed, and the range clock runs out. (+1 experience at the gunner post.)",
+    "text": "You fire a burst and every round goes wide. The range time runs out with the drone untouched. (+1 experience at the gunner post.)",
     "xp": 1
    }
   ]
