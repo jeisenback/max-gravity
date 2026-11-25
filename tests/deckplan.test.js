@@ -69,9 +69,9 @@ test('with no crew standing, the hand and the captain still open it, and it play
 test('a raiders\' rush goes two spots, and the hand standing on the second stops it at the first', () => {
   const st = repel({ boarders: 2 });
   const first = planTheirMove(st, always(0.9));
-  assert.deepEqual(plain(first.moves), [{ id: 't1', to: 'w4', rush: true }], 'from the outer door through the inner door to the well');
+  assert.deepEqual(plain(first.moves), [{ id: 't1', to: 'w4', rush: true, path: ['inner', 'w4'] }], 'from the outer door through the inner door to the well');
   stage(st, { hand: 'w4' });
-  assert.deepEqual(plain(planTheirMove(st, always(0.9)).moves), [{ id: 't1', to: 'inner', rush: false }]);
+  assert.deepEqual(plain(planTheirMove(st, always(0.9)).moves), [{ id: 't1', to: 'inner', rush: false, path: ['inner'] }]);
 });
 test('the rush goes through a spot held by fewer of ours than half of them, and not one held by more', () => {
   const st = stage(repel({ boarders: 8 }), { cato: 'inner' });
@@ -242,6 +242,18 @@ test('a seal order closes the hatch, and it stops their move and their fire thro
   const m = planTheirMove(state, always(0.9));
   assert.equal(m.cut, 'h3');
   assert.equal(m.shots.length, 0, 'no line through a sealed hatch');
+});
+test('a move drawn through a hatch that is sealed that turn stops before it: their rush at the hatch, our crew where they stand', () => {
+  const st = stage(repel({ boarders: 2 }), { t1: 'w4', hand: 'gunseat', cato: 'bunksM' }, true);
+  const rush = planTheirMove(st, always(0.9));
+  assert.deepEqual(plain(rush.moves), [{ id: 't1', to: 'w2', rush: true, path: ['w3', 'w2'] }], 'drawn through h3 and h2');
+  const seal = { move: null, act: { kind: 'holdfire' }, order: { id: 'ines', kind: 'seal', hatch: 'h3' } };
+  const { state } = planTurn(st, seal, { theirs: rush, ours: quiet }, always(0));
+  assert.equal(state.figures.find(f => f.id === 't1').spot, 'w4', 'the rush stops at the sealed hatch, under it');
+  const past = planTurn(st, { ...seal, order: { ...seal.order, hatch: 'h2' } }, { theirs: rush, ours: quiet }, always(0)).state;
+  assert.equal(past.figures.find(f => f.id === 't1').spot, 'w3', 'sealed past the first step: they stop on the spot before it');
+  const ours = planTurn(stage(repel({ boarders: 2 }), { t1: 'outer', cato: 'w2' }, true), { ...seal, order: { ...seal.order, hatch: 'h2' } }, { theirs: none, ours: { moves: [{ id: 'cato', to: 'w3' }], shots: [] } }, always(0)).state;
+  assert.equal(ours.figures.find(f => f.id === 'cato').spot, 'w2', 'ours do not step through it either');
 });
 test('boarding her, her crew seal the hatch over ours, and ours cut it in a turn', () => {
   const lay = LAYOUTS.raider, st = planFight({ lay, crew: CREW, hand: { level: 2, post: 'gunner', odds }, captain: null, party: 'raider', boarders: 4, assault: true });

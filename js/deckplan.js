@@ -135,7 +135,7 @@ function planTheirMove(st, rand) {
     const hold = st.party === 'navy' && (planAim(st, f, f.spot, false) || { odds: 0 }).odds >= PLAN.NAVY_HOLD;
     if (land && !hold) {
       into[land] = (into[land] || 0) + 1;
-      out.moves.push({ id: f.id, to: land, rush: steps.indexOf(land) > 0 });
+      out.moves.push({ id: f.id, to: land, rush: steps.indexOf(land) > 0, path: steps.slice(0, steps.indexOf(land) + 1) });
       if (steps.indexOf(land) > 0) continue;
       const s = planAim(st, f, land, true); if (s) out.shots.push(s);
     } else { const s = planAim(st, f, f.spot, false); if (s) out.shots.push(s); }
@@ -223,6 +223,14 @@ function planHit(st, side, spot, rand, events, how, sidearm = false) {
 }
 const planDown = (st, f, events, how) => { f.hp = 0; events.push({ kind: 'down', id: f.id, side: f.side, spot: f.spot, how, ...(f.captain ? { captain: true } : {}) }); };
 // The step from `spot` toward `goals`, onto no spot of theirs and no full one.
+// Where a drawn move ends now: the planned spot, or, where a hatch on its path was sealed this turn, the last spot before it if `side` may
+// stand there, else where the figure is.
+function planStop(st, f, path) {
+  let at = f.spot;
+  for (const s of path) { if (st.sealed[spotHatch(st.lay, at, s)]) break; at = s; }
+  const ok = at === path[path.length - 1] || (planHeld(st, at) !== planOther(f.side) && planAt(st, at, f.side).length < PLAN.CAP);
+  return ok ? at : f.spot;
+}
 const planBack = (st, spot, goals) => { const r = spotPath(st.lay, spot, goals, st.sealed); return r && r.next && planHeld(st, r.next) !== 'them' ? r.next : null; };
 
 // One turn. `pick`: { move: spot | null, act: { kind, at? }, order: { id, kind, to?, hatch? } | null }; `shown`: { theirs, ours } as drawn
@@ -243,14 +251,15 @@ function planTurn(st0, pick, shown, rand) {
     const to = planBack(st, hand.spot, planHome(st));
     if (to) for (const f of planAt(st, hand.spot, 'us').slice(0, PLAN.CAP - planAt(st, to, 'us').length)) { f.spot = to; moved[f.id] = true; }
     if (to) ev.push({ kind: 'pullback', to });
-  } else if (pick.move && planHeld(st, pick.move) !== 'them' && planAt(st, pick.move, 'us').length < PLAN.CAP) { hand.spot = pick.move; moved.hand = true; }
+  } else if (pick.move && planStop(st, hand, [pick.move]) === pick.move && planHeld(st, pick.move) !== 'them' && planAt(st, pick.move, 'us').length < PLAN.CAP) { hand.spot = pick.move; moved.hand = true; }
+  // a move drawn before the turn stops at a hatch sealed since (the order's, above)
   for (const m of ours.moves) {
     const f = fig(m.id);
-    if (f && f.hp > 0 && !moved[f.id] && planHeld(st, m.to) !== 'them' && planAt(st, m.to, 'us').length < PLAN.CAP) { f.spot = m.to; moved[f.id] = true; }
+    if (f && f.hp > 0 && !moved[f.id] && planStop(st, f, [m.to]) === m.to && planHeld(st, m.to) !== 'them' && planAt(st, m.to, 'us').length < PLAN.CAP) { f.spot = m.to; moved[f.id] = true; }
   }
   if (!theirs.feint) for (const m of theirs.moves) {
-    const f = fig(m.id);
-    if (f && f.hp > 0 && planHeld(st, m.to) !== 'us' && planAt(st, m.to, 'them').length < PLAN.CAP) { f.spot = m.to; moved[f.id] = true; }
+    const f = fig(m.id), to = f && planStop(st, f, m.path || [m.to]);
+    if (f && f.hp > 0 && to !== f.spot && planHeld(st, to) !== 'us' && planAt(st, to, 'them').length < PLAN.CAP) { f.spot = to; moved[f.id] = true; }
   }
   // fire, all at once, at the spot each picked, from where each now stands
   const hitAt = {}, shots = [...theirs.shots, ...ours.shots];
