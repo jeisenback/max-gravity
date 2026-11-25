@@ -88,5 +88,14 @@
     "by": [
       "the charge blows on the spot it was shown on, and not when the setter's spot was hit that turn"
     ]
+  },
+  {
+    "name": "plan-setting-ignored",
+    "file": "js/boarders.js",
+    "find": "const state = Settings.planFight ? planStartState(",
+    "replace": "const state = false ? planStartState(",
+    "by": [
+      "the setting chooses which deck fight a boarding opens: the checkbox on, the deck plan; off, today's"
+    ]
   }
 ]

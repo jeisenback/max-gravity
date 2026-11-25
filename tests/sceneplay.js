@@ -698,6 +698,52 @@ const playScenes = () => {
   // pages; last, as the landings leave the legacy log and the ship's life moved for the cases after them
   for (const [port, key] of Object.entries(OFFICIAL_MANNER)) run(`scene:inspection:manner:${key}`, {}, () => { uatLand(port); G.dialog = null; G.nextEvent = null; return { title: 'Landing', text: officialManner(currentPlanet()), choices: [] }; });
   run('scene:inspection:clean', {}, () => { uatLand('Ring Nine'); G.dialog = null; G.nextEvent = null; G.state.cargo = {}; const notes = []; inspectAtLanding(currentPlanet(), t => notes.push(t), {}); return { title: 'Landing', text: notes.join(' '), choices: [] }; });
+  // ---------- the deck fight on the deck plan (deckplanui.js, #1353): last, so the games and foes it makes do not move the draws of any case above ----------
+  if (!window.__only || /scene:fight:plan/.test(window.__only)) {
+    const rec = { id: 'scene:fight:plan', plays: [] };
+    try {
+      // the deck fight on the deck plan (deckplanui.js, #1353): its page on our deck and hers with each of their moves, each of the hand's choices and orders,
+      // a suggestion taken and refused, the words the cutaway draws, and a turn of each kind of line, from states set by hand
+      {
+        const quiet = () => ({ moves: [], shots: [], charge: null, cut: null, seal: null, feint: false });
+        const plan = (assault = false, party = 'raider') => { fresh(); hired().raidTold = true; const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0, init: 'foe' }, 'full');
+          s.state = planStartState({ d: s.d, fight: s.fight, boarders: 6, grade: 1, assault, party, kit: [] }); s.theirs = quiet(); s.intent = 'hold'; s.pick = { move: null, act: { kind: 'holdfire' }, order: null }; return s; };
+        const page = s => { const e = planFightEvent(s), d = document.createElement('div'); d.innerHTML = e.board;
+          rec.plays.push({ title: e.title, plan: d.textContent.replace(/\s+/g, ' ').trim(), aria: [...d.querySelectorAll('[aria-label]')].map(x => x.getAttribute('aria-label')), drawn: planDraw(document.createElement('canvas'), s) }); };
+        const put = (s, where) => { for (const f of s.state.figures) if (f.id in where) f.spot = where[f.id]; };
+        const crew = s => s.state.figures.filter(f => f.side === 'us' && !f.hand && !f.captain).map(f => f.id);
+        const turn = (s, rolls) => { seq(rolls); planResolve(s); rec.plays.push({ log: s.state.log.slice(-1)[0] }); G.nextEvent = null; };
+        // our deck: everyone where they start, holding; their moves, our crew's and the hand's choices by hand
+        { const s = plan(); page(s);
+          s.theirs = { ...quiet(), moves: [{ id: 't1', to: 'inner', rush: false, path: ['inner'] }], shots: [{ id: 't2', at: 'gunseat', odds: 0.3 }], cut: 'h3', feint: true }; s.state.turn = DECK.WAVE_TURN - 1; s.intent = 'fall';
+          s.pick = { move: 'magazine', act: { kind: 'steady' }, order: null }; page(s);
+          s.theirs = { ...quiet(), moves: [{ id: 't1', to: 'w4', rush: true, path: ['inner', 'w4'] }], seal: 'h2', charge: { on: 'magazine', from: 'w3', setter: 't2' } }; put(s, { t2: 'w3' }); s.intent = 'push'; s.state.sealed = { h2: true };
+          s.pick = { move: null, act: { kind: 'cover' }, order: { id: crew(s)[0], kind: 'move', to: 'w0' } }; page(s);
+          s.pick = { move: null, act: { kind: 'pullback' }, order: { id: crew(s)[0], kind: 'open', hatch: 'h2' } }; page(s);
+          s.pick = { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }; page(s);
+          for (const [roll, intent] of [[0, 'push'], [0.99, 'fall']]) { const t = plan(); seq([roll]); planSuggest(t, intent); page(t); } }
+        // her deck
+        page(plan(true));
+        // a turn of each kind of line: hits on both sides and an order that works; one that does not; a quiet one; a charge that blows and one stopped; a cut; the wave; a pull back
+        { const s = plan(), [a] = crew(s); put(s, { hand: 'gunseat', [a]: 'gunseat', t1: 'magazine', t2: 'magazine' }); s.covered = true;
+          s.state.figures.find(f => f.id === a).hp = 1; s.theirs = { ...quiet(), shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }, { id: 't2', at: 'gunseat', odds: 0.5 }] };
+          s.pick = { move: null, act: { kind: 'shoot', at: 'magazine' }, order: { id: a, kind: 'steady' } }; turn(s, Array(40).fill(0.01)); }
+        { const s = plan(), [a] = crew(s); s.pick = { move: null, act: { kind: 'holdfire' }, order: { id: a, kind: 'steady' } }; turn(s, Array(40).fill(0.99)); }
+        { const s = plan(), [, b] = crew(s); put(s, { [b]: 'bench', t1: 'toolwall', hand: 'gunseat', t2: 'magazine' }); s.theirs = { ...quiet(), shots: [{ id: 't1', at: 'bench', odds: 0.5 }] };
+          s.pick = { move: null, act: { kind: 'steady' }, order: null }; turn(s, Array(40).fill(0.01)); s.theirs = quiet(); turn(s, [0.99]); s.theirs = quiet(); page(s); }  // a crewmate wounded, the hand's steady move worked; and the log folded
+        { const s = plan(); turn(s, [0.99]); }
+        { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } }; turn(s, Array(40).fill(0.99)); }
+        { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', hand: 'gunseat', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } };
+          s.pick = { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }; turn(s, Array(40).fill(0.01)); }
+        { const s = plan(); put(s, { t1: 'w4' }); s.state.sealed = { h3: true }; s.theirs = { ...quiet(), cut: 'h3', cutter: 't1' }; turn(s, [0.99]); }
+        { const s = plan(); s.state.turn = DECK.WAVE_TURN - 1; turn(s, [0.99]); }
+        { const s = plan(); s.pick = { move: null, act: { kind: 'pullback' }, order: null }; turn(s, [0.99]); }
+        // her deck: her crew seal the hatch over ours, and ours cut through one sealed
+        { const s = plan(true), [a] = crew(s); s.theirs = { ...quiet(), seal: 'h1' }; turn(s, [0.99]); put(s, { [a]: 'w2' }); s.theirs = quiet(); turn(s, [0.99]); }
+      }
+    } catch (err) { rec.error = String(err && err.stack || err); }
+    out.push(rec);
+  }
   return out;
 };
 

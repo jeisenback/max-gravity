@@ -97,7 +97,9 @@ function assaultStart(foe, rate = {}) {
 function deckStart({ d, boarders, grade, size, assault = false }) {
   const w = repelCrew(), kit = career().kit, ship = [...fightCover({ size, kit: assault ? [] : kit }), COVER_BASE];  // the cargo bay has the ship's own cover
   const cover = assault ? [...[0, 1, 2].map(pos => kitCover(kit, pos)), 0] : ship, hers = assault ? ship : [];
-  const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16, party: DECK_PARTY[d.foe.shipId] || 'raider', level: skillLevel(lockPost()), coverMade: handPerk('cover-eye') ? 3 : COVER_MADE });  // the level worked: a hurt hand is one lower; cover-eye makes three points of cover
+  const party = DECK_PARTY[d.foe.shipId] || 'raider';
+  const state = Settings.planFight ? planStartState({ d, fight: w.fight, boarders, grade, assault, party, kit })  // the deck-plan fight, behind its setting until it is the only one (deckplanui.js, #1355)
+    : deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16, party, level: skillLevel(lockPost()), coverMade: handPerk('cover-eye') ? 3 : COVER_MADE });  // the level worked: a hurt hand is one lower; cover-eye makes three points of cover
   return { d, assault, state, grade, fight: w.fight, held: w.held, out: w.out, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 

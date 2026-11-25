@@ -153,7 +153,7 @@ const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) 
   wave: s.state.wave && s.state.turn + 1 === s.state.wave.turn ? fightSay('deck.wave', { n: s.state.wave.n }) : '' });  // and the rest of the party, on the turn at whose end it lands (DECK.WAVE_TURN)
 
 // A deck fight begins: the first of a new game is explained once, before its panel (captains.js deckExplanation, #850).
-const deckOpen = s => { const told = deckExplanation(); return told ? chainEvents([told, deckFightEvent(s)]) : deckFightEvent(s); };
+const deckOpen = s => { const told = deckExplanation(), first = s.state.kind === 'plan' ? planFightEvent(s) : deckFightEvent(s); return told ? chainEvents([told, first]) : first; };  // the deck-plan fight behind its setting (deckplanui.js, #1355)
 
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
 function deckFightEvent(s, plan = {}) {

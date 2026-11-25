@@ -645,6 +645,16 @@ canvas.radar { display: block; width: 100%; border: 1px solid var(--line); backg
 .radar-last, .radar-log ol { list-style: none; margin: 0; padding: 0; font-size: 13px; }
 .radar-last li b, .radar-log li b { font: 12px "IBM Plex Mono", monospace; color: var(--muted); margin-right: 6px; }
 .radar-last li:hover { background: #0c1826; }
+/* the deck fight on the deck plan (js/deckplanui.js, #1353): the cutaway with the hand's spots as buttons over it, and the side panel */
+.plan-fight { display: grid; gap: 10px; margin: 4px 0 10px; }  /* the cutaway the panel's full width, the side panel under it */
+div.plan-cut { position: relative; border: 1px solid var(--line); background: #050a11; }
+canvas.plan-cut { display: block; width: 100%; height: 100%; }
+.plan-spot { position: absolute; transform: translate(-50%, -30%); width: 30px; height: 30px; margin: 0; padding: 0; min-height: 0; border-radius: 50%; border: 2px dashed #ffcf7f; background: transparent; }
+.plan-spot.on { border-style: solid; }
+.plan-now { border: 1px solid var(--line); padding: 6px 8px; margin-bottom: 8px; }
+.plan-now p { margin: 4px 0; } .plan-now .warn { color: #ffcf7f; }
+.plan-side .choice-row button.on { background: color-mix(in srgb, var(--accent) 30%, var(--panel-2)); border-color: var(--accent); }
+.plan-count, .plan-last { font-size: 13px; color: var(--muted); }
 
 #bsheet { display: flex; flex-direction: column; overflow: hidden; padding-top: 26px; }  /* the body scrolls inside; a thin band on top holds Close (#913) */
 #bsheet .bsheet-body { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
