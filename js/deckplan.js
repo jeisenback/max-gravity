@@ -177,13 +177,14 @@ function planCrewMoves(st, order, named = null) {
 // The hand's reach: every spot in line, and from DECK.SIDEARM_REACH_LEVEL a spot one step on through an open hatch.
 const planReach = (st, hand, from) => (hand.level >= DECK.SIDEARM_REACH_LEVEL ? spotLinks(st.lay)[from].filter(s => !st.sealed[spotHatch(st.lay, from, s)]) : []);
 // What the hand may do this turn: a step (a linked spot through an open hatch, with room and none of theirs), an act, and an order to a named crewmate.
-function planChoices(st, moved = false) {
-  const hand = st.figures.find(f => f.hand), links = spotLinks(st.lay)[hand.spot];
+// `to`: the spot the hand has chosen to step to, if any; the hand moves before fire, so the shots are in line from there, at a moving shooter's odds.
+function planChoices(st, to = null) {
+  const hand = st.figures.find(f => f.hand), links = spotLinks(st.lay)[hand.spot], from = to || hand.spot, moved = !!to;
   const moves = links.filter(s => !st.sealed[spotHatch(st.lay, hand.spot, s)] && planHeld(st, s) !== 'them' && planAt(st, s, 'us').length < PLAN.CAP);
-  const shot = planAim(st, hand, hand.spot, moved, planReach(st, hand, hand.spot));
-  const foes = [...new Set(planUp(st, 'them').map(f => f.spot))].filter(s => inLine(st.lay, hand.spot, s, st.sealed) || planReach(st, hand, hand.spot).includes(s));
+  const shot = planAim(st, hand, from, moved, planReach(st, hand, from));
+  const foes = [...new Set(planUp(st, 'them').map(f => f.spot))].filter(s => inLine(st.lay, from, s, st.sealed) || planReach(st, hand, from).includes(s));
   const acts = [
-    { kind: 'shoot', targets: foes.map(at => ({ at, odds: planOdds(st, hand, hand.spot, at, moved) })), odds: shot ? shot.odds : 0 },
+    { kind: 'shoot', targets: foes.map(at => ({ at, odds: planOdds(st, hand, from, at, moved) })), odds: shot ? shot.odds : 0 },
     { kind: 'steady', odds: hand.odds.steady },
     ...(st.coverUsed ? [] : [{ kind: 'cover', odds: hand.odds.cover }]),
     ...(moved ? [] : [{ kind: 'pullback', odds: 1 }]),

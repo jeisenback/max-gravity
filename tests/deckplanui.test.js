@@ -69,6 +69,9 @@ test('a ringed spot, an act, an order and a suggestion show in "This turn" and o
   await page.click('[data-action="planAct"][data-arg="holdfire"]');
   assert.match(await ev(() => sawText('.plan-you')), /You hold your fire\./);
   await page.click('[data-action="planOrder"][data-arg="c:ines|hold|"]');
+  const full = await ev(() => { const s = G.dialog.event.fight; for (const f of s.state.figures) if (['captain', 'c:tomas', 'c:cato'].includes(f.id)) f.spot = 'w0'; UI.redraw(planFightEvent(s));
+    return [...document.querySelectorAll('[data-action="planOrder"]')].map(b => b.dataset.arg).filter(a => a.startsWith('c:ines|move|')); });
+  assert.deepEqual(full, [], 'the well at the flight deck holds three of ours: no step there for Ines');
   assert.match(await ev(() => sawText('.plan-you')), /Ines stays put\./);
   await page.click('[data-action="planSuggest"][data-arg="fall"]');
   assert.match(await ev(() => sawText('.plan-side')), /"(All right, fall back\.|No\. We stay on it\.)"/);

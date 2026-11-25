@@ -52,7 +52,7 @@ const planShowing = () => { const s = G.dialog && G.dialog.event.fight; return s
 // ---------- the page ----------
 
 function planPageHtml(s) {
-  const st = s.state, n = st.lay.decks.length, c = planChoices(st, !!s.pick.move), hand = st.figures.find(f => f.hand);
+  const st = s.state, n = st.lay.decks.length, c = planChoices(st, s.pick.move), hand = st.figures.find(f => f.hand);
   const on = b => (b ? raw('class="on" aria-pressed="true"') : raw('aria-pressed="false"'));
   const spot = id => { const p = deckSpot(st.lay, id); return `left:${(100 * p.x).toFixed(1)}%;top:${(100 * (p.deck + 0.5) / n).toFixed(1)}%`; };
   const moves = [hand.spot, ...c.moves].map(id => h`<button class="plan-spot ${id === (s.pick.move || hand.spot) ? 'on' : ''}" style="${spot(id)}" data-action="planMove" data-arg="${id}" aria-label="${planSay(id === hand.spot ? 'stand' : 'move', { at: planWhere(s, id) })}"></button>`);
@@ -111,7 +111,7 @@ function planOrdersHtml(s, c, on) {
   const list = c.orders.flatMap(o => {
     if (o.kind === 'seal') return Number.isFinite(top) && top > 0 && !st.sealed[`h${top - 1}`] ? [{ ...o, hatch: `h${top - 1}` }] : [];
     if (o.kind === 'open') return Object.keys(st.sealed).map(hatch => ({ ...o, hatch }));
-    if (o.kind === 'move') { const f = st.figures.find(x => x.id === o.id); return links[f.spot].filter(to => !st.sealed[spotHatch(st.lay, f.spot, to)] && planHeld(st, to) !== 'them').map(to => ({ ...o, to })); }
+    if (o.kind === 'move') { const f = st.figures.find(x => x.id === o.id); return links[f.spot].filter(to => !st.sealed[spotHatch(st.lay, f.spot, to)] && planHeld(st, to) !== 'them' && planAt(st, to, 'us').length < PLAN.CAP).map(to => ({ ...o, to })); }  // a full spot of ours is no step
     return [o];
   });
   if (!list.length) return '';
@@ -143,6 +143,10 @@ function planSetMove(s, id) {
   const hand = s.state.figures.find(f => f.hand);
   s.pick.move = id === hand.spot ? null : id;
   if (s.pick.move && s.pick.act.kind === 'pullback') s.pick.act = { kind: 'holdfire' };  // a pull back only where the hand stays
+  if (s.pick.act.kind === 'shoot') {  // the shot is from where the hand will stand: kept if still in line from there, else the best from there, else none
+    const targets = planChoices(s.state, s.pick.move).acts[0].targets.sort((a, b) => b.odds - a.odds);
+    if (!targets.some(t => t.at === s.pick.act.at)) s.pick.act = targets[0] ? { kind: 'shoot', at: targets[0].at } : { kind: 'holdfire' };
+  }
   planRedraw(s);
 }
 function planSetAct(s, arg) {
