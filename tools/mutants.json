@@ -15,6 +15,12 @@
     "replace": "st.heat = Math.max(0, st.heat);"
   },
   {
+    "name": "sealed-hatch-lets-fire-through",
+    "file": "js/layouts.js",
+    "find": "return !!h && !sealed[h];",
+    "replace": "return !!h;"
+  },
+  {
     "name": "fitting-bought-free",
     "file": "js/suggest.js",
     "find": "if (r.cost) { moveMoney(-r.cost);",
