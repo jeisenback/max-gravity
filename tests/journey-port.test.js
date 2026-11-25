@@ -38,7 +38,7 @@ test('journey: back in port, the fight\'s cost and the pay on screen, and a relo
   await playRadar(page);
   assert.doesNotMatch(await screen(page), /Cycle \d+, \d+ s/, 'the fight closed');
   await answerScenes(page);
-  await runBurn(page, /DOCKED · PALLAS/i);
+  await runBurn(page, /DOCKED · PALLAS/i, 180000);  // the burn and the autopilot's docking in real frames, after a fight on the radar: past 90 s on a slow CI runner (#1384)
   await answerScenes(page);
   const before = await figures(page);
   await page.reload();
