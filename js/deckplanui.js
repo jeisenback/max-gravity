@@ -77,7 +77,8 @@ function planNowHtml(s) {
     ...(t.cut ? [planSay('their.cut', { hatch: planHatch(s, t.cut) })] : []), ...(t.seal ? [planSay('their.seal', { hatch: planHatch(s, t.seal) })] : []),
     ...(st.wave && st.turn + 1 === DECK.WAVE_TURN ? [planSay('their.wave', { n: st.wave })] : []),
   ];
-  const charge = t.charge ? planSay('their.charge', { at: planWhere(s, t.charge.on), from: planWhere(s, t.charge.from) }) : '';
+  const charge = [t.charge ? planSay('their.charge', { at: planWhere(s, t.charge.on), from: planWhere(s, t.charge.from) }) : '',
+    t.storm ? planSay('their.storm', { n: t.storm.ids.length, at: planWhere(s, t.storm.on) }) : ''].filter(Boolean).join(' ');  // the charge and the storm: what is coming, and how to stop it
   const crew = ours.moves.length ? planSay('ours.move', { n: ours.moves.length, order: planSay(`order.${s.intent}`) }) : planSay('ours.hold', { order: planSay(`order.${s.intent}`) });
   const act = p.act.kind === 'shoot' ? planSay('you.shoot', { at: planWhere(s, p.act.at), pct: planPct(planOdds(st, hand, p.move || hand.spot, p.act.at, !!p.move)) })
     : p.act.kind === 'steady' || p.act.kind === 'cover' ? planSay('you.ability', { what: planAbility(p.act.kind) }) : planSay(`you.${p.act.kind}`);
@@ -178,8 +179,9 @@ function planResolve(s) {
   s.marks = r.events.filter(e => ['wound', 'down', 'charge', 'cut', 'sealed', 'pullback'].includes(e.kind));  // what happened, kept on the ship for the next turn
   const said = [], after = [];
   for (const e of r.events) {
-    if (e.kind === 'wound' || e.kind === 'down') said.push(planSay(`log.${e.kind}.${e.side}`, { who: planName(s, e.id), at: planWhere(s, e.spot) }));
+    if (e.kind === 'wound' || e.kind === 'down') said.push(planSay(`log.${e.kind}.${e.id === 'hand' ? 'you' : e.side}`, { who: planName(s, e.id), at: planWhere(s, e.spot) }));
     if (e.kind === 'charge') said.push(planSay(e.stopped ? 'log.chargeStopped' : 'log.charge', { at: planWhere(s, e.on) }));
+    if (e.kind === 'storm') said.push(planSay(e.stopped ? 'log.stormStopped' : e.took ? 'log.stormTook' : 'log.storm', { at: planWhere(s, e.on) }));
     if (e.kind === 'cut') said.push(planSay(e.side === 'us' ? 'log.cutOurs' : 'log.cut', { hatch: planHatch(s, e.hatch) }));
     if (e.kind === 'sealed') said.push(planSay('log.sealedHers', { hatch: planHatch(s, e.hatch) }));
     if (e.kind === 'wave') said.push(planSay('log.wave', { n: e.n }));
@@ -187,9 +189,8 @@ function planResolve(s) {
     if (e.kind === 'ability') said.push(planSay(e.worked ? 'log.worked' : 'log.missed', { who: planName(s, e.id) }));
   }
   // a head of ours downed is a casualty at the strip's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
-  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain)) { const line = deckLoss(s, e.id); if (line) after.push(line); }
-  const contested = r.events.some(e => e.kind === 'contested'), blown = r.events.some(e => e.kind === 'handHit' && e.how === 'charge');
-  if (blown || (contested && Math.random() < REPEL_HURT.lose * DECK.SUIT)) after.push(repelCasualty(s, 'you'));  // the hand's hurt, which a friend may take (once a fight)
+  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id); if (line) after.push(line); }
+  if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) after.push(repelCasualty(s, 'you'));  // the hand downed is today's hurt, which a friend may take (once a fight); the crew fight on
   s.state.log.push(`${planSay('log.turn', { n: s.state.turn, what: said.length ? said.join(' ') : planSay('log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   s.theirs = null;
   if (s.handDied) return false;
@@ -235,6 +236,7 @@ function planDraw(c, s) {
   if (s.theirs) {
     for (const m of s.theirs.moves) arrow(fig(m.id).spot, m.to, PLAN_INK.them, true);
     for (const t of s.theirs.shots) { arrow(fig(t.id).spot, t.at, PLAN_INK.them, false); }
+    if (s.theirs.storm) { const [x, y] = at(s.theirs.storm.on); g.strokeStyle = PLAN_INK.them; g.setLineDash([2, 2]); g.strokeRect(x - 22, y - 22, 44, 40); g.setLineDash([]); text(planSay('mark.storm'), x - 22, y + 30, PLAN_INK.them); }
     if (s.theirs.charge) { const [x, y] = at(s.theirs.charge.on), [sx, sy] = at(s.theirs.charge.from); g.strokeStyle = PLAN_INK.them; g.strokeRect(x - 20, y - 20, 40, 36); g.beginPath(); g.arc(sx, sy, 12, 0, Math.PI * 2); g.stroke();
       text(planSay('mark.charge'), x - 20, y - 23, PLAN_INK.them); text(planSay('mark.setter'), sx - 18, sy - 15, PLAN_INK.them); }
   }

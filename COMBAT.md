@@ -492,6 +492,46 @@ the runs that wrote this section:
 
 The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.
 
+### The deck fight on the deck plan (in development)
+
+The deck fight played spot by spot on the ship's decks (`js/deckplan.js`, `js/deckplanui.js`; the spec is
+`docs/superpowers/specs/2026-11-16-boarding-deck-plan-design.md`) opens behind a setting until it replaces the strip (#1355). Its
+numbers are `PLAN` in `js/deckplan.js`, tuned with `node tools/fights.js --plan` (`tools/planfights.js`, plain Node), and its
+targets are `tests/distribution/deckplanfights.test.js`. The owner's rulings while tuning it (2026-11-26, #1354):
+
+- Boarding her, the captain pushes for her bridge, and pulls back only when ours are under half of hers and her nerve is cautious.
+- They storm a spot of ours they outnumber three to one from the spots next to it (`PLAN.STORM`): one of ours there is downed,
+  the rest step back, and they move in. The storm is drawn with their move.
+- The hand takes hits like anyone. A friend takes the first, once a fight. Downed, the hand is out and takes today's hurt roll,
+  and the crew fight on.
+- The hand's shot stays a roll, so the hand's level counts for little, and the two-crew targets are set at what is measured.
+- Two crew boarding a raider's seven is too few, and no plan wins it.
+- A navy party and our crew each hold fire until the other side has fired.
+- Reading a corsair's charge boarding her, and the rooms' cover, are checked only to hold as measured (#1390).
+
+"Hold" sends our crew to the well a deck above the highest of theirs. A boarder shoots at level 0 (`PLAN.THEIRS`), and a point
+of cover is worth 0.16 off a shot's odds.
+
+Measured over seeds 1 to 4 of 400 (1,600 fights a cell), at level 2 and grade 0. Each cell gives the share won by the answer
+(it reads their drawn move: `tools/answer.js answerPlan`) and the best of the fixed plans (random, shoot, push, fall), with the
+answer's turns, its hand downed a fight and its casualties a fight:
+
+| Fight | Crew | Answer | Best fixed plan | Turns | Hand downed | Casualties |
+| --- | --- | --- | --- | --- | --- | --- |
+| Raiders, repelled | 2 | 0.72 | 0.59 (random) | 9.8 | 0.00 | 0.45 |
+| Raiders, repelled | 5 | 1.00 | 1.00 (push) | 7.8 | 0.00 | 0.15 |
+| Raider, boarded | 2 | 0.00 | 0.01 (random) | 12.0 | 0.00 | 0.00 |
+| Raider, boarded | 5 | 0.91 | 0.88 (random) | 8.6 | 0.17 | 0.64 |
+| Corsair, repelled | 2 | 0.99 | 0.83 (random, shoot) | 6.8 | 0.01 | 0.12 |
+| Corsair, repelled | 5 | 1.00 | 1.00 | 5.3 | 0.00 | 0.14 |
+| Corsair, boarded | 2 | 0.50 | 0.27 (random) | 10.0 | 0.71 | 0.46 |
+| Corsair, boarded | 5 | 0.93 | 0.89 (random) | 9.1 | 0.11 | 0.45 |
+| Navy, repelled | 2 | 1.00, no standing | 1.00, shoot 3.58 standing | 8.0 | 0.00 | 0.00 |
+| Navy, repelled | 5 | 1.00, no standing | 1.00, random 3.61 standing | 8.0 | 0.00 | 0.00 |
+
+With two crew against raiders, the answer wins 0.72 at level 1 and 0.73 at level 3. Boarding her costs more of ours than the
+strip did (its 0.15 to 0.21 a fight): that is for the switch-over to weigh (#1355).
+
 ## Open questions
 
 None right now.
