@@ -110,6 +110,9 @@ test('against a navy party our crew hold fire until one of theirs has fired on u
   assert.equal(planTheirMove(st, always(0.9)).shots.length, 0, 'the navy has not been fired on either: it holds its fire too');
   const fire = planTurn(st, { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }, { theirs: none, ours: quiet }, always(0.99)).state;
   assert.equal(fire.weFired, true, 'the hand fires on them, and misses');
+  const sealedOff = planTurn(st, { move: null, act: { kind: 'shoot', at: 'w3' }, order: { id: 'ines', kind: 'seal', hatch: 'h2' } }, { theirs: none, ours: quiet }, always(0)).state;
+  assert.equal(planTurn({ ...st, sealed: { h3: true } }, { move: 'magazine', act: { kind: 'shoot', at: 'w4' }, order: null }, { theirs: none, ours: quiet }, always(0.99)).state.weFired, undefined, 'a shot with no line is not fire');
+  assert.equal(sealedOff.weFired, true, 'a shot along the deck is made whatever hatch is sealed');
   const blocked = f => { const x = { ...f, figures: f.figures.map(g => ({ ...g })) }; for (const g of x.figures) if (['cato', 'ines'].includes(g.id)) g.spot = 'w2'; return x; };  // his step up the well held by two of ours: he can only shoot
   assert.equal(planTheirMove(blocked(st), always(0.9)).shots.length, 0, 'blocked and not fired on: he holds his fire');
   assert.ok(planTheirMove(blocked(fire), always(0.9)).shots.length > 0, 'blocked and fired on: he fires');

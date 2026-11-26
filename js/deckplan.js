@@ -290,11 +290,11 @@ function planTurn(st0, pick, shown, rand) {
   const hitAt = {}, shots = [...theirs.shots, ...ours.shots];
   if (act.kind === 'shoot' && act.at) shots.push({ id: 'hand', at: act.at, sidearm: true });
   const fired = shots.map(s => ({ s, f: fig(s.id) })).filter(({ f }) => f && f.hp > 0 && !(theirs.feint && f.side === 'them' && theirs.moves.some(m => m.id === f.id)));
-  if (st.party === 'navy' && fired.some(({ f }) => f.side === 'them')) st.navyFired = true;  // a navy party has fired on us: our crew fire back from the next turn
-  if (st.party === 'navy' && fired.some(({ f }) => f.side === 'us')) st.weFired = true;  // one of ours has fired on a navy party: they fire back from the next turn
   for (const { s, f } of fired) {
     const reach = s.sidearm ? planReach(st, f, f.spot) : [];
     if (!inLine(st.lay, f.spot, s.at, st.sealed) && !reach.includes(s.at)) continue;
+    // a shot made against a navy party, hit or miss (not one with no line): the side fired on fires back from the next turn
+    if (st.party === 'navy') { if (f.side === 'them') st.navyFired = true; else st.weFired = true; }
     if (rand() >= planOdds(st, f, f.spot, s.at, !!moved[f.id])) { ev.push({ kind: 'miss', id: f.id, at: s.at }); continue; }
     const k = s.sidearm ? (([lo, hi]) => lo + Math.floor(rand() * (hi - lo + 1)))(sidearmOf({ level: f.level })) : 1;
     for (let i = 0; i < k; i++) if (planHit(st, planOther(f.side), s.at, rand, ev, f.side === 'us' ? 'shot' : 'their', !!s.sidearm)) hitAt[s.at] = true;
