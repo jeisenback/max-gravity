@@ -11,7 +11,7 @@
 
 const planSay = (key, vars) => sceneSay('scene:fight', `plan.${key}`, vars);
 const planPct = x => Math.round(100 * x);
-const PLAN_UI = { DECK_PX: 58, FIG: 7 };  // a deck's height on the cutaway, and a figure's radius
+const PLAN_UI = { DECK_PX: 58, FIG: 7, FIG_Y: 0.62, ROW: 10 };  // a deck's height on the cutaway, a figure's radius, the figures' line down a deck, and the step between the two rows of names
 
 // The fight's opening on the decks: ours who stand (repelCrew's), the hand at their post's odds, the captain on our bridge when repelling.
 function planStartState({ d, fight, boarders, grade, assault, party, kit }) {
@@ -54,7 +54,7 @@ const planShowing = () => { const s = G.dialog && G.dialog.event.fight; return s
 function planPageHtml(s) {
   const st = s.state, n = st.lay.decks.length, c = planChoices(st, s.pick.move), hand = st.figures.find(f => f.hand);
   const on = b => (b ? raw('class="on" aria-pressed="true"') : raw('aria-pressed="false"'));
-  const spot = id => { const p = deckSpot(st.lay, id); return `left:${(100 * p.x).toFixed(1)}%;top:${(100 * (p.deck + 0.5) / n).toFixed(1)}%`; };
+  const spot = id => { const p = deckSpot(st.lay, id); return `left:${(100 * p.x).toFixed(1)}%;top:${(100 * (p.deck + PLAN_UI.FIG_Y) / n).toFixed(1)}%`; };  // on the figures' line (planDraw)
   const moves = [hand.spot, ...c.moves].map(id => h`<button class="plan-spot ${id === (s.pick.move || hand.spot) ? 'on' : ''}" style="${spot(id)}" data-action="planMove" data-arg="${id}" aria-label="${planSay(id === hand.spot ? 'stand' : 'move', { at: planWhere(s, id) })}"></button>`);
   return h`<div class="plan-fight">
     <div class="plan-cut" style="height:${n * PLAN_UI.DECK_PX}px"><canvas class="plan-cut" role="img" aria-label="${planSay('cutaway')}"></canvas>${moves}</div>
@@ -217,7 +217,7 @@ function planDraw(c, s) {
   const st = s.state, lay = st.lay, n = lay.decks.length, dpr = window.devicePixelRatio || 1, w = Math.max(300, c.clientWidth || 600), dh = PLAN_UI.DECK_PX, hgt = n * dh;
   if (c.width !== Math.round(w * dpr) || c.height !== Math.round(hgt * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(hgt * dpr); }
   const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const X = x => 12 + x * (w - 24), Y = d => d * dh, at = id => { const p = deckSpot(lay, id); return [X(p.x), Y(p.deck) + dh * 0.62]; };
+  const X = x => 12 + x * (w - 24), Y = d => d * dh, at = id => { const p = deckSpot(lay, id); return [X(p.x), Y(p.deck) + dh * PLAN_UI.FIG_Y]; };
   const font = px => `${px}px "IBM Plex Mono", monospace`, said = [];
   const text = (str, x, y, color, px = 10) => { said.push(str); g.fillStyle = color; g.font = font(px); g.fillText(str, x, y); };
   g.fillStyle = PLAN_INK.bg; g.fillRect(0, 0, w, hgt);
@@ -246,12 +246,13 @@ function planDraw(c, s) {
   if (st.wave) { const [x, y] = at('outer'); text(planSay(st.turn + 1 === DECK.WAVE_TURN ? 'mark.land' : 'mark.wave', { n: st.wave }), x - 8, y - 16, PLAN_INK.them); }
   // what happened last turn, marked where it did
   for (const e of s.marks || []) { const id = e.spot || e.on || e.to; if (!id || !deckSpot(lay, id)) continue; const [x, y] = at(id); g.strokeStyle = PLAN_INK.mark; g.beginPath(); g.moveTo(x - 5, y - 5); g.lineTo(x + 5, y + 5); g.moveTo(x + 5, y - 5); g.lineTo(x - 5, y + 5); g.stroke(); }
-  // the figures on their spots, side by side; a wounded one hollow; ours named
+  // the figures on their spots, side by side; a wounded one hollow; ours named, centred over each, on two rows in turn so that the names of three
+  // on a spot do not run into each other (#1387)
   for (const p of deckSpots(lay)) {
     const here = planUp(st).filter(f => f.spot === p.id), [x, y] = at(p.id);
     here.forEach((f, k) => { const fx = x + (k - (here.length - 1) / 2) * (PLAN_UI.FIG * 2 + 3), color = f.hand ? PLAN_INK.you : f.side === 'us' ? PLAN_INK.us : PLAN_INK.them;
       g.beginPath(); g.arc(fx, y, PLAN_UI.FIG, 0, Math.PI * 2); if (f.hp === 2) { g.fillStyle = color; g.fill(); } else { g.strokeStyle = color; g.lineWidth = 2; g.stroke(); g.lineWidth = 1; }
-      if (f.side === 'us') text(f.hand ? planSay('you') : f.name.slice(0, 5), fx - 12, y - 10, PLAN_INK.mark, 9); });
+      if (f.side === 'us') { const name = f.hand ? planSay('you') : f.name.slice(0, 5); g.font = font(9); text(name, fx - g.measureText(name).width / 2, y - 12 - (k % 2) * PLAN_UI.ROW, PLAN_INK.mark, 9); } });
   }
   c.dataset.drawn = String(s.state.log.length) + JSON.stringify(s.pick) + (s.intent || '');
   return said;  // the words drawn, for the scene lines' test (tests/sceneplay.js)

@@ -143,3 +143,22 @@ test('a repel lost on our bridge goes to today\'s settle: the ship taken', async
   assert.deepEqual(r.labels, ['Stand down']);
   await done();
 });
+
+test('three of ours on one spot each get a name on the cutaway that does not run into the others (#1387)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const boxes = await ev(() => {
+    Settings.planFight = true; fightGame('gunner'); const s = boarded();
+    stage(s, { hand: 'magazine', 'c:ines': 'magazine', 'c:tomas': 'magazine' });
+    const c = document.createElement('canvas'), g = c.getContext('2d'), drawn = [], fill = g.fillText.bind(g);
+    g.fillText = (str, x, y) => { drawn.push({ str, x, y, w: g.measureText(str).width }); fill(str, x, y); };
+    planDraw(c, s);
+    return drawn.filter(d => ['You', 'Ines', 'Tomas'].includes(d.str));
+  });
+  assert.deepEqual(boxes.map(b => b.str).sort(), ['Ines', 'Tomas', 'You']);
+  for (const a of boxes) for (const b of boxes) if (a !== b) {
+    const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || Math.abs(a.y - b.y) >= 9;
+    assert.ok(apart, `${a.str} at ${Math.round(a.x)},${a.y} and ${b.str} at ${Math.round(b.x)},${b.y} overlap`);
+  }
+  await done();
+});
