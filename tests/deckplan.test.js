@@ -134,10 +134,17 @@ test('with every path sealed they cut the hatch on their path (Review Focus 1)',
 test('pull back is not offered after a move, and seal and open only for the pilot and the engineer', () => {
   const st = repel();
   assert.ok(planChoices(st).acts.some(a => a.kind === 'pullback'));
-  assert.ok(!planChoices(st, true).acts.some(a => a.kind === 'pullback'));
+  assert.ok(!planChoices(st, 'magazine').acts.some(a => a.kind === 'pullback'));
   const seals = planChoices(st).orders.filter(o => o.kind === 'seal' || o.kind === 'open').map(o => o.id);
   assert.deepEqual([...new Set(seals)].sort(), ['ines', 'tomas']);
   assert.ok(!planChoices(st).orders.some(o => o.id === 'captain'), 'the captain is not given orders');
+});
+test('the hand\'s shots are from the spot the hand steps to, since the hand moves before fire', () => {
+  const st = stage(repel({ boarders: 2 }), { hand: 'magazine', t1: 'w2' }, true);
+  assert.deepEqual(plain(planChoices(st).acts[0].targets), [], 'from the magazine the well a deck up is out of line');
+  const from = planChoices(st, 'w3').acts[0].targets;
+  assert.deepEqual(plain(from.map(t => t.at)), ['w2'], 'from the well at the gun deck it is in line, up through the open hatch');
+  assert.equal(from[0].odds, planOdds(st, st.figures.find(f => f.hand), 'w3', 'w2', true), 'at a moving shooter\'s odds');
 });
 test('the hand\'s moves are the linked spots with room and none of theirs', () => {
   const st = stage(repel(), { hand: 'magazine', t1: 'w3' });

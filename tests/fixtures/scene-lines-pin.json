@@ -30782,5 +30782,341 @@
   "title": "Landing",
   "text": "Customs logs the ship through.",
   "labels": []
+ },
+ {
+  "id": "scene:fight:plan",
+  "plays": [
+   {
+    "title": "Boarders",
+    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at the gun seat. You hold your fire. YouPick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the gun deck and the lock deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the gun deck and the lock deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (17%)Suggest: fall back (37%) Turn 1 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "+3 TO COME",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turn1 of them move up. 1 of them shoot. They cut the hatch between the gun deck and the lock deck. 3 more land at the outer door at the end of the turn. They may feint. 3 of ours move: fall back.You move to the magazine. You: Pick off a runner. YouPick off a runner (55%)Covering burst (70%), once a fightHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the gun deck and the lock deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the gun deck and the lock deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: fall back.Suggest: hold where we are (47%)Suggest: push them back (17%) Turn 2 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "CUTTING",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "+3 LAND THIS TURN",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turn1 of them rush, two spots at a time. Her crew seal the hatch between the crew deck and the gun deck over us. 3 more land at the outer door at the end of the turn. They're setting a charge on the magazine from the well at the gun deck. It blows at the end of the turn unless someone hits them at the well at the gun deck, or ours pull back. 5 of ours move: push them back.You stand at the gun seat. You: Covering burst. Ines moves to the well at the flight deck. YouShoot at the well at the gun deck (41%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines opens the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas opens the hatch between the crew deck and the gun deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: push them back.Suggest: hold where we are (47%)Suggest: fall back (37%) Turn 2 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "CHARGE",
+     "SETTER",
+     "+3 LAND THIS TURN",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turn1 of them rush, two spots at a time. Her crew seal the hatch between the crew deck and the gun deck over us. 3 more land at the outer door at the end of the turn. They're setting a charge on the magazine from the well at the gun deck. It blows at the end of the turn unless someone hits them at the well at the gun deck, or ours pull back. 5 of ours move: push them back.You stand at the gun seat. You pull back with everyone here. Ines opens the hatch between the crew deck and the gun deck. YouShoot at the well at the gun deck (41%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines opens the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas opens the hatch between the crew deck and the gun deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: push them back.Suggest: hold where we are (47%)Suggest: fall back (37%) Turn 2 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "CHARGE",
+     "SETTER",
+     "+3 LAND THIS TURN",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turn1 of them rush, two spots at a time. Her crew seal the hatch between the crew deck and the gun deck over us. 3 more land at the outer door at the end of the turn. They're setting a charge on the magazine from the well at the gun deck. It blows at the end of the turn unless someone hits them at the well at the gun deck, or ours pull back. 5 of ours move: push them back.You stand at the gun seat. You shoot at the well at the gun deck (41%). YouShoot at the well at the gun deck (41%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines opens the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas opens the hatch between the crew deck and the gun deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: push them back.Suggest: hold where we are (47%)Suggest: fall back (37%) Turn 2 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "CHARGE",
+     "SETTER",
+     "+3 LAND THIS TURN",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turnThey hold where they are. 5 of ours move: push them back.You stand at the gun seat. You hold your fire. YouPick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the gun deck and the lock deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the gun deck and the lock deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: push them back.\"All right, push them back.\" Turn 1 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "+3 TO COME",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at the gun seat. You hold your fire. YouPick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the gun deck and the lock deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the gun deck and the lock deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: hold where we are.\"No. We stay on it.\" Turn 1 of 12. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "+3 TO COME",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "title": "Boarding Her",
+    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at her outer door. You hold your fire. YouPick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the lock deck.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (17%)Suggest: fall back (37%) Turn 1 of 12. Ours 6, theirs 6, 0 still to land. They break at 1. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at her outer door",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "BUNK ROOM",
+     "GALLEY",
+     "READY ROOM",
+     "TORPEDO BAY",
+     "AIRLOCK",
+     "STORES",
+     "You",
+     "Ines",
+     "Tomas",
+     "Mateo",
+     "Cato",
+     "Hana"
+    ]
+   },
+   {
+    "log": "Turn 1: Ines goes down at the gun seat. One of them is hit at the magazine. One of them goes down at the magazine. Ines is hit, and carried below, and is alive, and isn't fit to work. You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you."
+   },
+   {
+    "log": "Turn 1: Ines: it doesn't work."
+   },
+   {
+    "log": "Turn 1: Tomas is hit at the workbench. One of them is hit at the tool wall. You: it works. One of them goes down at the tool wall."
+   },
+   {
+    "log": "Turn 2: You: it doesn't work. 3 more come through the outer door."
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at the gun seat. You: Pick off a runner. YouShoot at the magazine (17%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the crew deck and the gun deck. (90%)Tomas moves to the well at the gun deck.Tomas moves to the tool wall.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (47%)Suggest: fall back (37%) Turn 3 of 12. Ours 7, theirs 5, 0 still to land. They break at 0. Turn 2: You: it doesn't work. 3 more come through the outer door.The whole fightTurn 1: Tomas is hit at the workbench. One of them is hit at the tool wall. You: it works. One of them goes down at the tool wall.Turn 2: You: it doesn't work. 3 more come through the outer door. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "log": "Turn 1: Nobody is hit."
+   },
+   {
+    "log": "Turn 1: The charge blows at the magazine. Ines goes down at the magazine."
+   },
+   {
+    "log": "Turn 1: One of them is hit at the well at the gun deck. One of them goes down at the well at the gun deck. The charge at the magazine never goes off."
+   },
+   {
+    "log": "Turn 1: They cut through the hatch between the gun deck and the lock deck."
+   },
+   {
+    "log": "Turn 2: 3 more come through the outer door."
+   },
+   {
+    "log": "Turn 1: Ours fall back to the magazine."
+   },
+   {
+    "log": "Turn 1: Her crew seal the hatch between the crew deck and the ready deck."
+   },
+   {
+    "log": "Turn 2: We cut through the hatch between the crew deck and the ready deck."
+   }
+  ]
  }
 ]
