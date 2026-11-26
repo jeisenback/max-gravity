@@ -842,7 +842,7 @@ const SCENE_LINES = {
     'plan.suggest.yes': '"All right, {order}."', 'plan.suggest.no': '"No. We stay on it."',
     'plan.count': 'Turn {turn} of {max}. Ours {ours}, theirs {theirs}, {wave} still to land. They break at {at}.', 'plan.log': 'The whole fight',
     'plan.log.turn': 'Turn {n}: {what}', 'plan.log.none': 'Nobody is hit.',
-    'plan.log.wound.us': '{who} is hit at {at}.', 'plan.log.down.us': '{who} goes down at {at}.', 'plan.log.wound.them': 'One of them is hit at {at}.', 'plan.log.down.them': 'One of them goes down at {at}.',
+    'plan.log.wound.us': '{who} is hit at {at}.', 'plan.log.down.us': '{who} goes down at {at}.', 'plan.log.wound.you': 'You\'re hit at {at}.', 'plan.log.down.you': 'You go down at {at}.', 'plan.log.wound.them': 'One of them is hit at {at}.', 'plan.log.down.them': 'One of them goes down at {at}.',
     'plan.log.charge': 'The charge blows at {at}.', 'plan.log.chargeStopped': 'The charge at {at} never goes off.', 'plan.log.cut': 'They cut through {hatch}.', 'plan.log.cutOurs': 'We cut through {hatch}.',
     'plan.log.sealedHers': 'Her crew seal {hatch}.', 'plan.log.wave': '{n} more come through the outer door.', 'plan.log.pullback': 'Ours fall back to {at}.',
     'plan.log.worked': '{who}: it works.', 'plan.log.missed': '{who}: it doesn\'t work.',

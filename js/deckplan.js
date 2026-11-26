@@ -16,9 +16,11 @@ const PLAN = {
   TURNS: 12,        // the attackers withdraw at the end of this turn: a repel won, an assault lost (DECK.TURNS on the strip)
   NAVY_TURNS: 8,    // a navy inspection's own cap (DECK.NAVY_TURNS on the strip)
   HIT: { base: 0.35, level: 0.06, cover: 0.12, moved: 0.1, min: 0.05, max: 0.9 },  // a shot's odds: the shooter's level, the target spot's cover, and moving first
+  THEIRS: 1,        // a boarder's shooting level, before her grade
   CHARGES: 2,       // a corsair's breaching charges a fight (the prototype's; the strip limits them only by never two turns running)
   CAPTAIN_LEVEL: 3, // the captain's shooting
   NAVY_HOLD: 0.3,   // a navy head with a shot at these odds or better holds and shoots rather than push
+  STORM: 2,         // they storm a spot of ours they outnumber this many to one (the owner, 2026-11-26, #1354)
   REST: 'bunksM',   // where one of our crew with no post of their own stands when the boarders come
 };
 const PLAN_HOME = { captain: 'helm' };  // the captain on our bridge, with the pilot
@@ -34,7 +36,7 @@ const planOther = side => (side === 'us' ? 'them' : 'us');
 const planBridge = st => deckSpots(st.lay).filter(p => p.deck === 0).map(p => p.id);  // the bridge's spots: ours repelling, hers boarding her
 const planLock = () => ['outer'];  // every layout's outer door is its lock's
 const planHome = st => (st.assault ? planLock(st) : planBridge(st));  // where pulling back goes: toward our bridge, or boarding her, toward her lock
-const planLevel = (st, f) => (f.side === 'us' ? f.level : 1 + st.grade);
+const planLevel = (st, f) => (f.side === 'us' ? f.level : PLAN.THEIRS + st.grade);
 
 // The nearest spot to `want` (want first) with room and none of the other side: where a figure is put, crowding outward.
 function planPlace(st, want, side) {
@@ -103,7 +105,7 @@ function planRoute(st, from, goals) {
 // running, while charges last); the navy pushes and holds. Every path sealed: they cut the hatch. A veteran's push may feint, at CUNNING a
 // grade, never the navy's, a rush or a charge. Boarding her, her crew hold their spots, shoot, and seal the hatch over ours once.
 function planTheirMove(st, rand) {
-  const out = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false };
+  const out = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null };
   const them = planUp(st, 'them'), into = {};
   if (st.assault) {
     const ours = planUp(st, 'us'), top = Math.min(...ours.map(f => planSpot(st, f.spot).deck)), h = `h${top - 1}`;
@@ -118,8 +120,19 @@ function planTheirMove(st, rand) {
       .filter(t => t.from).sort((a, b) => b.n - a.n);
     if (targets[0]) out.charge = { on: targets[0].on, from: targets[0].from, setter: planAt(st, targets[0].from, 'them')[0].id };
   }
+  // a storm (the owner, 2026-11-26, #1354): a spot of ours on their path that they outnumber two to one from the spots next to it is stormed, from the
+  // nearest of them; never by the navy
+  if (st.party !== 'navy') {
+    const links = spotLinks(st.lay), ours = [...new Set(planUp(st, 'us').map(f => f.spot))];
+    const storms = ours.map(on => {
+      const ids = links[on].filter(s => !st.sealed[spotHatch(st.lay, s, on)]).flatMap(s => planAt(st, s, 'them')).filter(f => !out.charge || f.id !== out.charge.setter).map(f => f.id);
+      return { on, ids, from: ids.length ? them.find(f => f.id === ids[0]).spot : null, ratio: ids.length / planAt(st, on, 'us').length };
+    }).filter(x => x.ids.length && x.ratio >= PLAN.STORM).sort((a, b) => b.ratio - a.ratio);
+    if (storms[0]) out.storm = { on: storms[0].on, from: storms[0].from, ids: storms[0].ids };
+  }
   for (const f of [...them].sort((a, b) => dist(a) - dist(b))) {
     if (out.charge && out.charge.setter === f.id) continue;
+    if (out.storm && out.storm.ids.includes(f.id)) continue;
     const r = planRoute(st, f.spot, goals);
     if (r.cut) { if (!out.cut) { out.cut = r.cut; out.cutter = f.id; } continue; }
     // the steps on their path this turn: one, or a raider's rush of two, which goes through a spot of ours held by fewer than half of them
@@ -148,8 +161,10 @@ function planTheirMove(st, rand) {
 // ---------- our side ----------
 const planStrength = (st, side) => planUp(st, side).reduce((n, f) => n + (f.hp === 2 ? 1 : 0.6), 0) + (side === 'them' ? st.wave : 0);
 // The captain's standing order: hold, push them back (boarding her, push for her bridge), or fall back to our bridge (boarding her, to her lock).
+// Repelling, she falls back when ours are fewer and her nerve is cautious, pushes once the wave has landed and ours are clearly more, else holds.
 function planCaptain(st, nerve) {
   const ours = planStrength(st, 'us'), theirs = planStrength(st, 'them');
+  if (st.assault) return ours * 2 < theirs && nerve < 0.6 ? 'fall' : 'push';  // boarding her, the push for her bridge, unless badly outnumbered (the owner, 2026-11-26, #1354)
   if (ours < theirs && nerve < 0.6) return 'fall';
   if (!st.wave && (theirs <= 2 || ours >= theirs + 2 - nerve)) return 'push';
   return 'hold';
@@ -158,8 +173,10 @@ function planCaptain(st, nerve) {
 // spot, then each a shot from where they will stand. `order` is the captain's ('hold' | 'push' | 'fall'); `named` the hand's order this turn.
 function planCrewMoves(st, order, named = null) {
   const out = { moves: [], shots: [] }, into = {};
-  const foes = [...new Set(planUp(st, 'them').map(f => f.spot))];
-  const goal = order === 'fall' ? planHome(st) : order === 'push' ? (st.assault ? planBridge(st) : foes) : null;
+  const foes = [...new Set(planUp(st, 'them').map(f => f.spot))], top = Math.min(...foes.map(s => planSpot(st, s).deck));
+  // hold: repelling, the well a deck above the highest of theirs, across their path to the bridge (the spec's "hold the well at a deck"); boarding her, where ours stand
+  const held = !st.assault && Number.isFinite(top) ? [`w${Math.max(0, top - 1)}`] : null;
+  const goal = order === 'fall' ? planHome(st) : order === 'push' ? (st.assault ? planBridge(st) : foes) : held;
   for (const f of planUp(st, 'us')) {
     if (f.hand) continue;
     let to = null;
@@ -179,6 +196,7 @@ const planReach = (st, hand, from) => (hand.level >= DECK.SIDEARM_REACH_LEVEL ? 
 // What the hand may do this turn: a step (a linked spot through an open hatch, with room and none of theirs), an act, and an order to a named crewmate.
 // `to`: the spot the hand has chosen to step to, if any; the hand moves before fire, so the shots are in line from there, at a moving shooter's odds.
 function planChoices(st, to = null) {
+  if (st.figures.find(f => f.hand).hp <= 0) return { moves: [], acts: [{ kind: 'shoot', targets: [], odds: 0 }, { kind: 'holdfire', odds: 1 }], orders: [] };  // the hand is down
   const hand = st.figures.find(f => f.hand), links = spotLinks(st.lay)[hand.spot], from = to || hand.spot, moved = !!to;
   const moves = links.filter(s => !st.sealed[spotHatch(st.lay, hand.spot, s)] && planHeld(st, s) !== 'them' && planAt(st, s, 'us').length < PLAN.CAP);
   const shot = planAim(st, hand, from, moved, planReach(st, hand, from));
@@ -207,8 +225,9 @@ function planSuggestOdds(st, level, opinion, intent, nerve = 0.5) {
 }
 
 // ---------- the turn ----------
-// A hit on a spot: an unwounded one there is wounded, else a wounded one is downed (the hand's shot, `sidearm`, downs the wounded first). A hit meant for the hand is taken by a friend standing
-// there, once a fight; otherwise it is the hand's hurt roll's (the screen's, REPEL_HURT.lose times DECK.SUIT), and the hand stays up.
+// A hit on a spot: an unwounded one there is wounded, else a wounded one is downed (the hand's shot, `sidearm`, downs the wounded first). The hand is
+// hit like anyone (the owner, 2026-11-26, #1354), but a hit meant for the hand is taken by a friend standing there, once a fight. The hand downed is out
+// of the fight, and the scene rolls today's hurt for it (deckplanui.js).
 function planHit(st, side, spot, rand, events, how, sidearm = false) {
   const there = planAt(st, spot, side);
   if (!there.length) return false;
@@ -217,7 +236,6 @@ function planHit(st, side, spot, rand, events, how, sidearm = false) {
   if (f.hand) {
     const friend = there.find(x => !x.hand);
     if (st.friend && friend) { st.friend = false; f = friend; events.push({ kind: 'shielded', id: f.id, spot }); }
-    else { events.push({ kind: 'handHit', spot, how }); return true; }
   }
   f.hp--;
   events.push({ kind: f.hp ? 'wound' : 'down', id: f.id, side, spot, how, ...(f.captain ? { captain: true } : {}) });
@@ -240,6 +258,7 @@ const planBack = (st, spot, goals) => { const r = spotPath(st.lay, spot, goals, 
 // Returns { state, events, end }.
 function planTurn(st0, pick, shown, rand) {
   const st = planCopy(st0), ev = st.events, fig = id => st.figures.find(f => f.id === id), hand = st.figures.find(f => f.hand);
+  if (hand.hp <= 0) pick = { move: null, act: { kind: 'holdfire' }, order: null };  // the hand is down: the crew fight on
   const { theirs, ours } = shown, order = pick.order, act = pick.act || { kind: 'holdfire' };
   const worked = (odds, kind, id) => { const ok = rand() < odds; ev.push({ kind: 'ability', id, ability: kind, worked: ok }); return ok; };
   // the order to a named crewmate
@@ -267,7 +286,6 @@ function planTurn(st0, pick, shown, rand) {
   const hitAt = {}, shots = [...theirs.shots, ...ours.shots];
   if (act.kind === 'shoot' && act.at) shots.push({ id: 'hand', at: act.at, sidearm: true });
   const fired = shots.map(s => ({ s, f: fig(s.id) })).filter(({ f }) => f && f.hp > 0 && !(theirs.feint && f.side === 'them' && theirs.moves.some(m => m.id === f.id)));
-  if (fired.some(({ s, f }) => f.side === 'them' && s.at === hand.spot)) ev.push({ kind: 'contested', spot: hand.spot });
   for (const { s, f } of fired) {
     const reach = s.sidearm ? planReach(st, f, f.spot) : [];
     if (!inLine(st.lay, f.spot, s.at, st.sealed) && !reach.includes(s.at)) continue;
@@ -284,6 +302,18 @@ function planTurn(st0, pick, shown, rand) {
   };
   if ((act.kind === 'steady' || (act.kind === 'cover' && !st.coverUsed)) && hand.odds) ability(hand, act.kind, hand.odds[act.kind]);
   if (order && fig(order.id) && fig(order.id).hp > 0 && (order.kind === 'steady' || (order.kind === 'cover' && !st.coverUsed))) ability(fig(order.id), order.kind, fig(order.id).odds[order.kind]);
+  // the storm, if it still holds two to one after fire: one of ours there is downed (the hand last), the rest step back toward our bridge where they
+  // can, and the stack moves in once the spot is clear
+  if (theirs.storm && !theirs.feint) {
+    const sm = theirs.storm, near = spotLinks(st.lay)[sm.on], stack = sm.ids.map(fig).filter(f => f && f.hp > 0 && near.includes(f.spot)), there = planAt(st, sm.on, 'us');
+    if (stack.length && stack.length >= PLAN.STORM * there.length) {
+      const victim = there.sort((a, b) => !!a.hand - !!b.hand || a.hp - b.hp)[0];
+      if (victim) planDown(st, victim, ev, 'storm');
+      for (const f of planAt(st, sm.on, 'us')) { const to = planBack(st, f.spot, planHome(st)); if (to && planAt(st, to, 'us').length < PLAN.CAP) f.spot = to; }
+      if (!planAt(st, sm.on, 'us').length) for (const f of stack.slice(0, PLAN.CAP)) f.spot = sm.on;
+      ev.push({ kind: 'storm', on: sm.on, from: sm.from, took: !planAt(st, sm.on, 'us').length });
+    } else ev.push({ kind: 'storm', on: sm.on, from: sm.from, stopped: true });
+  }
   // the hatches they cut (and, boarding her, the one her crew seal), unless the cutter was hit
   if (theirs.cut) { const c = fig(theirs.cutter); if (c && c.hp > 0 && !hitAt[c.spot]) { delete st.sealed[theirs.cut]; ev.push({ kind: 'cut', hatch: theirs.cut }); } }
   if (theirs.seal) { st.sealed[theirs.seal] = true; st.herSealed = true; ev.push({ kind: 'sealed', hatch: theirs.seal, side: 'them' }); }
@@ -297,10 +327,9 @@ function planTurn(st0, pick, shown, rand) {
     st.charges--; st.lastCharge = st.turn;
     if (hitAt[c.from]) ev.push({ kind: 'charge', on: c.on, stopped: true });
     else {
-      const [lo, hi] = DECK.CHARGE, n = lo + Math.floor(rand() * (hi - lo + 1)), there = planAt(st, c.on, 'us').filter(f => !f.hand);
+      const [lo, hi] = DECK.CHARGE, n = lo + Math.floor(rand() * (hi - lo + 1)), there = planAt(st, c.on, 'us').sort((a, b) => !!a.hand - !!b.hand);  // the hand last
       ev.push({ kind: 'charge', on: c.on, stopped: false });
       for (const f of there.slice(0, n)) planDown(st, f, ev, 'charge');
-      if (planAt(st, c.on, 'us').some(f => f.hand) && there.length < n) ev.push({ kind: 'handHit', spot: c.on, how: 'charge' });
     }
   }
   // the wave lands at the outer door at the end of DECK.WAVE_TURN

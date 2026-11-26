@@ -158,10 +158,32 @@ test('the captain falls back when ours are fewer and her nerve is cautious, and 
   few.wave = 0;
   assert.equal(planCaptain(few, 0.5), 'push');
 });
-test('under a fall-back order our crew step toward the bridge; under hold they stay', () => {
+test('boarding her, the captain pushes for her bridge, and pulls back only when ours are under half of hers and her nerve is cautious (#1354)', () => {
+  const her = (crew, boarders) => planFight({ lay: LAYOUTS.raider, crew: CREW.slice(0, crew), hand: { level: 2, post: 'gunner', odds }, captain: null, party: 'raider', boarders, assault: true });
+  assert.equal(planCaptain(her(3, 7), 0.3), 'push', 'four of ours against seven');
+  assert.equal(planCaptain(her(1, 7), 0.3), 'fall', 'two of ours against seven, cautious');
+  assert.equal(planCaptain(her(1, 7), 0.8), 'push', 'two against seven, bold');
+});
+test('a stack of theirs two to one against a spot of ours storms it: one of ours there downed, the rest pushed back a step, the stack in (#1354)', () => {
+  const st = stage(repel({ boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3' }, false);
+  st.wave = 0;
+  for (const f of st.figures) if (f.side === 'them' && !['t1', 't2', 't3'].includes(f.id)) f.hp = 0;
+  const m = planTheirMove(st, always(0.9));
+  assert.deepEqual(plain(m.storm), { from: 'w4', ids: ['t1', 't2', 't3'], on: 'w3' });
+  assert.ok(!m.moves.some(x => ['t1', 't2', 't3'].includes(x.id)), 'the stack goes in, and does nothing else');
+  const { state, events } = planTurn(st, hold, { theirs: m, ours: quiet }, always(0.9));
+  assert.ok(events.some(e => e.kind === 'down' && e.id === 'cato' && e.how === 'storm'));
+  assert.deepEqual(plain(['t1', 't2', 't3'].map(id => state.figures.find(f => f.id === id).spot)), ['w3', 'w3', 'w3']);
+  const two = stage(repel({ boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3', tomas: 'w3' }, false);
+  assert.equal(planTheirMove(two, always(0.9)).storm, null, 'three against two is not two to one');
+  const navy = stage(repel({ party: 'navy', boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3' }, false);
+  assert.equal(planTheirMove(navy, always(0.9)).storm, null, 'the navy pushes and holds');
+});
+test('under a fall-back order our crew step toward the bridge; under hold toward the well a deck above the highest of theirs', () => {
   const st = stage(repel(), { cato: 'bunksM' });
   assert.deepEqual(plain(planCrewMoves(st, 'fall').moves.filter(m => m.id === 'cato')), [{ id: 'cato', to: 'w2' }]);
-  assert.equal(planCrewMoves(st, 'hold').moves.length, 0);
+  assert.deepEqual(plain(planCrewMoves(st, 'hold').moves.filter(m => m.id === 'cato')), [{ id: 'cato', to: 'w2' }], 'theirs at the lock deck: the well at the gun deck, by the berths\' well');
+  assert.ok(!planCrewMoves(stage(repel(), { cato: 'w3' }), 'hold').moves.some(m => m.id === 'cato'), 'there already: they stay');
   assert.equal(planCrewMoves(st, 'fall', { id: 'cato', kind: 'hold' }).moves.some(m => m.id === 'cato'), false, 'held by the hand\'s order');
 });
 test('a suggestion\'s odds rise with level, within the ship fight\'s range', () => {
@@ -224,15 +246,18 @@ test('the captain wounded twice is downed, not killed, and marked so the screen 
   assert.equal(e.id, 'captain');
   assert.equal(e.captain, true);
 });
-test('a friend takes the first hit meant for the hand, once a fight; after that the hit is the hand\'s hurt roll', () => {
+test('a friend takes the first hit meant for the hand, once a fight; after that the hand is wounded and downed like anyone, and a downed hand does nothing (#1354)', () => {
   const st = stage(repel({ boarders: 2 }), { t1: 'magazine', hand: 'gunseat', cato: 'gunseat' }, true);
   const shot = { ...none, shots: [{ id: 't1', at: 'gunseat' }] };
   const one = planTurn(st, hold, { theirs: shot, ours: quiet }, always(0));
   assert.ok(one.events.some(e => e.kind === 'shielded' && e.id === 'cato'));
-  assert.ok(one.events.some(e => e.kind === 'contested'));
   const two = planTurn(one.state, hold, { theirs: shot, ours: quiet }, always(0));
-  assert.ok(two.events.some(e => e.kind === 'handHit'));
-  assert.equal(two.state.figures.find(f => f.hand).hp, 2, 'the hand stays up: the screen rolls the hurt');
+  assert.ok(two.events.some(e => e.kind === 'wound' && e.id === 'hand'), 'the friend has taken theirs: the hand is hit');
+  const three = planTurn(two.state, hold, { theirs: shot, ours: quiet }, always(0));
+  assert.ok(three.events.some(e => e.kind === 'down' && e.id === 'hand'));
+  assert.deepEqual(plain(planChoices(three.state)), { moves: [], acts: [{ kind: 'shoot', targets: [], odds: 0 }, { kind: 'holdfire', odds: 1 }], orders: [] }, 'nothing left for the hand to do');
+  const after = planTurn(three.state, { move: 'magazine', act: { kind: 'shoot', at: 'magazine' }, order: null }, { theirs: none, ours: quiet }, always(0)).state;
+  assert.equal(after.figures.find(f => f.hand).spot, 'gunseat', 'a downed hand does not move');
 });
 test('the hand\'s shot takes heads by SIDEARM_BY_LEVEL, the wounded first', () => {
   const st = stage(repel({ boarders: 4 }), { hand: 'magazine', t1: 'w3', t2: 'w3' }, true);

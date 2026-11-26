@@ -109,7 +109,7 @@ test('the hand killed mid-turn stops the fight after the turn and queues the end
   await ev(helpers);
   await ev(() => {
     Settings.planFight = true; fightGame('gunner'); const s = boarded();
-    career().hurtUntil = G.state.day + 5; s.covered = true;  // already hurt, so another hit can kill; and no friend left to take it
+    career().hurtUntil = G.state.day + 5; s.covered = true; s.state.friend = false; s.state.figures.find(f => f.hand).hp = 1;  // already hurt and wounded, so a hit downs the hand and can kill; and no friend left to take it
     stage(s, { t1: 'magazine', hand: 'gunseat' }, true);
     for (const f of s.state.figures) if (f.side === 'us' && !f.hand) f.spot = 'helm';
     s.theirs = { moves: [], shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }], charge: null, cut: null, seal: null, feint: false };

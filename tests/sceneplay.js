@@ -732,6 +732,9 @@ const playScenes = () => {
         { const s = plan(), [, b] = crew(s); put(s, { [b]: 'bench', t1: 'toolwall', hand: 'gunseat', t2: 'magazine' }); s.theirs = { ...quiet(), shots: [{ id: 't1', at: 'bench', odds: 0.5 }] };
           s.pick = { move: null, act: { kind: 'steady' }, order: null }; turn(s, Array(40).fill(0.01)); s.theirs = quiet(); turn(s, [0.99]); s.theirs = quiet(); page(s); }  // a crewmate wounded, the hand's steady move worked; and the log folded
         { const s = plan(); turn(s, [0.99]); }
+        { const s = plan(), [, b] = crew(s); put(s, { hand: 'gunseat', [b]: 'bench', t1: 'magazine', t2: 'toolwall' }); s.state.friend = false; s.covered = true;  // the hand hit and then downed, and a crewmate held in place hit
+          const shots = () => ({ ...quiet(), shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }, { id: 't2', at: 'bench', odds: 0.5 }] });
+          s.pick = { move: null, act: { kind: 'holdfire' }, order: { id: b, kind: 'hold' } }; s.theirs = shots(); turn(s, Array(40).fill(0.01)); s.theirs = shots(); turn(s, Array(40).fill(0.01)); }
         { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } }; turn(s, Array(40).fill(0.99)); }
         { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', hand: 'gunseat', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } };
           s.pick = { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }; turn(s, Array(40).fill(0.01)); }

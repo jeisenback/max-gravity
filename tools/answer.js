@@ -103,4 +103,33 @@ function answerRadar(s, post, orders, R) {
   return {};
 }
 
-module.exports = { answerDeck, answerRadar };
+// The deck fight on the deck plan (js/deckplan.js, #1354): the hand's turn read from their drawn move ({ theirs, intent }, planTheirMove and the captain's
+// order). `R` is the rules (tools/planfights.js). A charge: shoot its setter from where the hand stands or from a step away, and failing that, pull back off
+// the spot it is set on (`charge: false` plays it as if there were no charge). Otherwise the hand takes the step (or stays) with the best shot, standing
+// on a rush's path (which stops it) where it can, and off a spot about to be stormed. Every turn, the crewmate with the best odds takes their steady move, which downs one of theirs in line. Against the navy,
+// whose every head put down costs standing and who withdraw at their cap: hold fire and give no order, pulling back off a spot they are about to take.
+function answerPlan(R, st, { theirs }, { charge = true } = {}) {
+  const hand = st.figures.find(f => f.hand), c = R.planChoices(st);
+  if (st.party === 'navy' && !st.assault) {
+    const coming = theirs.moves.some(m => m.to === hand.spot) || theirs.shots.some(x => x.at === hand.spot);
+    return { move: null, act: coming && c.acts.some(a => a.kind === 'pullback') ? { kind: 'pullback' } : { kind: 'holdfire' }, order: null };
+  }
+  const best = to => (R.planChoices(st, to).acts[0].targets || []).slice().sort((a, b) => b.odds - a.odds)[0];
+  const steady = c.orders.filter(o => o.kind === 'steady').sort((a, b) => b.odds - a.odds)[0], order = steady ? { id: steady.id, kind: 'steady' } : null;
+  if (charge && theirs.charge) {
+    const from = theirs.charge.from;
+    for (const to of [null, ...c.moves]) if ((R.planChoices(st, to).acts[0].targets || []).some(t => t.at === from)) return { move: to, act: { kind: 'shoot', at: from }, order };
+    if (theirs.charge.on === hand.spot && c.acts.some(a => a.kind === 'pullback')) return { move: null, act: { kind: 'pullback' }, order };
+  }
+  const path = new Set(theirs.moves.filter(m => m.rush).flatMap(m => m.path || []));
+  const score = to => { const at = to || hand.spot, t = best(to); return (t ? t.odds : 0) + (path.has(at) ? 1 : 0) - (theirs.storm && theirs.storm.on === at ? 1 : 0); };
+  let move = [null, ...c.moves].reduce((a, b) => (score(b) > score(a) ? b : a));
+  if (st.assault && !best(move) && !path.has(move || hand.spot)) {  // boarding her, no shot from anywhere in reach: a step toward the nearest of them (repelling, the hand keeps its cover)
+    const foes = [...new Set(R.planUp(st, 'them').map(f => f.spot))], r = foes.length && R.spotPath(st.lay, hand.spot, foes, st.sealed);
+    if (r && r.next && c.moves.includes(r.next) && !(theirs.storm && theirs.storm.on === r.next)) move = r.next;
+  }
+  const t = best(move);
+  return { move, act: t ? { kind: 'shoot', at: t.at } : { kind: 'holdfire' }, order };
+}
+
+module.exports = { answerDeck, answerRadar, answerPlan };

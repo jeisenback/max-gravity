@@ -178,7 +178,7 @@ function planResolve(s) {
   s.marks = r.events.filter(e => ['wound', 'down', 'charge', 'cut', 'sealed', 'pullback'].includes(e.kind));  // what happened, kept on the ship for the next turn
   const said = [], after = [];
   for (const e of r.events) {
-    if (e.kind === 'wound' || e.kind === 'down') said.push(planSay(`log.${e.kind}.${e.side}`, { who: planName(s, e.id), at: planWhere(s, e.spot) }));
+    if (e.kind === 'wound' || e.kind === 'down') said.push(planSay(`log.${e.kind}.${e.id === 'hand' ? 'you' : e.side}`, { who: planName(s, e.id), at: planWhere(s, e.spot) }));
     if (e.kind === 'charge') said.push(planSay(e.stopped ? 'log.chargeStopped' : 'log.charge', { at: planWhere(s, e.on) }));
     if (e.kind === 'cut') said.push(planSay(e.side === 'us' ? 'log.cutOurs' : 'log.cut', { hatch: planHatch(s, e.hatch) }));
     if (e.kind === 'sealed') said.push(planSay('log.sealedHers', { hatch: planHatch(s, e.hatch) }));
@@ -187,9 +187,8 @@ function planResolve(s) {
     if (e.kind === 'ability') said.push(planSay(e.worked ? 'log.worked' : 'log.missed', { who: planName(s, e.id) }));
   }
   // a head of ours downed is a casualty at the strip's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
-  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain)) { const line = deckLoss(s, e.id); if (line) after.push(line); }
-  const contested = r.events.some(e => e.kind === 'contested'), blown = r.events.some(e => e.kind === 'handHit' && e.how === 'charge');
-  if (blown || (contested && Math.random() < REPEL_HURT.lose * DECK.SUIT)) after.push(repelCasualty(s, 'you'));  // the hand's hurt, which a friend may take (once a fight)
+  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id); if (line) after.push(line); }
+  if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) after.push(repelCasualty(s, 'you'));  // the hand downed is today's hurt, which a friend may take (once a fight); the crew fight on
   s.state.log.push(`${planSay('log.turn', { n: s.state.turn, what: said.length ? said.join(' ') : planSay('log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   s.theirs = null;
   if (s.handDied) return false;
