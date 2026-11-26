@@ -5,6 +5,7 @@
 // the game state is put back. The ship fight is on the radar since #1348, and is played by tools/radarfights.js (--radar, below).
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--groups party,grade]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
+//   node tools/fights.js --plan [--seeds 1,2,3,4] [--n 400] [--set KEY=value,...]  plays the deck fight on the deck plan (tools/planfights.js, #1354), in plain Node.
 //   node tools/fights.js --radar ...  plays the ship fight on the radar (tools/radarfights.js, #1347), in plain Node; --set KEY=value,... tries a number of RADAR's.
 //   npm run fights
 // Report: for each deck fight, how often you win and who is hurt, by crew, by the post's skill level, by the party that comes aboard (her type), by the hand's
@@ -145,7 +146,13 @@ function report(runs) {
 
 module.exports = { fights, report };
 
-if (require.main === module && process.argv.includes('--radar')) {  // the fight on the radar, in plain Node (tools/radarfights.js)
+if (require.main === module && process.argv.includes('--plan')) {  // the deck fight on the deck plan, in plain Node (tools/planfights.js, #1354)
+  const P = require('./planfights');
+  const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
+  for (const kv of (arg('set') || '').split(',').filter(Boolean)) { const [k, v] = kv.split('='); P.R.PLAN[k] = JSON.parse(v); }  // --set KEY=value,...: try a number of PLAN's for this run
+  const seeds = (arg('seeds') || '1,2,3,4').split(',').map(Number), n = Number(arg('n') || 100);
+  P.planReport(P.sumRuns(seeds.map(seed => P.planFights({ seed, n, cells: P.planCells() }))));
+} else if (require.main === module && process.argv.includes('--radar')) {  // the fight on the radar, in plain Node (tools/radarfights.js)
   const { radarFights, radarReport } = require('./radarfights');
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
   const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), post = arg('post') || 'gunner';

@@ -97,5 +97,14 @@
     "by": [
       "the setting chooses which deck fight a boarding opens: the checkbox on, the deck plan; off, today's"
     ]
+  },
+  {
+    "name": "plan-storm-ignores-the-odds",
+    "file": "js/deckplan.js",
+    "find": "x.ratio >= PLAN.STORM",
+    "replace": "x.ratio >= 1",
+    "by": [
+      "theirs PLAN.STORM to one against a spot of ours, from the spots next to it, storm it: one of ours there downed, the rest pushed back a step, they move in (#1354)"
+    ]
   }
 ]

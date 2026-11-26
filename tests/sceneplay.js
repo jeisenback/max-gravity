@@ -721,6 +721,7 @@ const playScenes = () => {
           s.pick = { move: null, act: { kind: 'cover' }, order: { id: crew(s)[0], kind: 'move', to: 'w0' } }; page(s);
           s.pick = { move: null, act: { kind: 'pullback' }, order: { id: crew(s)[0], kind: 'open', hatch: 'h2' } }; page(s);
           s.pick = { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }; page(s);
+          s.theirs = { ...quiet(), storm: { on: 'magazine', from: 'w3', ids: ['t1', 't2', 't3'] } }; page(s);  // a storm drawn
           for (const [roll, intent] of [[0, 'push'], [0.99, 'fall']]) { const t = plan(); seq([roll]); planSuggest(t, intent); page(t); } }
         // her deck
         page(plan(true));
@@ -738,6 +739,14 @@ const playScenes = () => {
         { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } }; turn(s, Array(40).fill(0.99)); }
         { const s = plan(false, 'corsair'), [a] = crew(s); put(s, { [a]: 'magazine', hand: 'gunseat', t1: 'w3' }); s.theirs = { ...quiet(), charge: { on: 'magazine', from: 'w3', setter: 't1' } };
           s.pick = { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }; turn(s, Array(40).fill(0.01)); }
+        // a storm that pushes ours back, one that takes the spot, and one stopped
+        { const s = plan(), [a, b, c] = crew(s); put(s, { [a]: 'w3', [b]: 'w3', t1: 'w4', t2: 'w4', t3: 'w4', hand: 'w2', captain: 'w2', [c]: 'w2' });  // the well above full of ours: no step back for (const f of s.state.figures) if (f.side === 'them' && !['t1', 't2', 't3'].includes(f.id)) f.hp = 0; s.state.wave = 0;
+          s.pick = { move: null, act: { kind: 'holdfire' }, order: { id: a, kind: 'hold' } }; s.theirs = { ...quiet(), storm: { on: 'w3', from: 'w4', ids: ['t1', 't2', 't3', 't4', 't5', 't6'] } };
+          for (const id of ['t4', 't5', 't6']) s.state.figures.push({ id, side: 'them', name: '', level: 0, hp: 2, spot: 'magazine' });  // the wave aboard: six against two
+          turn(s, Array(60).fill(0.99)); }
+        { const s = plan(), [a] = crew(s); put(s, { [a]: 'w3', t1: 'w4', t2: 'w4', t3: 'w4' }); s.state.wave = 0; s.pick = { move: null, act: { kind: 'holdfire' }, order: { id: a, kind: 'hold' } };
+          s.theirs = { ...quiet(), storm: { on: 'w3', from: 'w4', ids: ['t1', 't2', 't3'] } }; turn(s, [0.99]); }
+        { const s = plan(), [a] = crew(s); put(s, { [a]: 'w3', t1: 'w4' }); s.state.wave = 0; s.theirs = { ...quiet(), storm: { on: 'w3', from: 'w4', ids: ['t1'] } }; turn(s, [0.99]); }
         { const s = plan(); put(s, { t1: 'w4' }); s.state.sealed = { h3: true }; s.theirs = { ...quiet(), cut: 'h3', cutter: 't1' }; turn(s, [0.99]); }
         { const s = plan(); s.state.turn = DECK.WAVE_TURN - 1; turn(s, [0.99]); }
         { const s = plan(); s.pick = { move: null, act: { kind: 'pullback' }, order: null }; turn(s, [0.99]); }

@@ -97,6 +97,26 @@ test('a corsair\'s charge is shown a turn ahead from a spot next to the spot of 
   assert.equal(planTheirMove({ ...st, lastCharge: st.turn - 1 }, always(0.9)).charge, null, 'not the turn after one');
   assert.equal(planTheirMove({ ...st, charges: 0 }, always(0.9)).charge, null, 'not once the charges are spent');
 });
+test('boarding a corsair, her crew set the charge on ours from a spot next to them, as hers do on our deck', () => {
+  const st = planFight({ lay: LAYOUTS.corsair, crew: CREW, hand: { level: 2, post: 'gunner', odds }, captain: null, party: 'corsair', boarders: 2, assault: true });
+  for (const f of st.figures) if (f.side === 'them') f.spot = 'w3';
+  const m = planTheirMove(st, always(0.9));
+  assert.ok(m.charge && m.charge.from === 'w3' && ['inner', 'outer'].includes(m.charge.on), JSON.stringify(m.charge));
+  assert.ok(!m.shots.some(x => x.id === m.charge.setter), 'the setter only sets it');
+});
+test('against a navy party our crew hold fire until one of theirs has fired on us, and theirs until one of ours has (#1354)', () => {
+  const st = stage(repel({ party: 'navy', boarders: 2 }), { t1: 'w3', cato: 'magazine' }, true);
+  assert.equal(planCrewMoves(st, 'hold').shots.length, 0, 'not yet fired on');
+  assert.equal(planTheirMove(st, always(0.9)).shots.length, 0, 'the navy has not been fired on either: it holds its fire too');
+  const fire = planTurn(st, { move: null, act: { kind: 'shoot', at: 'w3' }, order: null }, { theirs: none, ours: quiet }, always(0.99)).state;
+  assert.equal(fire.weFired, true, 'the hand fires on them, and misses');
+  const blocked = f => { const x = { ...f, figures: f.figures.map(g => ({ ...g })) }; for (const g of x.figures) if (['cato', 'ines'].includes(g.id)) g.spot = 'w2'; return x; };  // his step up the well held by two of ours: he can only shoot
+  assert.equal(planTheirMove(blocked(st), always(0.9)).shots.length, 0, 'blocked and not fired on: he holds his fire');
+  assert.ok(planTheirMove(blocked(fire), always(0.9)).shots.length > 0, 'blocked and fired on: he fires');
+  const r = planTurn(st, hold, { theirs: { ...none, shots: [{ id: 't1', at: 'magazine' }] }, ours: quiet }, always(0.99)).state;
+  assert.ok(planCrewMoves(r, 'hold').shots.some(x => x.id === 'cato'), 'fired on, even missed: they fire back');
+  assert.ok(planCrewMoves(stage(repel({ boarders: 2 }), { t1: 'w3', cato: 'magazine' }, true), 'hold').shots.length > 0, 'a raider\'s party: at once');
+});
 test('the navy pushes and holds: it never rushes, charges or feints', () => {
   for (let seed = 1; seed <= 40; seed++) {
     const st = repel({ party: 'navy', boarders: 6, grade: 2 }), rand = seeded(seed);
@@ -164,7 +184,7 @@ test('boarding her, the captain pushes for her bridge, and pulls back only when 
   assert.equal(planCaptain(her(1, 7), 0.3), 'fall', 'two of ours against seven, cautious');
   assert.equal(planCaptain(her(1, 7), 0.8), 'push', 'two against seven, bold');
 });
-test('a stack of theirs two to one against a spot of ours storms it: one of ours there downed, the rest pushed back a step, the stack in (#1354)', () => {
+test('theirs PLAN.STORM to one against a spot of ours, from the spots next to it, storm it: one of ours there downed, the rest pushed back a step, they move in (#1354)', () => {
   const st = stage(repel({ boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3' }, false);
   st.wave = 0;
   for (const f of st.figures) if (f.side === 'them' && !['t1', 't2', 't3'].includes(f.id)) f.hp = 0;
@@ -175,7 +195,7 @@ test('a stack of theirs two to one against a spot of ours storms it: one of ours
   assert.ok(events.some(e => e.kind === 'down' && e.id === 'cato' && e.how === 'storm'));
   assert.deepEqual(plain(['t1', 't2', 't3'].map(id => state.figures.find(f => f.id === id).spot)), ['w3', 'w3', 'w3']);
   const two = stage(repel({ boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3', tomas: 'w3' }, false);
-  assert.equal(planTheirMove(two, always(0.9)).storm, null, 'three against two is not two to one');
+  assert.equal(planTheirMove(two, always(0.9)).storm, null, 'three against two is under PLAN.STORM to one');
   const navy = stage(repel({ party: 'navy', boarders: 6 }), { t1: 'w4', t2: 'w4', t3: 'w4', cato: 'w3' }, false);
   assert.equal(planTheirMove(navy, always(0.9)).storm, null, 'the navy pushes and holds');
 });
@@ -203,7 +223,7 @@ test('a first hit wounds and a second downs', () => {
   assert.equal(st.figures.find(f => f.id === 'cato').hp, 2, 'the state given is not changed');
 });
 test('cover cuts the odds of a shot, and a made cover cuts them further, to the cap', () => {
-  const st = repel(), t = st.figures.find(f => f.side === 'them');
+  const st = repel(), t = st.figures.find(f => f.hand);  // a level-2 shooter, clear of the odds' floor (PLAN.HIT.min) behind the racks
   assert.ok(planOdds(st, t, 'w3', 'magazine', false) < planOdds(st, t, 'w3', 'w3', false), 'the magazine\'s racks against the open well');
   const made = { ...st, cover: { magazine: PLAN.MADE } };
   assert.ok(planOdds(made, t, 'w3', 'magazine', false) < planOdds(st, t, 'w3', 'magazine', false));

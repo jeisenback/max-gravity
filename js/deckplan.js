@@ -7,7 +7,7 @@
 // the end. Pure: it reads no G, changes nothing it is given, and takes `rand`. Runs in Node (tests/deckplan.test.js). Loaded after
 // fight.js (DECK), layouts.js, shipcombat.js (CUNNING), boarders.js (REPEL_HURT) and radar.js (RADAR.SUGGEST).
 
-// Starting numbers, to be tuned against the targets in part 4 (#1354).
+// Tuned with the fight tool (tools/fights.js --plan) against the targets in tests/distribution/deckplanfights.test.js (#1354).
 const PLAN = {
   CAP: 3,           // people on a spot, at most
   MADE: 2,          // the cover a worked cover ability adds to its spot
@@ -15,12 +15,12 @@ const PLAN = {
   RUSH: 2,          // the spots a raider's rush goes in a turn
   TURNS: 12,        // the attackers withdraw at the end of this turn: a repel won, an assault lost (DECK.TURNS on the strip)
   NAVY_TURNS: 8,    // a navy inspection's own cap (DECK.NAVY_TURNS on the strip)
-  HIT: { base: 0.35, level: 0.06, cover: 0.12, moved: 0.1, min: 0.05, max: 0.9 },  // a shot's odds: the shooter's level, the target spot's cover, and moving first
-  THEIRS: 1,        // a boarder's shooting level, before her grade
+  HIT: { base: 0.35, level: 0.06, cover: 0.16, moved: 0.1, min: 0.05, max: 0.9 },  // a shot's odds: the shooter's level, the target spot's cover, and moving first
+  THEIRS: 0,        // a boarder's shooting level, before her grade
   CHARGES: 2,       // a corsair's breaching charges a fight (the prototype's; the strip limits them only by never two turns running)
   CAPTAIN_LEVEL: 3, // the captain's shooting
   NAVY_HOLD: 0.3,   // a navy head with a shot at these odds or better holds and shoots rather than push
-  STORM: 2,         // they storm a spot of ours they outnumber this many to one (the owner, 2026-11-26, #1354)
+  STORM: 3,         // they storm a spot of ours they outnumber this many to one from the spots next to it (the storm: the owner, 2026-11-26, #1354)
   REST: 'bunksM',   // where one of our crew with no post of their own stands when the boarders come
 };
 const PLAN_HOME = { captain: 'helm' };  // the captain on our bridge, with the pilot
@@ -100,26 +100,28 @@ function planRoute(st, from, goals) {
   const h = spotHatch(st.lay, from, any.next);
   return h && st.sealed[h] ? { cut: h } : { next: any.next };
 }
-// The attackers repelling, drawn before the hand commits. Raiders rush two spots where the spot on their path holds fewer of ours than half
+// The attackers repelling, drawn before the hand commits. A navy party pushes, and holds fire until one of ours has fired on them (`weFired`). Raiders rush two spots where the spot on their path holds fewer of ours than half
 // of them and the hand is not on it; corsairs set a charge from a spot next to the spot of ours with the most heads (never two turns
 // running, while charges last); the navy pushes and holds. Every path sealed: they cut the hatch. A veteran's push may feint, at CUNNING a
 // grade, never the navy's, a rush or a charge. Boarding her, her crew hold their spots, shoot, and seal the hatch over ours once.
 function planTheirMove(st, rand) {
   const out = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null };
   const them = planUp(st, 'them'), into = {};
-  if (st.assault) {
-    const ours = planUp(st, 'us'), top = Math.min(...ours.map(f => planSpot(st, f.spot).deck)), h = `h${top - 1}`;
-    if (!st.herSealed && top > 0 && !st.sealed[h] && !them.some(f => planSpot(st, f.spot).deck >= top)) out.seal = h;
-    for (const f of them) { const s = planAim(st, f, f.spot, false); if (s) out.shots.push(s); }
-    return out;
-  }
-  const goals = planBridge(st), dist = f => (spotPath(st.lay, f.spot, goals) || { dist: 99 }).dist;
+  // a corsair's charge, on our deck and on hers: from a spot of theirs next to the spot of ours with the most heads, never two turns running, while they last
   if (st.party === 'corsair' && st.charges > 0 && st.turn - st.lastCharge >= 2) {
     const links = spotLinks(st.lay), targets = [...new Set(planUp(st, 'us').map(f => f.spot))]
       .map(on => ({ on, n: planAt(st, on, 'us').length, from: links[on].find(s => planHeld(st, s) === 'them' && !st.sealed[spotHatch(st.lay, s, on)]) }))
       .filter(t => t.from).sort((a, b) => b.n - a.n);
     if (targets[0]) out.charge = { on: targets[0].on, from: targets[0].from, setter: planAt(st, targets[0].from, 'them')[0].id };
   }
+  if (st.assault) {
+    const ours = planUp(st, 'us'), top = Math.min(...ours.map(f => planSpot(st, f.spot).deck)), h = `h${top - 1}`;
+    if (!st.herSealed && top > 0 && !st.sealed[h] && !them.some(f => planSpot(st, f.spot).deck >= top)) out.seal = h;
+    for (const f of them) { if (out.charge && out.charge.setter === f.id) continue; const s = planAim(st, f, f.spot, false); if (s) out.shots.push(s); }
+    return out;
+  }
+  const goals = planBridge(st), dist = f => (spotPath(st.lay, f.spot, goals) || { dist: 99 }).dist;
+  const mayShoot = st.party !== 'navy' || st.weFired;  // a navy party fires only once one of ours has fired on them (the owner, 2026-11-26, #1354)
   // a storm (the owner, 2026-11-26, #1354): a spot of ours on their path that they outnumber two to one from the spots next to it is stormed, from the
   // nearest of them; never by the navy
   if (st.party !== 'navy') {
@@ -146,13 +148,13 @@ function planTheirMove(st, rand) {
       if (ours.length && (ours.length * 2 >= them.length || ours.length >= PLAN.CAP || ours.some(x => x.hand))) break;
     }
     const land = [...steps].reverse().find(s => planHeld(st, s) !== 'us' && planAt(st, s, 'them').length + (into[s] || 0) < PLAN.CAP);
-    const hold = st.party === 'navy' && (planAim(st, f, f.spot, false) || { odds: 0 }).odds >= PLAN.NAVY_HOLD;
+    const hold = st.party === 'navy' && st.weFired && (planAim(st, f, f.spot, false) || { odds: 0 }).odds >= PLAN.NAVY_HOLD;
     if (land && !hold) {
       into[land] = (into[land] || 0) + 1;
       out.moves.push({ id: f.id, to: land, rush: steps.indexOf(land) > 0, path: steps.slice(0, steps.indexOf(land) + 1) });
-      if (steps.indexOf(land) > 0) continue;
+      if (steps.indexOf(land) > 0 || !mayShoot) continue;
       const s = planAim(st, f, land, true); if (s) out.shots.push(s);
-    } else { const s = planAim(st, f, f.spot, false); if (s) out.shots.push(s); }
+    } else if (mayShoot) { const s = planAim(st, f, f.spot, false); if (s) out.shots.push(s); }
   }
   out.feint = st.party !== 'navy' && !out.charge && st.grade > 0 && out.moves.length > 0 && !out.moves.some(m => m.rush) && rand() < CUNNING * st.grade;
   return out;
@@ -169,6 +171,8 @@ function planCaptain(st, nerve) {
   if (!st.wave && (theirs <= 2 || ours >= theirs + 2 - nerve)) return 'push';
   return 'hold';
 }
+// Against a navy party our crew hold fire until one of theirs has fired on us (the owner, 2026-11-26, #1354); the hand's shot and orders are the hand's.
+const planHolds = st => st.party === 'navy' && !st.assault && !st.navyFired;
 // Our crew under the order (the hand and the captain stand where they are): a step toward the order's goal, onto no spot of theirs and no full
 // spot, then each a shot from where they will stand. `order` is the captain's ('hold' | 'push' | 'fall'); `named` the hand's order this turn.
 function planCrewMoves(st, order, named = null) {
@@ -186,7 +190,7 @@ function planCrewMoves(st, order, named = null) {
       if (r.next && planHeld(st, r.next) !== 'them' && planAt(st, r.next, 'us').length + (into[r.next] || 0) < PLAN.CAP) to = r.next;
     }
     if (to) { into[to] = (into[to] || 0) + 1; out.moves.push({ id: f.id, to }); }
-    const s = planAim(st, f, to || f.spot, !!to);
+    const s = planHolds(st) ? null : planAim(st, f, to || f.spot, !!to);
     if (s) out.shots.push(s);
   }
   return out;
@@ -286,6 +290,8 @@ function planTurn(st0, pick, shown, rand) {
   const hitAt = {}, shots = [...theirs.shots, ...ours.shots];
   if (act.kind === 'shoot' && act.at) shots.push({ id: 'hand', at: act.at, sidearm: true });
   const fired = shots.map(s => ({ s, f: fig(s.id) })).filter(({ f }) => f && f.hp > 0 && !(theirs.feint && f.side === 'them' && theirs.moves.some(m => m.id === f.id)));
+  if (st.party === 'navy' && fired.some(({ f }) => f.side === 'them')) st.navyFired = true;  // a navy party has fired on us: our crew fire back from the next turn
+  if (st.party === 'navy' && fired.some(({ f }) => f.side === 'us')) st.weFired = true;  // one of ours has fired on a navy party: they fire back from the next turn
   for (const { s, f } of fired) {
     const reach = s.sidearm ? planReach(st, f, f.spot) : [];
     if (!inLine(st.lay, f.spot, s.at, st.sealed) && !reach.includes(s.at)) continue;
@@ -298,7 +304,7 @@ function planTurn(st0, pick, shown, rand) {
     if (!worked(odds, kind, f.id)) return;
     if (kind === 'cover') { st.coverUsed = true; st.cover[f.spot] = (st.cover[f.spot] || 0) + PLAN.MADE; return; }
     const aim = planAim(st, f, f.spot, false), foe = aim && planAt(st, aim.at, 'them').sort((a, b) => a.hp - b.hp)[0];
-    if (foe) { planDown(st, foe, ev, 'steady'); hitAt[aim.at] = true; }
+    if (foe) { planDown(st, foe, ev, 'steady'); hitAt[aim.at] = true; if (st.party === 'navy') st.weFired = true; }
   };
   if ((act.kind === 'steady' || (act.kind === 'cover' && !st.coverUsed)) && hand.odds) ability(hand, act.kind, hand.odds[act.kind]);
   if (order && fig(order.id) && fig(order.id).hp > 0 && (order.kind === 'steady' || (order.kind === 'cover' && !st.coverUsed))) ability(fig(order.id), order.kind, fig(order.id).odds[order.kind]);
