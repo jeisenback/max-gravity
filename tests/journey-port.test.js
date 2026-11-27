@@ -1,6 +1,6 @@
 'use strict';
 
-// A journey (tests/journey.js, #1329): a raider's fight on a burn, played on the radar to its end, the burn run on to port, and then the
+// A journey (tests/journey.js, #1329): a raider's fight on a burn past its flip, played on the radar to its end, the burn run on to port, and then the
 // hull on the ship's page and the savings on the character page read from the screen; the page reloaded and the game continued from the title menu,
 // and both read the same. The planted bug `never-saves` (tools/mutants.json) must fail it.
 
@@ -17,6 +17,8 @@ const raider = () => {
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
   const st = G.state; st.tutorial = null; st.story.next = 1e9; hired().raidTold = true;
   uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null; st.route = { ...(st.route || {}), go: true };
+  // past the flip: it plays 25 real seconds at any speed, counted in frames (burnspeed.js FLIP_REAL), so a slow runner stretches it; the journey needs the arrival, not the flip (#1405)
+  const { secure } = burnStages(G.transit.days, G.transit.hard); G.transit.left = G.transit.total * (0.5 - 2 * secure); G.transit.flipped = true;
   G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false); const e = G.nextEvent; G.nextEvent = null; openEvent(e);
 };
 const read = (text, re, what) => { const m = text.match(re); assert.ok(m, `${what} on screen: ${text.slice(0, 600)}`); return m[1]; };
