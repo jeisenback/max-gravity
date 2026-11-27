@@ -162,3 +162,31 @@ test('three of ours on one spot each get a name on the cutaway that does not run
   }
   await done();
 });
+
+test('the one beside the hand takes the first hit meant for the hand, in today\'s words; downed later, the hand has no friend to cover them (#1388)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => {
+    Settings.planFight = true; fightGame('gunner'); const s = boarded();
+    stage(s, { t1: 'magazine', hand: 'gunseat', 'c:ines': 'gunseat' }, true);
+    for (const f of s.state.figures) if (f.side === 'us' && !f.hand && f.id !== 'c:ines') f.spot = 'helm';
+    for (const id of G.state.crew) { const p = person(id); if (p) p.opinion = OPINION.FRIEND; }  // every crewmate a friend: today's roll would have one of them cover
+    s.theirs = { moves: [], shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }], charge: null, cut: null, seal: null, feint: false, storm: null };
+    s.pick = { move: null, act: { kind: 'holdfire' }, order: null };
+    UI.redraw(planFightEvent(s));
+  });
+  await ev(() => { Math.random = () => 0.01; });  // the shot hits
+  await page.click('[data-action="planFightGo"]');
+  const one = await ev(() => { const s = G.dialog.event.fight; return { log: s.state.log[s.state.log.length - 1], ines: s.state.figures.find(f => f.id === 'c:ines').hp }; });
+  assert.match(one.log, /Ines pulls you down behind the closer and takes it\./);
+  assert.equal(one.ines, 1, 'Ines is wounded in the hand\'s place');
+  await ev(() => { const s = G.dialog.event.fight; s.state.figures.find(f => f.hand).hp = 1; s.state.figures.find(f => f.id === 'c:ines').spot = 'helm';
+    Object.assign(s.state.figures.find(f => f.id === 't1'), { hp: 2, spot: 'magazine' });  // Ines fired back: t1 on his feet again for this turn
+    s.theirs = { moves: [], shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }], charge: null, cut: null, seal: null, feint: false, storm: null }; s.pick = { move: null, act: { kind: 'holdfire' }, order: null }; UI.redraw(planFightEvent(s));
+    Math.random = () => 0.01; });  // the shot hits again (the stub does not last between the turns)
+  await page.click('[data-action="planFightGo"]');
+  const two = await ev(() => { const s = G.dialog.event.fight || {}; const log = (s.state || { log: [] }).log; return { log: log[log.length - 1] || '', hurt: career().hurtUntil > G.state.day }; });
+  assert.ok(two.hurt, 'the hand is hurt');
+  assert.doesNotMatch(two.log, /takes it/, 'no friend takes the downed hand\'s hurt');
+  await done();
+});

@@ -187,10 +187,15 @@ function planResolve(s) {
     if (e.kind === 'wave') said.push(planSay('log.wave', { n: e.n }));
     if (e.kind === 'pullback') said.push(planSay('log.pullback', { at: planWhere(s, e.to) }));
     if (e.kind === 'ability') said.push(planSay(e.worked ? 'log.worked' : 'log.missed', { who: planName(s, e.id) }));
+    if (e.kind === 'shielded') {  // the one beside the hand takes the hit meant for the hand (the only cover in this fight, the owner, #1388): today's words, one who owed the hand evened up
+      const p = person(e.id), even = !!(p && p.owes);
+      if (even) delete p.owes;
+      said.push(hurtSay(even ? 'cover.even' : 'cover', { first: planName(s, e.id) }));
+    }
   }
   // a head of ours downed is a casualty at the strip's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
   for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id); if (line) after.push(line); }
-  if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) after.push(repelCasualty(s, 'you'));  // the hand downed is today's hurt, which a friend may take (once a fight); the crew fight on
+  if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) { s.covered = true; after.push(repelCasualty(s, 'you')); }  // the hand downed is today's hurt, with no friend's cover: the cover is the one beside the hand (#1388); the crew fight on
   s.state.log.push(`${planSay('log.turn', { n: s.state.turn, what: said.length ? said.join(' ') : planSay('log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   s.theirs = null;
   if (s.handDied) return false;
