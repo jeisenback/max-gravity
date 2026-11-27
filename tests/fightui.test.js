@@ -142,19 +142,22 @@ test('a hurt hand works the level below: the hand on the decks is that level\'s'
 });
 
 // The navy's party (Task 6): the panel names it, never marks a feint, and says what each of them put down costs; a search's close names the fine.
-test('a navy party\'s fight counts to its own turn cap, and it never feints', async () => {
+test('a navy party\'s fight counts to its own turn cap, says the standing its downed heads have cost, and it never feints', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
     fightGame('gunner'); const foe = window.realMakeEnemy({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' });
     const s = repelStart({ foe, foeHp: 0, init: 'foe', grade: 2 }, 'half'), raider = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
     const feints = [0, 0.001, 0.5].map(x => planTheirMove(s.state, () => x).feint);
-    return { party: s.state.party, count: planCountText(s), raider: planCountText(raider), feints };
+    s.state.navyDown = 2; const line = sceneSay('scene:fight', 'plan.navy.down', { gov: 'Arcology Pact', n: 2 * DECK.NAVY_STANDING });
+    return { party: s.state.party, count: planCountText(s), raider: planCountText(raider), feints, line, navyPage: planFightEvent(s).board, raiderPage: planFightEvent(raider).board };
   });
   assert.equal(r.party, 'navy');
   assert.match(r.count, new RegExp(`^Turn 1 of ${8}\\.`), r.count);  // PLAN.NAVY_TURNS, the soak's range (#1355)
   assert.match(r.raider, new RegExp(`^Turn 1 of ${12}\\.`), r.raider);  // PLAN.TURNS
   assert.deepEqual(r.feints, [false, false, false], 'a navy push is never feinted');
+  assert.ok(r.navyPage.includes(r.line), 'the page says the standing its heads put down have cost so far (#1396)'); assert.match(r.line, /Arcology Pact\. 4 lost so far/);
+  assert.doesNotMatch(r.raiderPage, /costs standing/, 'a raider\'s page has no such line');
   await done();
 });
 

@@ -60,7 +60,7 @@ function planPageHtml(s) {
     <div class="plan-side">
       <div class="plan-now"><div class="group">${planSay('now')}</div>${planNowHtml(s)}</div>
       ${planActsHtml(s, c, on)}${planOrdersHtml(s, c, on)}${planCaptainHtml(s, on)}
-      <p class="plan-count">${planCountText(s)}</p>
+      <p class="plan-count">${planCountText(s)}</p>${planNavyHtml(s)}
       ${planLastHtml(s)}
       <button data-action="planFightGo" class="primary">${planSay('fight')}</button>
     </div>
@@ -141,6 +141,8 @@ function planCountText(s) {
   const st = s.state, rule = st.assault ? DECK.ASSAULT : DECK;
   return planSay('count', { ours: planUp(st, 'us').length, theirs: planUp(st, 'them').length, wave: st.wave, at: Math.floor(st.began * rule.BREAK), turn: st.turn + 1, max: st.party === 'navy' && !st.assault ? PLAN.NAVY_TURNS : PLAN.TURNS });
 }
+// A navy party's fight: what the heads of theirs put down have cost so far, with her government (charged at the settle, boarders.js repelSettle; #1396).
+const planNavyHtml = s => (navyBoarding(s.state) ? h`<p class="plan-navy hint">${planSay('navy.down', { gov: s.d.foe.gov, n: DECK.NAVY_STANDING * s.state.navyDown })}</p>` : '');
 // The last turn's lines, and the whole log folded under them.
 const planLastHtml = s => { const log = s.state.log; return log.length ? h`<p class="plan-last">${log[log.length - 1]}</p>${log.length > 1 ? h`<details class="plan-log"><summary>${planSay('log')}</summary><ol>${log.map(l => h`<li>${l}</li>`)}</ol></details>` : ''}` : ''; };
 

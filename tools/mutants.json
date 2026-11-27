@@ -99,6 +99,15 @@
     ]
   },
   {
+    "name": "plan-navy-cost-unsaid",
+    "file": "js/deckplanui.js",
+    "find": "const planNavyHtml = s => (navyBoarding(s.state) ?",
+    "replace": "const planNavyHtml = s => (false ?",
+    "by": [
+      "a navy party's fight counts to its own turn cap, says the standing its downed heads have cost, and it never feints"
+    ]
+  },
+  {
     "name": "walkthrough-marks-nothing",
     "file": "js/shell.js",
     "find": "tut = (tutorialAt() || {}).rail === entry.id;",
