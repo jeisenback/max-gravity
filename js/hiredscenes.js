@@ -819,6 +819,7 @@ const SCENE_LINES = {
     'plan.orders': 'Order', 'plan.order.none': 'No order', 'plan.odds': '({pct}%)',
     'plan.captain': 'The captain', 'plan.captain.order': '{name}: {order}.', 'plan.suggest': 'Suggest: {order} ({pct}%)',
     'plan.suggest.yes': '"All right, {order}."', 'plan.suggest.no': '"No. We stay on it."',
+    'plan.navy.down': 'Each of them you put down costs standing with {gov}. {n} lost so far.',  // a navy party's fight, under the count: {n} the standing lost so far
     'plan.count': 'Turn {turn} of {max}. Ours {ours}, theirs {theirs}, {wave} still to land. They break at {at}.', 'plan.log': 'The whole fight',
     'plan.log.turn': 'Turn {n}: {what}', 'plan.log.none': 'Nobody is hit.',
     'plan.log.wound.us': '{who} is hit at {at}.', 'plan.log.down.us': '{who} goes down at {at}.', 'plan.log.wound.you': 'You\'re hit at {at}.', 'plan.log.down.you': 'You go down at {at}.', 'plan.log.wound.them': 'One of them is hit at {at}.', 'plan.log.down.them': 'One of them goes down at {at}.',
