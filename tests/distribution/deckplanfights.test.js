@@ -7,8 +7,10 @@
 // - two crew are fewer than the strip's numbers assumed: the answer's two-crew wins are checked at what is measured, and two crew boarding a raider's
 //   seven, which no plan wins, is not checked (the owner: too few to board);
 // - the hand's shot stays a roll, so the hand's level counting is not checked (reported);
-// - reading a corsair's charge boarding her, and the rooms' cover, are checked only to hold at least as measured (#1390).
-// Measured over seeds 1 to 4 of 400 (1,600 fights a cell), 2026-11-26: the numbers in each check's message, and COMBAT.md's table.
+// - reading a corsair's charge is worth the strip's 20 points boarding her with two crew, now that its setter stands on the deck over or under it, out
+//   of its line (the owner, 2026-11-27, #1390);
+// - the rooms' cover is checked only to hold at least as measured (the owner, 2026-11-27, #1390: shots and heads decide this fight, not the rooms).
+// Measured over seeds 1 to 4 of 400 (1,600 fights a cell), 2026-11-26 and, for the corsair, 2026-11-27: the numbers in each check's message, and COMBAT.md's table.
 //
 // Profiles:  none: the deck-plan fight tool (tools/planfights.js) uses no soak player (tools/soak.js SOAK_PROFILES, #1199).
 
@@ -37,13 +39,13 @@ test('against raiders the answer wins a repel nine in ten with five crew and sev
   console.log(`raiders repelled with two crew: answer wins ${f2(l1)} at level 1, ${f2(l3)} at level 3 (not checked: the hand's shot is a roll, the owner)`);
 });
 
-test('against a corsair the answer wins a repel and boarding her with five crew, and with two wins more than any fixed plan', () => {
+test('against a corsair the answer wins a repel and boarding her with five crew, and with two wins more than any fixed plan, reading her charge worth 20 points', () => {
   answerBeats('repel', 'corsair', 5, 0.9);   // measured 1.00
-  answerBeats('repel', 'corsair', 2, 0.9);   // measured 0.99
-  answerBeats('assault', 'corsair', 5, 0.9);   // measured 0.93
-  answerBeats('assault', 'corsair', 2, 0.45);  // measured 0.50 (the lowered two-crew target)
+  answerBeats('repel', 'corsair', 2, 0.9);   // measured 1.00
+  answerBeats('assault', 'corsair', 5, 0.9);   // measured 0.97
+  answerBeats('assault', 'corsair', 2, 0.45);  // measured 0.62 (the lowered two-crew target)
   const ans = won(cell('assault', 'corsair', 2, 'answer')), not = won(cell('assault', 'corsair', 2, 'answerNoCharge'));
-  assert.ok(ans >= not - 0.03, `boarding a corsair with two crew: answer ${f2(ans)}, without its charge rule ${f2(not)} (as measured, #1390)`);
+  assert.ok(ans >= not + 0.2, `boarding a corsair with two crew: answer ${f2(ans)}, without its charge rule ${f2(not)} (the strip's 20 points, #1390)`);  // measured 0.62 and 0.07
 });
 
 test('against the navy the answer wins nine in ten holding them to their cap, costs at most half the standing shooting does, and random play costs more', () => {
@@ -71,7 +73,7 @@ test('no fixed plan wins seven in ten against every party with two crew, and ran
   assert.ok(1 - won(rnd) >= 0.25, `random play loses ${f2(1 - won(rnd))} of its fights`);
 });
 
-test('the rooms hold at least as measured: the answer on the decks does no worse than on decks of equal cover (#1390)', () => {
+test('the rooms hold at least as measured: the answer on the decks does no worse than on decks of equal cover (the owner, 2026-11-27, #1390)', () => {
   for (const [kind, party, crew] of [['repel', 'raider', 2], ['assault', 'corsair', 2], ['assault', 'raider', 5]]) {
     const ans = won(cell(kind, party, crew, 'answer')), flat = won(cell(kind, party, crew, 'flat'));
     assert.ok(ans >= flat - 0.03, `${party}, ${kind} with ${crew} crew: answer ${f2(ans)}, on equal cover ${f2(flat)}`);

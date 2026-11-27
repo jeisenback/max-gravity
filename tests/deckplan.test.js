@@ -7,9 +7,9 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const names = ['planCasualty', 'PLAN', 'LAYOUTS', 'DECK', 'CUNNING', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planSuggestOdds', 'planTurn', 'planEnd', 'planOdds', 'planUp', 'planAt'];
+const names = ['planCasualty', 'inLine', 'PLAN', 'LAYOUTS', 'DECK', 'CUNNING', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planSuggestOdds', 'planTurn', 'planEnd', 'planOdds', 'planUp', 'planAt'];
 const P = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], { REPEL_HURT: { lose: 0.45 } }, names);
-const { planCasualty, PLAN, LAYOUTS, DECK, RADAR, planFight, planTheirMove, planCaptain, planCrewMoves, planChoices, planSuggestOdds, planTurn, planEnd, planOdds, planUp, planAt } = P;
+const { planCasualty, inLine, PLAN, LAYOUTS, DECK, RADAR, planFight, planTheirMove, planCaptain, planCrewMoves, planChoices, planSuggestOdds, planTurn, planEnd, planOdds, planUp, planAt } = P;
 const plain = v => JSON.parse(JSON.stringify(v));  // out of the vm context, so deepEqual compares plain objects
 
 const odds = { steady: 0.5, cover: 0.6 };
@@ -88,20 +88,22 @@ test('a full spot on the only path stops the rush there, and none passes through
   assert.ok(m.moves.every(x => x.to !== 'w3' && x.to !== 'w2'), 'none onto the well spot held by three, nor past it');
   assert.ok(m.moves.every(x => planAt(st, x.to, 'them').length + m.moves.filter(y => y.to === x.to).length <= PLAN.CAP), 'no spot of theirs overfilled');
 });
-test('a corsair\'s charge is shown a turn ahead from a spot next to the spot of ours with the most heads, and never two turns running', () => {
-  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'w3', cato: 'magazine', hand: 'magazine', tomas: 'bench' }, true);
+test('a corsair\'s charge is shown a turn ahead on the spot of ours with the most heads, from the deck under it out of its line, and never two turns running', () => {
+  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'inner', cato: 'magazine', hand: 'magazine', tomas: 'bench' }, true);
   const m = planTheirMove(st, always(0.9));
-  assert.deepEqual(plain(m.charge), { on: 'magazine', from: 'w3', setter: 't1' });
+  assert.deepEqual(plain(m.charge), { on: 'magazine', from: 'inner', setter: 't1' });
+  assert.ok(!inLine(LAYOUTS.freighter, 'magazine', 'inner'), 'the ones it is set on cannot shoot the setter from there (the owner, 2026-11-27, #1390)');
+  assert.equal(planTheirMove(stage(st, { t1: 'w3' }), always(0.9)).charge, null, 'not from a spot in line with it');
   assert.equal(m.feint, false, 'a charge is never feinted');
   assert.ok(!m.moves.some(x => x.id === 't1') && !m.shots.some(x => x.id === 't1'), 'the setter only sets it');
   assert.equal(planTheirMove({ ...st, lastCharge: st.turn - 1 }, always(0.9)).charge, null, 'not the turn after one');
   assert.equal(planTheirMove({ ...st, charges: 0 }, always(0.9)).charge, null, 'not once the charges are spent');
 });
-test('boarding a corsair, her crew set the charge on ours from a spot next to them, as hers do on our deck', () => {
+test('boarding a corsair, her crew set the charge on ours from the deck over them, as hers do on our deck', () => {
   const st = planFight({ lay: LAYOUTS.corsair, crew: CREW, hand: { level: 2, post: 'gunner', odds }, captain: null, party: 'corsair', boarders: 2, assault: true });
-  for (const f of st.figures) if (f.side === 'them') f.spot = 'w3';
+  for (const f of st.figures) if (f.side === 'them') f.spot = 'benches';
   const m = planTheirMove(st, always(0.9));
-  assert.ok(m.charge && m.charge.from === 'w3' && ['inner', 'outer'].includes(m.charge.on), JSON.stringify(m.charge));
+  assert.ok(m.charge && m.charge.from === 'benches' && ['inner', 'outer'].includes(m.charge.on), JSON.stringify(m.charge));
   assert.ok(!m.shots.some(x => x.id === m.charge.setter), 'the setter only sets it');
 });
 test('against a navy party our crew hold fire until one of theirs has fired on us, and theirs until one of ours has (#1354)', () => {
@@ -132,10 +134,10 @@ test('the navy pushes and holds: it never rushes, charges or feints', () => {
   }
 });
 test('a veteran\'s push may feint at CUNNING a grade, and at grade 0 never', () => {
-  const st = repel({ party: 'corsair', grade: 1 });
+  const st = { ...repel({ party: 'corsair', grade: 1 }), charges: 0 };  // no charge on offer: a charge is never feinted
   assert.equal(planTheirMove(st, always(P.CUNNING - 0.01)).feint, true);
   assert.equal(planTheirMove(st, always(P.CUNNING + 0.01)).feint, false);
-  assert.equal(planTheirMove(repel({ party: 'corsair', grade: 0 }), always(0)).feint, false);
+  assert.equal(planTheirMove({ ...repel({ party: 'corsair', grade: 0 }), charges: 0 }, always(0)).feint, false);
 });
 test('with every path sealed they cut the hatch on their path (Review Focus 1)', () => {
   const st = stage(repel({ boarders: 2 }), { t1: 'w4' });
@@ -233,18 +235,18 @@ test('cover cuts the odds of a shot, and a made cover cuts them further, to the 
   assert.ok(planOdds(st, t, 'w3', 'magazine', true) < planOdds(st, t, 'w3', 'magazine', false), 'moving first');
 });
 test('the charge blows on the spot it was shown on, and not when the setter\'s spot was hit that turn', () => {
-  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'w3', cato: 'magazine', hand: 'gunseat' }, true);
+  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'inner', cato: 'magazine', hand: 'medbed' }, true);
   const m = planTheirMove(st, always(0.9));
   const blew = planTurn(st, hold, { theirs: m, ours: quiet }, always(0.9));
   assert.ok(blew.events.some(e => e.kind === 'charge' && e.on === 'magazine' && !e.stopped));
   assert.ok(blew.events.some(e => e.kind === 'down' && e.id === 'cato' && e.how === 'charge'));
   assert.equal(blew.state.charges, PLAN.CHARGES - 1);
-  const hit = planTurn(st, hold, { theirs: m, ours: { moves: [], shots: [{ id: 'cato', at: 'w3' }] } }, always(0));
+  const hit = planTurn(st, hold, { theirs: m, ours: { moves: [], shots: [{ id: 'hand', at: 'inner' }] } }, always(0));
   assert.ok(hit.events.some(e => e.kind === 'charge' && e.stopped));
   assert.equal(hit.state.figures.find(f => f.id === 'cato').hp, 2);
 });
 test('pull back takes everyone of ours at the hand\'s spot a step toward the bridge before the charge blows', () => {
-  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'w4', hand: 'w3', cato: 'w3' }, true);
+  const st = stage(repel({ party: 'corsair', boarders: 2 }), { t1: 'inner', hand: 'w3', cato: 'w3' }, true);
   const m = planTheirMove(st, always(0.9));
   assert.equal(m.charge.on, 'w3');
   const { state, events } = planTurn(st, { move: null, act: { kind: 'pullback' }, order: null }, { theirs: m, ours: quiet }, always(0.9));

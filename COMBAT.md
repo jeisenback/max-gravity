@@ -507,13 +507,16 @@ targets are `tests/distribution/deckplanfights.test.js`. The owner's rulings whi
 - The hand's shot stays a roll, so the hand's level counts for little, and the two-crew targets are set at what is measured.
 - Two crew boarding a raider's seven is too few, and no plan wins it.
 - A navy party and our crew each hold fire until the other side has fired.
-- Reading a corsair's charge boarding her, and the rooms' cover, are checked only to hold as measured (#1390).
+- A corsair's charge is set through the deck plate, from a spot of theirs on the deck over or under the spot it is set on and
+  out of its line, so the ones on that spot cannot shoot the setter from there: they step off it, or someone else hits the
+  setter (2026-11-27, #1390). Reading it is worth more than 20 points boarding her with two crew.
+- The rooms' cover is checked only to hold as measured: shots and heads decide this fight, not the rooms (2026-11-27, #1390).
 - Boarding her, a smaller share of ours downed are casualties than on the strip (2026-11-27, on #1355).
 
 "Hold" sends our crew to the well a deck above the highest of theirs. A boarder shoots at level 0 (`PLAN.THEIRS`), and a point
 of cover is worth 0.16 off a shot's odds.
 
-Measured over seeds 1 to 4 of 400 (1,600 fights a cell), at level 2 and grade 0. Each cell gives the share won by the answer
+Measured over seeds 1 to 4 of 400 (1,600 fights a cell), at level 2 and grade 0 (the corsair's rows on 2026-11-27). Each cell gives the share won by the answer
 (it reads their drawn move: `tools/answer.js answerPlan`) and the best of the fixed plans (random, shoot, push, fall), with the
 answer's turns, its hand downed a fight and its casualties a fight:
 
@@ -523,14 +526,15 @@ answer's turns, its hand downed a fight and its casualties a fight:
 | Raiders, repelled | 5 | 1.00 | 1.00 (push) | 7.8 | 0.00 | 0.15 |
 | Raider, boarded | 2 | 0.00 | 0.01 (random) | 12.0 | 0.00 | 0.00 |
 | Raider, boarded | 5 | 0.91 | 0.88 (random) | 8.6 | 0.17 | 0.23 |
-| Corsair, repelled | 2 | 0.99 | 0.83 (random, shoot) | 6.8 | 0.01 | 0.12 |
-| Corsair, repelled | 5 | 1.00 | 1.00 | 5.3 | 0.00 | 0.14 |
-| Corsair, boarded | 2 | 0.50 | 0.27 (random) | 10.0 | 0.71 | 0.15 |
-| Corsair, boarded | 5 | 0.93 | 0.89 (random) | 9.1 | 0.11 | 0.16 |
+| Corsair, repelled | 2 | 1.00 | 0.64 (push) | 5.6 | 0.10 | 0.11 |
+| Corsair, repelled | 5 | 1.00 | 1.00 | 5.6 | 0.00 | 0.36 |
+| Corsair, boarded | 2 | 0.62 | 0.12 (random) | 9.5 | 0.24 | 0.15 |
+| Corsair, boarded | 5 | 0.97 | 0.81 (random) | 9.3 | 0.03 | 0.13 |
 | Navy, repelled | 2 | 1.00, no standing | 1.00, shoot 3.58 standing | 8.0 | 0.00 | 0.00 |
 | Navy, repelled | 5 | 1.00, no standing | 1.00, random 3.61 standing | 8.0 | 0.00 | 0.00 |
 
-With two crew against raiders, the answer wins 0.72 at level 1 and 0.73 at level 3. Boarding her, about one of ours is downed a
+Without its charge rule the answer wins a corsair boarded with two crew 0.07, and repelled with two 0.07: a hand who stays on
+the spot a charge is set on is downed by it. With two crew against raiders, the answer wins 0.72 at level 1 and 0.73 at level 3. Boarding her, about one of ours is downed a
 fight, more than on the strip, so a smaller share of them are casualties (`PLAN.ASSAULT_CASUALTY` 0.17, the owner, 2026-11-27):
 a boarding costs about the strip's 0.15 to 0.21.
 

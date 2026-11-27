@@ -102,16 +102,20 @@ function planRoute(st, from, goals) {
   return h && st.sealed[h] ? { cut: h } : { next: any.next };
 }
 // The attackers repelling, drawn before the hand commits. A navy party pushes, and holds fire until one of ours has fired on them (`weFired`). Raiders rush two spots where the spot on their path holds fewer of ours than half
-// of them and the hand is not on it; corsairs set a charge from a spot next to the spot of ours with the most heads (never two turns
+// of them and the hand is not on it; corsairs set a charge on the spot of ours with the most heads, from a spot of theirs on the deck over or under it out of its line (never two turns
 // running, while charges last); the navy pushes and holds. Every path sealed: they cut the hatch. A veteran's push may feint, at CUNNING a
 // grade, never the navy's, a rush or a charge. Boarding her, her crew hold their spots, shoot, and seal the hatch over ours once.
 function planTheirMove(st, rand) {
   const out = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null };
   const them = planUp(st, 'them'), into = {};
-  // a corsair's charge, on our deck and on hers: from a spot of theirs next to the spot of ours with the most heads, never two turns running, while they last
+  // a corsair's charge, on our deck and on hers: on the spot of ours with the most heads, set through the deck plate from a spot of theirs on the deck over
+  // or under it that is out of its line (the nearest across), so the ones it is set on cannot shoot the setter from where they stand (the owner, 2026-11-27,
+  // #1390); never two turns running, while they last
   if (st.party === 'corsair' && st.charges > 0 && st.turn - st.lastCharge >= 2) {
-    const links = spotLinks(st.lay), targets = [...new Set(planUp(st, 'us').map(f => f.spot))]
-      .map(on => ({ on, n: planAt(st, on, 'us').length, from: links[on].find(s => planHeld(st, s) === 'them' && !st.sealed[spotHatch(st.lay, s, on)]) }))
+    const theirs = [...new Set(planUp(st, 'them').map(f => f.spot))].map(s => planSpot(st, s));
+    const setFrom = on => { const p = planSpot(st, on); return theirs.filter(q => Math.abs(q.deck - p.deck) === 1 && !inLine(st.lay, q.id, on, st.sealed)).sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x))[0]; };
+    const targets = [...new Set(planUp(st, 'us').map(f => f.spot))]
+      .map(on => ({ on, n: planAt(st, on, 'us').length, from: (setFrom(on) || {}).id }))
       .filter(t => t.from).sort((a, b) => b.n - a.n);
     if (targets[0]) out.charge = { on: targets[0].on, from: targets[0].from, setter: planAt(st, targets[0].from, 'them')[0].id };
   }

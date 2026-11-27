@@ -81,6 +81,15 @@
     ]
   },
   {
+    "name": "plan-charge-set-in-line",
+    "file": "js/deckplan.js",
+    "find": "Math.abs(q.deck - p.deck) === 1 && !inLine(st.lay, q.id, on, st.sealed)",
+    "replace": "Math.abs(q.deck - p.deck) <= 1",
+    "by": [
+      "a corsair's charge is shown a turn ahead on the spot of ours with the most heads, from the deck under it out of its line, and never two turns running"
+    ]
+  },
+  {
     "name": "plan-charge-blows-past-a-hit-setter",
     "file": "js/deckplan.js",
     "find": "if (hitAt[c.from]) ev.push",
