@@ -480,10 +480,11 @@ const radarScatterOf = level => RADAR.SCATTER * Math.max(0, 1 - level / 5);
 const radarScatter = (burn, level, rand) => ({ ...burn, dir: radarNorm(burn.dir + (rand() - 0.5) * 2 * radarScatterOf(level)) });
 
 // A cycle's orders when the crew work every post (the fight tool and the tests; the page puts the hand's own post in place of the crew's): the captain's
-// order on what the board shows, and each post at its level. `levels`: { pilot, gunner, engineer, comms }.
-function radarAuto(state, levels = {}, rand) {
+// order on what the board shows, or `call` when the hand gives it on their own bridge (#1376), and each post at its level under it.
+// `levels`: { pilot, gunner, engineer, comms }.
+function radarAuto(state, levels = {}, rand, call = null) {
   const read = { torps: radarProject(state, {}, 2).impacts };
-  const order = radarCaptain(state, state.nerve, read), out = { order };
+  const order = RADAR_ORDERS[call] ? call : radarCaptain(state, state.nerve, read), out = { order };
   for (const post of ['engineer', 'comms', 'pilot', 'gunner']) Object.assign(out, radarCrew(state, post, levels[post] || 0, order, rand));
   return out;
 }

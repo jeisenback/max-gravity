@@ -99,6 +99,15 @@
     ]
   },
   {
+    "name": "own-bridge-call-ignored",
+    "file": "js/radar.js",
+    "find": "const order = RADAR_ORDERS[call] ? call : radarCaptain(state, state.nerve, read), out = { order };",
+    "replace": "const order = radarCaptain(state, state.nerve, read), out = { order };",
+    "by": [
+      "on their own bridge the hand may give the order, from the next cycle, or leave it to the crew"
+    ]
+  },
+  {
     "name": "plan-navy-cost-unsaid",
     "file": "js/deckplanui.js",
     "find": "const planNavyHtml = s => (navyBoarding(s.state) ?",

@@ -835,6 +835,7 @@ const SCENE_LINES = {
     'radar.why.call': 'Someone\'s calling you.', 'radar.why.gunRange': 'She\'s in gun range.', 'radar.why.plan': 'The captain\'s changed the plan.',
     'radar.range': 'Her range {km} km, {way}', 'radar.closing': 'closing', 'radar.opening': 'opening', 'radar.arming': 'She\'s arming',
     'radar.threat': '{n} inbound, first in {lo} to {hi} cycles', 'radar.threat.none': 'Nothing inbound',
+    'radar.call': 'Your call, from the next cycle', 'radar.call.auto': 'Leave it to the crew',  // the hand's own bridge (#1376): the order, if they give it
     'radar.order': 'Order: {order}', 'radar.order.engage': 'close and engage', 'radar.order.hold': 'hold at 20 km', 'radar.order.open': 'open the range', 'radar.order.break': 'break off', 'radar.order.evade': 'evade',
     'radar.hulls': 'Hull {me}%, hers {her}%, heat {heat} of {cap}',
     'radar.cost.bears': 'To {order}, the gun still bears on her at the end of the cycle.', 'radar.cost.driveAway': 'To {order}, the drive points away from her, and the gun won\'t bear at the end of the cycle.',
