@@ -25462,14 +25462,9 @@
    {
     "end": "boarded",
     "next": {
-     "title": "The Lock",
-     "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-     "labels": [
-      "Stand: The Lock",
-      "Shoot: hits 1 to 2 of them",
-      "Order: none",
-      "Fight"
-     ]
+     "title": "Boarders",
+     "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.",
+     "labels": []
     },
     "mem": []
    },
@@ -25512,14 +25507,9 @@
    {
     "end": "boarded",
     "next": {
-     "title": "The Lock",
-     "text": "She closes while your drive is slow and seals a boarding tube to your lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-     "labels": [
-      "Stand: The Lock",
-      "Shoot: hits 1 to 2 of them",
-      "Order: none",
-      "Fight"
-     ]
+     "title": "Boarders",
+     "text": "She closes while your drive is slow and seals a boarding tube to your lock.",
+     "labels": []
     },
     "mem": []
    },
@@ -25562,14 +25552,9 @@
    {
     "end": "boarded",
     "next": {
-     "title": "The Lock",
-     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.",
-     "labels": [
-      "Stand: The Lock",
-      "Shoot: hits 1 to 2 of them",
-      "Order: none",
-      "Fight"
-     ]
+     "title": "Boarders",
+     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.",
+     "labels": []
     },
     "mem": []
    },
@@ -25696,905 +25681,6 @@
     "mem": [
      "9 Jul 2214: The bridge was taken on your watch."
     ]
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: 2 pushing into the Lock.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Corridor",
-    "read": "Turn 1 of 8. Boarders: 2 pushing into the Corridor.",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Corridor",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Bridge",
-    "read": "Turn 1 of 8. Boarders: 2 pushing into the Bridge.",
-    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Bridge",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Cargo Bay",
-    "read": "Turn 1 of 8. Boarders: 2 pushing into the Cargo Bay.",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "labels": [
-     "Stand: The Cargo Bay",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Cargo Bay",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: 2 going round through the Cargo Bay.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: 2 rushing through the Corridor into the Bridge.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: 2 pushing into the Corridor. They may feint.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours, 1 wounded and 2 of theirs, 1 wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more cycling through the lock next turn.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Move to: The Corridor",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Corridor",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Move to: The Cargo Bay",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Cargo Bay",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Hold fire: stand ready, and shoot nobody",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Pull back: ours here fall back to the Corridor",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Pull back: ours here fall back to the Corridor",
-     "Order: Ines cuts the lights",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at the Lock",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at the Corridor",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at the Bridge",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at the Cargo Bay",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "log": "Turn 1: 2 of them move into the Corridor, 1 of them and 1 of ours wounded in the Corridor. None of them are where you stand.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock, 1 of them and 0 of ours down in the Corridor, 1 of them and 0 of ours wounded in the Corridor, you fall back to the Bridge.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: nobody gives ground. None of them are where you stand.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: nobody gives ground. None of them are where you stand. Tomas finds none of them to go at.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: nobody gives ground. You aim into the Corridor, and none of them are there.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 3 of them get through into the Bridge, 2 of them and 0 of ours down in the Bridge, 1 of them and 2 of ours wounded in the Bridge.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 3 of them run into ours in the Corridor and stop there, 2 of them and 0 of ours down in the Corridor, 0 of them and 1 of ours wounded in the Corridor.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the hatch a beat late, and it closes on nothing.",
-    "end": false
-   },
-   {
-    "log": "Turn 3: 1 of them and 0 of ours down in the Lock, 1 of them and 1 of ours wounded in the Lock, 2 more come through the lock.",
-    "end": false
-   },
-   {
-    "log": "Turn 8: nobody gives ground. None of them are where you stand.",
-    "end": true,
-    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: setting a charge on the Corridor from the Lock. It blows this turn unless you hit them in the Lock.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor, set from The Lock. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "log": "Turn 1: the charge blows in the Corridor, 1 of ours down. None of them are where you stand.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, they're hit in the Lock before the charge on the Corridor can blow.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor, with nobody of ours there.",
-    "end": false
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: 2 pushing into her Lock.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Lock. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Corridor",
-    "read": "Turn 1 of 8. Her crew: 2 pushing into her Corridor.",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Corridor",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0, you stand here. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Bridge",
-    "read": "Turn 1 of 8. Her crew: 2 pushing into her Bridge.",
-    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Bridge",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0, you stand here. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Bridge. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Cargo Bay",
-    "read": "Turn 1 of 8. Her crew: 2 pushing into her Cargo Bay.",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "labels": [
-     "Stand: Her Cargo Bay",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Cargo Bay",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0, you stand here. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: 2 going round through her Cargo Bay.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: 2 rushing through her Corridor into her Lock.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Bridge through Her Corridor into Her Lock. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: 2 pushing into her Corridor. They may feint.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor, may feint. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours, 1 wounded and 1 of theirs, 1 wounded, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Move to: Her Corridor",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Corridor",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Move to: Her Cargo Bay",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Cargo Bay",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Hold fire: stand ready, and shoot nobody",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: Ines cuts the lights",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at her Lock",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at her Corridor",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at her Bridge",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: Ines cycles a hatch on them",
-     "Hatch at her Cargo Bay",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 0 of ours down in her Corridor, 1 of them and 0 of ours wounded in her Corridor, you fall back to her Lock.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of ours move into her Cargo Bay. None of them are where you stand.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of ours move into her Cargo Bay. None of them are where you stand. Tomas finds none of them to go at.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 2 of ours move into her Corridor. You aim into her Corridor, and none of them are there.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 3 of them get through into her Lock, 2 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 3 of them run into ours in her Corridor and stop there, 2 of them and 0 of ours down in her Corridor, 0 of them and 1 of ours wounded in her Corridor.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
-    "end": false
-   },
-   {
-    "log": "Turn 8: nobody gives ground. None of them are where you stand.",
-    "end": true,
-    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the boat pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
-   },
-   {
-    "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor.",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at her Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "title": "The Lock",
-    "read": "Turn 1 of 5. The boarding party: 2 pushing into the Corridor.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 2 lost so far.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 2 to 3 of them",
-     "Aim at the Lock",
-     "Order: none",
-     "Fight"
-    ],
-    "group": [
-     "Orders to the crew"
-    ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last.",
-    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
-   },
-   {
-    "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock. You hold your fire.",
-    "end": false
-   },
-   {
-    "log": "Turn 1: nobody gives ground. None of them are where you stand.",
-    "end": true,
-    "close": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>They hold the bridge. The boarding officer has the ship searched berth by berth and writes the citation: 5,000 cr, taken from the ship's account before they go back across."
-   },
-   {
-    "mem": [
-     "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway."
-    ]
-   },
-   {
-    "log": "Turn 5: nobody gives ground. None of them are where you stand.",
-    "end": true,
-    "close": "Turn 5: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund."
    },
    {
     "radar": "Play 1x2x16x Auto zoom50 km150 km400 km Cycle 1, 0 s Paused: She's launched. A torpedo reaches the point defence this cycle. We're hit. Someone's calling you. She's in gun range. The captain's changed the plan. Her range 30 km, closingShe's arming 2 inbound, first in 0.5 to 0.5 cycles Order: hold at 20 km Hull 100%, hers 100%, heat 0 of 5 To hold at 20 km, the gun still bears on her at the end of the cycle. Your post: GunnerThe Pirate \"Bitter Grin\"HullWeaponsDriveLockLauncher Fire controlGunPoint defence The gunFire when she bearsHold fire TorpedoFire one (2 left) Solution 0 to 13%Spread 1.4 kmHeat 0 of 5 Click a mark on her contact to aim there. Drag the ends of the blue arc to set the point defence. 0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km. The whole log0:00 A miss at 30 km.0:01 A miss at 31 km.0:02 A miss at 32 km.0:03 A miss at 33 km.0:04 A miss at 34 km.0:05 A miss at 35 km.0:06 A miss at 36 km.",
@@ -27246,7 +26332,7 @@
    }
   ],
   "title": "The Inner Lock",
-  "text": "Cato has the sidearm locker open and hands you yours butt first. \"Look at the board,\" he says. \"Top line's what they mean to do. The boxes are the deck, a section each, ours on the left and theirs on the right. Dots are cover.\"</p><p>He points at the line under it. \"That's how many they've got, and the mark's where they break and go back. Each turn you hold a section or move, and you do one thing there. Then you give one of us an order. Me, if you like. I'll tell you if it's a bad one.\"",
+  "text": "Cato has the sidearm locker open and hands you yours butt first. \"Look at the board,\" he says. \"That's the ship cut down the middle, deck by deck. Red's them and what they mean to do this turn. Blue's us. The bars under each spot are how much there is to get behind.\"</p><p>He points at the count by the Fight button. \"That's how many they've got, and where they break and go back. Each turn you stand or take a step, and you do one thing from there. Then you give one of us an order. Me, if you like. The captain says whether we hold, push or fall back. You can tell her she's wrong. She might listen.\"",
   "labels": [
    "Check the sidearm"
   ]
@@ -27407,7 +26493,7 @@
   "id": "scene:fight:held",
   "plays": [],
   "title": "x",
-  "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Mate0 won't fight for you. Mate2 won't stand in the same section as Mate1.",
+  "text": "Mate0 won't fight for you. Mate2 won't fight alongside Mate1.",
   "labels": []
  },
  {
@@ -31088,17 +30174,17 @@
     "log": "Turn 1: Ines pulls you down behind the closer and takes it. Ines goes down at the gun seat. You're hit at the gun seat. One of them is hit at the magazine. One of them goes down at the magazine. Ines is hit, and carried below, and is alive, and isn't fit to work."
    },
    {
-    "log": "Turn 1: Ines: it doesn't work."
+    "log": "Turn 1: Ines cycles the hatch a beat late, and it closes on nothing."
    },
    {
-    "log": "Turn 1: One of them is hit at the tool wall. You: it works. One of them goes down at the tool wall."
+    "log": "Turn 1: One of them is hit at the tool wall. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. One of them goes down at the tool wall."
    },
    {
-    "log": "Turn 2: You: it doesn't work. 3 more come through the outer door."
+    "log": "Turn 2: You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. 3 more come through the outer door."
    },
    {
     "title": "Boarders",
-    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at the gun seat. You: Pick off a runner. YouShoot at the magazine (9%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines moves to the stove.Ines moves to the head door.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the crew deck and the gun deck. (90%)Tomas moves to the well at the mess deck.Tomas moves to the middle bunks.Tomas moves to the lockers.Tomas moves to the well at the gun deck.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo moves to the stove.Mateo moves to the head door.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (47%)Suggest: fall back (37%) Turn 3 of 12. Ours 7, theirs 5, 0 still to land. They break at 0. Turn 2: You: it doesn't work. 3 more come through the outer door.The whole fightTurn 1: One of them is hit at the tool wall. You: it works. One of them goes down at the tool wall.Turn 2: You: it doesn't work. 3 more come through the outer door. Fight",
+    "plan": "This turnThey hold where they are. Ours hold: hold where we are.You stand at the gun seat. You: Pick off a runner. YouShoot at the magazine (9%)Pick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the crew deck and the gun deck. (80%)Ines moves to the well at the flight deck.Ines moves to the stove.Ines moves to the head door.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the crew deck and the gun deck. (90%)Tomas moves to the well at the mess deck.Tomas moves to the middle bunks.Tomas moves to the lockers.Tomas moves to the well at the gun deck.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo moves to the stove.Mateo moves to the head door.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (47%)Suggest: fall back (37%) Turn 3 of 12. Ours 7, theirs 5, 0 still to land. They break at 0. Turn 2: You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. 3 more come through the outer door.The whole fightTurn 1: One of them is hit at the tool wall. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. One of them goes down at the tool wall.Turn 2: You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. 3 more come through the outer door. Fight",
     "aria": [
      "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
      "Stand at the gun seat",
@@ -31165,6 +30251,67 @@
    },
    {
     "log": "Turn 2: We cut through the hatch between the crew deck and the ready deck."
+   },
+   {
+    "title": "Boarders",
+    "plan": "This turnThey hold where they are. 5 of ours move: hold where we are.You stand at the gun seat. You hold your fire. YouPick off a runner (55%)Covering burst (70%), once a fightPull back, with everyone hereHold fireOrderNo orderInes cycles a hatch on them. (80%)Ines cuts the lights. (90%)Ines seals the hatch between the gun deck and the lock deck. (80%)Ines moves to the well at the flight deck.Ines stays put.Tomas vents a coolant line. (75%)Tomas drops the pressure door. (90%)Tomas seals the hatch between the gun deck and the lock deck. (90%)Tomas moves to the coolant pumps.Tomas stays put.Mateo puts a false order on their band. (65%)Mateo jams their band. (80%)Mateo moves to the well at the flight deck.Mateo stays put.Captain Vance: hold where we are.Suggest: push them back (17%)Suggest: fall back (37%) Turn 1 of 8. Ours 7, theirs 3, 3 still to land. They break at 0. Fight",
+    "aria": [
+     "The ship in section: the decks, the well and its hatches, and everyone where they stand.",
+     "Stand at the gun seat",
+     "Move to the magazine",
+     "You",
+     "Order",
+     "The captain"
+    ],
+    "drawn": [
+     "BRIDGE",
+     "GALLEY",
+     "HEAD",
+     "BERTHS",
+     "GUNNERY",
+     "WORKSHOP",
+     "AIRLOCK",
+     "MEDBAY",
+     "LIFE SUPPORT",
+     "ENGINE",
+     "HOLD",
+     "+3 TO COME",
+     "Heste",
+     "Ines",
+     "Mateo",
+     "Cato",
+     "Hana",
+     "You",
+     "Tomas"
+    ]
+   },
+   {
+    "log": "Turn 1: Nobody is hit.",
+    "close": "Turn 1: Nobody is hit.</p><p>They hold the bridge. The boarding officer has the ship searched berth by berth and writes the citation: 5,000 cr, taken from the ship's account before they go back across.",
+    "mem": [
+     "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway."
+    ]
+   },
+   {
+    "log": "Turn 8: Nobody is hit.",
+    "close": "Turn 8: Nobody is hit.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ]
+   },
+   {
+    "log": "Turn 12: Nobody is hit.",
+    "close": "Turn 12: Nobody is hit.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Widow\" lights, and she breaks away from the hull.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ]
+   },
+   {
+    "log": "Turn 12: Nobody is hit.",
+    "close": "Turn 12: Nobody is hit.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the boat pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ]
    }
   ]
  }

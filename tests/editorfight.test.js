@@ -41,7 +41,7 @@ async function play() {
 const fightOf = f => f.evaluate(() => {
   const s = G.dialog.event.fight || {}, st = s.state || {};
   return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
-    day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => (c.rowLabel ? `${c.rowLabel}: ${c.label}` : c.label))]) };  // a gun's or the torpedo's row reads its label too
+    day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => (c.rowLabel ? `${c.rowLabel}: ${c.label}` : c.label)), G.dialog.event.board || '']) };  // a gun's or the torpedo's row reads its label too; the deck plan's page is its board
 });
 // Ends the fight on the radar in the frame as it ends with her away (radarui.js, shipFightEnd: an end that changes nothing itself), for its close's Stand down.
 const endAway = f => f.evaluate(() => { const s = G.dialog.event.fight; G.radar = null; shipFightEnd(s, 'away'); finishEvent(); });
@@ -77,20 +77,18 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['open.torpedo.1', r => r.ship === 'corsair', true],
     ['open.grapple.0', r => r.ship === 'raider' && !r.pack && !r.patrol, true],
     ['part.hull', r => r.ship === 'raider' && !r.pack && !r.patrol && r.kind === 'radar', false],
-    ['deck.feint', r => r.kind === 'deck' && !r.assault, false],  // a veteran's repel: shown on a push, and the first turn is a hold
-    ['deck.stand', r => r.kind === 'deck' && !r.assault, true],
-    ['deck.who.navy', r => r.kind === 'deck' && r.navy && !r.assault, true],  // the navy's own lines play in the navy's deck (#831)
-    ['deck.navy.down', r => r.kind === 'deck' && r.navy, true],
-    ['deck.end.searched', r => r.kind === 'deck' && r.navy, false],
-    ['deck.end.cited', r => r.kind === 'deck' && r.navy, false],
-    ['memory.searched', r => r.kind === 'deck' && r.navy, false],
-    ['deck.holdfire', r => r.kind === 'deck' && !r.navy && !r.assault, false],  // the repel keeps hold fire
-    ['deck.hers.0', r => r.kind === 'deck' && r.assault, false],
-    ['hurt.you', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // the hurt and the fallen play on our deck, where a head of ours down reads them (#796)
-    ['hit.again.dead', r => r.kind === 'deck' && !r.assault && !r.navy, false],
-    ['cover.even', r => r.kind === 'deck' && !r.assault && !r.navy, false],
-    ['killed.repel.log', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // and a death's cause where it is written
-    ['killed.assault.log', r => r.kind === 'deck' && r.assault, false],
+    ['plan.feint', r => r.kind === 'plan' && !r.assault, false],  // a veteran's repel: shown on a move, by a roll
+    ['plan.fight', r => r.kind === 'plan' && !r.assault, true],  // the deck plan's own lines play on our deck (#1355)
+    ['plan.title.assault', r => r.kind === 'plan' && r.assault, true],
+    ['deck.end.searched', r => r.kind === 'plan' && r.navy, false],  // the navy's own ends play in the navy's deck fight (#831)
+    ['deck.end.cited', r => r.kind === 'plan' && r.navy, false],
+    ['memory.searched', r => r.kind === 'plan' && r.navy, false],
+    ['deck.withdraw.assault', r => r.kind === 'plan' && r.assault, false],
+    ['hurt.you', r => r.kind === 'plan' && !r.assault && !r.navy, false],  // the hurt and the fallen play on our deck, where a head of ours down reads them (#796)
+    ['hit.again.dead', r => r.kind === 'plan' && !r.assault && !r.navy, false],
+    ['cover.even', r => r.kind === 'plan' && !r.assault && !r.navy, false],
+    ['killed.repel.log', r => r.kind === 'plan' && !r.assault && !r.navy, false],  // and a death's cause where it is written
+    ['killed.assault.log', r => r.kind === 'plan' && r.assault, false],
     ['killed.navy.log', r => r.kind === 'radar' && r.patrol, false],
   ];
   for (const [line, ok, shown] of cases) {
@@ -108,11 +106,11 @@ test('the navy\'s levy on our bridge plays in the navy\'s deck fight, and the re
   await reload(); await select('beats:repel');
   await page.fill('textarea[data-path="part.end.takenNavy"]', 'Typed levy.');
   let r = await fightOf(await play());
-  assert.ok(r.kind === 'deck' && r.navy && !r.assault, `the navy's deck: ${JSON.stringify(r).slice(0, 200)}`);
+  assert.ok(r.kind === 'plan' && r.navy && !r.assault, `the navy's deck: ${JSON.stringify(r).slice(0, 200)}`);
   await page.fill('textarea[data-path="part.end.takenNavy"]', '');
   await page.fill('textarea[data-path="part.end.captainLost"]', 'Typed loss.');
   r = await fightOf(await play());
-  assert.ok(r.kind === 'deck' && !r.navy && !r.assault, `our deck against raiders: ${JSON.stringify(r).slice(0, 200)}`);
+  assert.ok(r.kind === 'plan' && !r.navy && !r.assault, `our deck against raiders: ${JSON.stringify(r).slice(0, 200)}`);
 });
 
 test('the writer can pick another fight, early or late, over the one the line needs (#795)', async () => {
@@ -124,7 +122,7 @@ test('the writer can pick another fight, early or late, over the one the line ne
   assert.ok(r.day > 200 && r.gunner > 0, `late in the chapter: ${JSON.stringify(r).slice(0, 200)}`);
   await page.selectOption('[data-pv-fight]', 'deck-assault');
   r = await fightOf(await play());
-  assert.deepEqual([r.kind, r.assault], ['deck', true], 'boarding her goes onto her deck');
+  assert.deepEqual([r.kind, r.assault], ['plan', true], 'boarding her goes onto her deck');
   await page.selectOption('[data-pv-fight]', '');
   r = await fightOf(await play());
   assert.ok(r.patrol && r.day < 200, 'back to the line typed, early');
@@ -137,25 +135,19 @@ test('the deck fights play on the deck: our deck for the repel, hers for the ass
   const shared = k => /^(ability|crew)\./.test(k);
   assert.ok(rows['beats:deck'].length > 10 && rows['beats:deck'].every(shared), 'the abilities and the orders');
   for (const id of ['beats:repel', 'beats:assault']) assert.deepEqual(rows[id].filter(shared), [], `${id} keeps only its own lines`);
-  for (const id of ['beats:repel', 'beats:assault']) assert.ok(rows[id].includes('open.0.0') && rows[id].includes('end.last') && rows[id].includes('title.0'), `${id} keeps its own openings, ends and titles`);
+  for (const id of ['beats:repel', 'beats:assault']) assert.ok(rows[id].includes('end.last') && rows[id].some(k => k.startsWith('memory.')), `${id} keeps its own ends and memories`);
   await select('beats:repel');
   let r = await fightOf(await play());
-  assert.deepEqual([r.kind, r.assault], ['deck', false], 'the repel is on our deck');
+  assert.deepEqual([r.kind, r.assault], ['plan', false], 'the repel is on our deck');
   await select('beats:assault');
-  await page.fill('textarea[data-path="part.open.2.0"]', 'Typed her lock.');
   r = await fightOf(await play());
-  assert.deepEqual([r.kind, r.assault], ['deck', true], 'the assault is on her deck, at once');
-  assert.ok(r.seen.includes('Typed her lock.'), r.seen.slice(0, 200));
+  assert.deepEqual([r.kind, r.assault], ['plan', true], 'the assault is on her deck, at once');
   await select('beats:deck');
   await page.fill('textarea[data-path="part.ability.gunner.steady.label"]', 'Typed steady');
-  const fr = await play();
-  await choose(fr, 1);  // shoot to steady
-  r = await fightOf(fr);
+  r = await fightOf(await play());  // the hand's two abilities are on the page's act row
   assert.ok(!r.assault && r.seen.includes('Typed steady'), `the repel reads the shared line: ${r.seen.slice(0, 300)}`);
   await page.selectOption('[data-pv-fight]', 'deck-assault');
-  const fa = await play();
-  await choose(fa, 1);
-  r = await fightOf(fa);
+  r = await fightOf(await play());
   assert.ok(r.assault && r.seen.includes('Typed steady'), `the assault reads the same line: ${r.seen.slice(0, 300)}`);
 });
 
@@ -224,16 +216,14 @@ test('a deck line of a post plays with the hand at that post, and a crew gunner\
   await page.fill('textarea[data-path="part.ability.engineer.steady.label"]', 'Typed engineer steady');
   let f = await play();
   assert.equal(await f.evaluate(() => hired().post), 'engineer', 'the hand is at the ability\'s post');
-  await choose(f, 1);  // shoot to the post's steady ability
-  assert.ok((await fightOf(f)).seen.includes('Typed engineer steady'), 'the engineer\'s ability is on the panel');
+  assert.ok((await fightOf(f)).seen.includes('Typed engineer steady'), 'the engineer\'s ability is on the page');
   await page.fill('textarea[data-path="part.ability.engineer.steady.label"]', '');
   await page.fill('textarea[data-path="part.crew.gunner.cover.label"]', 'typed gunner order');  // the first of the orders is the cover one, the rest the steady one
   await page.fill('textarea[data-path="part.crew.gunner.steady.label"]', 'typed gunner order');
   f = await play();
   assert.notEqual(await f.evaluate(() => hired().post), 'gunner', 'the hand is not the gunner, so a crew gunner is aboard');
-  assert.ok(await f.evaluate(() => repelOrders(G.dialog.event.fight, false).some(o => o.sheet.post === 'gunner')), 'a crew gunner can be ordered');
-  let seen = '';
-  for (let n = 0; n < 4 && !seen.includes('typed gunner order'); n++) { await choose(f, 2); seen = (await fightOf(f)).seen; }
+  assert.ok(await f.evaluate(() => G.dialog.event.fight.state.figures.some(x => !x.hand && x.post === 'gunner' && x.odds)), 'a crew gunner can be ordered');
+  const seen = (await fightOf(f)).seen;
   assert.ok(seen.includes('typed gunner order'), `the order to the gunner is offered: ${seen.slice(0, 300)}`);
 });
 
@@ -265,12 +255,12 @@ test('a fight picked for one row is not carried to another (#795)', async () => 
   await select('beats:repel');
   assert.equal(await page.inputValue('[data-pv-fight]'), '', 'the picker is back to the line typed');
   const r = await fightOf(await play());
-  assert.deepEqual([r.kind, r.assault], ['deck', false]);
+  assert.deepEqual([r.kind, r.assault], ['plan', false]);
 });
 
 test('words kept for the deck fights\' abilities and orders under the old rows move to the shared row, from the browser and from a file (#795)', async () => {
   await reload(); await select('beats:repel');
-  await page.fill('textarea[data-path="part.title.0"]', 'The Lock, typed');
+  await page.fill('textarea[data-path="part.end.last"]', 'The last, typed');
   await page.evaluate(() => {
     const k = 'maxGravity.editor.v1', s = JSON.parse(localStorage.getItem(k));
     Object.assign(s.values['beats:repel'], { 'part.ability.gunner.steady.label': 'Old repel words' });
@@ -286,12 +276,12 @@ test('words kept for the deck fights\' abilities and orders under the old rows m
   assert.equal(await page.inputValue('textarea[data-path="part.ability.gunner.steady.label"]'), 'Old repel words');
   assert.equal(await page.inputValue('textarea[data-path="part.crew.pilot.cover.label"]'), 'Old assault order');
   const out = JSON.parse((await page.evaluate(() => SceneIndex.exportText())).match(/const SCENE_OVERRIDES = ([\s\S]*?);\n/)[1]);
-  assert.deepEqual(out, { 'beats:repel': { parts: { 'title.0': 'The Lock, typed' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'Old repel words', 'crew.pilot.cover.label': 'Old assault order' } } });
+  assert.deepEqual(out, { 'beats:repel': { parts: { 'end.last': 'The last, typed' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'Old repel words', 'crew.pilot.cover.label': 'Old assault order' } } });
   const plan = await page.evaluate(() => {
-    const p = SceneIndex.planImport({ overrides: { 'beats:repel': { parts: { 'ability.gunner.steady.label': 'A' } }, 'beats:assault': { parts: { 'ability.gunner.steady.label': 'B', 'open.2.0': 'C' } } } }, SceneIndex.rows);
+    const p = SceneIndex.planImport({ overrides: { 'beats:repel': { parts: { 'ability.gunner.steady.label': 'A' } }, 'beats:assault': { parts: { 'ability.gunner.steady.label': 'B', 'end.driven': 'C' } } } }, SceneIndex.rows);
     return { acc: JSON.parse(JSON.stringify(p.accepted.overrides)), refused: p.items.filter(i => !i.ok).map(i => i.text) };
   });
-  assert.deepEqual(plan.acc, { 'beats:assault': { parts: { 'open.2.0': 'C' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'A' } } });
+  assert.deepEqual(plan.acc, { 'beats:assault': { parts: { 'end.driven': 'C' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'A' } } });
   assert.equal(plan.refused.length, 1);
   assert.match(plan.refused[0], /repel's words are kept/);
 });

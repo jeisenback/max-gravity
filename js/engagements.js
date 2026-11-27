@@ -25,7 +25,7 @@ const DEAD_TEXT = {
 };
 const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
-// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent): the one built here,
+// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, deckplanui.js planFightEvent): the one built here,
 // with her grade and her consort's crew (`s`), so that the count the scene gives is the fight Board her opens.
 function deadInSpaceScene(s) {
   const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe, s), ours = deckOurs(assault.state), theirs = assault.state.began;

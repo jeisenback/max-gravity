@@ -1,21 +1,20 @@
 'use strict';
 
-// tools/fights.js: the deck fights over seeded trials. One tiny run, to check the tool still drives each fight to its end and
-// reports a table of the right shape. The targets the fights are tuned to (many seeds of them) are checked in the soak, tests/distribution/fights.test.js (#753).
+// tools/fights.js: the fight tool, the deck fight on the deck plan over seeded trials (tools/planfights.js, in plain Node). One tiny run, to check the tool still
+// plays each cell to its end and reports a table of the right shape. The targets the fights are tuned to (many seeds of them) are checked in the soak,
+// tests/distribution/deckplanfights.test.js (#753, #1355).
 
-const { test, after } = require('node:test');
+const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { closeBrowser } = require('./helpers');
-const { fights } = require('../tools/fights');
+const P = require('../tools/planfights');
 
-after(closeBrowser);
-
-test('the fights tool plays the repel fight and the assault fight to their ends', async () => {
-  const r = await fights({ seed: 1, n: 3 });
-  assert.deepEqual(r.errors, []);
-  assert.deepEqual(Object.keys(r).filter(k => ['raid', 'match'].includes(k)), [], 'the ship fight is the radar\'s tool\'s (tools/radarfights.js)');
-  for (const kind of [r.repel, r.assault]) {
-    assert.ok(Object.keys(kind).length >= 10);
-    for (const t of Object.values(kind)) { assert.equal(t.n, 3); assert.ok(t.rounds >= 3, 'a fight lasts more than a round'); assert.ok(t.won <= 3); }
+test('the fights tool plays the repel and the boarding on the deck plan to their ends', () => {
+  const r = P.planFights({ seed: 1, n: 3, cells: P.planCells() });
+  const cells = Object.entries(r);
+  assert.ok(cells.some(([k]) => k.startsWith('repel ')) && cells.some(([k]) => k.startsWith('assault ')), 'both ways');
+  for (const [k, t] of cells) {
+    assert.equal(t.n, 3, k);
+    assert.ok(t.rounds >= 3, `${k}: a fight lasts more than a turn`);
+    assert.ok(t.won + (t.taken || 0) + (t.searched || 0) === 3, `${k}: every fight ends`);
   }
 });

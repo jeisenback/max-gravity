@@ -2,8 +2,8 @@
 
 // Distribution check: the danger of the hired chapter's fights (npm run soak), with each burn's seconds and its contact played (tools/soak.js --frames), so the
 // ship fights are in the chapter (fightui.js: a heavy turn can hurt the hand) and so are the deck fights after a boarding, played by the fight tool's answer
-// (tools/answer.js answerDeck). Not part of `npm test`: it depends on a spread over many random games, and it moves whenever a new random draw shifts the stream.
-// It guards how often the hand is hurt (FIGHT.HAND_HURT, DECK.SUIT, js/boarders.js REPEL_HURT), hurt again, and how often a chapter ends early (the first-hurt
+// on the deck plan (tools/answer.js answerPlan, since #1355). Not part of `npm test`: it depends on a spread over many random games, and it moves whenever a new random draw shifts the stream.
+// It guards how often the hand is hurt (FIGHT.HAND_HURT, and the hand downed on the deck plan, js/deckplan.js), hurt again, and how often a chapter ends early (the first-hurt
 // roll and CAPTAIN_LOST, js/boarders.js). The scene mix and the hand's death without the fights are in tests/distribution/stakes.test.js.
 //
 // Profiles:  attentive (tools/soak.js SOAK_PROFILES, #1199): the fights come on the burn whatever is taken, so the one player serves.

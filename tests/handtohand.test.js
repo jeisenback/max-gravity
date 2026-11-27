@@ -1,13 +1,13 @@
 'use strict';
 
-// Hand to hand on the sheet (js/handtohand.js, #684): the abilities, the cover by section and the strip that draws it, in plain Node. The lock fight that uses them is in boarders.test.js.
+// Hand to hand on the sheet (js/handtohand.js, #684): the abilities and the crew's sheets, in plain Node. The deck fight that uses them is in deckplan.test.js.
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'fightCover', 'baseCover', 'abilityStep', 'fightStrip', 'COVER_MAX', 'COVER_MADE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'crewOrders', 'ORDERS_MAX', 'CREW_HURT', 'check', 'POST_STAT']);
-const { FIGHT_ABILITY, ABILITY_EDGE, fightCover, abilityStep, fightStrip, COVER_MAX, COVER_MADE, CREW_ABILITY, crewSheet, crewOrderOdds, crewOrders, ORDERS_MAX, CREW_HURT, check, POST_STAT } = api;
+const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'CREW_HURT', 'check', 'POST_STAT']);
+const { FIGHT_ABILITY, ABILITY_EDGE, CREW_ABILITY, crewSheet, crewOrderOdds, CREW_HURT, check, POST_STAT } = api;
 const POSTS = ['gunner', 'pilot', 'engineer', 'comms'];
 
 test('every post has a steady ability and a cover ability, each with a label and a line for working and for missing', () => {
@@ -19,86 +19,6 @@ test('every post has a steady ability and a cover ability, each with a label and
   assert.ok(ABILITY_EDGE.steady < 0 && ABILITY_EDGE.cover > 0, 'the cover one is an easier gamble than the post\'s move, the steady one a harder one: it is the one that can end the fight');
 });
 
-test('cover by section: the ship\'s length sets the corridor\'s, the kit and the fight add to it, and it stops at three', () => {
-  assert.deepEqual([...fightCover({ size: 13, kit: [], extra: [0, 0, 0] })], [1, 1, 1], 'a middling ship has a point of cover everywhere');
-  assert.deepEqual([...fightCover({ size: 18, kit: [], extra: [0, 0, 0] })], [1, 2, 1], 'a long ship has berth doors to stand behind in the corridor');
-  assert.deepEqual([...fightCover({ size: 10, kit: [], extra: [0, 0, 0] })], [1, 0, 1], 'a cramped ship has none');
-  assert.deepEqual([...fightCover({ size: 13, kit: ['valve-keys'], extra: [0, 0, 0] })], [1, 2, 1], 'the valve keys open the service crawl');
-  assert.deepEqual([...fightCover({ size: 13, kit: ['audit-seal'], extra: [0, 0, 0] })], [1, 1, 1], 'an item with no cover gives none');
-  assert.deepEqual([...fightCover({ size: 18, kit: ['valve-keys'], extra: [0, COVER_MADE, 0] })], [1, COVER_MAX, 1], 'the corridor stops at three');
-});
-
-test('an ability that works thins them or makes cover and the exchange stands; one that misses holds the ground and lets them press', () => {
-  const s = { pos: 1, boarders: 4, extra: [0, 0, 0] };
-  assert.deepEqual({ ...abilityStep('steady', true, s) }, { result: 'tie', press: false, boarders: 3, extra: s.extra });
-  const miss = abilityStep('steady', false, s); assert.deepEqual([miss.result, miss.press, miss.boarders], ['tie', true, 4]);
-  assert.equal(abilityStep('steady', true, { ...s, boarders: 1 }).boarders, 0, 'the last of them can be picked off');
-  assert.equal(abilityStep('steady', true, { ...s, boarders: 0 }).boarders, 0, 'and there are never fewer than none');
-  const made = abilityStep('cover', true, s); assert.deepEqual([made.result, made.press, [...made.extra]], ['tie', false, [0, COVER_MADE, 0]]); assert.deepEqual([...s.extra], [0, 0, 0], 'the fight\'s own list is not changed in place');
-  const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
-  assert.deepEqual([...abilityStep('cover', true, s, 3).extra], [0, 3, 0], 'the points made are the caller\'s (cover-eye makes three)');
-});
-
-test('a rush is drawn through the section it passes, and the heads still to land are a line under the deck', () => {
-  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 0, theirs: 3, cover: 1 }, { mine: 0, theirs: 0, cover: 2 }, { mine: 2, theirs: 0, cover: 0 }];
-  const rush = fightStrip({ titles, sections, hand: 2, move: { from: 0, via: 1, to: 2, n: 3 }, feint: false, wave: '2 more cycling through the lock next turn.' });
-  assert.match(rush, /<path class="move" d="M\d+(\.\d+)? 80 L\d+(\.\d+)? 80 L\d+(\.\d+)? 80"/, 'the arrow bends at the section it goes through');
-  assert.match(rush, /Their move: 3 from The Lock through The Corridor into The Bridge\. 2 more cycling through the lock next turn\."/);
-  assert.match(rush, /<text class="wave"[^>]*>2 more cycling through the lock next turn\.</); assert.match(rush, /viewBox="0 0 360 112"/);
-  assert.doesNotMatch(fightStrip({ titles, sections, hand: 2, move: null, feint: false }), /class="wave"/, 'no line when none are to land');
-});
-
-test('a charge is marked on the section it blows in and its setter\'s, not drawn as an arrow, and the label names both', () => {
-  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 0, theirs: 3, cover: 1 }, { mine: 2, theirs: 0, cover: 2 }, { mine: 1, theirs: 0, cover: 1 }];
-  const svg = fightStrip({ titles, sections, hand: 2, move: { kind: 'charge', at: 1, from: 0, n: 0 }, feint: false });
-  assert.doesNotMatch(svg, /<path class="move"/, 'no arrow');
-  assert.equal((svg.match(/<text class="charge"[^>]*>CHARGE</g) || []).length, 1, 'one mark');
-  assert.equal((svg.match(/<text class="setter"[^>]*>SETTER</g) || []).length, 1, 'and one on the section it is set from');
-  assert.match(svg, /Their move: a charge on The Corridor, set from The Lock/);
-});
-
-test('the strip draws a section\'s wounded as a hollow count beside the heads, and the label says so', () => {
-  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 4, mineHurt: 1, theirsHurt: 2, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
-  const svg = fightStrip({ titles, sections, hand: 0, move: null, feint: false });
-  assert.equal((svg.match(/<circle class="hurt"/g) || []).length, 2, 'a hollow mark for each side with wounded');
-  assert.match(svg, /The Lock: 2 of ours, 1 wounded and 4 of theirs, 2 wounded, cover 1/);
-  assert.doesNotMatch(fightStrip({ titles, sections: sections.map(s => ({ ...s, mineHurt: 0, theirsHurt: 0 })), hand: 0, move: null, feint: false }), /class="hurt"|wounded/, 'none wounded, nothing drawn');
-  assert.match(svg, /2 of ours, 1 wounded and 4 of theirs/, 'ours are voiced too');
-  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, oursSay: n => `${n} hurt` }), /2 of ours, 1 hurt/);
-  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, hurtSay: n => `${n} down` }), /4 of theirs, 2 down/, 'the words come from the scene');
-});
-
-test('the strip draws each section with both sides\' heads, its cover, where the hand stands, and their shown move, marked when it may feint', () => {
-  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 3, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
-  const svg = fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: false });
-  assert.match(svg, /^<svg class="board" viewBox="0 0 360 98" role="img" aria-label="The deck in three sections\. The Lock: 2 of ours and 3 of theirs, cover 1, you stand here\. The Corridor: 1 of ours, cover 2\. The Bridge: empty, cover 0\. Their move: 3 from The Lock into The Corridor\.">/);
-  assert.deepEqual([...svg.matchAll(/letter-spacing="1">([\w ]+)</g)].map(m => m[1]), ['THE LOCK', 'THE CORRIDOR', 'THE BRIDGE']);
-  assert.equal((svg.match(/<circle class="pip"/g) || []).length, 3, 'three points of cover drawn');
-  assert.equal((svg.match(/<circle class="nopip"/g) || []).length, 6);
-  assert.equal((svg.match(/class="you"/g) || []).length, 1, 'the hand in one section');
-  assert.match(svg, /<path class="move"/); assert.doesNotMatch(svg, /MAY FEINT/);
-  const vet = fightStrip({ titles: [...titles, 'The Cargo Bay'], sections: [...sections, { mine: 1, theirs: 0, cover: 1 }], hand: 3, move: null, feint: true });
-  assert.match(vet, /aria-label="The deck in four sections\. .*The Cargo Bay: 1 of ours, cover 1, you stand here\. Their move: they hold, may feint\."/);
-  assert.doesNotMatch(vet, /<path class="move"/, 'a hold draws no arrow');
-  assert.match(fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: true }), />3 MAY FEINT</, 'a veteran\'s move is marked on the arrow');
-  const counted = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2 });  // spec Section 3: the line she breaks at, on her count
-  assert.equal((counted.match(/<rect class="head"/g) || []).length, 3, 'a mark for each of hers still up');
-  assert.equal((counted.match(/<rect class="nohead"/g) || []).length, 3, 'and a hollow one for each down');
-  assert.match(counted, /<path class="break" d="M24\.5 /, 'the line after her second mark');
-  assert.match(counted, />BREAKS AT 2</);
-  assert.match(counted, /3 of their 6 still up; they break at 2\."/);
-  const few = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 3, breakAt: 0 });  // a count of 1 to 3 has no line to break at
-  assert.match(few, />FIGHTS TO THE LAST</); assert.doesNotMatch(few, /BREAKS AT/);
-  assert.match(few, /3 of their 3 still up; they fight to the last\."/);
-  const coming = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2 });  // a repel's wave still to land: neither up nor down
-  assert.deepEqual(['head', 'comehead', 'nohead'].map(k => (coming.match(new RegExp(`<rect class="${k}"`, 'g')) || []).length), [3, 2, 1], 'three up, two still to come, one down');
-  assert.match(coming, /<rect class="comehead"[^>]*stroke-dasharray/, 'drawn apart from the downed');
-  assert.match(coming, /3 aboard, 2 still to come; they break at 2\."/, 'and the break line counts the whole party');
-  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2, comeSay: (n, m) => `${n} here, ${m} coming` }), /3 here, 2 coming; they break at 2\."/, 'the words come from the scene');
-  assert.doesNotMatch(svg, /class="break"/, 'no count is drawn when none is given');
-});
-
-// The crew at the lock (#711): a sheet from role, skill and traits, and the orders to named crew.
 test('a crew member\'s sheet comes from their role, skill and traits, and a role with no post has none', () => {
   const j = x => JSON.parse(JSON.stringify(x));
   assert.deepEqual(j(crewSheet({ role: 'gunner', skill: 2, traits: ['kind', 'rude'] })), { post: 'gunner', stat: 4, skill: 2 }, 'the post\'s stat is a point over the base, as the hand\'s is at the sign-on');
@@ -119,22 +39,6 @@ test('an order\'s odds are the one rule at the crew member\'s own stat and skill
   assert.ok(Math.abs(crewOrderOdds(sheet, 'steady', true) - (crewOrderOdds(sheet, 'steady', false) - CREW_HURT)) < 1e-9, 'hurt takes a tenth off');
   const better = crewSheet({ role: 'gunner', skill: 3, traits: [] });
   assert.ok(crewOrderOdds(better, 'steady', false) > crewOrderOdds(sheet, 'steady', false), 'skill counts a tenth a level');
-});
-
-test('the orders on offer: up to three crew with a post, the most skilled first, the cover to the first while the fight still has it to make', () => {
-  const j = x => JSON.parse(JSON.stringify(x));
-  const crew = [
-    { id: 'a', first: 'Ana', sheet: crewSheet({ role: 'gunner', skill: 1, traits: [] }) },
-    { id: 'b', first: 'Bo', sheet: crewSheet({ role: 'pilot', skill: 3, traits: [] }) },
-    { id: 'c', first: 'Cy', sheet: null },
-    { id: 'd', first: 'Di', sheet: crewSheet({ role: 'engineer', skill: 2, traits: [] }) },
-    { id: 'e', first: 'Ed', sheet: crewSheet({ role: 'slicer', skill: 0, traits: [] }) },
-  ];
-  const fresh = j(crewOrders(crew, false)).map(o => [o.id, o.kind]);
-  assert.deepEqual(fresh, [['b', 'cover'], ['d', 'steady'], ['a', 'steady']], 'three, best first, the cover to the best, none for the one with no post');
-  assert.equal(fresh.length, ORDERS_MAX);
-  assert.deepEqual(j(crewOrders(crew, true)).map(o => o.kind), ['steady', 'steady', 'steady'], 'with the cover made, all are steady');
-  assert.deepEqual(crewOrders([{ id: 'c', first: 'Cy', sheet: null }], false), [], 'a crew of cooks has none to send');
 });
 
 test('every post has a line for each of the crew\'s two orders: a phrase for the button and a line for working and for missing', () => {

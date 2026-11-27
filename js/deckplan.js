@@ -5,7 +5,7 @@
 // downed by a second; two sides never share a spot. Their move and our crew's are drawn before the hand commits (planTheirMove,
 // planCrewMoves), the hand picks a move, an act and one order (planChoices), and planTurn resolves it: moves, fire, the charge, the wave,
 // the end. Pure: it reads no G, changes nothing it is given, and takes `rand`. Runs in Node (tests/deckplan.test.js). Loaded after
-// fight.js (DECK), layouts.js, shipcombat.js (CUNNING), boarders.js (REPEL_HURT) and radar.js (RADAR.SUGGEST).
+// fight.js (DECK), layouts.js, shipcombat.js (CUNNING) and radar.js (RADAR.SUGGEST).
 
 // Tuned with the fight tool (tools/fights.js --plan) against the targets in tests/distribution/deckplanfights.test.js (#1354).
 const PLAN = {
@@ -13,15 +13,15 @@ const PLAN = {
   MADE: 2,          // the cover a worked cover ability adds to its spot
   COVER_CAP: 3,     // a spot's cover, with what was made and the kit, at most
   RUSH: 2,          // the spots a raider's rush goes in a turn
-  TURNS: 12,        // the attackers withdraw at the end of this turn: a repel won, an assault lost (DECK.TURNS on the strip)
-  NAVY_TURNS: 8,    // a navy inspection's own cap (DECK.NAVY_TURNS on the strip)
+  TURNS: 12,        // the attackers withdraw at the end of this turn: a repel won, an assault lost
+  NAVY_TURNS: 8,    // a navy inspection's own cap
   HIT: { base: 0.35, level: 0.06, cover: 0.16, moved: 0.1, min: 0.05, max: 0.9 },  // a shot's odds: the shooter's level, the target spot's cover, and moving first
   THEIRS: 0,        // a boarder's shooting level, before her grade
-  CHARGES: 2,       // a corsair's breaching charges a fight (the prototype's; the strip limits them only by never two turns running)
+  CHARGES: 2,       // a corsair's breaching charges a fight (the prototype's), and never two turns running
   CAPTAIN_LEVEL: 3, // the captain's shooting
   NAVY_HOLD: 0.3,   // a navy head with a shot at these odds or better holds and shoots rather than push
   STORM: 3,         // they storm a spot of ours they outnumber this many to one from the spots next to it (the storm: the owner, 2026-11-26, #1354)
-  ASSAULT_CASUALTY: 0.17,  // boarding her, the share of ours downed that is a casualty (the rest get up after it), so that a boarding costs about the strip's 0.15 to 0.21 (the owner, 2026-11-27)
+  ASSAULT_CASUALTY: 0.17,  // boarding her, the share of ours downed that is a casualty (the rest get up after it), so that a boarding costs about the old deck fight's 0.15 to 0.21 (the owner, 2026-11-27)
   REST: 'bunksM',   // where one of our crew with no post of their own stands when the boarders come
 };
 const PLAN_HOME = { captain: 'helm' };  // the captain on our bridge, with the pilot
@@ -55,10 +55,10 @@ const planPostSpot = (lay, post) => ((lay.spots || []).find(p => p.post === post
 // The fight's opening. `crew`: [{ id, name, level, post, odds: { steady, cover } }]; `hand`: { level, post, odds }; `captain`: { name } or null.
 // Repelling, ours stand at their posts and half the boarders are at our outer door, the rest a wave; boarding her, ours are at her outer
 // door and hers through her decks from her bridge down.
-function planFight({ lay, crew, hand, captain, party, boarders, grade = 0, assault = false, kitCover = 0 }) {
-  // kind: what the settles (boarders.js) and deckWithdrew (fight.js) tell this fight from the strip's by, until the strip is retired (#1355)
+function planFight({ lay, crew, hand, captain, party, boarders, grade = 0, assault = false, kitCover = 0, made = PLAN.MADE }) {  // made: what a worked cover makes (cover-eye: 3)
+  // kind: what the scene and the memorial tell this fight from the ship fight's by (deckplanui.js planShowing, boarders.js killedHow)
   const st = { kind: 'plan', lay, figures: [], sealed: {}, cover: {}, turn: 0, wave: 0, began: boarders, charges: party === 'corsair' ? PLAN.CHARGES : 0,
-    lastCharge: -9, party, grade, assault, kitCover, coverUsed: false, friend: true, log: [], events: [], ...(party === 'navy' && !assault ? { navyDown: 0 } : {}) };
+    lastCharge: -9, party, grade, assault, kitCover, made, coverUsed: false, friend: true, log: [], events: [], ...(party === 'navy' && !assault ? { navyDown: 0 } : {}) };
   const theirs = n => Array.from({ length: n }, (_, i) => ({ id: `t${st.figures.filter(f => f.side === 'them').length + 1}`, side: 'them', name: '', level: 1 + grade }));
   const ours = [{ id: 'hand', side: 'us', name: '', level: hand.level, post: hand.post, odds: hand.odds, hand: true }, ...crew.map(c => ({ ...c, side: 'us' }))];
   if (assault) {
@@ -307,7 +307,7 @@ function planTurn(st0, pick, shown, rand) {
   // the abilities: the hand's act and the order to a crewmate, each a steady one (one of theirs in line downed) or a cover one (once a fight)
   const ability = (f, kind, odds) => {
     if (!worked(odds, kind, f.id)) return;
-    if (kind === 'cover') { st.coverUsed = true; st.cover[f.spot] = (st.cover[f.spot] || 0) + PLAN.MADE; return; }
+    if (kind === 'cover') { st.coverUsed = true; st.cover[f.spot] = (st.cover[f.spot] || 0) + st.made; return; }
     const aim = planAim(st, f, f.spot, false), foe = aim && planAt(st, aim.at, 'them').sort((a, b) => a.hp - b.hp)[0];
     if (foe) { planDown(st, foe, ev, 'steady'); hitAt[aim.at] = true; if (st.party === 'navy') st.weFired = true; }
   };
@@ -373,9 +373,9 @@ function planEnd(st) {
   if (planUp(st, 'them').length + st.wave <= st.began * rule.BREAK) return 'won';
   return st.turn >= (st.party === 'navy' ? PLAN.NAVY_TURNS : PLAN.TURNS) ? 'won' : null;
 }
-// Of ours downed, the share that is a casualty (fightui.js deckLoss): repelling the strip's DECK.CASUALTY, boarding her PLAN.ASSAULT_CASUALTY.
+// Of ours downed, the share that is a casualty (fightui.js deckLoss): repelling DECK.CASUALTY, boarding her PLAN.ASSAULT_CASUALTY.
 const planCasualty = st => (st.assault ? PLAN.ASSAULT_CASUALTY : DECK.CASUALTY);
-// The attackers went back at the cap, with their party not broken or beaten (the strip's deckWithdrew, fight.js): the close's words, and a navy party's citation.
+// The attackers went back at the cap, with their party not broken or beaten: the close's words, and a navy party's citation (boarders.js repelSettle).
 const planWithdrew = st => st.turn >= (st.party === 'navy' && !st.assault ? PLAN.NAVY_TURNS : PLAN.TURNS) && planEnd({ ...st, turn: 0 }) === null;
-// Ours on the deck, the hand apart: how many go across to board her (boarding.js, engagements.js), for either deck fight until the strip is retired (#1355).
-const deckOurs = st => (st.kind === 'plan' ? planUp(st, 'us').filter(f => !f.hand).length : sum(st, 'mine'));
+// Ours on the deck, the hand apart: how many go across to board her (boarding.js, engagements.js).
+const deckOurs = st => planUp(st, 'us').filter(f => !f.hand).length;

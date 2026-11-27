@@ -207,14 +207,14 @@ const UAT_FIGHTS = [
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }) },
   { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,
     run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Pact' }) },
-  { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (a push marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
+  { id: 'deck-repel', title: 'Being boarded', check: 'The cutaway shows every deck, every spot with its cover, everyone where they stand, their move in red (a move marked may feint above grade 0) and Turn n of 12. Stand or step, shoot, steady, cover once, one crew order and a suggestion to the captain all work; it ends repelled or taken through the usual scenes.', grade: 1,
     run: g => openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: g, pack: false }, 'full')) },
-  { id: 'deck-navy', title: 'Boarded by a navy patrol', check: 'The deck names the boarding party, with Turn n of 5, and the standing line under it (what each head put down costs with her government). Hold fire is an order. They never feint, rush or charge. At turn 5 they withdraw and the citation (the heave-to\'s fine) is charged; if you let them take the bridge they search the ship and fine it.', grade: 1,
+  { id: 'deck-navy', title: 'Boarded by a navy patrol', check: 'Turn n of 8. They hold their fire until one of ours fires on them, and each of them put down costs standing with her government. They never feint, rush or charge. At turn 8 they withdraw and the citation (the heave-to\'s fine) is charged; if you let them take the bridge they search the ship and fine it.', grade: 1,
     run: g => openEvent(repelEvent({ foe: makeEnemy({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }), foeHp: 0, init: 'foe', grade: g, pack: false }, 'half')) },
-  { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
+  { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her decks your crew push from her lock to her bridge, and a corsair sets her charge from the deck over or under ours.',
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
 ];
-const UAT_LATE_CHECK = ' Late in the chapter: the gunner\'s level and the boresight show in your damage ranges, the valve keys add cover in the corridor, and a crewmate who is a friend takes the first hit meant for you.';
+const UAT_LATE_CHECK = ' Late in the chapter: the gunner\'s level and the boresight show in your damage ranges, the valve keys add cover where you stand on the decks, and a crewmate who is a friend takes the first hit meant for you in the ship fight.';
 // One of the fights, early or late, from a fresh hand (at `post`, the gunner unless asked): the fight's own loadout (`prep`), then `ready` once the hand is set up and before
 // the fight starts (the editor's preview sets the day and the turret there, and counts what the fight changes from it).
 function uatFight(f, late, ready = () => {}, post = 'gunner') {

@@ -4,7 +4,7 @@
 // targets (docs/superpowers/specs/2026-11-16-boarding-deck-plan-design.md, "How we know it worked"; tests/distribution/deckplanfights.test.js).
 // A trial opens the fight as the game would (the party's size by boardersFor, shipcombat.js; ours at their posts, the captain on our bridge repelling),
 // plays the hand by a stated policy and our crew by the captain's standing order, and tallies the end, the turns, the hand downed (the scene's hurt
-// roll, deckplanui.js), our heads downed (a casualty at DECK.CASUALTY, or DECK.ASSAULT's) and the navy's heads put down.
+// roll, deckplanui.js), our heads downed (a casualty at planCasualty's share) and the navy's heads put down.
 //   node tools/fights.js --plan [--seeds 1,2,3,4] [--n 400] [--set KEY=value,...]
 // Policies: 'random' (each part of the turn drawn from what the hand is offered), 'shoot' (stand and shoot), 'push' (step toward them, and shoot),
 // 'fall' (pull back while offered, else shoot), and 'answer' (tools/answer.js answerPlan: reads their drawn move). 'answerNoCharge' is the answer without
@@ -12,7 +12,7 @@
 
 const { load } = require('../tests/nodecontext');
 
-const R = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], { REPEL_HURT: { lose: 0.45 } },
+const R = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], {},
   ['PLAN', 'DECK', 'LAYOUTS', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planTurn', 'planEnd', 'planUp', 'planAt', 'planHeld', 'planOdds', 'spotLinks', 'spotPath', 'spotHatch', 'deckSpot', 'deckSpots', 'inLine', 'planSuggestOdds', 'planCasualty']);
 const { answerPlan } = require('./answer');
 

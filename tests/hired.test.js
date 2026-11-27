@@ -510,7 +510,7 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
       const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
       openEvent(first);
       let boarded = false;  // with the bible's smaller crew (#879) fewer stand at the locks, and her boarders can get across into a deck fight, which this loop does not drive
-      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } if (G.dialog.event.choices.some(c => c.label === 'Fight')) { boarded = true; break; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
+      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } if (planShowing()) { boarded = true; break; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
       return { labels, ended: G.duel === null || boarded, credits: st.credits === c0 };
     };
     window.finishEvent2 = () => {};

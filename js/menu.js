@@ -10,13 +10,13 @@
 const SLOTS = 5;
 
 // ---------- settings ----------
-const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow', planFight: false },  // planFight: boarding opens the deck-plan fight (deckplanui.js), until it is the only one (#1355)
+const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow' },
   store.get('maxGravity.settings', {}));
 // Until the player ticks or unticks Reduce motion themselves, it follows the system setting (a stored false is only the default).
 if (!Settings.motionChosen) Settings.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 Settings.quiet = Object.assign({ market: false, chatter: false }, Settings.quiet);  // what the Comms screen has muted
 function applySettings() {
-  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, motionChosen: !!Settings.motionChosen, wear: Settings.wear, planFight: !!Settings.planFight, quiet: Settings.quiet });
+  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, motionChosen: !!Settings.motionChosen, wear: Settings.wear, quiet: Settings.quiet });
   UI.el.style.zoom = Settings.textScale;
   if (Sfx.out) Sfx.out.gain.value = Sfx.on ? 0.5 * Settings.volume : 0;
 }
@@ -305,7 +305,6 @@ const Menu = {
           <div class="row">${[['off', 'Off'], ['slow', 'Slow'], ['normal', 'Normal']].map(([v, l]) => `<button class="${Settings.wear === v ? 'on' : ''}" data-action="menuWear" data-arg="${v}">${l}</button>`).join('')}</div>
           <div class="hint">How fast the ship's systems wear with use. Off means they never do.</div>
           <label class="check"><input type="checkbox" id="setMotion" ${Settings.reduceMotion ? 'checked' : ''}> Reduce motion (no screen shake, calmer stars)</label>
-          <label class="check"><input type="checkbox" data-action="planFight" ${Settings.planFight ? 'checked' : ''}> Deck-plan boarding (in development)</label>
         </div>
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
@@ -469,7 +468,6 @@ Mods.register({
     });
     act('menuText', v => { Settings.textScale = Number(v); applySettings(); });
     act('menuWear', v => { Settings.wear = v; applySettings(); });
-    act('planFight', () => { Settings.planFight = !Settings.planFight; applySettings(); });
     act('menuPause', () => Menu.pause());
     act('menuResume', () => Menu.resume());
     act('menuSave', () => { if (Menu.pausedFrom === 'landed') { Saves.write(G.state); Menu.note = `Saved to slot ${Saves.current}.`; } });

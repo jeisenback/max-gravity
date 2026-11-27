@@ -99,12 +99,12 @@
     ]
   },
   {
-    "name": "plan-setting-ignored",
-    "file": "js/boarders.js",
-    "find": "const state = Settings.planFight ? planStartState(",
-    "replace": "const state = false ? planStartState(",
+    "name": "plan-cover-eye-ignored",
+    "file": "js/deckplan.js",
+    "find": "st.cover[f.spot] = (st.cover[f.spot] || 0) + st.made;",
+    "replace": "st.cover[f.spot] = (st.cover[f.spot] || 0) + PLAN.MADE;",
     "by": [
-      "the setting chooses which deck fight a boarding opens: the checkbox on, the deck plan; off, today's"
+      "a worked cover makes PLAN.MADE where the one who works it stands, and three with the gunner's cover-eye pick"
     ]
   },
   {

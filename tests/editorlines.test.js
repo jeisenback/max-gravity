@@ -45,7 +45,7 @@ test('the ship fight, ambush and boarding beats are edited line by line, the lin
     const row = id => SceneIndex.rows.find(x => x.id === id), fight = row('scene:fight'), values = { [fight.id]: { 'part.open.gun.0': 'A new opening.', 'part.end.ran': fight.parts['end.ran'] } };  // a line given as it stands is not an override
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
-      kinds: ['scene:fight', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
+      kinds: ['scene:fight', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 5]), dead: row('beats:dead-in-space').kind,
       out: out[fight.id], back: SceneIndex.valuesFrom(out)[fight.id], lines: Object.keys(fight.parts).length, ran: fight.parts['end.ran'],
       plan: SceneIndex.planImport({ overrides: { 'scene:fight': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
@@ -61,11 +61,11 @@ test('the ship fight, ambush and boarding beats are edited line by line, the lin
   assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), r.lines, 'a field for every line');
   assert.ok(await page.locator('#detail h4', { hasText: /^end$/ }).count() === 1, 'the lines are grouped');
   const openings = ['grapple', 'torpedo', 'gun'].flatMap(st => [0, 1].map(n => `open.${st}.${n}`));  // the fight's foe is drawn, and the opening by the day, so every opening
-  for (const [id, lines] of [['scene:fight', openings], ['beats:repel', ['open.0.0']], ['beats:assault', ['open.2.0']], ['beats:ambush', ['read.gunner.label']]]) {
+  for (const [id, lines] of [['scene:fight', openings], ['beats:deck', ['ability.gunner.steady.label']], ['beats:ambush', ['read.gunner.label']]]) {  // the boarding beats' own lines are its ends, played at a close (editorfight.test.js); the deck plan's page shows the abilities
     await select(id);
     for (const line of lines) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     const f = await play();
-    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label), G.dialog.event.board || '']));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
   }
 });
