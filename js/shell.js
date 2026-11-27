@@ -41,8 +41,8 @@ const shellRoom = tab => { const under = (SHELL_PAGES[tab] || {}).under || tab, 
 
 // One rail button. An unavailable entry is disabled and says why, as text under the button.
 function railEntryHtml(entry, p, activeId) {
-  const ok = entry.ready(p), on = entry.id === activeId;
-  return `<button data-action="tab" data-arg="${entry.tab}" class="${on ? 'active' : ''}"${on ? ' aria-current="page"' : ''}${ok === true ? '' : ' disabled'}>${esc(entry.label)}</button>`
+  const ok = entry.ready(p), on = entry.id === activeId, tut = (tutorialAt() || {}).rail === entry.id;  // the walk-through's step points here (tutorial.js, #1383)
+  return `<button data-action="tab" data-arg="${entry.tab}" class="${[on ? 'active' : '', tut ? 'tut' : ''].filter(Boolean).join(' ')}"${on ? ' aria-current="page"' : ''}${ok === true ? '' : ' disabled'}>${esc(entry.label)}</button>`
     + (ok === true ? '' : `<span class="rail-why">${esc(ok)}</span>`);
 }
 

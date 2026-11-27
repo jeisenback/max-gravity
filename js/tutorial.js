@@ -33,23 +33,31 @@ const TUTORIAL = [
 // done once the first run is over, so none is left hanging at the dock.
 const firstRunOver = () => runTotals(hired()).runs >= 1;
 const didOnBurn = what => () => !!(hired().did && hired().did[what]) || firstRunOver();
+// Each step names where to go the way the screen shows it, and `at` points there (the owner, 2026-11-27, #1383): a rail entry in port ({ rail: id },
+// shell.js RAIL) or a key of the burn's key bar ({ key: id }, bridge.js STATIONS), marked while the step is current (tutorialAt). The post's key is its
+// station's: the pilot's helm on the Bridge, the guns on Gunnery, the plant on Engine, the bands on Comms.
+const POST_KEY = { pilot: 'nav', gunner: 'weapons', engineer: 'eng', comms: 'comms' };
+const keyName = id => (STATIONS.find(x => x.id === id) || {}).name;
+const handKey = () => POST_KEY[(career() || {}).post] || 'weapons';
 const HAND_TUTORIAL = [
-  { text: () => 'The captain\'s plan is on the Port page: where she is going and what she will carry. Read it, then press Sail.',
-    done: () => !!G.transit || firstRunOver() },
+  { text: () => 'The captain\'s plan is on the Port page, under Ashore on the rail: where she is going and what she will carry. Read it, then press Sail with the captain.',
+    done: () => !!G.transit || firstRunOver(), at: () => ({ rail: 'port' }) },
   { text: () => `${hiredXo() ? hiredXo().first : 'The first officer'} is walking you round the ship. Hear them out.`,
     done: () => !walkPending() && !!G.transit || firstRunOver() },
-  { text: () => 'Work your post: open the Gunnery page and give an order, or take up something in downtime when it comes round, once before the flip and once after.',
-    done: () => didOnBurn('downtime')() || didOnBurn('order')() },
-  { text: () => 'Open the Comms page and sit with someone. The chats happen on the burn, once each half of the trip.',
-    done: didOnBurn('chat') },
+  { text: () => `Work your post: on the burn, press the ${keyName(handKey())} key along the bottom and give an order, or take up something in downtime when it comes round, once before the flip and once after.`,
+    done: () => didOnBurn('downtime')() || didOnBurn('order')(), at: () => ({ key: handKey() }) },
+  { text: () => 'Press the Comms key along the bottom and sit with someone. The chats happen on the burn, once each half of the trip.',
+    done: didOnBurn('chat'), at: () => ({ key: 'comms' }) },
   { text: () => 'Answer whatever comes up on the way. When the ship docks, the first run is done.',
     done: () => firstRunOver() && G.mode === 'landed' },
-  { text: () => 'That is the first run. The captain picks the next one, and the Port page shows her plan and what the last run paid.',
-    done: () => false, last: true },
+  { text: () => 'That is the first run. The captain picks the next one, and the Port page, under Ashore on the rail, shows her plan and what the last run paid.',
+    done: () => false, last: true, at: () => ({ rail: 'port' }) },
 ];
 const tutorialSteps = () => (hired() ? HAND_TUTORIAL : TUTORIAL);
 
 const tutorialOn = () => G.state.tutorial != null;
+// Where the current step points ({ rail } or { key }), or null: the rail's entry and the burn's key are marked by it (shell.js railEntryHtml, bridge.js syncBridge).
+const tutorialAt = () => { if (!tutorialOn()) return null; const step = tutorialSteps()[G.state.tutorial]; return step && step.at ? step.at() : null; };
 
 // Called every frame. Advances past finished steps and refreshes the port screen.
 function tutorialTick(dt) {

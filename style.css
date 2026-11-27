@@ -475,6 +475,8 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   text-transform: uppercase;
 }
 #bkeys button.active { color: var(--accent, #6fb0ff); outline: 1px solid var(--accent, #6fb0ff); }
+/* the walk-through's step points here (tutorial.js tutorialAt, #1383): a dot after the name, in the tutorial's blue */
+#bkeys button.tut::after, .rail button.tut::after { content: ''; display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: #6fb0ff; vertical-align: middle; }
 #bsheet {
   position: fixed;
   left: 0;
