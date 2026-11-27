@@ -79,4 +79,16 @@ async function runBurn(page, until, ms = 90000) {
   }
 }
 
-module.exports = { screen, waitText, button, choose, answerScenes, playRadar, runBurn };
+// Plays a burn the way runBurn does until `ready()` is true: answers each scene, and presses 4 to run ahead while nothing else can happen. `ready` may act
+// (open a sheet) before it says; it is asked again after each step. For a step of the burn that is not its end: an order to give, a chat to sit for (#1383).
+async function playUntil(page, ready, what, ms = 120000) {
+  const end = Date.now() + ms;
+  while (!(await ready())) {
+    if (Date.now() > end) throw new Error(`the burn never offered ${what} in ${ms} ms; the screen shows:\n${(await screen(page)).slice(0, 1500)}`);
+    if (await sceneOpen(page)) { await answerScenes(page, 1); continue; }
+    if (await page.getByRole('button', { name: 'Run ahead (4)' }).isVisible()) await page.keyboard.press('Digit4');
+    await burnWait(page, /$^/, false, Math.min(5000, end - Date.now()));
+  }
+}
+
+module.exports = { screen, waitText, button, choose, answerScenes, playRadar, runBurn, playUntil };

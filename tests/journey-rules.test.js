@@ -9,7 +9,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 // What counts as the first action: the journey helpers that press or answer, any click (a locator's too), a key, typing, and a reload.
-const ACTION = /\b(?:button|choose|answerScenes|playRadar|runBurn)\(|\.click\(|\bpage\.(?:keyboard\.press|keyboard\.type|fill|reload)\(/;
+const ACTION = /\b(?:button|choose|answerScenes|playRadar|runBurn|playUntil)\(|\.click\(|\bpage\.(?:keyboard\.press|keyboard\.type|fill|reload)\(/;
 
 // What a journey file's text breaks, as "<test>: <rule>" lines; each test's body is the text from its `test(` to the next.
 function problems(src) {

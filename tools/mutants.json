@@ -99,6 +99,15 @@
     ]
   },
   {
+    "name": "walkthrough-marks-nothing",
+    "file": "js/shell.js",
+    "find": "tut = (tutorialAt() || {}).rail === entry.id;",
+    "replace": "tut = false;",
+    "by": [
+      "each step names where to go as the screen shows it, and marks it: the rail's entry in port, the post's key and Comms on the burn (the owner, #1383)"
+    ]
+  },
+  {
     "name": "plan-cover-eye-ignored",
     "file": "js/deckplan.js",
     "find": "st.cover[f.spot] = (st.cover[f.spot] || 0) + st.made;",

@@ -101,3 +101,26 @@ test('giving an order at your post counts as working it, as downtime does', asyn
   assert.equal(r.before, 2); assert.equal(r.after, 3, 'the order completes the step'); assert.equal(r.did.order, true);
   await done();
 });
+
+test('each step names where to go as the screen shows it, and marks it: the rail\'s entry in port, the post\'s key and Comms on the burn (the owner, #1383)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}, marked = sel => [...document.querySelectorAll(`${sel} .tut`)].map(b => b.textContent.trim());
+    begin(); UI.render(); out.port = { at: tutorialAt(), rail: marked('.rail'), text: tutorialSteps()[0].text() };
+    for (const post of ['gunner', 'pilot', 'engineer', 'comms']) { begin({ post }); G.state.tutorial = 2; out[post] = { at: tutorialAt(), text: tutorialSteps()[2].text() }; }
+    begin(); sailOut(); hired().walked = true; tick(); syncBridge(true);
+    out.burn = { step: G.state.tutorial, keys: [...document.querySelectorAll('#bkeys .tut')].map(b => b.dataset.bst) };
+    hired().did = { order: true }; tick(); syncBridge(true); out.chat = { step: G.state.tutorial, keys: [...document.querySelectorAll('#bkeys .tut')].map(b => b.dataset.bst), text: tutorialSteps()[3].text() };
+    G.state.tutorial = 1; syncBridge(true); out.none = document.querySelectorAll('#bkeys .tut').length;
+    return out;
+  });
+  assert.deepEqual(r.port.at, { rail: 'port' }); assert.deepEqual(r.port.rail, ['Port'], 'the Port entry has the mark'); assert.match(r.port.text, /Port page, under Ashore on the rail/);
+  for (const [post, key, name] of [['gunner', 'weapons', 'Gunnery'], ['pilot', 'nav', 'Bridge'], ['engineer', 'eng', 'Engine'], ['comms', 'comms', 'Comms']]) {
+    assert.deepEqual(r[post].at, { key }, post); assert.match(r[post].text, new RegExp(`press the ${name} key along the bottom`), post);
+  }
+  assert.deepEqual(r.burn, { step: 2, keys: ['weapons'] }, 'on the burn, the gunner\'s key');
+  assert.deepEqual([r.chat.step, r.chat.keys], [3, ['comms']]); assert.match(r.chat.text, /Comms key/);
+  assert.equal(r.none, 0, 'a step with nowhere to go marks nothing');
+  await done();
+});

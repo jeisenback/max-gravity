@@ -362,6 +362,8 @@ function syncBridge(force) {
   keys.hidden = !show;
   sheet.hidden = !show || !G.bridgeOpen;
   if (!show) return;
+  const tut = (tutorialAt() || {}).key;  // the walk-through's step points at this key (tutorial.js, #1383)
+  for (const b of keys.querySelectorAll('[data-bst]')) b.classList.toggle('tut', b.dataset.bst === tut);
   const view = G.W - G.hudW;  // the part of the screen not taken by the HUD sidebar
   keys.style.right = `${G.hudW}px`;
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
