@@ -13,7 +13,7 @@
 const { load } = require('../tests/nodecontext');
 
 const R = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], { REPEL_HURT: { lose: 0.45 } },
-  ['PLAN', 'DECK', 'LAYOUTS', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planTurn', 'planEnd', 'planUp', 'planAt', 'planHeld', 'planOdds', 'spotLinks', 'spotPath', 'spotHatch', 'deckSpot', 'deckSpots', 'inLine', 'planSuggestOdds']);
+  ['PLAN', 'DECK', 'LAYOUTS', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planTurn', 'planEnd', 'planUp', 'planAt', 'planHeld', 'planOdds', 'spotLinks', 'spotPath', 'spotHatch', 'deckSpot', 'deckSpots', 'inLine', 'planSuggestOdds', 'planCasualty']);
 const { answerPlan } = require('./answer');
 
 const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -55,14 +55,14 @@ function planOne({ party, assault, crew, level, policy, grade, rand, nerve = 0.5
   const lay = policy === 'flat' ? { ...lay0, spots: lay0.spots.map(p => ({ ...p, cover: 1 })) } : lay0;  // every spot's cover the same
   let st = R.planFight({ lay, crew: crewOf(crew), hand: handOf(level), captain: assault ? null : { name: 'Hester' }, party, boarders: boarders(party, assault, grade), grade, assault });
   const t = { n: 1, won: 0, taken: 0, searched: 0, rounds: 0, hurt: 0, downed: 0, casualties: 0, navyDown: 0, capped: 0 };
-  const rule = assault ? R.DECK.ASSAULT : R.DECK;
+  const share = R.planCasualty({ assault });
   for (let end = null; !end;) {
     const theirs = R.planTheirMove(st, rand), intent = R.planCaptain(st, nerve), pick0 = POLICY[policy](st, { theirs, intent }, rand);
     const ours = R.planCrewMoves(st, pick0.intent || intent, pick0.order);
     const r = R.planTurn(st, pick0, { theirs, ours }, rand);
     st = r.state; end = r.end; t.rounds++;
     if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) t.hurt++;  // the hand downed: the scene's hurt roll (deckplanui.js)
-    for (const e of r.events) if (e.kind === 'down' && e.side === 'us' && !e.captain) { t.downed++; if (rand() < rule.CASUALTY) t.casualties++; }
+    for (const e of r.events) if (e.kind === 'down' && e.side === 'us' && !e.captain) { t.downed++; if (rand() < share) t.casualties++; }
   }
   const end = R.planEnd(st);
   t[end === 'won' ? 'won' : end] = 1; t.navyDown = st.navyDown || 0;

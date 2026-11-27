@@ -191,9 +191,9 @@ function deckFightEvent(s, plan = {}) {
 
 // A head lost on our side is downed, and DECK.CASUALTY of the time (boarding her DECK.ASSAULT's) a casualty (R42): a named crewmate (repelCasualty), the one sent on an order that missed while they are up,
 // else one of those standing. The rest get up when it is over, and are not named.
-function deckLoss(s, sent) {
+function deckLoss(s, sent, share = deckRule(s.state, 'CASUALTY')) {  // share: the deck-plan fight passes its own (deckplan.js planCasualty)
   const up = (s.fight || []).filter(id => !s.hurt.has(id) && !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id));
-  return up.length && Math.random() < deckRule(s.state, 'CASUALTY') ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
+  return up.length && Math.random() < share ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
 }
 
 // Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.

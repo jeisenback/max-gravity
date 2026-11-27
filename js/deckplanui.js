@@ -194,7 +194,7 @@ function planResolve(s) {
     }
   }
   // a head of ours downed is a casualty at the strip's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
-  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id); if (line) after.push(line); }
+  for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id, planCasualty(s.state)); if (line) after.push(line); }
   if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) { s.covered = true; after.push(repelCasualty(s, 'you')); }  // the hand downed is today's hurt, with no friend's cover: the cover is the one beside the hand (#1388); the crew fight on
   s.state.log.push(`${planSay('log.turn', { n: s.state.turn, what: said.length ? said.join(' ') : planSay('log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   s.theirs = null;
