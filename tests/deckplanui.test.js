@@ -91,12 +91,12 @@ test('a charge shown on the ship is stopped by shooting its setter', async () =>
   await ev(helpers);
   await ev(() => {
     Settings.planFight = true; fightGame('gunner', 'corsair'); const s = boarded();
-    stage(s, { t1: 'w3', hand: 'gunseat', 'c:ines': 'magazine', 'c:tomas': 'magazine' }, true);
+    stage(s, { t1: 'inner', hand: 'medbed', 'c:ines': 'magazine', 'c:tomas': 'magazine' }, true);
   });
   const shown = await ev(() => ({ charge: sawText('.plan-charge'), set: G.dialog.event.fight.theirs.charge }));
-  assert.match(shown.charge, /setting a charge on the magazine from the well at the gun deck/);
-  assert.deepEqual(shown.set, { on: 'magazine', from: 'w3', setter: 't1' });
-  await page.click('[data-action="planAct"][data-arg="shoot:w3"]');
+  assert.match(shown.charge, /setting a charge on the magazine through the deck plate, from the inner door/);
+  assert.deepEqual(shown.set, { on: 'magazine', from: 'inner', setter: 't1' });
+  await page.click('[data-action="planAct"][data-arg="shoot:inner"]');
   await ev(() => { Math.random = () => 0.01; });  // every shot hits (the game's frame loop draws rolls too, so no list of them)
   await page.click('[data-action="planFightGo"]');
   const log = await ev(() => { const s = G.dialog.event.fight; return s.state.log[s.state.log.length - 1]; });  // the setter, alone, is down: the fight may be over

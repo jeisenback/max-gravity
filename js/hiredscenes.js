@@ -828,7 +828,7 @@ const SCENE_LINES = {
     'plan.their.move': '{n} of them move up.', 'plan.their.rush': '{n} of them rush, two spots at a time.', 'plan.their.shoot': '{n} of them shoot.',
     'plan.their.cut': 'They cut {hatch}.', 'plan.their.seal': 'Her crew seal {hatch} over us.', 'plan.their.wave': '{n} more land at the outer door at the end of the turn.',
     'plan.their.hold': 'They hold where they are.', 'plan.feint': 'They may feint.',
-    'plan.their.charge': 'They\'re setting a charge on {at} from {from}. It blows at the end of the turn unless someone hits them at {from}, or ours pull back.',
+    'plan.their.charge': 'They\'re setting a charge on {at} through the deck plate, from {from}. It blows at the end of the turn unless someone hits them at {from}, or ours get off {at}.',
     'plan.their.storm': '{n} of them are ready to storm {at}. They go in at the end of the turn unless ours there are more than a third of them by then.',
     'plan.ours.move': '{n} of ours move: {order}.', 'plan.ours.hold': 'Ours hold: {order}.',
     'plan.order.hold': 'hold where we are', 'plan.order.push': 'push them back', 'plan.order.fall': 'fall back',
