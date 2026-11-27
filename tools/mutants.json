@@ -65,8 +65,8 @@
   {
     "name": "radar-never-pauses",
     "file": "js/radarui.js",
-    "find": "if (why.length) { r.running = false; r.why = why; radarPaintBar(r); return true; }",
-    "replace": "if (false) { r.running = false; r.why = why; radarPaintBar(r); return true; }",
+    "find": "if (why.length) { r.running = false; r.why = why; r.lastPause = s.state.t; radarPaintBar(r); return true; }",
+    "replace": "if (false) { r.running = false; r.why = why; r.lastPause = s.state.t; radarPaintBar(r); return true; }",
     "by": [
       "pressing play at 16x runs the fight past her arming until she launches, and it pauses then saying so"
     ]
