@@ -553,6 +553,8 @@ const playScenes = () => {
           r.feed = Array.from({ length: 7 }, (_, i) => ({ at: i, cycle: 0, kind: 'miss', text: radarEventText(s, { kind: 'miss', km: 30 + i }), p: { x: 0, y: 30 } }));
           const page = () => { const d = document.createElement('div'); d.innerHTML = String(radarPanelHtml(r)); radarDraw(document.createElement('canvas'), r); rec.plays.push({ radar: d.textContent.replace(/\s+/g, ' ').trim(), aria: [...d.querySelectorAll('[aria-label]')].map(x => x.getAttribute('aria-label')), drawn: r.drawn.says }); };
           r.running = false; r.why = ['launched', 'pdcSoon', 'hit', 'call', 'gunRange', 'plan']; page();
+          { const h = hired(), was = h.chapter; h.chapter = 2; r.call = 'open';  // the hand's own bridge (the co-op's role, #1376): the call row, with one order given
+            try { rec.plays.push({ call: String(radarCallHtml(r)).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() }); } finally { h.chapter = was; r.call = null; } }
           r.running = true; r.why = []; st.ships[1].v = { x: 0, y: 1 }; st.armed[0] = false; st.torps = []; r.zoom = 50; page();
           for (const order of Object.keys(RADAR_ORDERS)) { r.orders = { ...r.orders, order }; r.cost = { endFacing: 0, bears: order === 'hold', why: order === 'hold' ? null : 'driveAway' }; rec.plays.push({ order: String(radarSitHtml(r)).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(), cost: radarCostText(r) }); }
           const events = [{ kind: 'launch', side: 'her', foe: 0 }, { kind: 'launch', side: 'us', foe: 0 }, { kind: 'armed', foe: 1, n: 2 }, { kind: 'pdcKill' }, { kind: 'pdcSoon' }, { kind: 'hit', foe: 0, part: 'lock', dmg: 9, km: 18.4 }, { kind: 'miss', foe: 0, km: 22 },

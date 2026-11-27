@@ -24,7 +24,7 @@ function radarHeadStart(state, edge, band) {
 // The scene. The view's state (G.radar) is made with the fight and kept across redraws of the same fight; it opens paused, at the fastest speed.
 function radarFightEvent(s) {
   if (!G.radar || G.radar.s !== s) {
-    G.radar = { s, orders: {}, crew: {}, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], lastPause: null, zoom: null, feed: [], hover: null, ring: null, shown: {},
+    G.radar = { s, orders: {}, crew: {}, call: null, seen: [], cost: null, running: false, speed: RADAR.SPEEDS[RADAR.SPEEDS.length - 1], why: [], lastPause: null, zoom: null, feed: [], hover: null, ring: null, shown: {},
       post: radarPost(), hand: { aim: { foe: 0, part: 'hull' }, fc: 'gun', fire: true, torp: false, arc: null, coast: 'turn', plot: null, burn: null }, wedge: null, drag: null };
     radarPlan(G.radar);
   }
@@ -35,7 +35,7 @@ function radarFightEvent(s) {
 // contact moves with her), and what the captain's order costs the gun.
 function radarPlan(r) {
   const st = r.s.state, h = r.hand;
-  r.crew = radarAuto(st, radarLevels(), Math.random);
+  r.crew = radarAuto(st, radarLevels(), Math.random, r.call);  // the hand's own call on their own bridge, else the captain's (#1376)
   r.seen = radarSeen(st, Math.random).map((c, i) => (c ? { x: c.p.x - st.ships[i + 1].p.x, y: c.p.y - st.ships[i + 1].p.y } : null));
   r.cost = radarCost(st, r.crew.order);
   // the hand's post: a torpedo is ordered a cycle at a time; the aim moves off one of hers who is out; the pilot's burn is the order's plot, landing by the hand's scatter, until it is dragged; the aim moves to her hull once its part is gone
@@ -151,7 +151,7 @@ function radarPanelHtml(r) {
     <div class="radar-sit" aria-live="polite">${radarSitHtml(r)}</div>
     <canvas class="radar" role="img" aria-label="${radarSay('radar')}"></canvas>
     <p class="radar-cost hint">${radarCostText(r)}</p>
-    <div class="radar-post">${radarPostHtml(r)}</div>
+    <div class="radar-post">${radarCallHtml(r)}${radarPostHtml(r)}</div>
     <div class="radar-line">${radarLineHtml(r)}</div>
   </div>`;
 }
@@ -180,6 +180,16 @@ function radarSitHtml(r) {
 }
 
 const radarCostText = r => (r.cost ? radarSay(r.cost.bears ? 'cost.bears' : `cost.${r.cost.why}`, { order: radarSay(`order.${r.orders.order}`) }) : '');
+
+// On the hand's own bridge (role().captain, the co-op and an owner who kept a post) the order is the hand's to give if they want (the owner, #1376): one of
+// the captain's orders, played from the next cycle, or the steady call the crew make with nobody giving it. Nothing on a captain's bridge.
+function radarCallHtml(r) {
+  if (role().captain !== 'you') return '';
+  const on = b => (b ? raw('class="on" aria-pressed="true"') : raw('aria-pressed="false"'));
+  const picks = [h`<button data-action="radarCall" data-arg="auto" ${on(!r.call)}>${radarSay('call.auto')}</button>`,
+    ...Object.keys(RADAR_ORDERS).map(k => h`<button data-action="radarCall" data-arg="${k}" ${on(r.call === k)}>${radarSay(`order.${k}`)}</button>`)];
+  return h`<div class="choice-row" role="group" aria-label="${radarSay('call')}"><span class="row-label">${radarSay('call')}</span><span class="row-picks">${picks}</span></div>`;
+}
 
 // The hand's post, under the radar: its choices as tiles, clearly on or off, and its readouts. Nothing for a post the crew work.
 function radarPostHtml(r) {
@@ -224,7 +234,7 @@ function radarPaint(r) {
   const el = UI.el, put = (sel, html) => { const n = el.querySelector(sel); if (n && r.shown[sel] !== html) { n.innerHTML = html; r.shown[sel] = html; } };
   put('.radar-sit', String(radarSitHtml(r)));
   put('.radar-cost', String(radarCostText(r)));
-  put('.radar-post', String(radarPostHtml(r)));
+  put('.radar-post', String(radarCallHtml(r)) + String(radarPostHtml(r)));
   put('.radar-line', String(radarLineHtml(r)));
   const c = el.querySelector('canvas.radar');
   if (c) radarDraw(c, r);
@@ -388,6 +398,7 @@ Mods.register({
     M.action('radarAimPart', arg => { const [foe, part] = String(arg).split(':'); if (G.radar) radarHandSet(G.radar, { aim: { foe: Number(foe), part } }); });
     M.action('radarFc', k => { if (G.radar) radarHandSet(G.radar, { fc: k === 'pdc' ? 'pdc' : 'gun' }); });
     M.action('radarFire', k => { if (G.radar) radarHandSet(G.radar, { fire: k === 'fire' }); });
+    M.action('radarCall', k => { if (G.radar && role().captain === 'you') { G.radar.call = RADAR_ORDERS[k] ? k : null; radarPaint(G.radar); } });  // from the next cycle (radarPlan)
     M.action('radarTorp', () => { if (G.radar) radarHandSet(G.radar, { torp: !G.radar.hand.torp }); });
     M.action('radarCoast', k => { if (G.radar) radarHandSet(G.radar, { coast: k === 'hold' ? 'hold' : 'turn' }); });
   },

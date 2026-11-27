@@ -263,3 +263,24 @@ test('an aim at a part she has lost moves to her hull at the next cycle, so the 
   assert.deepEqual(r, { before: { foe: 0, part: 'drive' }, after: { foe: 0, part: 'hull' } });
   await done();
 });
+
+// The hand's own bridge (#1376, the owner: the hand can give the order if they want): on the co-op's bridge the page offers the captain's orders and the
+// crew's steady call, played from the next cycle; on a captain's ship there is no such row.
+test('on their own bridge the hand may give the order, from the next cycle, or leave it to the crew; on a captain\'s ship they may not (#1376)', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers); await ev(require('./coop').helpers); await ev(require('./coop').started);
+  const theirs = await ev(() => { radarGame(); radarBattle(); return { rows: document.querySelectorAll('[data-action="radarCall"]').length, role: role().captain }; });
+  assert.deepEqual(theirs, { rows: 0, role: 'npc' }, 'a captain gives it');
+  await ev(() => { coopAt(); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null; window.makeEnemy = window.realMakeEnemy; radarBattle(); });
+  const before = await ev(() => ({ rows: [...document.querySelectorAll('[data-action="radarCall"]')].map(b => b.dataset.arg), on: document.querySelector('[data-action="radarCall"].on').dataset.arg, order: G.radar.crew.order, steady: radarCaptain(G.radar.s.state, 3, { torps: radarProject(G.radar.s.state, {}, 2).impacts }) }));
+  assert.deepEqual(before.rows, ['auto', ...['engage', 'hold', 'open', 'break', 'evade']]); assert.equal(before.on, 'auto');
+  assert.equal(before.order, before.steady, 'left to the crew, the order is the steady pick');
+  const want = before.steady === 'open' ? 'break' : 'open';
+  await page.click(`[data-action="radarCall"][data-arg="${want}"]`);
+  const set = await ev(() => { const now = G.radar.crew.order; radarPlan(G.radar); return { now, next: G.radar.crew.order, sit: document.querySelector('.radar-sit').textContent }; });
+  assert.equal(set.now, before.order, 'not this cycle'); assert.equal(set.next, want, 'from the next cycle');
+  await page.click('[data-action="radarCall"][data-arg="auto"]');
+  const back = await ev(() => { radarPlan(G.radar); const st = G.radar.s.state; return { call: G.radar.call, order: G.radar.crew.order, steady: radarCaptain(st, 3, { torps: radarProject(st, {}, 2).impacts }) }; });
+  assert.equal(back.call, null); assert.equal(back.order, back.steady, 'back to the crew\'s steady call');
+  await done();
+});
