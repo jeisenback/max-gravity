@@ -227,14 +227,14 @@ CAST.cato.arrival = {
   pace: '"A season," Cato says. "Everyone takes a season. {cap} was a rating for twenty years before she had a ship."',
 };
 
-// The first deck fight (captains.js deckExplanation): Cato at the inner lock, before the first turn of it.
+// The first deck fight (captains.js deckExplanation): Cato at the inner lock, before the first turn of it, on the deck plan (deckplanui.js, the owner, #1355).
 CAST.cato.firstDeck = {
   title: 'The Inner Lock',
-  text: ('Cato has the sidearm locker open and hands you yours butt first. "Look at the board," he says. "Top line\'s what they mean to do. ' +
-      'The boxes are the deck, a section each, ours on the left and theirs on the right. Dots are cover."</p><p>' +
-      'He points at the line under it. "That\'s how many they\'ve got, and the mark\'s where they break and go back. ' +
-      'Each turn you hold a section or move, and you do one thing there. Then you give one of us an order. Me, if you like. I\'ll ' +
-      'tell you if it\'s a bad one."'),
+  text: ('Cato has the sidearm locker open and hands you yours butt first. "Look at the board," he says. "That\'s the ship cut down the middle, ' +
+      'deck by deck. Red\'s them and what they mean to do this turn. Blue\'s us. The bars under each spot are how much there is to get behind."</p><p>' +
+      'He points at the count by the Fight button. "That\'s how many they\'ve got, and where they break and go back. ' +
+      'Each turn you stand or take a step, and you do one thing from there. Then you give one of us an order. Me, if you like. ' +
+      'The captain says whether we hold, push or fall back. You can tell her she\'s wrong. She might listen."'),
   choices: [{
     label: 'Check the sidearm',
     result: 'The safety is where he said it would be. "Breathe out before you squeeze," Cato says. "Everyone forgets the first time."',

@@ -1,8 +1,7 @@
 'use strict';
 
-// The deck fight on the deck plan, as a scene (docs/superpowers/specs/2026-11-16-boarding-deck-plan-design.md, "The page"; #1353), behind
-// Settings.planFight until it is the only deck fight (#1355). deckStart (boarders.js) builds who stands and the party as for the strip, and
-// planStartState puts them on the decks; deckOpen (fightui.js) opens planFightEvent. The page is the cutaway (the decks in section, the well
+// The deck fight on the deck plan, as a scene (docs/superpowers/specs/2026-11-16-boarding-deck-plan-design.md, "The page"; #1353, every
+// boarding's since #1355). deckStart (boarders.js) builds who stands and the party, and planStartState puts them on the decks; deckOpen (fightui.js) opens planFightEvent. The page is the cutaway (the decks in section, the well
 // and its hatches, every spot with its cover, every figure on its spot) with their move in red, our crew's in blue and the hand's choices in
 // yellow, and beside it "This turn", the hand's act, the order, the captain's order and a suggestion, the counts and the last turn. Fight
 // (planFightGo) resolves the turn through planTurn (deckplan.js); a casualty is today's deckLoss, the hand's hurt today's roll, and the
@@ -14,7 +13,7 @@ const planPct = x => Math.round(100 * x);
 const PLAN_UI = { DECK_PX: 58, FIG: 7, FIG_Y: 0.62, ROW: 10 };  // a deck's height on the cutaway, a figure's radius, the figures' line down a deck, and the step between the two rows of names
 
 // The fight's opening on the decks: ours who stand (repelCrew's), the hand at their post's odds, the captain on our bridge when repelling.
-function planStartState({ d, fight, boarders, grade, assault, party, kit }) {
+function planStartState({ d, fight, boarders, grade, assault, party, kit, made }) {
   const h = hired(), post = lockPost(), cap = h && person(h.captain);
   const crew = fight.filter(id => !cap || id !== cap.id).slice(0, 5).map(person).filter(Boolean).map(c => {
     const sheet = crewSheet({ role: c.role, skill: c.skill, traits: c.traits, low: moodLow(c) });
@@ -22,7 +21,7 @@ function planStartState({ d, fight, boarders, grade, assault, party, kit }) {
   });
   const hand = { level: skillLevel(post), post, odds: { steady: abilityOdds(post, 'steady'), cover: abilityOdds(post, 'cover') } };
   const lay = assault ? boardLayout(d.foe.shipId) : LAYOUTS.freighter;
-  return planFight({ lay, crew, hand, captain: !assault && cap ? { name: cap.first } : null, party, boarders, grade, assault, kitCover: Math.max(...[0, 1, 2].map(pos => kitCover(kit, pos))) });
+  return planFight({ lay, crew, hand, captain: !assault && cap ? { name: cap.first } : null, party, boarders, grade, assault, made, kitCover: Math.max(...[0, 1, 2].map(pos => kitCover(kit, pos))) });
 }
 
 // The captain's nerve, 0 to 1, from her entry (captains.js), steady without one.
@@ -44,7 +43,7 @@ const planHatch = (s, hid) => { const d = Number(hid.slice(1)), lay = s.state.la
 // The scene for this turn, drawn from the fight as it stands. Every choice redraws it in place.
 function planFightEvent(s) {
   if (!s.theirs) planBegin(s);
-  return { title: planSay(s.assault ? 'title.assault' : 'title'), personal: true, via: 'crew', fight: s, board: String(planPageHtml(s)), text: '', choices: [] };
+  return { title: planSay(s.assault ? 'title.assault' : 'title'), personal: true, via: 'crew', fight: s, board: String(planPageHtml(s)), text: (s.held || []).join(' '), choices: [] };  // who keeps out of it (boarders.js repelCrew)
 }
 const planRedraw = s => UI.redraw(planFightEvent(s));
 const planShowing = () => { const s = G.dialog && G.dialog.event.fight; return s && s.state && s.state.kind === 'plan' ? s : null; };
@@ -87,13 +86,19 @@ function planNowHtml(s) {
     ${charge ? h`<p class="plan-charge warn">${charge}</p>` : ''}
     <p class="plan-ours">${crew}</p><p class="plan-you">${you}</p>`;
 }
-// An order in words: a steady or cover order is the crewmate's own ability for their post (handtohand.js CREW_ABILITY, the strip's words).
+// An order in words: a steady or cover order is the crewmate's own ability for their post (handtohand.js CREW_ABILITY).
 const planOrderText = (s, o) => {
   const who = planName(s, o.id), f = s.state.figures.find(x => x.id === o.id);
   if (o.kind === 'steady' || o.kind === 'cover') return planSay('do.ability', { who, does: deckWords(`crew.${f.post}.${o.kind}.label`, CREW_ABILITY[f.post][o.kind].label) });
   return planSay(`do.${o.kind}`, { who, ...(o.hatch ? { hatch: planHatch(s, o.hatch) } : {}), ...(o.to ? { at: planWhere(s, o.to) } : {}) });
 };
 const planAbility = k => deckWords(`ability.${lockPost()}.${k}.label`, FIGHT_ABILITY[lockPost()][k].label);  // the hand's post's ability
+// What came of an ability, in its own words (the owner, #1355): the hand's post's line, or the crewmate's name and their post's line.
+const planAbilitySaid = (s, e) => {
+  const side = e.worked ? 'win' : 'lose', f = s.state.figures.find(x => x.id === e.id);
+  if (f.hand) return deckWords(`ability.${lockPost()}.${e.ability}.${side}`, FIGHT_ABILITY[lockPost()][e.ability][side]);
+  return `${f.name} ${deckWords(`crew.${f.post}.${e.ability}.${side}`, CREW_ABILITY[f.post][e.ability][side])}`;
+};
 
 // The hand's act: a shot at each spot of theirs in reach with its odds, the post's two abilities, pull back (when the hand stays), hold fire.
 function planActsHtml(s, c, on) {
@@ -121,12 +126,13 @@ function planOrdersHtml(s, c, on) {
   return h`<div class="choice-row" role="group" aria-label="${planSay('orders')}"><span class="row-label">${planSay('orders')}</span><span class="row-picks">${buttons}</span></div>`;
 }
 
-// The captain's standing order, and a suggestion of another, once a turn, with the odds she takes it.
+// The captain's standing order, and a suggestion of another, once a turn, with the odds she takes it. With no captain aboard (an owner who kept a post,
+// the co-op) the order is the crew's own, picked at a steady nerve (planNerve), and there is nobody to suggest to (the owner, #1355).
 function planCaptainHtml(s, on) {
   const cap = raidCap(), name = radarCapName(), level = skillLevel(lockPost()), opinion = cap ? Math.max(-1, Math.min(1, cap.opinion / OPINION.TRUSTED)) : 0;
   const said = s.suggested ? h`<p class="hint">${s.suggested}</p>` : '';
   const others = ['hold', 'push', 'fall'].filter(k => k !== s.intent);
-  const buttons = s.suggested ? '' : others.map(k => h`<button data-action="planSuggest" data-arg="${k}" ${on(false)}>${planSay('suggest', { order: planSay(`order.${k}`), pct: planPct(planSuggestOdds(s.state, level, opinion, k, planNerve())) })}</button>`);
+  const buttons = s.suggested || role().captain !== 'npc' ? '' : others.map(k => h`<button data-action="planSuggest" data-arg="${k}" ${on(false)}>${planSay('suggest', { order: planSay(`order.${k}`), pct: planPct(planSuggestOdds(s.state, level, opinion, k, planNerve())) })}</button>`);
   return h`<div class="choice-row" role="group" aria-label="${planSay('captain')}"><span class="row-label">${planSay('captain.order', { name, order: planSay(`order.${s.intent}`) })}</span><span class="row-picks">${buttons}</span></div>${said}`;
 }
 
@@ -162,7 +168,7 @@ function planSetOrder(s, arg) {
 }
 // A suggestion to the captain: taken at its odds, for this turn; either way the hand has made it.
 function planSuggest(s, intent) {
-  if (s.suggested) return;
+  if (s.suggested || role().captain !== 'npc') return;
   const cap = raidCap(), opinion = cap ? Math.max(-1, Math.min(1, cap.opinion / OPINION.TRUSTED)) : 0;
   const took = Math.random() < planSuggestOdds(s.state, skillLevel(lockPost()), opinion, intent, planNerve());
   if (took) s.intent = intent;
@@ -171,7 +177,7 @@ function planSuggest(s, intent) {
 
 // ---------- the turn ----------
 
-// Fight: the turn resolved with what was shown, its lines in the log, the casualties and the hand's hurt as on the strip; at an end, the close (planClose).
+// Fight: the turn resolved with what was shown, its lines in the log, the casualties and the hand's hurt; at an end, the close (planClose).
 // Returns whether the scene goes on: false when the hand is dead (the ending is queued, boarders.js) or the fight is over.
 function planResolve(s) {
   const st = s.state, pick = s.pick, r = planTurn(st, pick, planShown(s), Math.random);
@@ -186,14 +192,14 @@ function planResolve(s) {
     if (e.kind === 'sealed') said.push(planSay('log.sealedHers', { hatch: planHatch(s, e.hatch) }));
     if (e.kind === 'wave') said.push(planSay('log.wave', { n: e.n }));
     if (e.kind === 'pullback') said.push(planSay('log.pullback', { at: planWhere(s, e.to) }));
-    if (e.kind === 'ability') said.push(planSay(e.worked ? 'log.worked' : 'log.missed', { who: planName(s, e.id) }));
+    if (e.kind === 'ability') said.push(planAbilitySaid(s, e));
     if (e.kind === 'shielded') {  // the one beside the hand takes the hit meant for the hand (the only cover in this fight, the owner, #1388): today's words, one who owed the hand evened up
       const p = person(e.id), even = !!(p && p.owes);
       if (even) delete p.owes;
       said.push(hurtSay(even ? 'cover.even' : 'cover', { first: planName(s, e.id) }));
     }
   }
-  // a head of ours downed is a casualty at the strip's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
+  // a head of ours downed is a casualty at planCasualty's odds (deckLoss, the one downed); the captain is downed and never killed in the fight
   for (const e of r.events.filter(x => x.kind === 'down' && x.side === 'us' && !x.captain && x.id !== 'hand')) { const line = deckLoss(s, e.id, planCasualty(s.state)); if (line) after.push(line); }
   if (r.events.some(e => e.kind === 'down' && e.id === 'hand')) { s.covered = true; after.push(repelCasualty(s, 'you')); }  // the hand downed is today's hurt, with no friend's cover: the cover is the one beside the hand (#1388); the crew fight on
   s.state.log.push(`${planSay('log.turn', { n: s.state.turn, what: said.length ? said.join(' ') : planSay('log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);

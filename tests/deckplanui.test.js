@@ -1,6 +1,6 @@
 'use strict';
 
-// The deck fight on the deck plan, as a scene (js/deckplanui.js, #1353), behind its setting: the checkbox, the opening, the hand's choices on the
+// The deck fight on the deck plan, as a scene (js/deckplanui.js, #1353; every boarding's since #1355): the opening, the hand's choices on the
 // ship and in "This turn", a turn fought, a charge stopped at its setter, the hand killed mid-turn, and a repel lost to today's settle.
 
 const { test, after } = require('node:test');
@@ -30,15 +30,13 @@ const helpers = () => {
   window.sawText = sel => (document.querySelector(sel) || {}).textContent || '';
 };
 
-test('the setting chooses which deck fight a boarding opens: the checkbox on, the deck plan; off, today\'s', async () => {
+test('every boarding opens the deck-plan fight, and the settings have no switch for it (#1355)', async () => {
   const { page, ev, done } = await open({ title: true });
   await ev(helpers);
   await page.click('[data-action="menuView"][data-arg="settings"]');
-  await page.click('input[data-action="planFight"]');
-  const on = await ev(() => { const was = Settings.planFight; fightGame('gunner'); const s = boarded(); return { was, title: G.dialog.event.title, kind: s.state.kind, saved: JSON.parse(localStorage.getItem('maxGravity.settings')).planFight }; });
-  assert.deepEqual(on, { was: true, title: 'Boarders', kind: 'plan', saved: true });
-  const off = await ev(() => { Settings.planFight = false; fightGame('gunner'); const s = boarded(); return { title: G.dialog.event.title, kind: s.state.kind }; });
-  assert.deepEqual(off, { title: 'The Lock', kind: 'deck' }, 'today\'s strip');
+  const box = await page.locator('input[data-action="planFight"]').count();
+  const r = await ev(() => { fightGame('gunner'); const s = boarded(); return { title: G.dialog.event.title, kind: s.state.kind, setting: 'planFight' in Settings }; });
+  assert.equal(box, 0, 'no checkbox'); assert.deepEqual(r, { title: 'Boarders', kind: 'plan', setting: false });
   await done();
 });
 
@@ -46,7 +44,7 @@ test('with every crewmate kept to their berth, the deck-plan fight still opens w
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    Settings.planFight = true; fightGame('gunner');
+    fightGame('gunner');
     const st = G.state; st.injured = Object.fromEntries(st.crew.filter(id => id !== hired().captain).map(id => [id, { until: st.day + 9 }]));
     const s = boarded();
     return { title: G.dialog.event.title, ours: s.state.figures.filter(f => f.side === 'us').map(f => f.id === 'hand' ? 'hand' : f.captain ? 'captain' : 'crew'), fight: !!document.querySelector('canvas.plan-cut') };
@@ -60,7 +58,7 @@ test('with every crewmate kept to their berth, the deck-plan fight still opens w
 test('a ringed spot, an act, an order and a suggestion show in "This turn" and on the ship, and Fight resolves the turn', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  const first = await ev(() => { Settings.planFight = true; fightGame('gunner'); const s = boarded(); return { at: s.state.figures.find(f => f.hand).spot, drawn: document.querySelector('canvas.plan-cut').dataset.drawn || '' }; });
+  const first = await ev(() => { fightGame('gunner'); const s = boarded(); return { at: s.state.figures.find(f => f.hand).spot, drawn: document.querySelector('canvas.plan-cut').dataset.drawn || '' }; });
   assert.equal(first.at, 'gunseat', 'the gunner at the gun seat');
   await page.waitForFunction(() => !!document.querySelector('canvas.plan-cut').dataset.drawn);
   await page.click('[data-action="planMove"][data-arg="magazine"]');
@@ -90,7 +88,7 @@ test('a charge shown on the ship is stopped by shooting its setter', async () =>
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.planFight = true; fightGame('gunner', 'corsair'); const s = boarded();
+    fightGame('gunner', 'corsair'); const s = boarded();
     stage(s, { t1: 'inner', hand: 'medbed', 'c:ines': 'magazine', 'c:tomas': 'magazine' }, true);
   });
   const shown = await ev(() => ({ charge: sawText('.plan-charge'), set: G.dialog.event.fight.theirs.charge }));
@@ -108,7 +106,7 @@ test('the hand killed mid-turn stops the fight after the turn and queues the end
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.planFight = true; fightGame('gunner'); const s = boarded();
+    fightGame('gunner'); const s = boarded();
     career().hurtUntil = G.state.day + 5; s.covered = true; s.state.friend = false; s.state.figures.find(f => f.hand).hp = 1;  // already hurt and wounded, so a hit downs the hand and can kill; and no friend left to take it
     stage(s, { t1: 'magazine', hand: 'gunseat' }, true);
     for (const f of s.state.figures) if (f.side === 'us' && !f.hand) f.spot = 'helm';
@@ -128,7 +126,7 @@ test('a repel lost on our bridge goes to today\'s settle: the ship taken', async
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.planFight = true; fightGame('gunner'); const h = hired(); h.fund = 1000; const s = boarded();
+    fightGame('gunner'); const h = hired(); h.fund = 1000; const s = boarded();
     stage(s, { t1: 'w0', t2: 'w0' }, false);
     for (const f of s.state.figures) if (f.side === 'us' && !f.hand) f.hp = 0;
     s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false };
@@ -136,6 +134,7 @@ test('a repel lost on our bridge goes to today\'s settle: the ship taken', async
   });
   await ev(() => { Math.random = () => 0.99; });  // nobody is hit, and the captain is not lost on her bridge
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => /Stand down/.test(document.querySelector('#panel').innerText), null, { timeout: 10000 });  // the close drawn, not the fight's page
   const r = await ev(() => ({ title: G.dialog.event.title, text: G.dialog.event.text, fund: hired().fund, labels: G.dialog.choices.map(c => c.label) }));
   assert.equal(r.title, 'Boarders');
   assert.match(r.text, /They're on the bridge\./);
@@ -148,7 +147,7 @@ test('three of ours on one spot each get a name on the cutaway that does not run
   const { ev, done } = await open();
   await ev(helpers);
   const boxes = await ev(() => {
-    Settings.planFight = true; fightGame('gunner'); const s = boarded();
+    fightGame('gunner'); const s = boarded();
     stage(s, { hand: 'magazine', 'c:ines': 'magazine', 'c:tomas': 'magazine' });
     const c = document.createElement('canvas'), g = c.getContext('2d'), drawn = [], fill = g.fillText.bind(g);
     g.fillText = (str, x, y) => { drawn.push({ str, x, y, w: g.measureText(str).width }); fill(str, x, y); };
@@ -167,7 +166,7 @@ test('the one beside the hand takes the first hit meant for the hand, in today\'
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => {
-    Settings.planFight = true; fightGame('gunner'); const s = boarded();
+    fightGame('gunner'); const s = boarded();
     stage(s, { t1: 'magazine', hand: 'gunseat', 'c:ines': 'gunseat' }, true);
     for (const f of s.state.figures) if (f.side === 'us' && !f.hand && f.id !== 'c:ines') f.spot = 'helm';
     for (const id of G.state.crew) { const p = person(id); if (p) p.opinion = OPINION.FRIEND; }  // every crewmate a friend: today's roll would have one of them cover

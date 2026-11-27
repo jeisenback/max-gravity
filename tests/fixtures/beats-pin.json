@@ -1913,8 +1913,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -1959,8 +1959,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2005,8 +2005,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2051,8 +2051,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2097,8 +2097,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2143,8 +2143,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2189,8 +2189,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2235,8 +2235,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2281,8 +2281,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2327,8 +2327,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2373,8 +2373,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2419,8 +2419,8 @@
     "i": 0,
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
-     "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "Boarding Her",
+     ""
     ]
    },
    {
@@ -2695,379 +2695,285 @@
  {
   "id": "order:repel:gunner:cover:worked",
   "label": [
-   "Order: Dana lays covering fire"
+   "Dana lays covering fire. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+  "text": "Turn 1: Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
  },
  {
   "id": "order:repel:gunner:cover:missed",
   "label": [
-   "Order: Dana lays covering fire"
+   "Dana lays covering fire. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are."
+  "text": "Turn 1: Dana opens up and the burst goes where the wall is, not where they are."
  },
  {
   "id": "order:repel:gunner:steady:worked",
   "label": [
-   "Order: Dana picks off a runner"
+   "Dana picks off a runner. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+  "text": "Turn 1: Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
  },
  {
   "id": "order:repel:gunner:steady:missed",
   "label": [
-   "Order: Dana picks off a runner"
+   "Dana picks off a runner. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
+  "text": "Turn 1: Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
  },
  {
   "id": "order:repel:pilot:cover:worked",
   "label": [
-   "Order: Dana cuts the lights"
+   "Dana cuts the lights. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+  "text": "Turn 1: Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
  },
  {
   "id": "order:repel:pilot:cover:missed",
   "label": [
-   "Order: Dana cuts the lights"
+   "Dana cuts the lights. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either."
+  "text": "Turn 1: Dana cuts the lights, and the crew cannot see the closer either."
  },
  {
   "id": "order:repel:pilot:steady:worked",
   "label": [
-   "Order: Dana cycles a hatch on them"
+   "Dana cycles a hatch on them. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:repel:pilot:steady:missed",
   "label": [
-   "Order: Dana cycles a hatch on them"
+   "Dana cycles a hatch on them. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:repel:engineer:cover:worked",
   "label": [
-   "Order: Dana drops the pressure door"
+   "Dana drops the pressure door. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:repel:engineer:cover:missed",
   "label": [
-   "Order: Dana drops the pressure door"
+   "Dana drops the pressure door. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:repel:engineer:steady:worked",
   "label": [
-   "Order: Dana vents a coolant line"
+   "Dana vents a coolant line. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+  "text": "Turn 1: Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
  },
  {
   "id": "order:repel:engineer:steady:missed",
   "label": [
-   "Order: Dana vents a coolant line"
+   "Dana vents a coolant line. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section."
+  "text": "Turn 1: Dana opens the wrong coolant line, and it vents into the section."
  },
  {
   "id": "order:repel:slicer:cover:worked",
   "label": [
-   "Order: Dana jams their band"
+   "Dana jams their band. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+  "text": "Turn 1: Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
  },
  {
   "id": "order:repel:slicer:cover:missed",
   "label": [
-   "Order: Dana jams their band"
+   "Dana jams their band. (80%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana jams their band and the crew's with it."
+  "text": "Turn 1: Dana jams their band and the crew's with it."
  },
  {
   "id": "order:repel:slicer:steady:worked",
   "label": [
-   "Order: Dana puts a false order on their band"
+   "Dana puts a false order on their band. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+  "text": "Turn 1: Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
  },
  {
   "id": "order:repel:slicer:steady:missed",
   "label": [
-   "Order: Dana puts a false order on their band"
+   "Dana puts a false order on their band. (65%)"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
+  "text": "Turn 1: Dana puts a voice on their band and the voice is wrong. Somebody laughs."
  },
  {
   "id": "order:assault:gunner:cover:worked",
   "label": [
-   "Order: Dana lays covering fire"
+   "Dana lays covering fire. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+  "text": "Turn 1: Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
  },
  {
   "id": "order:assault:gunner:cover:missed",
   "label": [
-   "Order: Dana lays covering fire"
+   "Dana lays covering fire. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are."
+  "text": "Turn 1: Dana opens up and the burst goes where the wall is, not where they are."
  },
  {
   "id": "order:assault:gunner:steady:worked",
   "label": [
-   "Order: Dana picks off a runner"
+   "Dana picks off a runner. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+  "text": "Turn 1: Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
  },
  {
   "id": "order:assault:gunner:steady:missed",
   "label": [
-   "Order: Dana picks off a runner"
+   "Dana picks off a runner. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
+  "text": "Turn 1: Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
  },
  {
   "id": "order:assault:pilot:cover:worked",
   "label": [
-   "Order: Dana cuts the lights"
+   "Dana cuts the lights. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+  "text": "Turn 1: Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
  },
  {
   "id": "order:assault:pilot:cover:missed",
   "label": [
-   "Order: Dana cuts the lights"
+   "Dana cuts the lights. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either."
+  "text": "Turn 1: Dana cuts the lights, and the crew cannot see the closer either."
  },
  {
   "id": "order:assault:pilot:steady:worked",
   "label": [
-   "Order: Dana cycles a hatch on them"
+   "Dana cycles a hatch on them. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:assault:pilot:steady:missed",
   "label": [
-   "Order: Dana cycles a hatch on them"
+   "Dana cycles a hatch on them. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:assault:engineer:cover:worked",
   "label": [
-   "Order: Dana drops the pressure door"
+   "Dana drops the pressure door. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:assault:engineer:cover:missed",
   "label": [
-   "Order: Dana drops the pressure door"
+   "Dana drops the pressure door. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:assault:engineer:steady:worked",
   "label": [
-   "Order: Dana vents a coolant line"
+   "Dana vents a coolant line. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+  "text": "Turn 1: Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
  },
  {
   "id": "order:assault:engineer:steady:missed",
   "label": [
-   "Order: Dana vents a coolant line"
+   "Dana vents a coolant line. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section."
+  "text": "Turn 1: Dana opens the wrong coolant line, and it vents into the section."
  },
  {
   "id": "order:assault:slicer:cover:worked",
   "label": [
-   "Order: Dana jams their band"
+   "Dana jams their band. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+  "text": "Turn 1: Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
  },
  {
   "id": "order:assault:slicer:cover:missed",
   "label": [
-   "Order: Dana jams their band"
+   "Dana jams their band. (80%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana jams their band and the crew's with it."
+  "text": "Turn 1: Dana jams their band and the crew's with it."
  },
  {
   "id": "order:assault:slicer:steady:worked",
   "label": [
-   "Order: Dana puts a false order on their band"
+   "Dana puts a false order on their band. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+  "text": "Turn 1: Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
  },
  {
   "id": "order:assault:slicer:steady:missed",
   "label": [
-   "Order: Dana puts a false order on their band"
+   "Dana puts a false order on their band. (65%)"
   ],
-  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
+  "text": "Turn 1: Dana puts a voice on their band and the voice is wrong. Somebody laughs."
  },
  {
   "id": "repel:gunner",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "The Lock",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "title": "Boarders",
+    "text": "",
     "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "The Lock",
-    "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "The Corridor",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "The Corridor",
-    "text": "The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "The Bridge",
-    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "The Bridge",
-    "text": "There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "",
+     "Pick off a runner (55%)",
+     "Covering burst (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines seals the hatch between the gun deck and the lock deck. (80%)",
+     "Ines moves to the well at the flight deck.",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas seals the hatch between the gun deck and the lock deck. (90%)",
+     "Tomas moves to the coolant pumps.",
+     "Tomas stays put.",
+     "Mateo puts a false order on their band. (65%)",
+     "Mateo jams their band. (80%)",
+     "Mateo moves to the well at the flight deck.",
+     "Mateo stays put.",
+     "Suggest: push them back (17%)",
+     "Suggest: fall back (37%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+    "text": "Turn 1: You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+    "text": "Turn 1: You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+    "text": "Turn 1: You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
+    "text": "Turn 1: You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3077,7 +2983,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3091,154 +2997,59 @@
   "id": "repel:pilot",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "The Lock",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "title": "Boarders",
+    "text": "",
     "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "The Lock",
-    "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "The Corridor",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "The Corridor",
-    "text": "The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "The Bridge",
-    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "The Bridge",
-    "text": "There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "",
+     "Cycle a hatch on them (55%)",
+     "Cut the lights (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines picks off a runner. (60%)",
+     "Ines lays covering fire. (75%)",
+     "Ines moves to the magazine.",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas seals the hatch between the gun deck and the lock deck. (90%)",
+     "Tomas moves to the coolant pumps.",
+     "Tomas stays put.",
+     "Mateo puts a false order on their band. (65%)",
+     "Mateo jams their band. (80%)",
+     "Mateo moves to the well at the flight deck.",
+     "Mateo stays put.",
+     "Suggest: push them back (17%)",
+     "Suggest: fall back (37%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Cycle a hatch on them: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+    "text": "Turn 1: You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Cycle a hatch on them: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+    "text": "Turn 1: You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Cut the lights: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+    "text": "Turn 1: You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Cut the lights: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
+    "text": "Turn 1: You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3248,7 +3059,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3262,154 +3073,59 @@
   "id": "repel:engineer",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "The Lock",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "title": "Boarders",
+    "text": "",
     "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "The Lock",
-    "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "The Corridor",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "The Corridor",
-    "text": "The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "The Bridge",
-    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "The Bridge",
-    "text": "There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "",
+     "Vent a coolant line (55%)",
+     "Drop the pressure door (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines seals the hatch between the gun deck and the lock deck. (80%)",
+     "Ines moves to the well at the flight deck.",
+     "Ines stays put.",
+     "Tomas puts a false order on their band. (55%)",
+     "Tomas jams their band. (70%)",
+     "Tomas moves to the well at the flight deck.",
+     "Tomas stays put.",
+     "Mateo picks off a runner. (65%)",
+     "Mateo lays covering fire. (80%)",
+     "Mateo moves to the magazine.",
+     "Mateo stays put.",
+     "Suggest: push them back (17%)",
+     "Suggest: fall back (37%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Vent a coolant line: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+    "text": "Turn 1: You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Vent a coolant line: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the wrong coolant line. It vents into the section you are standing in."
+    "text": "Turn 1: You open the wrong coolant line. It vents into the section you are standing in."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Drop the pressure door: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+    "text": "Turn 1: You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Drop the pressure door: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
+    "text": "Turn 1: The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3419,7 +3135,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3433,154 +3149,60 @@
   "id": "repel:comms",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "The Lock",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "title": "Boarders",
+    "text": "",
     "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "The Lock",
-    "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "The Corridor",
-    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "The Corridor",
-    "text": "The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "The Bridge",
-    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
-    "read": "Turn 1 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "The Bridge",
-    "text": "There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.",
-    "read": "Turn 2 of 8. Boarders: holding where they are.",
-    "labels": [
-     "Stand: The Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "",
+     "A false order on their band (60%)",
+     "Jam their band (75%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines seals the hatch between the gun deck and the lock deck. (80%)",
+     "Ines moves to the well at the flight deck.",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas seals the hatch between the gun deck and the lock deck. (90%)",
+     "Tomas moves to the coolant pumps.",
+     "Tomas stays put.",
+     "Mateo picks off a runner. (65%)",
+     "Mateo lays covering fire. (80%)",
+     "Mateo moves to the magazine.",
+     "Mateo stays put.",
+     "Suggest: push them back (17%)",
+     "Suggest: fall back (37%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "A false order on their band: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+    "text": "Turn 1: You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "A false order on their band: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+    "text": "Turn 1: You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: The Lock",
-     "Jam their band: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+    "text": "Turn 1: You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: The Lock",
-     "Jam their band: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
+    "text": "Turn 1: You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3590,7 +3212,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3604,160 +3226,55 @@
   "id": "assault:gunner",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "Her Lock",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "title": "Boarding Her",
+    "text": "",
     "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "Her Corridor",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "Her Corridor",
-    "text": "Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "Her Bridge",
-    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "Her Bridge",
-    "text": "There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "Pick off a runner (55%)",
+     "Covering burst (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas stays put.",
+     "Mateo puts a false order on their band. (65%)",
+     "Mateo jams their band. (80%)",
+     "Mateo moves to the well at the lock deck.",
+     "Mateo stays put.",
+     "Suggest: hold where we are (47%)",
+     "Suggest: fall back (67%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Mateo is hurt.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+    "text": "Turn 1: You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Pick off a runner: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+    "text": "Turn 1: You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+    "text": "Turn 1: You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Covering burst: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
+    "text": "Turn 1: You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: 1 of ours move into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the gunner post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -3781,7 +3298,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the gunner post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -3809,160 +3326,55 @@
   "id": "assault:pilot",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "Her Lock",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "title": "Boarding Her",
+    "text": "",
     "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "Her Corridor",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "Her Corridor",
-    "text": "Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "Her Bridge",
-    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "Her Bridge",
-    "text": "There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "Cycle a hatch on them (55%)",
+     "Cut the lights (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines picks off a runner. (60%)",
+     "Ines lays covering fire. (75%)",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas stays put.",
+     "Mateo puts a false order on their band. (65%)",
+     "Mateo jams their band. (80%)",
+     "Mateo moves to the well at the lock deck.",
+     "Mateo stays put.",
+     "Suggest: hold where we are (47%)",
+     "Suggest: fall back (67%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Mateo is hurt.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Cycle a hatch on them: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+    "text": "Turn 1: You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Cycle a hatch on them: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+    "text": "Turn 1: You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Cut the lights: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+    "text": "Turn 1: You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Cut the lights: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
+    "text": "Turn 1: You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: 1 of ours move into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the pilot post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -3986,7 +3398,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the pilot post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -4014,160 +3426,55 @@
   "id": "assault:engineer",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "Her Lock",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "title": "Boarding Her",
+    "text": "",
     "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "Her Corridor",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "Her Corridor",
-    "text": "Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "Her Bridge",
-    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "Her Bridge",
-    "text": "There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "Vent a coolant line (55%)",
+     "Drop the pressure door (70%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines stays put.",
+     "Tomas puts a false order on their band. (55%)",
+     "Tomas jams their band. (70%)",
+     "Tomas stays put.",
+     "Mateo picks off a runner. (65%)",
+     "Mateo lays covering fire. (80%)",
+     "Mateo moves to the well at the lock deck.",
+     "Mateo stays put.",
+     "Suggest: hold where we are (47%)",
+     "Suggest: fall back (67%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Mateo is hurt.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Vent a coolant line: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+    "text": "Turn 1: You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Vent a coolant line: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You open the wrong coolant line. It vents into the section you are standing in."
+    "text": "Turn 1: You open the wrong coolant line. It vents into the section you are standing in."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Drop the pressure door: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+    "text": "Turn 1: You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Drop the pressure door: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
+    "text": "Turn 1: The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: 1 of ours move into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the engineer post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -4191,7 +3498,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the engineer post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -4219,160 +3526,55 @@
   "id": "assault:comms",
   "scenes": [
    {
-    "hand": 0,
-    "turn": 0,
-    "title": "Her Lock",
-    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "title": "Boarding Her",
+    "text": "",
     "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 0,
-    "turn": 1,
-    "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 0,
-    "title": "Her Corridor",
-    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 1,
-    "turn": 1,
-    "title": "Her Corridor",
-    "text": "Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Corridor",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 0,
-    "title": "Her Bridge",
-    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
-    "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ]
-   },
-   {
-    "hand": 2,
-    "turn": 1,
-    "title": "Her Bridge",
-    "text": "There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.",
-    "read": "Turn 2 of 8. Her crew: holding where they are.",
-    "labels": [
-     "Stand: Her Bridge",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
+     "",
+     "A false order on their band (60%)",
+     "Jam their band (75%), once a fight",
+     "Pull back, with everyone here",
+     "Hold fire",
+     "No order",
+     "Ines cycles a hatch on them. (80%)",
+     "Ines cuts the lights. (90%)",
+     "Ines stays put.",
+     "Tomas vents a coolant line. (75%)",
+     "Tomas drops the pressure door. (90%)",
+     "Tomas stays put.",
+     "Mateo picks off a runner. (65%)",
+     "Mateo lays covering fire. (80%)",
+     "Mateo moves to the well at the lock deck.",
+     "Mateo stays put.",
+     "Suggest: hold where we are (47%)",
+     "Suggest: fall back (67%)",
      "Fight"
     ]
    }
   ],
   "steps": [
    {
-    "act": "shoot",
-    "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
-   },
-   {
-    "act": "shoot",
-    "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Shoot: hits 1 to 2 of them",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Mateo is hurt.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
-   },
-   {
     "act": "steady",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "A false order on their band: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+    "text": "Turn 1: You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
    },
    {
     "act": "steady",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "A false order on their band: one of them down if it works",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+    "text": "Turn 1: You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
    },
    {
     "act": "cover",
     "roll": 0.01,
-    "labels": [
-     "Stand: Her Lock",
-     "Jam their band: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+    "text": "Turn 1: You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
    },
    {
     "act": "cover",
     "roll": 0.99,
-    "labels": [
-     "Stand: Her Lock",
-     "Jam their band: two points of cover here, once a fight",
-     "Order: none",
-     "Fight"
-    ],
-    "text": "Turn 1: nobody gives ground. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
+    "text": "Turn 1: You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    },
    {
     "act": "end:last",
-    "text": "Turn 1: 1 of ours move into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the comms post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",
@@ -4396,7 +3598,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the comms post.)",
+    "text": "Turn 1: Nobody is hit.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 30,000 cr of it goes into the ship's fund. Captain Vance has the boat cast off while her people are still being counted. (+5 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
      "9 Jul 2214: We took her bridge together.",

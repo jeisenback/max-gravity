@@ -96,7 +96,7 @@ test('a corsair is a torpedo fight and a raider a grapple fight, in the words an
   });
   assert.notEqual(r.raider.open, r.corsair.open);
   assert.equal(r.raider.boarded, 'grapple'); assert.equal(r.corsair.boarded, 'torpedo');
-  assert.deepEqual([r.raider.title, r.corsair.title], ['The Lock', 'The Lock'], 'both open the deck fight at the lock');
+  assert.deepEqual([r.raider.title, r.corsair.title], ['Boarders', 'Boarders'], 'both open the deck fight on our decks');
   assert.equal(r.raider.boarders, r.corsair.boarders + 3, 'a full run for a raider (her two and four more), a short one for a corsair (her three and no more), at the same grade');
   await done();
 });
@@ -133,15 +133,15 @@ test('crippling her brings her alongside dead in space, and boarding her is the 
     rolls([0.99, 0.99, 0.99]);  // no one is hurt
     choose('Board her'); finishEvent();
     out.first = G.dialog.event.title; out.heads = fightNow().state.began; out.assault = fightNow().state.assault;
-    const s = fightNow(); s.state.sections.forEach(x => { x.theirs = 0; }); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // the last of her people down
-    out.mid = choose('Fight'); finishEvent();
+    const s = fightNow(); for (const f of s.state.figures) if (f.side === 'them') f.hp = 0; s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null }; s.intent = 'hold'; s.pick = { move: null, act: { kind: 'holdfire' }, order: null };  // the last of her people down
+    out.mid = planResolve(s) ? 'on' : null; finishEvent();  // Fight (deckplanui.js planGo)
     out.end = G.dialog.event.text;
     out.taken = /strongbox/.test(out.end); out.fund = h.fund - fund; out.opinion = cap.opinion - op; out.xp = skillXp('gunner') - xp;
     choose('Stand down'); out.next = G.nextEvent;
     return out;
   });
   assert.equal(r.title, 'Dead in Space'); assert.ok(r.crippled, 'the line that says how'); assert.deepEqual(r.labels, ['Board her', 'Let her drift']);
-  assert.equal(r.first, 'Her Lock'); assert.equal(r.assault, true); assert.ok(r.heads >= 3, 'her crew and one more'); assert.equal(r.mid, null, 'the fight ends on the panel');
+  assert.equal(r.first, 'Boarding Her'); assert.equal(r.assault, true); assert.ok(r.heads >= 3, 'her crew and one more'); assert.equal(r.mid, null, 'the fight ends on its scene');
   assert.ok(r.taken, r.end); assert.ok(r.fund >= 10000 && r.fund <= 30000, `fund ${r.fund}`); assert.equal(r.opinion, 2, 'the strongbox'); assert.equal(r.xp, 5);
   assert.equal(r.next, null);
   await done();
@@ -156,8 +156,8 @@ test('losing the boarding drives you back to your lock, and she drifts on', asyn
     endAs('crippled');
     rolls([0.99, 0.99, 0.99, 0.99]);
     choose('Board her'); finishEvent();
-    const s = fightNow(); s.state.sections.forEach(x => { x.mine = 0; }); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // none of ours left standing
-    choose('Fight'); finishEvent();
+    const s = fightNow(); for (const f of s.state.figures) if (f.side === 'us' && !f.hand) f.hp = 0; s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null }; s.intent = 'hold'; s.pick = { move: null, act: { kind: 'holdfire' }, order: null };  // none of ours left standing but the hand
+    planResolve(s); finishEvent();  // Fight (deckplanui.js planGo)
     const end = G.dialog.event.text; choose('Stand down');
     return { end: /driven back/.test(end), fund: h.fund === fund, opinion: cap.opinion - op, armor: st.armor < armor, next: G.nextEvent };
   });
@@ -282,9 +282,9 @@ test('a patrol that boards a hired hand\'s ship and holds the bridge searches it
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
     h.fund = 10000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
-    s.state.sections[2] = { mine: 0, theirs: 3, cover: 1 }; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // they hold the bridge
+    for (const f of s.state.figures) if (f.side === 'us' && !f.hand) f.hp = 0; s.state.figures.filter(f => f.side === 'them').slice(0, 3).forEach(f => { f.spot = 'helm'; }); s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null }; s.intent = 'hold'; s.pick = { move: null, act: { kind: 'holdfire' }, order: null };  // they hold the bridge
     rolls([0.99, 0.99, 0.99, 0.99]);  // no one is hurt
-    const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); const text = G.nextEvent.text; G.nextEvent = null;
+    planResolve(s); const text = G.nextEvent.text; G.nextEvent = null;
     return { fine: /writes the citation: 2,500 cr/.test(text), robbed: /They're on the bridge/.test(text), fund: h.fund };
   });
   assert.ok(r.fine); assert.equal(r.robbed, false); assert.equal(r.fund, 7500);

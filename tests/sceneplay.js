@@ -544,64 +544,6 @@ const playScenes = () => {
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; end(s, 'lost'); }  // the hull gone with cargo aboard
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; end(s, 'lost'); }  // and a navy ship takes it as part of the levy
       end(start('raider').fight, 'lost');
-      // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
-      // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
-      const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
-      const deck = (assault, o = {}) => { fresh(); hired().raidTold = true; const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0, init: 'foe' }, 'full'); s.state = deckFight({ boarders: 4, crew: 4, cover: [1, 2, 1, 1], assault, side: true, ...o }); return s; };
-      const deckLog = (s, plan, shown, first = 0.01) => { s.shown = { feint: false, ...shown }; seq([first, 0.99, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.99]); const e = deckFightEvent(s, plan); const next = e.choices[e.choices.length - 1].run(); rec.plays.push({ log: s.state.log.slice(-1)[0], end: !next, ...(next ? {} : { close: G.nextEvent && G.nextEvent.text }) }); G.nextEvent = null; };
-      for (const assault of [false, true]) {
-        for (const hand of [0, 1, 2, 3]) { const s = deck(assault); s.state.hand = hand; s.shown = { kind: 'push', from: 0, to: hand, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
-        { const s = deck(assault); s.shown = { kind: 'round', from: 0, to: 3, n: 2, feint: false }; deckPanel(deckFightEvent(s)); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }
-        { const s = deck(assault); s.shown = { kind: 'rush', ...(assault ? { from: 2, to: 0 } : { from: 0, to: 2 }), via: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }  // a rush through the corridor: into our bridge, or back into her lock (BACK)
-        { const s = deck(assault, { grade: 1 }); s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
-        { const s = deck(assault); s.state.sections[0].mineHurt = 1; s.state.sections[0].theirsHurt = 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // wounded on both sides, drawn and counted in the label
-        if (!assault) { const s = deck(false); s.state.turn = DECK.WAVE_TURN - 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // the turn at whose end the wave lands: the strip says they come next turn
-        { const s = deck(assault); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; let ev = deckFightEvent(s);  // each choice goes round: the hand's place, the act, the order
-          for (let i = 0; i < 3; i++) { ev = ev.choices[0].run(); deckPanel(ev); }
-          for (let i = 0; i < 4; i++) { ev = ev.choices[1].run(); deckPanel(ev); }
-          const at = ev.choices.findIndex(c => c.order); if (at >= 0) { ev = ev.choices[at].run(); deckPanel(ev); } }
-        { const s = deck(assault); s.state.used.cover = true; const o = repelOrders(s, true).find(isHatch);  // a hatch order, which names a section: each choice goes round (the hatch's "At"; the shot's is "Aim")
-          if (o) { let ev = deckFightEvent(s, { order: o.id }); deckPanel(ev); const at = ev.choices.map(c => c.label.startsWith(fightSay('deck.order.at', { at: '' }).trim())).lastIndexOf(true); for (let i = 0; i < 3; i++) { ev = ev.choices[at].run(); deckPanel(ev); } } }
-        // a turn of each kind: their push and the trade where both stand; our advance on her deck; the hand left alone with them, who falls back; and a turn where nobody gives
-        { const s = deck(assault); deckLog(s, {}, assault ? { kind: 'hold', from: 0, to: 0, n: 0 } : { kind: 'push', from: 0, to: 1, n: 4 }); }
-        { const s = deck(assault); s.state.sections[1] = { mine: 0, theirs: 5, cover: 1 }; s.state.hand = 1; deckLog(s, { stand: 1 }, { kind: 'hold', from: 1, to: 1, n: 0 }); }
-        { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4; deckLog(s, {}, { kind: 'hold', from: 0, to: 0, n: 0 }); }
-        // a steady act and an order where nobody of theirs stands, and the last turn of the cap, where the attackers withdraw
-        { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4;
-          s.state.used.cover = true; const o = repelOrders(s, true).find(x => !isHatch(x)); deckLog(s, { act: 'steady', order: o && o.id }, { kind: 'hold', from: 0, to: 0, n: 0 }); }
-        // a shot aimed at an empty section next to the hand (from the reach level), with them elsewhere
-        { const s = deck(assault, { level: 2 }), [ours, hers] = assault ? [0, 2] : [2, 0]; s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[ours].mine = 2; s.state.sections[hers].theirs = 3; s.state.hand = ours; s.state.began = 3;
-          deckLog(s, { stand: ours, shootAt: 1 }, { kind: 'hold', from: hers, to: hers, n: 0 }); }
-        // a rush that goes through and one that is stopped (the hand stands in the section passed); a hatch worked and one that does not close; the second wave landing
-        { const [from, to] = assault ? [2, 0] : [0, 2];  // the way they rush: toward our bridge, or back toward her lock
-          { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[from].theirs = 3; s.state.sections[to].mine = 2; s.state.hand = to; s.state.began = 3; deckLog(s, {}, { kind: 'rush', from, via: 1, to, n: 3 }); }
-          { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[from].theirs = 3; s.state.sections[1].mine = 1; s.state.sections[to].mine = 2; s.state.hand = 1; s.state.began = 3; deckLog(s, { stand: 1 }, { kind: 'rush', from, via: 1, to, n: 3 }); } }
-        for (const first of [0.01, 0.99]) { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 2; s.state.sections[1].theirs = 2; s.state.began = 4; s.state.used.cover = true;
-          const o = repelOrders(s, true).find(isHatch); if (o) deckLog(s, { order: o.id, at: 1 }, { kind: 'hold', from: 0, to: 0, n: 0 }, first); }
-        if (!assault) { const s = deck(false); s.state.turn = DECK.WAVE_TURN; s.state.wave = { n: 2, turn: DECK.WAVE_TURN + 1 }; deckLog(s, {}, { kind: 'hold', from: 0, to: 0, n: 0 }); }
-        { const s = deck(assault), S = s.state.sections; S.forEach(x => { x.mine = 0; x.theirs = 0; });
-          if (assault) { S[1].mine = 2; S[2].theirs = 3; s.state.hand = 1; } else { S[1].theirs = 2; S[2].mine = 3; s.state.hand = 2; }
-          s.state.began = 5; s.state.turn = DECK.TURNS - 1; deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
-        // a corsair's charge (Task 5): shown; it blows, the shot at its setter stops it, and a pull back leaves it nobody to down
-        { const s = deck(assault, { party: 'corsair' }); s.shown = boardMove(s.state, () => 0.99); deckPanel(deckFightEvent(s)); }  // the charge the game shows on this deck: our corridor from their lock, or her lock from her corridor
-        if (!assault) {
-          const charged = (mine, theirs) => { const s = deck(false, { party: 'corsair' }), S = s.state.sections; S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].theirs = 3; S[1].mine = mine; S[1].theirs = theirs; S[2].mine = 1; s.state.hand = 1; s.state.began = 3 + theirs; s.state.wave = null; return s; };
-          const shown = { kind: 'charge', at: 1, from: 0, n: 0 };
-          deckLog(charged(2, 0), { stand: 1 }, shown, 0.99);
-          deckLog(charged(2, 0), { stand: 1, act: 'shoot', shootAt: 0 }, shown);  // the shot into the lock hits its setter
-          deckLog(charged(2, 0), { stand: 1, act: 'pullback' }, shown);
-        }
-      }
-      // the navy's party (Task 6): the panel names it, with its own cap, and says the standing its heads put down have cost; a turn of hold fire; holding our bridge is a search, with its fine, and the captain's memory of it
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
-        S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[2].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null;
-        deckLog(s, {}, { kind: 'hold', from: 2, to: 2, n: 0 }); rec.plays.push({ mem: (cap.memories || []).slice(m0) }); }
-      // a navy party that withdraws at its cap still files its citation: the close names the fine
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
-        S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[1].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null; s.state.turn = DECK.NAVY_TURNS - 1;
-        deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
       // the fight on the radar (radarui.js, #1345): its page paused and running, every reason it stops, every order and its cost, each event's line on the
       // timeline, and every word the radar draws or shows on hover, from a state set by hand
       {
@@ -655,7 +597,7 @@ const playScenes = () => {
     hit(ours, s => s.hurt.add(castAboard()[0].id), () => castAboard()[0].id),  // a main character hit again, where a floor holds
     hit(ours, () => {}, () => castAboard()[0].id),  // a main character hit hard
   ] }; }, { rolls: [0, 0.99], prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(2); const bosun = castPerson('cato'); if (bosun) G.state.injured = { ...(G.state.injured || {}), [bosun.id]: true }; }, extra: () => (G.state.memorial || []).map(m => m.cause) });  // no medic, and the bosun laid up, so nobody holds the first aid (#879)
-  run('scene:fight:held', {}, () => { const s = deckOf(); return { title: 'x', text: deckFightEvent(s).text, choices: [] }; },
+  run('scene:fight:held', {}, () => { const s = deckOf(); return { title: 'x', text: planFightEvent(s).text, choices: [] }; },
     { prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(3); const [a, b, c] = folk().filter(f => f.crew && !f.p.cast); a.p.opinion = OPINION.ENEMY; addBond(b, c, -9); b.p.opinion = 1; c.p.opinion = 0; } });
   // ---------- the burn's own scenes (#796, batch 3), last: a burn begun here outlasts the new game a case starts ----------
   // the four events of the lane a hired hand meets, each choice won and lost (the pirates' fight and hard burn are duels, played elsewhere), on a burn under way
@@ -753,6 +695,16 @@ const playScenes = () => {
         { const s = plan(); s.pick = { move: null, act: { kind: 'pullback' }, order: null }; turn(s, [0.99]); }
         // her deck: her crew seal the hatch over ours, and ours cut through one sealed
         { const s = plan(true), [a] = crew(s); s.theirs = { ...quiet(), seal: 'h1' }; turn(s, [0.99]); put(s, { [a]: 'w2' }); s.theirs = quiet(); turn(s, [0.99]); }
+        // the ends at the cap and the navy's (moved from the old deck fight's record, #1355): a closing turn with theirs out of every line of ours, and its close
+        const close = (s, set) => { const cap = person(hired().captain), m0 = (cap.memories || []).length; hired().fund = 20000; set(s.state); seq([0.99]); planResolve(s);
+          rec.plays.push({ log: s.state.log.slice(-1)[0], close: G.nextEvent && G.nextEvent.text, mem: (cap.memories || []).slice(m0) }); G.nextEvent = null; G.duel = null; };
+        const left = (n, at) => st => { st.figures.filter(f => f.side === 'them').forEach((f, i) => { f.hp = i < n ? 2 : 0; f.spot = i < n ? at : f.spot; }); st.wave = 0; };
+        const navy = () => { const s = plan(false, 'navy'); s.d.foe.gov = 'Arcology Pact'; return s; };
+        page(navy());  // a navy party's page: its own cap
+        close(navy(), st => { left(2, 'helm')(st); st.figures.forEach(f => { if (f.side === 'us' && !f.hand) f.hp = 0; }); });  // a navy party holds our bridge: the search
+        close(navy(), st => { left(2, 'scrub')(st); st.turn = PLAN.NAVY_TURNS - 1; st.navyDown = 1; });  // a navy party withdraws at its cap: the citation
+        close(plan(), st => { left(2, 'scrub')(st); st.turn = PLAN.TURNS - 1; });  // raiders withdraw at the cap
+        close(plan(true), st => { left(2, 'helm')(st); st.turn = PLAN.TURNS - 1; });  // boarding her, the captain calls ours back at the cap
       }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);

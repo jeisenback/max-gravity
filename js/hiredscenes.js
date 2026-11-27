@@ -66,9 +66,9 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:fight-entry', fn: 'contactEvent', file: 'js/engage.js', title: 'Who Comes to Fight', where: 'transit', when: 'The contacts of chapter 1\'s ladder of fights, in order: a lone raider, a corsair who knows of the payment the ship is carrying, and the corsair who knows the Ore Runner\'s price. The fourth, two raiders who heard the crew asking a yard about a hull, is parked for chapter 2 and kept here. Each opens with its own line in place of the sensor\'s; the choices are the contact\'s.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
-  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: the deck fight at the lock, the corridor and the bridge.' },
-  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board her after a ship fight leaves her dead in space: the deck fight on her deck.' },
-  { id: 'beats:deck', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Abilities and Orders on the Deck', where: 'transit', when: 'In both deck fights, on our deck and on hers: the two abilities of your post and the orders to the crew, with what each comes to.' },
+  { id: 'beats:repel', fn: 'planFightEvent', file: 'js/deckplanui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: how the deck fight on our decks ends, and what the crew remember of it.' },
+  { id: 'beats:assault', fn: 'planFightEvent', file: 'js/deckplanui.js', title: 'Boarding Her', where: 'transit', when: 'When you board her after a ship fight leaves her dead in space: how the deck fight on her decks ends, and what the crew remember of it.' },
+  { id: 'beats:deck', fn: 'planFightEvent', file: 'js/deckplanui.js', title: 'Abilities and Orders on the Deck', where: 'transit', when: 'In both deck fights, on our deck and on hers: the two abilities of your post and the orders to the crew, with what each comes to.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -84,8 +84,6 @@ function ambushLines() {
 function deadLines() { return { ...DEAD_TEXT }; }
 function repelLines(assault) {
   const out = {};
-  (assault ? ASSAULT_TITLES : REPEL_TITLES).forEach((t, i) => { out[`title.${i}`] = t; });
-  (assault ? ASSAULT_OPENINGS : REPEL_OPENINGS).forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
   for (const [k, t] of Object.entries(FIGHT_END[assault ? 'assault' : 'repel'])) out[`end.${k}`] = t;
   for (const [k, t] of Object.entries(assault ? ASSAULT_MEMORY : REPEL_MEMORY)) out[`memory.${k}`] = t;
   return out;
@@ -785,17 +783,10 @@ const SCENE_LINES = {
     'memory.ran': 'We had to run from a fight with you at the post.',
     'memory.navy': 'You stood us up to a navy ship, and she left us alone.',  // a patrol that broke off, or that was crippled and calls for a tow
     'memory.searched': 'You fought the navy at the lock, and they searched the ship anyway.',  // a navy party that held our bridge (boarders.js shipSearched)
-    // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {mine} how many of ours, {to}, {via} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
-    'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
-    'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
-    'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
-    'deck.legend': 'Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break.',
-    'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew', 'deck.who.navy': 'The boarding party',
-    'deck.navy.down': 'Each of them you put down costs standing with {gov}. {n} lost so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
     'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth and writes the citation: {fine} cr, taken from the ship\'s account before they go back across.',  // a navy party held our bridge: {fine} is the heave-to's fine
     'deck.end.cited': 'They go back through the lock with the citation logged, and {fine} cr goes out of the ship\'s fund.',  // a navy party that withdrew at its cap: {fine} is the heave-to's fine, which the citation stands for (boarders.js repelSettle, #828). Drafted for the owner to edit
     // who keeps out of a deck fight (boarders.js repelCrew): {first} the one who won't, {other} the one they are at odds with
-    'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t stand in the same section as {other}.',
+    'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t fight alongside {other}.',
     // the hurt and the fallen, in any fight (boarders.js hurtHand and repelCasualty; a job ashore hurts the hand with the same lines): the hand's (killed, or killed hurt again; hurt, or hurt again; the clinic it pays, {cr}),
     // a friend who takes it for the hand ({first}; the one who owed you says so), and a crewmate's ({first}) hit again (dead, or alive and unfit where a floor holds), hit hard (dead, or carried below), or hurt
     'hurt.you.down': 'You\'re hurt again, and you stay down.', 'hurt.you': 'You are hurt. Your work counts a level lower until the clinic clears you, and another hit before then could kill you.', 'hurt.you.again': 'You are hurt again, and you stay down.',
@@ -805,22 +796,9 @@ const SCENE_LINES = {
     'hit.dead': '{first} is hit, and doesn\'t get up, and won\'t.', 'hit.marked': '{first} is hit, and carried below, and is alive, and isn\'t fit to work.', 'hit.hurt': '{first} is hurt.',
     // the cause of a death in a fight, on the memorial and in the ship's log (boarders.js killedHow): the ship fight, a navy stop, boarding her, holding our deck; {system} where. Plain text
     'killed.raid.log': 'Killed in a raid near {system}.', 'killed.navy.log': 'Killed in a navy stop near {system}.', 'killed.assault.log': 'Killed boarding a crippled ship near {system}.', 'killed.repel.log': 'Killed repelling boarders near {system}.',
-    'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more cycling through the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
-    'deck.charge': '{who}: setting a charge on {at} from {from}. It blows this turn unless you hit them in {from}.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
-    'deck.holdfire': 'Hold fire: stand ready, and shoot nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing
-    'deck.feint': 'They may feint.',
-    'deck.stand': 'Stand: {at}', 'deck.move': 'Move to: {at}',
-    'deck.order.at': 'Hatch at {at}', 'deck.wounded': '{n} wounded', 'deck.woundedOurs': '{n} wounded',
-    'deck.shoot': 'Shoot: hits {lo} to {hi} of them', 'deck.shoot.at': 'Aim at {at}', 'deck.steady': '{what}: one of them down if it works', 'deck.cover': '{what}: two points of cover here, once a fight',
-    'deck.orders': 'Orders to the crew', 'deck.order': 'Order: {first} {does}', 'deck.order.none': 'Order: none',
-    'deck.fight': 'Fight', 'deck.turn': 'Turn {n} of {max}.',
-    'deck.nobody.you': 'None of them are where you stand.', 'deck.nobody.aim': 'You aim into {at}, and none of them are there.', 'deck.nobody.crew': '{first} finds none of them to go at.',
+    // the attackers withdraw at the turn cap (deckplanui.js planClose)
     'deck.withdraw.repel': 'The ones still standing back down the passage to their lock and cast off.',
     'deck.withdraw.assault': 'The captain calls you back on the intercom with her people still holding the far hatch.',
-    'deck.log.turn': 'Turn {n}: {what}.', 'deck.log.theirs': '{n} of them move into {to}', 'deck.log.ours': '{n} of ours move into {to}',
-    'deck.log.fight': '{theirs} of them and {mine} of ours down in {at}', 'deck.log.wounds': '{theirs} of them and {mine} of ours wounded in {at}', 'deck.log.back': 'you fall back to {to}', 'deck.log.none': 'nobody gives ground',
-    'deck.log.rush': '{n} of them get through into {to}', 'deck.log.rushStopped': '{n} of them run into ours in {at} and stop there', 'deck.log.wave': '{n} more come through the lock',
-    'deck.log.charge': 'the charge blows in {at}, {mine} of ours down', 'deck.log.chargeEmpty': 'the charge blows in {at}, with nobody of ours there', 'deck.log.chargeStopped': 'they\'re hit in {from} before the charge on {at} can blow', 'deck.log.pullback': 'ours fall back to {to}',
     // the deck fight on the deck plan (deckplanui.js, #1353): {at} and {from} a spot's name ("the galley table"), {hatch} a hatch, {n} a count, {pct} odds, {who} a name, {order} the captain's order
     'plan.title': 'Boarders', 'plan.title.assault': 'Boarding Her', 'plan.you': 'You',
     'plan.hatch': 'the hatch between the {up} and the {down}', 'plan.cutaway': 'The ship in section: the decks, the well and its hatches, and everyone where they stand.',
@@ -847,7 +825,6 @@ const SCENE_LINES = {
     'plan.log.charge': 'The charge blows at {at}.', 'plan.log.chargeStopped': 'The charge at {at} never goes off.', 'plan.log.cut': 'They cut through {hatch}.', 'plan.log.cutOurs': 'We cut through {hatch}.',
     'plan.log.storm': 'They storm {at}. Ours there are pushed back.', 'plan.log.stormTook': 'They storm {at} and take it.', 'plan.log.stormStopped': 'They don\'t storm {at}: too few of them left.',
     'plan.log.sealedHers': 'Her crew seal {hatch}.', 'plan.log.wave': '{n} more come through the outer door.', 'plan.log.pullback': 'Ours fall back to {at}.',
-    'plan.log.worked': '{who}: it works.', 'plan.log.missed': '{who}: it doesn\'t work.',
     'plan.mark.cutting': 'CUTTING', 'plan.mark.charge': 'CHARGE', 'plan.mark.storm': 'STORM', 'plan.mark.setter': 'SETTER', 'plan.mark.land': '+{n} LAND THIS TURN', 'plan.mark.wave': '+{n} TO COME',
     // the fight on the radar (radarui.js, #1345): {n} a speed or a count, {km} a range, {ship} her name, {part} a part's word, {dmg} what a hit did, {lo} to {hi} a range of cycles or km, {order} the captain's order, {cap} the captain
     'radar.controls': 'Fight controls', 'radar.radar': 'The radar: our ship at the centre, her contact, the projected tracks and the torpedoes.',

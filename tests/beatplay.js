@@ -1,6 +1,6 @@
 'use strict';
 
-// Plays the words of the ship fight, the ambush and the boarding beats (#478; the deck fight, #786), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
+// Plays the words of the ship fight, the ambush and the boarding beats (#478; the deck fight, #786, on the deck plan since #1355), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
 // playBeats runs in the page: it plays every scene the beats can show and every choice with the dice set to win and then to lose, in a fresh hired game each time,
 // and returns what was said, in a fixed order, so two runs of the same game give the same record. The ship fight is played on the radar (radarui.js) to its end
 // with the hand's post on its opening orders, a cycle at a time.
@@ -99,44 +99,48 @@ const playBeats = () => {
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers, all wounded so that a hit downs one (no second wave to come), their move a hold, and (rolls) no hit lands and the hand is not hurt.
-  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; x.mineHurt = 0; x.theirsHurt = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.sections[0].mineHurt = 1; s.state.sections[0].theirsHurt = 4; s.state.began = 4; s.state.wave = null; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  // A deck fight on the deck plan (deckplanui.js) set by hand for one turn: one of theirs left, out of every line of ours (our scrubbers, or her helm), of four,
+  // so that nothing is traded and the fight goes on; their move and ours a hold, and the hand holding fire unless the step says what it does.
+  const quiet = s => {
+    const st = s.state, them = st.figures.filter(f => f.side === 'them');
+    them.forEach((f, i) => { f.hp = i ? 0 : 2; if (!i) f.spot = st.assault ? 'helm' : 'scrub'; });
+    st.began = 4; st.wave = 0;
+    s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false, storm: null }; s.intent = 'hold'; s.pick = { move: null, act: { kind: 'holdfire' }, order: null };
+    return s;
+  };
   const rolls = first => seq([first, ...Array(16).fill(0.4)]);
-  const fightOf = (s, plan) => { const ev = deckFightEvent(s, plan); return { labels: labelsOf(ev), run: () => ev.choices[ev.choices.length - 1].run() }; };
-  // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed
+  const pageButtons = s => [...new DOMParser().parseFromString(planFightEvent(s).board, 'text/html').querySelectorAll('button')].map(b => ({ arg: b.dataset.arg, text: b.textContent.replace(/\s+/g, ' ').trim() }));
+  const pageLabels = s => pageButtons(s).map(b => b.text);
+  const lastLine = s => String(s.state.log[s.state.log.length - 1]);
+  // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed, in their own words (the owner, #1355)
   for (const assault of [false, true]) for (const role of ['gunner', 'pilot', 'engineer', 'slicer']) for (const kind of ['cover', 'steady']) for (const worked of [true, false]) {
     fresh('gunner', 'raider');
-    const p = makePerson('earth'); Object.assign(p, { first: 'Dana', role, skill: 2, traits: [], opinion: 30 }); registerPerson(p); G.state.crew.push(p.id);
+    const p = makePerson('earth'); Object.assign(p, { first: 'Dana', role, skill: 2, traits: [], opinion: 30 }); registerPerson(p); G.state.crew = [p.id];
     const foe = makeEnemy({ kind: 'pirate' }), s = quiet(assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'));
-    s.fight = [p.id]; s.state.used.cover = kind === 'steady';  // the one crew member offered, with the cover made or not, so the order is of this kind
-    const f = fightOf(s, { order: p.id }), label = f.labels.filter(l => /^Order/.test(l)); rolls(worked ? 0.01 : 0.99); const b0 = stand();
-    f.run();
-    out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
+    const label = pageButtons(s).filter(b => b.arg === `${p.id}|${kind}|`).map(b => b.text);  // the order's button (deckplanui.js planOrdersHtml)
+    s.pick.order = { id: p.id, kind }; rolls(worked ? 0.01 : 0.99); const b0 = stand();
+    planResolve(s);
+    out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: lastLine(s), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // each fight for each post: the panel where the hand stands in each section, on two turns; the hand's three acts, each worked and missed; and the two ends that have lines
+  // each fight for each post: its page; the hand's two abilities, each worked and missed; and the two ends that have lines
   for (const assault of [false, true]) {
     for (const post of POSTS_ALL) {
       fresh(post, 'raider');
       const foe = makeEnemy({ kind: 'pirate' }), rec = { id: `${assault ? 'assault' : 'repel'}:${post}`, scenes: [], steps: [] };
       const start = () => (assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'));
-      for (const hand of [0, 1, 2]) for (const turn of [0, 1]) {
-        const s = start(); s.state.hand = hand; s.state.turn = turn;
-        const ev = deckFightEvent(s);
-        rec.scenes.push({ hand, turn, title: ev.title, text: ev.text, read: ev.read, labels: labelsOf(ev) });
-      }
-      for (const act of ['shoot', 'steady', 'cover']) for (const roll of [0.01, 0.99]) {
-        const s = quiet(start()), f = fightOf(s, { act });
+      { const s = start(), ev = planFightEvent(s); rec.scenes.push({ title: ev.title, text: ev.text, labels: pageLabels(s) }); }
+      for (const act of ['steady', 'cover']) for (const roll of [0.01, 0.99]) {
+        const s = quiet(start()); s.pick.act = { kind: act };
         rolls(roll); const b0 = stand();
-        f.run();
-        rec.steps.push({ act, roll, labels: f.labels, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
+        planResolve(s);
+        rec.steps.push({ act, roll, text: lastLine(s), ...left(b0) });
         G.nextEvent = null;
       }
       for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of seven (under the break line both ways: DECK.BREAK, DECK.ASSAULT.BREAK)
-        const s = quiet(start()); s.state.sections[0].theirs = 0; s.state.sections[0].theirsHurt = 0; s.state.sections[1].theirs = theirs;  // nobody where ours stand, so nothing is traded
-        if (theirs) s.state.began = 7;
+        const s = quiet(start()); if (!theirs) s.state.figures.forEach(f => { if (f.side === 'them') f.hp = 0; }); else s.state.began = 7;
         seq([]); const b0 = stand();
-        fightOf(s, {}).run();
+        planResolve(s);
         rec.steps.push({ act: `end:${name}`, text: String(G.nextEvent && G.nextEvent.text), ...left(b0) });
         G.nextEvent = null; G.duel = null;
       }

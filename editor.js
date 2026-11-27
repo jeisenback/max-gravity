@@ -832,8 +832,8 @@
   // hit, so they play on our deck; a death's cause plays where it is written: on our deck, on hers, or in a navy stop (#796). The navy's levy on our bridge is the navy's deck.
   const fightFor = (id, key) => (id === 'beats:assault' ? 'deck-assault' : id !== 'scene:fight' ? (key === 'end.takenNavy' ? 'deck-navy' : 'deck-repel')
     : key === 'killed.assault.log' ? 'deck-assault' : key === 'killed.repel.log' || /^(hurt|hit)\.|^cover(\.|$)/.test(key) ? 'deck-repel' : key === 'killed.navy.log' ? 'fight-patrol'
-    : /^deck\.(hers|cargoHers|who\.assault|withdraw\.assault)/.test(key) ? 'deck-assault'
-      : /^(deck\.(who\.navy|navy\.|end\.(searched|cited))|memory\.searched)/.test(key) ? 'deck-navy' : /^deck\./.test(key) ? 'deck-repel'  // the boarding party's own lines are the navy's deck, where a raider's fight does not show them
+    : /^(deck\.withdraw\.assault|plan\.title\.assault)$/.test(key) ? 'deck-assault'
+      : /^(deck\.end\.(searched|cited)|memory\.searched)$/.test(key) ? 'deck-navy' : /^(deck|plan)\./.test(key) ? 'deck-repel'  // the boarding party's own ends are the navy's deck, where a raider's fight does not show them
       : /^open\.gun\.|\.gun$/.test(key) || key === 'end.crippled.patrol' || key === 'memory.navy' ? 'fight-patrol'
         : /consort/.test(key) || key === 'first.hers' ? 'fight-pack' : /(^|\.)torp/.test(key) ? 'fight-veteran' : 'fight-raider');  // the pair starts a volley behind; a torpedo on the consort is carried in (playFight)
   // The post the hand fights at (#795): an ability's own post, another than the gunner's for a crew gunner's order (so one is aboard to give it to), else the post chosen.

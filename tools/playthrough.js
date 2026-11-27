@@ -15,35 +15,14 @@ const { chapter } = require('./soak');
 
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
 // - Ship fight: on the radar (radarui.js), played to its end by the chapter with the hand's post on its opening orders (soak.js chapter); its close by Stand down.
-// - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
+// - Deck fight: on the deck plan, played to its end by the chapter with the fight tool's answer each turn (soak.js chapter, tools/answer.js answerPlan); its close by Stand down.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
 //   rather than let go. Ties are the seed's.
 //   At the yard's desk, buying in, the player does not walk away (memo.avoid, set by the port hook). With the used Ore Runner on the yard list and the money for her,
 //   it puts no work further away to the captain (#800).
 function policy(d, ok, memo) {
   const s = d.event.fight, label = i => d.choices[i].label, last = ok[ok.length - 1];
-  if (s) {
-    const f = s.state, turn = `${f.turn}:${f.log.length}`;
-    if (memo.turn !== turn) { memo.turn = turn; memo.clicks = 0; }
-    if (ok.length === 1) return last;  // the close (Stand down)
-    if (++memo.clicks > 40) {  // an order that would not take (a label the player does not match): said as a stop, so the player never fights on half at random
-      if (window.__pt) window.__pt.stuck(d, `the fight's orders did not take in 40 clicks on turn ${f.turn + 1}`);
-      return last;
-    }
-    if (f.kind === 'deck') {
-      const post = lockPost(), near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
-      const to = near.reduce((b, i) => (f.sections[i].mine > f.sections[b].mine ? i : b), f.hand), there = f.sections[to];
-      const stand = to === f.hand ? fightSay('deck.stand', { at: deckTitle(s, to) }) : fightSay('deck.move', { at: deckTitle(s, to) });
-      const act = there.theirs > there.mine ? fightSay('deck.steady', { what: deckWords(`ability.${post}.steady.label`, FIGHT_ABILITY[post].steady.label) })
-        : fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] });
-      if (label(0) !== stand) return 0;
-      if (label(1) !== act) return 1;
-      const order = ok.find(i => d.choices[i].order);
-      if (order !== undefined && label(order) === fightSay('deck.order.none')) return order;
-      return last;  // Fight
-    }
-    return last;
-  }
+  if (s) return last;  // a fight's close (Stand down): the fights themselves are played by the chapter (soak.js)
   if (dealOpen() && wantsYard() && label(last) === sceneSay('scene:pitch', 'never.label')) return last;  // Never mind: the yard first
   if (memo.avoid && ok.some(i => label(i) !== memo.avoid)) ok = ok.filter(i => label(i) !== memo.avoid);  // buying in: the walk away from the yard's desk is not taken
   const score = c => {
@@ -113,9 +92,9 @@ function setup([policySrc, o]) {
   { const real = ACTIVITIES.teach.run; ACTIVITIES.teach.run = function () { const out = real.apply(this, arguments), m = (career() || {}).moves || []; if (out) P.taught.push({ id: m[m.length - 1], day: day() }); return out; }; }
   // the traits earned (traits.js): each as its moment is told (hired.js traitNote), by the day
   { const real = window.traitNote; window.traitNote = function (id) { const h = hired(), had = !!h && (h.traitsTold || []).includes(id), out = real.apply(this, arguments); if (h && !had && (h.traitsTold || []).includes(id)) P.traits.push({ id, day: day() }); return out; }; }
-  // how each fight ended (fightui.js): the ship fight's end, and the deck fight's
+  // how each fight ended: the ship fight's end (fightui.js), and the deck fight's (deckplanui.js)
   { const se = window.shipFightEnd; window.shipFightEnd = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return se.apply(this, arguments); }; }
-  { const dc = window.deckClose; window.deckClose = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return dc.apply(this, arguments); }; }
+  { const dc = window.planClose; window.planClose = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return dc.apply(this, arguments); }; }
   // the landing, as she docks (the autopilot or the chapter lands her: game.js land), before the scenes it opens are answered
   { const real = window.land; window.land = function () { const out = real.apply(this, arguments), st = G.state; if (!hired()) return out;
     P.burnRec = null; P.landShot = true;
@@ -123,7 +102,7 @@ function setup([policySrc, o]) {
     return out; }; }
   const bars = s => {
     const f = s.state;
-    if (f.kind === 'deck') return [`You stand in ${deckTitle(s, f.hand)}. Ours against theirs: ${f.sections.map((x, i) => (x ? `${deckTitle(s, i)} ${x.mine} to ${x.theirs}` : '')).filter(Boolean).join(', ')}.`];
+    if (f.kind === 'plan') { const hand = f.figures.find(x => x.hand); return [`You stand at ${planWhere(s, hand.spot)}. Ours ${planUp(f, 'us').length}, theirs ${planUp(f, 'them').length}.`]; }
     const side = (x, name) => `${name}: armor ${x.armor}/${x.maxArmor}, ${['weapons', 'drive', 'lock'].map(k => `${k} ${x.parts[k].hp}/${x.parts[k].max}`).join(', ')}`;
     return [`${side(f.me, 'You')}${f.me.launcher ? `, torpedoes ${f.me.torps}` : ''}`, ...f.foes.map((x, i) => side(x, i ? 'Her consort' : 'Her'))];
   };
@@ -141,7 +120,7 @@ function setup([policySrc, o]) {
       P.before = snap();
       if (s) {  // a fight's panel: a turn of the log (a cycle of the radar's), once each time the log has grown
         let r = P.fights.get(s);
-        if (!r) { r = push({ k: 'fight', kind: s.state.kind === 'deck' ? 'deck' : 'ship', day: day(), place: where(), title: ev.title, turns: [], seen: 0, end: null }); P.fights.set(s, r); if (P.burnRec) P.burnRec.events.push(`${r.kind} fight: ${ev.title}`); }
+        if (!r) { r = push({ k: 'fight', kind: s.state.kind === 'plan' ? 'deck' : 'ship', day: day(), place: where(), title: ev.title, turns: [], seen: 0, end: null }); P.fights.set(s, r); if (P.burnRec) P.burnRec.events.push(`${r.kind} fight: ${ev.title}`); }
         if (s.state.log.length > r.seen || !r.turns.length) {
           const n = s.state.kind === 'radar' ? s.state.cycle : s.state.turn;
           r.turns.push({ n, read: plain(ev.read || ''), lines: s.state.log.slice(r.seen).map(plain), bars: bars(s), order: i >= 0 ? plain(d.choices[i].label) : '' });

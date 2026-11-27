@@ -42,24 +42,24 @@ test('every line of every beat is read: an override for it shows in what the bea
   assert.deepEqual(JSON.parse(restored), r.base, 'with the words put back, the beats play as they did');
 });
 
-test('an override is escaped in a text and left plain in a label and a title, and a bad one is left out with one warning', async () => {
+test('an override is escaped in a text and left plain in a label and a memory, and a bad one is left out with one warning', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     const clean = cleanOverrides({
       'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>', 'read.nope.label': 'x', 'text.trap': '' }, title: 'No', choices: { 0: { label: 'x' } } },
-      'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
+      'beats:repel': { parts: { 'memory.held': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
       'beats:assault': { parts: { tie: 'The assault has no tie.' } },
       'beats:dead-in-space': { parts: { a: 'x' } },
     });
     console.warn = warn;
-    useOverrides({ 'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>' } }, 'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>' } } });
-    return { clean, warned, text: lineWords('beats:ambush', 'text.call', 'shipped'), label: lineWords('beats:ambush', 'go.label', 'shipped'), title: lineWords('beats:repel', 'title.0', 'shipped'), other: lineWords('beats:ambush', 'text.real', 'shipped') };
+    useOverrides({ 'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>' } }, 'beats:repel': { parts: { 'memory.held': 'The <i>Lock</i>' } } });
+    return { clean, warned, text: lineWords('beats:ambush', 'text.call', 'shipped'), label: lineWords('beats:ambush', 'go.label', 'shipped'), title: lineWords('beats:repel', 'memory.held', 'shipped'), other: lineWords('beats:ambush', 'text.real', 'shipped') };
   });
   await g.done();
   assert.deepEqual(r.clean, {
     'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>' } },
-    'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
+    'beats:repel': { parts: { 'memory.held': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
   });
   assert.equal(r.warned.length, 1);
   for (const bit of ['read.nope.label', 'text.trap', 'no "title"', 'no choice 0', 'beats:assault', 'beats:dead-in-space']) assert.ok(r.warned[0].includes(bit), bit);

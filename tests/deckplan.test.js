@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const names = ['planCasualty', 'inLine', 'PLAN', 'LAYOUTS', 'DECK', 'CUNNING', 'RADAR', 'planFight', 'planTheirMove', 'planCaptain', 'planCrewMoves', 'planChoices', 'planSuggestOdds', 'planTurn', 'planEnd', 'planOdds', 'planUp', 'planAt'];
-const P = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], { REPEL_HURT: { lose: 0.45 } }, names);
+const P = load(['js/sheet.js', 'js/camera.js', 'js/layouts.js', 'js/shipcombat.js', 'js/fight.js', 'js/radar.js', 'js/handtohand.js', 'js/deckplan.js'], {}, names);
 const { planCasualty, inLine, PLAN, LAYOUTS, DECK, RADAR, planFight, planTheirMove, planCaptain, planCrewMoves, planChoices, planSuggestOdds, planTurn, planEnd, planOdds, planUp, planAt } = P;
 const plain = v => JSON.parse(JSON.stringify(v));  // out of the vm context, so deepEqual compares plain objects
 
@@ -375,8 +375,14 @@ test('400 seeded fights played on the captain\'s order all end by the cap', () =
   }
 });
 
-test('of ours downed, the share that is a casualty: repelling the strip\'s, boarding her the deck plan\'s own, lower (the owner, 2026-11-27)', () => {
+test('of ours downed, the share that is a casualty: repelling DECK.CASUALTY, boarding her the deck plan\'s own, lower (the owner, 2026-11-27)', () => {
   assert.equal(planCasualty({ assault: false }), DECK.CASUALTY);
   assert.equal(planCasualty({ assault: true }), PLAN.ASSAULT_CASUALTY);
-  assert.ok(PLAN.ASSAULT_CASUALTY < DECK.ASSAULT.CASUALTY, 'about one of ours is downed boarding her, against the strip\'s fewer');
+  assert.ok(PLAN.ASSAULT_CASUALTY < DECK.CASUALTY, 'about one of ours is downed boarding her, so a smaller share of them die');
+});
+
+test('a worked cover makes PLAN.MADE where the one who works it stands, and three with the gunner\'s cover-eye pick', () => {
+  const made = over => { const st = repel(over), hand = st.figures.find(f => f.hand); return planTurn(st, { move: null, act: { kind: 'cover' }, order: null }, { theirs: none, ours: quiet }, always(0)).state.cover[hand.spot]; };
+  assert.equal(made(), PLAN.MADE);
+  assert.equal(made({ made: 3 }), 3, 'boarders.js deckStart passes 3 for cover-eye');
 });

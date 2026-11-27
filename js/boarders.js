@@ -1,21 +1,12 @@
 'use strict';
 
-// Boarding, both ways: who comes over the side (shipcombat.js boardersFor) and who of the crew stands with you (repelCrew), the deck they fight on with each side's
-// cover (deckStart), the named casualties of it (repelCasualty, hurtHand), and how it ends (repelSettle, assaultSettle, shipTaken). The fight is the deck fight
-// (fight.js), played turn by turn on the deck panel (fightui.js deckFightEvent): when a ship fight ends alongside, when a boarding run lands in the card duel
+// Boarding, both ways: who comes over the side (shipcombat.js boardersFor) and who of the crew stands with you (repelCrew), the fight they open on the decks
+// (deckStart), the named casualties of it (repelCasualty, hurtHand), and how it ends (repelSettle, assaultSettle, shipTaken). The fight is the deck fight on the
+// deck plan (deckplan.js), played turn by turn on its scene (deckplanui.js planFightEvent): when a ship fight ends alongside, when a boarding run lands in the card duel
 // (duel.js repelEvent), and when you board a ship you have crippled (engagements.js deadInSpaceScene), where a win carries her bridge. A hurt hand works a level
 // lower until treated; one hurt twice in a fight is dead (a main character too, unless a floor of them holds, fate.js). Loaded after duel.js and handtohand.js,
-// before fight.js and fightui.js; only called into at runtime. The words are the beats' tables below (hiredscenes.js repelLines, and deckLines for the abilities and orders both fights share).
+// before fight.js and fightui.js; only called into at runtime. The words are the beats' tables below (hiredscenes.js repelLines, and deckLines for the abilities and orders on both decks).
 
-const REPEL_TITLES = ['The Lock', 'The Corridor', 'The Bridge'];
-const REPEL_OPENINGS = [
-  [`The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.`,
-    `Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.`],
-  [`They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.`,
-    `The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.`],
-  [`The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.`,
-    `There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.`],
-];
 // What the captain and the crew remember of a boarding, as lines of the beat: `memory.<name>` (hiredscenes.js repelLines).
 const REPEL_MEMORY = { held: 'You held the ship when boarders came.', together: 'We held the ship together.', taken: 'The bridge was taken on your watch.' };
 const ASSAULT_MEMORY = { took: 'You took a ship for us.', together: 'We took her bridge together.', left: 'You went onto a crippled ship and came back without it.' };
@@ -33,17 +24,6 @@ const FIGHT_END = {
     took: 'Her captain puts the weapon down. Her strongbox is under the plot table, and {cr} cr of it goes into the ship\'s fund. Captain {last} has the boat cast off while her people are still being counted. (+5 experience at the {post} post.)',
     driven: 'You\'re driven back to the lock, and the boat pulls away with the door half closed. Her drive is dead and she\'s still drifting.' },
 };
-// Boarding her: the same three places from the other side, named from her bridge (0) to her lock (2).
-const ASSAULT_TITLES = ['Her Bridge', 'Her Corridor', 'Her Lock'];
-const ASSAULT_OPENINGS = [
-  [`The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.`,
-    `There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.`],
-  [`You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.`,
-    `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.`],
-  [`The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
-    `Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.`],
-];
-const REPEL_HURT = { lose: 0.45 };  // the chance the hand is hurt in a contested section, before the suit (fight.js DECK.SUIT)
 
 // A line of the repel or the assault fight, read through the editor's words (lineWords, storylets.js) by the name it has in the set's tables (hiredscenes.js lists them).
 const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 'beats:repel', key, shipped);
@@ -51,7 +31,7 @@ const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 
 const endWords = (s, k, vars) => fillLine(repelWords(s, `end.${k}`, FIGHT_END[s.assault ? 'assault' : 'repel'][k]), vars);
 // The casualties, the causes and who keeps out of a deck fight are lines of 'scene:fight' (hiredscenes.js).
 const hurtSay = (key, vars) => sceneSay('scene:fight', key, vars);
-// A line both deck fights read, the abilities and the orders, from the one row that holds them (hiredscenes.js deckLines, #795).
+// A line of the abilities and the orders, the same on our deck and on hers, from the one row that holds them (hiredscenes.js deckLines, #795).
 const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 
 // The post the player fights at: a hand's, or the post an owner keeps through the buy (career, hired.js). None for an owner who never was a hand: the card duel is theirs (duel.js).
@@ -66,7 +46,7 @@ const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits
 const heaveToFine = () => Math.round(purse() * (hasTrait(hired(), 'marked') ? 0.3 : 0.25));  // Marked (traits.js): a fifth more
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
-// (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.
+// (the bond at which a split is on the cards, stakes.js) the one who thinks less of you keeps out of the fight.
 // A crew member close to you covers you: the first hit that would have been yours is theirs.
 function repelCrew() {
   const st = G.state, ids = st.crew.filter(id => !(st.injured || {})[id]), held = new Map(), fighters = ids.map(id => ({ id, p: person(id) })).filter(f => f.p);
@@ -80,35 +60,28 @@ function repelCrew() {
   return { fight: fighters.filter(f => !held.has(f.id)).map(f => f.id), held: [...held.values()], out: [...held.keys()] };  // out: who the lines are about
 }
 
-// The fight: the deck fight's state on our deck (fight.js deckFight), with who stands with you, who is hurt and who has fallen. Kept with the scene, as the
-// lock fight was, so nothing of it is in the save. Up to five of the crew are heads on the deck, as the lock fight counted them; `outcome` is how the
-// boarding run landed ('full' DECK.FULL more of them than 'half', DECK.FULL_PAIR for a raider pair and DECK.ASSAULT.FULL boarding her: shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
+// The fight: the deck-plan fight's state (deckplanui.js planStartState), with who stands with you, who is hurt and who has fallen. Kept with the scene, so
+// nothing of it is in the save. Up to five of the crew stand on the decks; `outcome` is how the boarding run landed ('full' DECK.FULL more of them than
+// 'half', DECK.FULL_PAIR for a raider pair and DECK.ASSAULT.FULL boarding her: shipcombat.js boardersFor).
 function repelStart(d, outcome) {
-  return deckStart({ d, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, size: SHIPS[G.state.shipId].size });
+  return deckStart({ d, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0 });
 }
 
-// Boarding a crippled ship: the same fight on her deck, ours pushing from her lock to her bridge.
+// Boarding a crippled ship: the same fight on her decks, ours pushing from her lock to her bridge.
 function assaultStart(foe, rate = {}) {
   captainFlag('raided');  // kept for the goodbye (captains.js)
-  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', { ...rate, assault: true }), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
+  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', { ...rate, assault: true }), grade: rate.grade || 0, assault: true });
 }
 
-// Each side's cover is its own (R31): on our deck the ship's cover and the kit's are ours; on hers her ship's is hers, and ours is only what the kit opens up.
-function deckStart({ d, boarders, grade, size, assault = false }) {
-  const w = repelCrew(), kit = career().kit, ship = [...fightCover({ size, kit: assault ? [] : kit }), COVER_BASE];  // the cargo bay has the ship's own cover
-  const cover = assault ? [...[0, 1, 2].map(pos => kitCover(kit, pos)), 0] : ship, hers = assault ? ship : [];
-  const party = DECK_PARTY[d.foe.shipId] || 'raider';
-  const state = Settings.planFight ? planStartState({ d, fight: w.fight, boarders, grade, assault, party, kit })  // the deck-plan fight, behind its setting until it is the only one (deckplanui.js, #1355)
-    : deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16, party, level: skillLevel(lockPost()), coverMade: handPerk('cover-eye') ? 3 : COVER_MADE });  // the level worked: a hurt hand is one lower; cover-eye makes three points of cover
+// The kit's cover goes with the hand on either deck (deckplanui.js planStartState); a worked cover makes three with the gunner's cover-eye pick (picks.js).
+function deckStart({ d, boarders, grade, assault = false }) {
+  const w = repelCrew(), party = DECK_PARTY[d.foe.shipId] || 'raider';
+  const state = planStartState({ d, fight: w.fight, boarders, grade, assault, party, kit: career().kit, made: handPerk('cover-eye') ? 3 : PLAN.MADE });
   return { d, assault, state, grade, fight: w.fight, held: w.held, out: w.out, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 
 function repelEvent(d, outcome) { return deckOpen(repelStart(d, outcome)); }
 
-// Who can be sent: the crew who are on their feet and have a post, with their sheets (handtohand.js crewSheet), the most skilled first; the first is given the
-// cover while the fight has it to make.
-const repelOrders = (s, coverUsed) => crewOrders((s.fight || []).filter(id => !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id)).map(person).filter(Boolean)
-  .map(c => ({ id: c.id, first: c.first, sheet: crewSheet({ role: c.role, skill: c.skill, traits: c.traits, low: moodLow(c) }) })), coverUsed);
 // The odds of an ability: the post's stat and skill on the sheet, with the kit's edge (handCheck), easier for the cover one (handtohand.js).
 const abilityOdds = (post, kind) => handCheck(POST_STAT[post], skillLevel(post), 'post', ABILITY_EDGE[kind]);
 
@@ -190,16 +163,16 @@ function killCrew(c, cause) {
 // Who died in a fight, said after its close.
 const deadNote = s => (s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '');
 
-// How it ends (`s.won` and `s.searched`, fightui.js deckClose): repelled (the duel goes on with the initiative yours), the bridge taken (shipTaken), or held by a navy
+// How it ends (`s.won` and `s.searched`, deckplanui.js planClose): repelled (the duel goes on with the initiative yours), the bridge taken (shipTaken), or held by a navy
 // party, the ship searched (shipSearched). Each head of a navy party put down costs DECK.NAVY_STANDING with her government, whichever of the three
-// ends it settles with (a hand killed returns before the close, fightui.js deckTurn, and nothing is settled).
+// ends it settles with (a hand killed returns before the close, deckplanui.js planResolve, and nothing is settled).
 function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.won;  // an owner has no captain
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
   recordHand(repelled ? 'repelsHeld' : 'repelsLost');  // the record (traits.js)
   if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
-  const cited = repelled && navyBoarding(s.state) && deckWithdrew(s.state) ? citation() : '';  // a withdrawn inspection still files its citation (#828)
+  const cited = repelled && navyBoarding(s.state) && planWithdrew(s.state) ? citation() : '';  // a withdrawn inspection still files its citation (#828)
   if (repelled) {
     if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.state.turn >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }

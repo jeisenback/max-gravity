@@ -59,12 +59,12 @@ test('with --frames every deck fight is played to its close, and a fight\'s pane
 });
 
 test('a card duel played over its exchanges and a boarding after it is one fight, not scenes against the step cap (the Ice Hauler\'s fitting makes the duel longer)', async () => {
-  // A hunter's card duel runs up to DUEL_ROUNDS exchanges (before any boarding), then the lock and the corridor; a duel cut off at the step cap would be a bad run
+  // A hunter's card duel runs up to DUEL_ROUNDS exchanges (before any boarding), then the deck fight; a duel cut off at the step cap would be a bad run
   // ('fight left open'). A duel is rare in a chapter (a hunter after the hand: one of seeds 1 to 40 plays one), so here every contact is a hunter's (G.revenge).
   // Not every duel ends in a boarding, so the first of seeds 1 to 10 whose chapter has one (a seed picked by hand moves with the dice, as firstSeed's; seed 1
   // lost its boarding when Earth's metal price fell, #1206). Every chapter tried must be clean.
   let r = null, seed = 0;
-  const duel = x => Object.keys(x.scenes).some(t => /^Contact: exchange \d/.test(t)), boarded = x => x.scenes['The Corridor'] > 0 || x.scenes['The Lock'] > 0;
+  const duel = x => Object.keys(x.scenes).some(t => /^Contact: exchange \d/.test(t)), boarded = x => x.scenes.Boarders > 0;  // the deck fight on the deck plan (#1355)
   while (seed < 10 && !(r && duel(r) && boarded(r))) {
     const { ev, ctx } = await open({ scope: 'earth-hired', seed: ++seed, debt: true, stall: 0 });
     await ev(() => { Object.defineProperty(G, 'revenge', { configurable: true, get: () => ({ first: 'Ada', last: 'Krell' }), set() {} }); });
@@ -72,7 +72,7 @@ test('a card duel played over its exchanges and a boarding after it is one fight
     await ctx.close();
     assert.deepEqual(r.bad, [], `seed ${seed}`);
   }
-  assert.ok(duel(r), `a card duel was played: ${Object.keys(r.scenes).filter(t => /Contact|Lock|Corridor/.test(t)).join(', ')}`);
+  assert.ok(duel(r), `a card duel was played: ${Object.keys(r.scenes).filter(t => /Contact|Boarders/.test(t)).join(', ')}`);
   assert.ok(boarded(r), `and a boarding fight after one, in one of seeds 1 to ${seed}`);
 });
 

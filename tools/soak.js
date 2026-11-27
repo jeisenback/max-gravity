@@ -21,14 +21,14 @@
 // is the game's own, arrive() in game.js; with --frames the whole burn runs in the game's transit update, so the comms chatter of a burn is counted, and the live flight loop
 // is played in each system too, so the traffic's sensors, kills and hails are).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
-// A ship fight is fought on the radar with the hand's post on its opening orders (radarui.js), a cycle at a time to its end, and a deck fight by the fight
-// tool's answer (tools/answer.js answerDeck: tools/fights.js), each turn.
+// A ship fight is fought on the radar with the hand's post on its opening orders (radarui.js), a cycle at a time to its end, and a deck fight on the deck
+// plan by the fight tool's answer (tools/answer.js answerPlan: tools/planfights.js), each turn, to its close.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run), the captain's loss (Without a Captain) or the hand put ashore (Put Ashore). Each starts a new game, so the chapter is over
 // and the soak stops there. The totals follow the last seed. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
-const { answerDeck } = require('./answer');
+const { answerPlan } = require('./answer');
 
 // A page that has not answered one evaluate in this long fails with what the browser was doing (tests/helpers.js open's `stall`), as the distribution tests' pages do, rather than waiting forever.
 const SOAK_STALL = 900000;
@@ -42,7 +42,7 @@ const SOAK_PROFILES = ['attentive', 'hurried', 'between'];
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false, profile = 'attentive' } = {}) {
   if (!SOAK_PROFILES.includes(profile)) throw new Error(`no soak profile '${profile}': ${SOAK_PROFILES.join(', ')}`);
   const { ev, errors, ctx } = await open({ scope, seed, debt: true, brief: true, stall: SOAK_STALL });  // the chapter's economy includes the hiring hall's bond
-  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString(), profile]);
+  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerPlan.toString(), profile]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -54,7 +54,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
 // when the transit update reaches it. The port hook is played at every landing (the day ashore, the buy-in); the chapter ends when the hand has bought a ship.
 async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName, deckSrc, profile = 'attentive']) {
     const H = hooksName ? window[hooksName] : null, live = !!(H && H.live);
-    const deckAnswer = deckSrc ? (0, eval)(`(${deckSrc})`) : null;  // the deck fight's plan each turn, as the fight tool's answer policy plays it (tools/answer.js answerDeck); without it, the panel's plan as it stands
+    const deckAnswer = deckSrc ? (0, eval)(`(${deckSrc})`) : null;  // the deck fight's plan each turn, as the fight tool's answer policy plays it (tools/answer.js answerPlan); without it, the page's plan as it stands
+    const planRules = { PLAN, planChoices, planUp, planAt, planHeld, spotLinks, spotPath, spotHatch };  // what the answer reads of the rules (tools/planfights.js passes the same names)
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
     let offersSeen = 0;  // the offers the profile has met, for `between`'s every other one (#1199)
@@ -99,13 +100,13 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const lose = loseBurnDays; loseBurnDays = (t, n) => { fr.lost += n; return lose(t, n); };  // the days a run adds to a burn (engage.js) are counted, so the days as sailed can be told from them
     if (play) for (const name of ['startShipFight', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startShipFight' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
     const target = typeof HIRED_TARGET === 'undefined' ? 190000 : HIRED_TARGET;
-    // The deck fights (fightui.js deckFightEvent) begun: each is played to its close (deckClose sets s.won) or to the hand's death, or the run is bad (below).
+    // The deck fights (deckplanui.js planFightEvent) begun: each is played to its close (planClose sets s.won) or to the hand's death, or the run is bad (below).
     const decks = [];
-    { const df = window.deckFightEvent; window.deckFightEvent = function (s) { if (s && !decks.includes(s)) decks.push(s); return df.apply(this, arguments); }; }
+    { const df = window.planFightEvent; window.planFightEvent = function (s) { if (s && !decks.includes(s)) decks.push(s); return df.apply(this, arguments); }; }
     const answer = async () => {
       let kept = false;  // the dialog is a kept choice's redraw (a fight panel's next turn, or an order changed): a step of the same scene, not a new one
       const most = H ? 40 : 8;  // the scenes one answer plays before the rest are closed unanswered (with hooks, they are reported: H.stuck)
-      for (let k = 0, redraws = 0, panel = false; G.dialog && k < most && redraws < 8 * 2 * DECK.TURNS; kept || panel ? redraws++ : k++) {  // a deck fight's panels do not count against the scenes: nor do a card duel's exchanges (up to DUEL_ROUNDS of them, before any boarding)
+      for (let k = 0, redraws = 0, panel = false; G.dialog && k < most && redraws < 8 * 2 * PLAN.TURNS; kept || panel ? redraws++ : k++) {  // a deck fight's panels do not count against the scenes: nor do a card duel's exchanges (up to DUEL_ROUNDS of them, before any boarding)
         const d = G.dialog; panel = /^Contact: exchange \d/.test(d.event.title);
         if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { if (H) await H.scene(d, -1, false); ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         if (!kept) {  // a redraw is counted once, with its scene
@@ -119,15 +120,24 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
           if (radarShowing()) { bad.push('radar fight left open'); G.radar = null; finishEvent(); }
           continue;  // its end opened the next scene (shipFightEnd)
         }
+        const fighting = () => { const s = planShowing(); return s && !('won' in s) && !s.handDied ? s : null; };  // the deck fight's page, before its close (which is a scene of its own)
+        if (fighting()) {  // the deck fight on the deck plan has no choices: each turn the answer's plan, then Fight (deckplanui.js planGo), to its close
+          for (let n = 0; fighting() && n < 2 * PLAN.TURNS; n++) {
+            const s = fighting();
+            if (H) await H.scene(G.dialog, -1, false);
+            if (deckAnswer) s.pick = deckAnswer(planRules, s.state, { theirs: s.theirs, intent: s.intent });
+            planGo(s);
+          }
+          if (fighting()) { bad.push('deck fight left open'); finishEvent(); }
+          continue;  // its close opened the next scene (planClose)
+        }
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
-          const fire = d.event.fight ? ok.find(i => /^Fight$/.test(d.choices[i].label)) : undefined;  // a deck fight is fought with the orders as they stand (fightui.js)
-          const s = d.event.fight, deck = !H && deckAnswer && s && s.state.kind === 'deck' && fire !== undefined;  // a deck fight's turn is fought with the answer's plan (deckFightEvent drawn with it)
-          const i = H ? H.pick(d, ok) : fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          const i = H ? H.pick(d, ok) : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
           if (H) await H.scene(d, i, kept);
           const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
           bar.in = atBar;
-          const res = deck ? (e => e.choices[e.choices.length - 1].run())(deckFightEvent(s, deckAnswer(s))) : chooseEvent(i);
+          const res = chooseEvent(i);
           bar.in = false;
           if (H) await H.result(d, c, res);
           if (c.keep && res) { openEvent(res); kept = true; continue; }  // a kept choice redraws its dialog in place (ui.js)
