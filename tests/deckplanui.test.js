@@ -28,6 +28,11 @@ const helpers = () => {
   // a test's own deck: figures moved where it says (id -> spot), the rest of theirs downed when `only` is set; the page drawn again
   window.stage = (s, where, only = false) => { for (const f of s.state.figures) if (f.id in where) f.spot = where[f.id]; else if (only && f.side === 'them') f.hp = 0; s.theirs = null; UI.redraw(planFightEvent(s)); };
   window.sawText = sel => (document.querySelector(sel) || {}).textContent || '';
+  // The dice for the next turn: the rules' turn rolls `x` every time (planTurn's own rand, so the page's frame loop drawing rolls between the steps cannot
+  // move them), and so does Math.random for what the scene rolls after it (a casualty, the hand's hurt, a settle). The fight's log length is kept, so a
+  // test can wait for the turn to be written (turned) before it reads it.
+  window.dice = x => { window.realTurn = window.realTurn || planTurn; planTurn = (st, p, sh) => window.realTurn(st, p, sh, () => x); Math.random = () => x;
+    const f = G.dialog && G.dialog.event.fight; window.logN = f && f.state ? f.state.log.length : 0; };
 };
 
 test('every boarding opens the deck-plan fight, and the settings have no switch for it (#1355)', async () => {
@@ -76,6 +81,7 @@ test('a ringed spot, an act, an order and a suggestion show in "This turn" and o
   assert.equal(await ev(() => document.querySelectorAll('[data-action="planSuggest"]').length), 0, 'once a turn');
   await page.waitForFunction(() => /holdfire/.test(document.querySelector('canvas.plan-cut').dataset.drawn), null, { timeout: 5000 });
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   const t = await ev(() => { const s = G.dialog.event.fight; return { turn: s.state.turn, hand: s.state.figures.find(f => f.hand).spot, last: sawText('.plan-last'), you: sawText('.plan-you') }; });
   assert.equal(t.turn, 1);
   assert.equal(t.hand, 'magazine');
@@ -95,8 +101,9 @@ test('a charge shown on the ship is stopped by shooting its setter', async () =>
   assert.match(shown.charge, /setting a charge on the magazine through the deck plate, from the inner door/);
   assert.deepEqual(shown.set, { on: 'magazine', from: 'inner', setter: 't1' });
   await page.click('[data-action="planAct"][data-arg="shoot:inner"]');
-  await ev(() => { Math.random = () => 0.01; });  // every shot hits (the game's frame loop draws rolls too, so no list of them)
+  await ev(() => dice(0.01));  // every shot hits (the game's frame loop draws rolls too, so no list of them)
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   const log = await ev(() => { const s = G.dialog.event.fight; return s.state.log[s.state.log.length - 1]; });  // the setter, alone, is down: the fight may be over
   assert.match(log, /The charge at the magazine never goes off\./);
   await done();
@@ -113,8 +120,9 @@ test('the hand killed mid-turn stops the fight after the turn and queues the end
     s.theirs = { moves: [], shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }], charge: null, cut: null, seal: null, feint: false };
     UI.redraw(planFightEvent(s));
   });
-  await ev(() => { Math.random = () => 0; });  // the shot hits, the hurt and the death roll pass
+  await ev(() => dice(0));  // the shot hits, the hurt and the death roll pass
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   const r = await ev(() => ({ died: !!hired().died, title: G.dialog && G.dialog.event.title, fight: !!(G.dialog && G.dialog.event.fight) }));
   assert.equal(r.died, true);
   assert.equal(r.fight, false, 'no more of the fight');
@@ -132,8 +140,9 @@ test('a repel lost on our bridge goes to today\'s settle: the ship taken', async
     s.theirs = { moves: [], shots: [], charge: null, cut: null, seal: null, feint: false };
     UI.redraw(planFightEvent(s));
   });
-  await ev(() => { Math.random = () => 0.99; });  // nobody is hit, and the captain is not lost on her bridge
+  await ev(() => dice(0.99));  // nobody is hit, and the captain is not lost on her bridge
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   await page.waitForFunction(() => /Stand down/.test(document.querySelector('#panel').innerText), null, { timeout: 10000 });  // the close drawn, not the fight's page
   const r = await ev(() => ({ title: G.dialog.event.title, text: G.dialog.event.text, fund: hired().fund, labels: G.dialog.choices.map(c => c.label) }));
   assert.equal(r.title, 'Boarders');
@@ -174,16 +183,18 @@ test('the one beside the hand takes the first hit meant for the hand, in today\'
     s.pick = { move: null, act: { kind: 'holdfire' }, order: null };
     UI.redraw(planFightEvent(s));
   });
-  await ev(() => { Math.random = () => 0.01; });  // the shot hits
+  await ev(() => dice(0.01));  // the shot hits
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   const one = await ev(() => { const s = G.dialog.event.fight; return { log: s.state.log[s.state.log.length - 1], ines: s.state.figures.find(f => f.id === 'c:ines').hp }; });
   assert.match(one.log, /Ines pulls you down behind the closer and takes it\./);
   assert.equal(one.ines, 1, 'Ines is wounded in the hand\'s place');
   await ev(() => { const s = G.dialog.event.fight; s.state.figures.find(f => f.hand).hp = 1; s.state.figures.find(f => f.id === 'c:ines').spot = 'helm';
     Object.assign(s.state.figures.find(f => f.id === 't1'), { hp: 2, spot: 'magazine' });  // Ines fired back: t1 on his feet again for this turn
     s.theirs = { moves: [], shots: [{ id: 't1', at: 'gunseat', odds: 0.5 }], charge: null, cut: null, seal: null, feint: false, storm: null }; s.pick = { move: null, act: { kind: 'holdfire' }, order: null }; UI.redraw(planFightEvent(s));
-    Math.random = () => 0.01; });  // the shot hits again (the stub does not last between the turns)
+    dice(0.01); });  // the shot hits again
   await page.click('[data-action="planFightGo"]');
+  await page.waitForFunction(() => { const f = G.dialog && G.dialog.event.fight; return !f || !f.state || f.state.log.length > (window.logN || 0) || !G.dialog.event.board; }, null, { timeout: 10000 });  // the turn written, or the fight closed
   const two = await ev(() => { const s = G.dialog.event.fight || {}; const log = (s.state || { log: [] }).log; return { log: log[log.length - 1] || '', hurt: career().hurtUntil > G.state.day }; });
   assert.ok(two.hurt, 'the hand is hurt');
   assert.doesNotMatch(two.log, /takes it/, 'no friend takes the downed hand\'s hurt');
