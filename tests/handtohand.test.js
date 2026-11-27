@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'CREW_HURT', 'check', 'POST_STAT']);
-const { FIGHT_ABILITY, ABILITY_EDGE, CREW_ABILITY, crewSheet, crewOrderOdds, CREW_HURT, check, POST_STAT } = api;
+const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'check', 'POST_STAT']);
+const { FIGHT_ABILITY, ABILITY_EDGE, CREW_ABILITY, crewSheet, crewOrderOdds, check, POST_STAT } = api;
 const POSTS = ['gunner', 'pilot', 'engineer', 'comms'];
 
 test('every post has a steady ability and a cover ability, each with a label and a line for working and for missing', () => {
@@ -32,13 +32,12 @@ test('a crew member\'s sheet comes from their role, skill and traits, and a role
   assert.equal(crewSheet({ role: 'engineer', skill: 1 }).stat, 4, 'a person with no traits listed is as the post makes them');
 });
 
-test('an order\'s odds are the one rule at the crew member\'s own stat and skill, and a tenth worse for one already hurt', () => {
+test('an order\'s odds are the one rule at the crew member\'s own stat and skill', () => {
   const sheet = crewSheet({ role: 'gunner', skill: 2, traits: [] });
-  assert.equal(crewOrderOdds(sheet, 'steady', false), check(POST_STAT.gunner ? 4 : 0, 2, 0, ABILITY_EDGE.steady));
-  assert.equal(crewOrderOdds(sheet, 'cover', false), check(4, 2, 0, ABILITY_EDGE.cover));
-  assert.ok(Math.abs(crewOrderOdds(sheet, 'steady', true) - (crewOrderOdds(sheet, 'steady', false) - CREW_HURT)) < 1e-9, 'hurt takes a tenth off');
+  assert.equal(crewOrderOdds(sheet, 'steady'), check(POST_STAT.gunner ? 4 : 0, 2, 0, ABILITY_EDGE.steady));
+  assert.equal(crewOrderOdds(sheet, 'cover'), check(4, 2, 0, ABILITY_EDGE.cover));
   const better = crewSheet({ role: 'gunner', skill: 3, traits: [] });
-  assert.ok(crewOrderOdds(better, 'steady', false) > crewOrderOdds(sheet, 'steady', false), 'skill counts a tenth a level');
+  assert.ok(crewOrderOdds(better, 'steady') > crewOrderOdds(sheet, 'steady'), 'skill counts a tenth a level');
 });
 
 test('every post has a line for each of the crew\'s two orders: a phrase for the button and a line for working and for missing', () => {

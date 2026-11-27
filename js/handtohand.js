@@ -29,10 +29,9 @@ const FIGHT_ABILITY = {
 // The crew at the lock (#711): a small sheet each, from what they already are, and orders given to them by name. A crew member whose role is a post (the gunner, the pilot, the
 // engineer, and the slicer, who is Comms) has the post's stat a point over the base, as the hand's has at the sign-on, and their skill as it stands (a level less while bad news from home
 // weighs on them); a brave one is a point up, a nervous or drunk one a point down. The rule is the hand's (check, sheet.js): the same two abilities at their own skill, a tenth easier or
-// harder as the hand's are, and a tenth harder for one already hurt in this fight. The lines are what the crew member does, after their name (the code puts it there), in the words of both fights.
+// harder as the hand's are. The lines are what the crew member does, after their name (the code puts it there), on our deck and on hers.
 const ORDER_POST = { gunner: 'gunner', pilot: 'pilot', engineer: 'engineer', slicer: 'comms' };  // a crew role to the post whose abilities they have
 const CREW_TRAIT = { brave: 1, nervous: -1, drunk: -1 };  // a point of stat, for the traits that matter in a fight
-const CREW_HURT = 0.1;  // off an order's odds for one already hurt in this fight
 const CREW_ABILITY = {
   gunner: {
     steady: { label: 'picks off a runner', win: 'waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.', lose: 'waits for a runner and none runs. The round goes high, and they use the noise to push.' },
@@ -61,4 +60,4 @@ function crewSheet({ role, skill, traits, low }) {
 }
 // The posts that work a hatch (deckplan.js: a seal or open order), and at which ability's odds: the pilot's cycle and the engineer's pressure door.
 const HATCH_ORDER = { pilot: 'steady', engineer: 'cover' };
-const crewOrderOdds = (sheet, kind, hurt) => check(sheet.stat, sheet.skill, DIFFICULTY.post, ABILITY_EDGE[kind] - (hurt ? CREW_HURT : 0));
+const crewOrderOdds = (sheet, kind) => check(sheet.stat, sheet.skill, DIFFICULTY.post, ABILITY_EDGE[kind]);  // a wound is its own cost on the deck plan, not a worse order (the owner, #1398)
