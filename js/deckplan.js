@@ -21,6 +21,7 @@ const PLAN = {
   CAPTAIN_LEVEL: 3, // the captain's shooting
   NAVY_HOLD: 0.3,   // a navy head with a shot at these odds or better holds and shoots rather than push
   STORM: 3,         // they storm a spot of ours they outnumber this many to one from the spots next to it (the storm: the owner, 2026-11-26, #1354)
+  ASSAULT_CASUALTY: 0.17,  // boarding her, the share of ours downed that is a casualty (the rest get up after it), so that a boarding costs about the strip's 0.15 to 0.21 (the owner, 2026-11-27)
   REST: 'bunksM',   // where one of our crew with no post of their own stands when the boarders come
 };
 const PLAN_HOME = { captain: 'helm' };  // the captain on our bridge, with the pilot
@@ -368,6 +369,8 @@ function planEnd(st) {
   if (planUp(st, 'them').length + st.wave <= st.began * rule.BREAK) return 'won';
   return st.turn >= (st.party === 'navy' ? PLAN.NAVY_TURNS : PLAN.TURNS) ? 'won' : null;
 }
+// Of ours downed, the share that is a casualty (fightui.js deckLoss): repelling the strip's DECK.CASUALTY, boarding her PLAN.ASSAULT_CASUALTY.
+const planCasualty = st => (st.assault ? PLAN.ASSAULT_CASUALTY : DECK.CASUALTY);
 // The attackers went back at the cap, with their party not broken or beaten (the strip's deckWithdrew, fight.js): the close's words, and a navy party's citation.
 const planWithdrew = st => st.turn >= (st.party === 'navy' && !st.assault ? PLAN.NAVY_TURNS : PLAN.TURNS) && planEnd({ ...st, turn: 0 }) === null;
 // Ours on the deck, the hand apart: how many go across to board her (boarding.js, engagements.js), for either deck fight until the strip is retired (#1355).

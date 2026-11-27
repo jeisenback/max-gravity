@@ -78,6 +78,13 @@ test('the rooms hold at least as measured: the answer on the decks does no worse
   }
 });
 
+test('boarding her with five crew, the answer\'s casualties are near the strip\'s (PLAN.ASSAULT_CASUALTY, the owner, 2026-11-27)', () => {
+  for (const party of ['raider', 'corsair']) {
+    const ans = cell('assault', party, 5, 'answer');
+    assert.ok(per(ans, 'casualties') <= 0.28, `boarding a ${party} with five crew: ${f2(per(ans, 'casualties'))} casualties a fight (the strip's 0.15 to 0.21)`);
+  }
+});
+
 test('repelling, the answer keeps the hand standing and the crew\'s losses near the strip\'s', () => {
   for (const [party, crew] of [['raider', 2], ['raider', 5], ['corsair', 2], ['corsair', 5]]) {
     const ans = cell('repel', party, crew, 'answer');
