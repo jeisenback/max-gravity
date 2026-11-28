@@ -37,10 +37,10 @@ async function play() {
   await f.waitForFunction(() => typeof G !== 'undefined' && G.dialog, null, { timeout: 30000 });
   return f;
 }
-// What the fight in the frame is: her ship, a consort, the deck and whose, the turret, the day and the gunner's experience.
+// What the fight in the frame is: her ship, a consort, the deck and whose, the day and the gunner's experience.
 const fightOf = f => f.evaluate(() => {
   const s = G.dialog.event.fight || {}, st = s.state || {};
-  return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
+  return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0,
     day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => (c.rowLabel ? `${c.rowLabel}: ${c.label}` : c.label)), G.dialog.event.board || '']) };  // a gun's or the torpedo's row reads its label too; the deck plan's page is its board
 });
 // Ends the fight on the radar in the frame as it ends with her away (radarui.js, shipFightEnd: an end that changes nothing itself), for its close's Stand down.
