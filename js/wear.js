@@ -50,11 +50,11 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 function wearHtml() {
   const c = condition(), docked = G.mode === 'landed' && role().mayAct('overhaul');  // whoever pays for the ship pays for a yard overhaul: the owner, the co-op (#906)
   const offers = k => (docked && c[k] < 99 ? partsOffers(G.state, currentPlanet(), k, G.state.day) : []);  // a new part, a used one when the port has one, a printed one (parts.js, #1135)
-  const button = (k, o) => `<div class="con-yard"><span class="hint">${o.source === 'yard' ? 'Yard overhaul' : o.source === 'used' ? `Used: ${o.quirk.from} (${usedWords(o.quirk)})` : 'Printed, temporary'}</span><button data-action="overhaul" data-arg="${o.source === 'yard' ? k : `${k}:${o.source}`}" ${G.state.credits >= o.price ? '' : 'disabled'}>${fmt(o.price)} cr</button></div>`;
-  return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
-    ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
-      ${offers(k).map(o => button(k, o)).join('')}`).join('')}
-  </div>${role().mayAct('overhaul') ? sparesHtml(G.state, currentPlanet(), G.mode === 'landed') : ''}`;  // the parts cut off wrecks (parts.js, #965)
+  const button = (k, o) => h`<div class="con-yard"><span class="hint">${o.source === 'yard' ? 'Yard overhaul' : o.source === 'used' ? `Used: ${o.quirk.from} (${usedWords(o.quirk)})` : 'Printed, temporary'}</span><button data-action="overhaul" data-arg="${o.source === 'yard' ? k : `${k}:${o.source}`}" ${G.state.credits >= o.price ? '' : 'disabled'}>${fmt(o.price)} cr</button></div>`;
+  return String(h`${wearRate() ? '' : raw('<p class="hint">Wear is off.</p>')}<div class="con-parts">
+    ${listHtml(Object.entries(SHIP_PARTS), ([k, p]) => h`<div class="con-part"><span>${p.name}</span>${raw(conBar(c[k], condColor(c[k])))}<b>${Math.round(c[k])}</b></div>
+      ${listHtml(offers(k), o => button(k, o))}`)}
+  </div>${role().mayAct('overhaul') ? raw(sparesHtml(G.state, currentPlanet(), G.mode === 'landed')) : ''}`);  // the parts cut off wrecks (parts.js, #965)
 }
 
 // A scene for a system that has gone bad, played through the happenings picker. Its words are the lines of 'scene:trouble' (hiredscenes.js): {part} is the system,
