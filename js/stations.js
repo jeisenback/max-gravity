@@ -70,23 +70,23 @@ function giveOrder(id, orderId) {
 
 // The post's block on a station view: who has it, the take/hand-back button, and its orders.
 function postHtml(id) {
-  const P = POSTS[id], h = postHolder(id), ps = postState(id), mode = postMode(id);
-  if (notYours(id)) return `<div class="post"><div class="eyebrow">${P.name} post &middot; crewed</div><p class="desc">${h ? `${esc(fullName(h))} has the ${P.name.toLowerCase()} post.` : `Nobody has the ${P.name.toLowerCase()} post.`} It is the captain's to command, not yours.</p></div>`;
-  const name = h ? esc(fullName(h)) : '';
-  const line = mode === 'crewed' ? `${name} has the ${P.name.toLowerCase()} post.`
-    : h ? `You have taken the ${P.name.toLowerCase()} controls from ${name}.`
-    : `Nobody is assigned as ${P.name.toLowerCase()}. You do it yourself.`;
-  const btn = mode === 'crewed' ? `<button data-action="takeControl" data-arg="${id}">Take controls</button>`
-    : h ? `<button data-action="handBack" data-arg="${id}">Hand back</button>` : '';
+  const P = POSTS[id], holder = postHolder(id), ps = postState(id), mode = postMode(id), post = P.name.toLowerCase();
+  if (notYours(id)) return String(h`<div class="post"><div class="eyebrow">${P.name} post &middot; crewed</div><p class="desc">${holder ? h`${fullName(holder)} has the ${post} post.` : h`Nobody has the ${post} post.`} It is the captain's to command, not yours.</p></div>`);
+  const name = holder ? fullName(holder) : '';
+  const line = mode === 'crewed' ? h`${name} has the ${post} post.`
+    : holder ? h`You have taken the ${post} controls from ${name}.`
+    : h`Nobody is assigned as ${post}. You do it yourself.`;
+  const btn = mode === 'crewed' ? h`<button data-action="takeControl" data-arg="${id}">Take controls</button>`
+    : holder ? h`<button data-action="handBack" data-arg="${id}">Hand back</button>` : '';
   const shut = o => ps.busy ? 'Done for today. The post is free again tomorrow or on the next burn.' : o.can && !o.can() ? o.idle || 'Not available now.' : '';
-  const orders = postOrders(id).map(o => `<button data-action="postOrder" data-arg="${id}:${o.id}" title="${esc(o.desc)}" ${shut(o) ? 'disabled' : ''}>${o.name}</button>`).join('');
-  const why = postOrders(id).filter(shut).map(o => `<div class="hint">${o.name}: ${shut(o)}</div>`).join('');
-  return `<div class="post">
+  const orders = listHtml(postOrders(id), o => h`<button data-action="postOrder" data-arg="${id}:${o.id}" title="${o.desc}" ${shut(o) ? 'disabled' : ''}>${o.name}</button>`);
+  const why = listHtml(postOrders(id).filter(shut), o => h`<div class="hint">${o.name}: ${shut(o)}</div>`);
+  return String(h`<div class="post">
     <div class="eyebrow">${P.name} post &middot; ${mode}</div>
     <p class="desc">${line}</p>
-    ${ps.note ? `<div class="note">${ps.note}</div>` : ''}
-    ${btn || orders ? `<div class="row">${orders}${btn}</div>` : ''}${why}
-  </div>`;
+    ${ps.note ? h`<div class="note">${raw(ps.note)}</div>` : ''}
+    ${btn || orders.html ? h`<div class="row">${orders}${btn}</div>` : ''}${why}
+  </div>`);  // the note is the order's scene text (sceneSay), trusted markup
 }
 
 Mods.register({

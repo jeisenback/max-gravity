@@ -186,11 +186,11 @@ function jobTerms(job) {
 const jobTermsLine = job => { const t = jobTerms(job), who = t.posts.length > 1 ? `${t.posts.slice(0, -1).join(', ')} or ${t.posts[t.posts.length - 1]}` : t.posts[0]; return `${who ? `${who} \u00b7 ` : ''}up to ${fmt(t.pay)} cr`; };
 
 function jobsHtml() {
-  const h = hired(), board = jobBoard();
-  return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for ${esc(role().purse)}</div>
-    ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span><br><span class="hint terms">${esc(jobTermsLine(j))}</span></span>
-      <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
-    <p class="hint">${board.done ? 'You have worked a job here today.' : `One job a day. It takes the day, and the pay goes to ${esc(role().purse)}.`}</p></div>`;
+  const board = jobBoard();
+  return String(h`<div class="post"><div class="eyebrow">Jobs on the station &middot; for ${role().purse}</div>
+    ${listHtml(board.ids, id => { const j = JOBS.find(x => x.id === id); return h`<div class="row"><span><b>${jobTitle(j)}</b> <span class="hint">${jobBlurb(j)}</span><br><span class="hint terms">${jobTermsLine(j)}</span></span>
+      <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; })}
+    <p class="hint">${board.done ? 'You have worked a job here today.' : h`One job a day. It takes the day, and the pay goes to ${role().purse}.`}</p></div>`);
 }
 
 const jobsMissionsView = UI.views.missions;

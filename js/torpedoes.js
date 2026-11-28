@@ -154,13 +154,13 @@ function torpedoShopHtml() {
   const st = G.state;
   if (!ship().launcher) return '';
   const have = st.torpedoes || 0, room = TORP_MAX - have, fill = Math.min(room, Math.floor(st.credits / TORP_PRICE));
-  return `<div class="mission">
+  return String(h`<div class="mission">
     <div><b>Torpedoes</b> <span class="hint">${have}/${TORP_MAX} loaded</span>
       <div class="hint">Homing torpedoes for your launcher. ${fmt(TORP_PRICE)} cr each.</div></div>
     <div class="row" style="margin:0">
       <button data-action="torpbuy" data-arg="1" ${room > 0 && st.credits >= TORP_PRICE ? '' : 'disabled'}>Buy 1</button>
       <button data-action="torpbuy" data-arg="${fill}" ${fill > 0 ? '' : 'disabled'}>Fill (${fmt(fill * TORP_PRICE)})</button>
-    </div></div>`;
+    </div></div>`);
 }
 
 Mods.register({
