@@ -323,24 +323,21 @@
   }
 
   // A fight row is played from one of the tester panel's fights (js/uat.js UAT_FIGHTS, uatFight), early or late (#795): the day is moved to the opening typed (startShipFight
-  // takes it by the day), a turret is fitted for the turret's lines, torpedoes are carried for a torpedo line on the consort, the hand is at the post asked for (`fightPost`), and
-  // boarding her goes onto her deck at once. What the report counts starts from here, before the fight; that the captain will remember a raid is no change worth saying.
+  // takes it by the day), the hand is at the post asked for (`fightPost`), and boarding her goes onto her deck at once. What the report counts starts from here, before the fight; that the captain will remember a raid is no change worth saying.
   function playFight(m) {
     const late = m.fight.startsWith('late-'), f = UAT_FIGHTS.find(x => x.id === m.fight.replace(/^late-/, ''));
     if (!f) return { error: `The tester panel has no fight "${m.fight}".` };
     uatFight(f, late, () => {
       const st = G.state;
       if (m.fightDay != null) st.day += (m.fightDay - st.day % 2 + 2) % 2;
-      if (m.turret) st.outfits.pdc = 1;
-      if (m.launcher && !st.outfits.launcher) { st.outfits.launcher = 1; st.torpedoes = 6; }
       since = watched();
     }, HIRED_POSTS.includes(m.fightPost) ? m.fightPost : 'gunner');
     const board = f.id === 'deck-assault' && G.dialog && G.dialog.choices.find(c => c.label === deadWords('board.label'));
     if (board) { board.run(); const next = G.nextEvent; G.nextEvent = null; openEvent(next); }
     if (!G.dialog) return { error: 'The fight did not open in this state.' };
     since['hired flag raided'] = watched()['hired flag raided'];
-    const ours = m.line === 'first.ours' ? ' The line for your own first volley plays only when the fight opens with a head start for you (after an ambush, or when her contact move goes wrong), which none of these fights has, so it cannot be previewed here.' : '';
-    return { type: 'played', failing: [], chained: false, shut: [], note: `The fight is the tester panel's "${f.title}"${late ? ', late in the chapter' : ''}, with you at the ${hired().post} post${m.turret ? ', with a turret fitted for its lines' : ''}${m.launcher ? ', with torpedoes aboard' : ''}${board ? ', boarded at once' : ''}. A fight plays by its contact, so no condition is checked here.${ours}` };
+    const ours = m.line === 'first.ours' ? ' The line for your own first volley plays only when your own move at the contact wins and your guns open the fight, which none of these fights has, so it cannot be previewed here.' : '';
+    return { type: 'played', failing: [], chained: false, shut: [], note: `The fight is the tester panel's "${f.title}"${late ? ', late in the chapter' : ''}, with you at the ${hired().post} post${board ? ', boarded at once' : ''}. A fight plays by its contact, so no condition is checked here.${ours}` };
   }
 
   function play(m) {
@@ -835,7 +832,7 @@
     : /^(deck\.withdraw\.assault|plan\.title\.assault)$/.test(key) ? 'deck-assault'
       : /^(deck\.end\.(searched|cited)|memory\.searched)$/.test(key) ? 'deck-navy' : /^(deck|plan)\./.test(key) ? 'deck-repel'  // the boarding party's own ends are the navy's deck, where a raider's fight does not show them
       : /^open\.gun\.|\.gun$/.test(key) || key === 'end.crippled.patrol' || key === 'memory.navy' ? 'fight-patrol'
-        : /consort/.test(key) || key === 'first.hers' ? 'fight-pack' : /(^|\.)torp/.test(key) ? 'fight-veteran' : 'fight-raider');  // the pair starts a volley behind; a torpedo on the consort is carried in (playFight)
+        : /consort/.test(key) || key === 'first.hers' ? 'fight-pack' : /(^|\.)torp/.test(key) ? 'fight-veteran' : 'fight-raider');  // the pair starts a volley behind
   // The post the hand fights at (#795): an ability's own post, another than the gunner's for a crew gunner's order (so one is aboard to give it to), else the post chosen.
   const fightPostFor = (key, chosen) => { const ab = /^ability\.(\w+)\./.exec(key); return ab ? ab[1] : /^crew\.gunner\./.test(key) && chosen === 'gunner' ? 'pilot' : chosen || 'gunner'; };
   // The day a version plays on, in plain words (#795): the versions are taken in turn by the day, every three days.
@@ -1605,9 +1602,9 @@
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
         const typed = lastPath && lastPath.id === state.id ? lastPath.path : '', version = typed.startsWith('part.') && row.parts ? versionOf(typed.slice(5), Object.keys(row.parts)) : null;
         const overrides = overridesFrom(rows, values, struct), line = typedOf(row), fight = FIGHT_ROWS.includes(row.id) ? fightPick || fightFor(row.id, line) : null;
-        const opening = /^open\.(gun|grapple|torpedo)\.(\d)$/.exec(line), turret = /^pdc\./.test(line) || Object.keys((overrides['scene:fight'] || {}).parts || {}).some(k => k.startsWith('pdc.'));  // the opening typed plays on its day; the turret's lines need one fitted
+        const opening = /^open\.(gun|grapple|torpedo)\.(\d)$/.exec(line);  // the opening typed plays on its day
         send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides, newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) }, version, line: typed.startsWith('part.') ? typed.slice(5) : null,
-          ...(fight ? { fight, fightDay: opening && row.id === 'scene:fight' ? Number(opening[2]) : null, turret, launcher: /consort/.test(line) && /(^|\.)torp/.test(line), fightPost: fightPostFor(line, setup.post) } : {}) });
+          ...(fight ? { fight, fightDay: opening && row.id === 'scene:fight' ? Number(opening[2]) : null, fightPost: fightPostFor(line, setup.post) } : {}) });
       }
     });
     update();
