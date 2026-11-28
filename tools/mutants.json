@@ -142,5 +142,11 @@
     "by": [
       "theirs PLAN.STORM to one against a spot of ours, from the spots next to it, storm it: one of ours there downed, the rest pushed back a step, they move in (#1354)"
     ]
+  },
+  {
+    "name": "coop-nav-gets-the-plan",
+    "file": "js/bridge.js",
+    "find": "plots = role().mayAct('plot'),",
+    "replace": "plots = !hired(),"
   }
 ]

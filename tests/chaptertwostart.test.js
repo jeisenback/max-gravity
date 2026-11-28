@@ -120,6 +120,21 @@ test('the co-op takes a contract from the board and is paid into the fund, with 
   assert.doesNotMatch(r.notes, /wage/i);
 });
 
+test('the co-op plots its own course on the Navigation console, through the system map (#1358)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(); st.dest = 'mars'; UI.tab = 'nav'; UI.render();
+    const panel = document.getElementById('panel'), reads = [...panel.querySelectorAll('.con-read')].map(x => [x.firstElementChild.textContent, x.lastElementChild.textContent]);
+    return { map: !!panel.querySelector('[data-action="map"]'), reads, text: panel.textContent, fuel: burnFuel(st.systemId, 'mars') };
+  });
+  await done();
+  assert.equal(r.map, true, 'the system map is a control');
+  assert.deepEqual(r.reads.find(([l]) => l === 'Destination'), ['Destination', 'Mars'], 'the course is the one plotted, not a captain\'s plan');
+  assert.match((r.reads.find(([l]) => l === 'Reaction mass') || [])[1] || '', new RegExp(`^${r.fuel} of `), 'the plotted course reads its reaction mass');
+  assert.doesNotMatch(r.text, /The captain picks where she goes/);
+});
+
 test('the co-op trades on the exchange from its fund', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(started);
